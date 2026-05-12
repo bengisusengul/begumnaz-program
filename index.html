@@ -1483,7 +1483,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
   <div class="topbar">
     <div class="tb-label">Beslenme Planı</div>
     <h1><em>Diyet</em> 🥩</h1>
-    <div class="tb-sub">Mizaç temelli · 3 öğün + ara (kahvaltı acıkmadan)</div>
+    <div class="tb-sub">Mizaç temelli · 3 öğün + ara (kahvaltı acıkınca)</div>
   </div>
   <div class="wstrip" id="d-strip"></div>
   <div id="d-safety-alert"></div>
@@ -1509,7 +1509,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
 
   <!-- Öğün Kuralları kartı kaldırıldı (Phase 3.C feedback · 12 May) — Begümnaz: "bunlar benim kendime koyduğum sınırlar, gerek yok" -->
 
-  <div class="slbl">1. Öğün — Kahvaltı (acıkmadan) · Yumurta + pişmiş salata + çiğ kuruyemiş + zeytin + mayasız ekmek</div>
+  <div class="slbl">1. Öğün — Kahvaltı (acıkınca) · Yumurta + pişmiş salata + çiğ kuruyemiş + zeytin + mayasız ekmek</div>
   <div class="card"><div class="cb" id="m1b"></div></div>
   <div class="slbl">2. Öğün — Öğle (12-13) · Salçasız sebze çorbası + sebze yemeği + et 3x/hafta (kuzu/koyun/hindi)</div>
   <div class="card"><div class="cb" id="m2b"></div></div>
@@ -2882,7 +2882,7 @@ const CD={
 };
 
 // DIET — Begümnaz Mizaç Temelli Bütüncül Tıp Protokolü
-// Kahvaltı: ACIKMADAN YENMEZ (saat sabit değil, ~09:00-11:00)
+// Kahvaltı: ACIKINCA YENİR (saat sabit değil, ~09:00-11:00)
 // Öğle 12-13, ara 15:00, akşam 17-19, gece 21:00 çay, 22:00 probiyotik
 // YASAKLAR: pirinç (jasmin/basmati hariç), beyaz un, tatlı içecek, hazır gıda,
 // salam-sosis-sucuk, dana eti, tavuk, dondurma, SOĞUK SU, ÇİĞ SEBZE, SÜT ÜRÜNLERİ,
@@ -4087,7 +4087,7 @@ function getMorningType(date) {
 // ══════════════════════════════════════════
 // Her alternatif: {n: isim, i: emoji, p: protein, f: fat, k: kalori, note: not}
 const ALTS = {
-  // 1. ÖĞÜN ANA — Kahvaltı (acıkmadan): yumurta + pişmiş salata + çiğ kuruyemiş varyasyonları
+  // 1. ÖĞÜN ANA — Kahvaltı (acıkınca): yumurta + pişmiş salata + çiğ kuruyemiş varyasyonları
   yumurta_lor: [
     {n:'200g dana kıyma + 3 yumurta (tereyağı)',i:'🥩',p:55,f:50,c:0,k:710,note:'Klasik mizaç 1. öğün'},
     {n:'250g dana kıyma + 3 yumurta',i:'🥩',p:60,f:55,c:0,k:780,note:'Yüksek protein gün'},
@@ -4240,7 +4240,7 @@ function openAISuggest(slot){
   S.aism={slot,suggestion:null};
   const c=ci(S.dD);
   const t=getMacroTarget(S.dD);
-  const slotName=slot==='m1'?'1. öğün (Kahvaltı, acıkmadan · yumurta + pişmiş salata + çiğ kuruyemiş)':'2. öğün (Öğle 12-13 · salçasız sebze çorba + yemek + et 3x/hafta)';
+  const slotName=slot==='m1'?'1. öğün (Kahvaltı, acıkınca · yumurta + pişmiş salata + çiğ kuruyemiş)':'2. öğün (Öğle 12-13 · salçasız sebze çorba + yemek + et 3x/hafta)';
   document.getElementById('aism-context').textContent=`${slotName} · ${c?c.label+' Gün '+c.day:'döngü yok'} · hedef ${t.kcal} kcal · ${t.p}g P`;
   document.getElementById('aism-result').innerHTML='<button class="btn bp bfull" onclick="aiSuggestMeal()">🤖 Öneri al</button>';
   document.getElementById('aism-accept').style.display='none';
@@ -4432,7 +4432,7 @@ async function aiEstimateMacros(){
           content:`Türkiye'de tipik servis miktarına göre bu yemeğin makro değerlerini tahmin et: "${text}"
 
 Begümnaz'ın diyet kuralları (endometriozis + post-isotretinoin + hormonal akne + mizaç temelli bütüncül tıp protokolü):
-- Kahvaltı: ACIKMADAN YENMEZ (acıkma sinyaline göre ~09:00-11:00, doktor saat vermedi)
+- Kahvaltı: ACIKINCA YENİR (acıkma sinyaline göre ~09:00-11:00, doktor saat vermedi)
 - Öğle 12-13, ara 15:00, akşam 17-19, gece 21:00 izinli çay, 22:00 probiyotik
 - Kahvaltı: 1 yumurta + pişmiş salata/sebze + zeytinyağı + kaya tuzu + keten tohumu + çiğ badem (geceden ıslatılmış) + dolmalık fıstık + zeytin (az tuzlu) + çiğ kabak çekirdeği + mayasız ekmek (kavulca/karakılçık/siyez)
 - Öğle: salçasız+unsuz sebze çorbası + salçasız sebze yemeği + 3 köfte kuzu/koyun/hindi (haftada 3x)
@@ -5541,7 +5541,7 @@ function renderDietDay(){
         <div style="font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:var(--mustard-soft);margin-bottom:8px;font-weight:600;">${phaseEmoji} Bugün · ${phaseLabel}${protectedReason?' · '+protectedReason:''}</div>
         <div style="font-size:15px;font-weight:600;color:var(--cream-soft);margin-bottom:12px;">Bugünün 3 minimum eylemi:</div>
         <div style="display:flex;flex-direction:column;gap:8px;font-size:13px;color:var(--cream);">
-          <div style="display:flex;align-items:center;gap:10px;">${m1Done?'<span style="color:#A8C0A0;font-weight:700;">✓</span>':'<span style="color:var(--mustard-soft);">·</span>'} <span style="${m1Done?'opacity:0.55;text-decoration:line-through;text-decoration-color:var(--cream-faint);':''}">1. öğün — kahvaltı (acıkmadan)</span></div>
+          <div style="display:flex;align-items:center;gap:10px;">${m1Done?'<span style="color:#A8C0A0;font-weight:700;">✓</span>':'<span style="color:var(--mustard-soft);">·</span>'} <span style="${m1Done?'opacity:0.55;text-decoration:line-through;text-decoration-color:var(--cream-faint);':''}">1. öğün — kahvaltı (acıkınca)</span></div>
           <div style="display:flex;align-items:center;gap:10px;">${m2Done?'<span style="color:#A8C0A0;font-weight:700;">✓</span>':'<span style="color:var(--mustard-soft);">·</span>'} <span style="${m2Done?'opacity:0.55;text-decoration:line-through;text-decoration-color:var(--cream-faint);':''}">2. öğün — öğle (12-13)</span></div>
           <div style="display:flex;align-items:center;gap:10px;">${wDone?'<span style="color:#A8C0A0;font-weight:700;">✓</span>':'<span style="color:var(--mustard-soft);">·</span>'} <span style="${wDone?'opacity:0.55;text-decoration:line-through;text-decoration-color:var(--cream-faint);':''}">${wTarget} bardak su</span></div>
         </div>
