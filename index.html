@@ -4957,13 +4957,12 @@ async function aiSuggestMeal(){
     : '';
   const promptText=`Begümnaz için ${slot==='m1'?'1. öğün':'2. öğün'} önerisi.
 
-Modifiye Karnivor + Akdeniz kuralları:
+Mizaç Temelli Bütüncül Tıp Beslenme Kuralları:
 ${slotDesc}
-✅ SERBEST: Et/tavuk/balık (hepsi serbest, 1. öğünde de) · Yumurta · Roka, semizotu, maydanoz · Avokado yarım/gün · EVOO bol (sabah 1yk shot + salata) · Süt 1 bardak/gün max · Peynir (feta/kaşar/parmesan/lor) ölçülü
-⚖️ SINIRLI: Sade yağ (tereyağı) az → LDL 8.1 nedeniyle EVOO tercih · Ispanak nadiren · Doymuş yağ <30g/gün
-🚫 YOK: Karalahana (Hashimoto goitrojen) · Tahıl · Baklagil · Tatlandırıcı · Alkol
-🎉 Pazar Brunch: tek büyük öğün serbest (haftalık ödül, anti-kompulsif)
-Meyve 2. öğün post-WO karb olarak (kivi, böğürtlen, bal).
+✅ İZİNLİ: Kuzu/koyun/hindi (haftada 3x öğle) · Doğal yumurta · Çiğ kuruyemiş (badem/dolmalık fıstık/kabak çekirdeği) · Pişmiş sebze (kabak/havuç/brokoli/karnabahar/pırasa/ıspanak/lahana) · Sızma zeytinyağı bol · Zeytin az tuzlu · Mayasız ekmek (kavulca/karakılçık/siyez) · Jasmin/basmati pirinç (haşlama) · Tatlı meyveler (muz/hurma/elma/armut/üzüm/incir) · Keten tohumu · Kaya tuzu
+🚫 YASAK: Pirinç (jasmin/basmati hariç) · Beyaz un · Tatlı içecek · Hazır gıda · Salam/sosis/sucuk · **Dana eti** · **Tavuk** · Dondurma · **Soğuk su** · **Çiğ sebze** · **Süt ürünleri** · Karabiber · Acı biber · Salça · Büyük dip balıkları · **Çay/Kahve** (sadece izinli bitkisel: gül+zeytin yaprağı, aynı safa, melissa+papatya) · Yer fıstığı · **Patlıcan** · Ekşi meyveler (greyfurt, ekşi elma)
+🌡️ SICAK SU MECBUR · Cam termos · soğuk içecek YOK
+🌿 Bitkisel çay: kahvaltıda gül+zeytin yaprağı, öğleden sonra aynı safa, gece 21:00 melissa+papatya
 
 Bağlam:
 - Cycle: ${c?c.phase+' Day '+c.day+' / ortalama döngü '+getAvgCycleLen()+'gün':'cycle takip yok'}${cycleHint}
@@ -5096,14 +5095,15 @@ async function aiEstimateMacros(){
           role:'user',
           content:`Türkiye'de tipik servis miktarına göre bu yemeğin makro değerlerini tahmin et: "${text}"
 
-Begümnaz'nun diyet kuralları (papiller karsinom remisyon + Hashimoto + hipopara + 5-gün split):
-- Yeme penceresi 10:00–19:00 · modifiye karnivor + Akdeniz
-- 1. öğün (10:00 "öğlen"): yumurta + peynir/lor/feta + ½ avokado + roka/semizotu, ET/TAVUK/BALIK kuralı KALDIRILDI (esnek)
-- 2. öğün (17:00 "akşam", post-WO): et/balık + salata, post-WO karb (15-20g) opsiyonel (bal, kivi, böğürtlen)
-- ✅ Süt 1 bardak/gün, peynir (feta/kaşar/parmesan/lor) ölçülü, EVOO bol, roka/semizotu/yarım avokado
-- 🚫 Karalahana (Hashimoto goitrojen), tahıl, baklagil, tatlandırıcı, alkol
-- 🎉 Pazar brunch: tek büyük öğün serbest (haftalık ödül, anti-kompulsif)
-- ⚠️ Doymuş yağ <30g/gün (LDL 8.1 + FH şüphesi) — sade yağ yerine EVOO tercih
+Begümnaz'ın diyet kuralları (endometriozis + post-isotretinoin + hormonal akne + mizaç temelli bütüncül tıp protokolü):
+- Kahvaltı: ACIKMADAN YENMEZ (acıkma sinyaline göre ~09:00-11:00, doktor saat vermedi)
+- Öğle 12-13, ara 15:00, akşam 17-19, gece 21:00 izinli çay, 22:00 probiyotik
+- Kahvaltı: 1 yumurta + pişmiş salata/sebze + zeytinyağı + kaya tuzu + keten tohumu + çiğ badem (geceden ıslatılmış) + dolmalık fıstık + zeytin (az tuzlu) + çiğ kabak çekirdeği + mayasız ekmek (kavulca/karakılçık/siyez)
+- Öğle: salçasız+unsuz sebze çorbası + salçasız sebze yemeği + 3 köfte kuzu/koyun/hindi (haftada 3x)
+- Ara: 1 porsiyon TATLI meyve (ekşi YASAK — greyfurt, ekşi elma, limon yemekte değil), 5+ bardak sıcak su
+- Akşam: salçasız+unsuz sebze çorbası + salçasız sebze yemeği
+- 🚫 YASAKLAR (17 madde): pirinç (jasmin/basmati haşlama HARİÇ), beyaz un, tatlı içecek, hazır gıda, salam-sosis-sucuk, **dana eti**, **tavuk**, dondurma, **soğuk su**, **çiğ sebze**, **süt ürünleri**, karabiber-acıbiber, salça, büyük dip balık, **çay/kahve** (sadece izinli bitkisel: gül+zeytin yaprağı, aynı safa, melissa+papatya), yer fıstığı, **patlıcan**
+- ✅ İzinli: kuzu/koyun/hindi, doğal yumurta, çiğ kuruyemiş (badem/fıstık/kabak çekirdeği), zeytin az tuzlu, sızma zeytinyağı, kaya tuzu, mayasız ekmek (ancient grain), tatlı meyveler, izinli 3 bitkisel çay, sıcak su (cam termos)
 
 Bağlam (kullanıcının kalan makrosuna uyumluluk için):
 - Bugünün toplam hedefi: ${t.kcal} kcal · ${t.p}g protein · ${t.f}g yağ · ${t.c}g karb
