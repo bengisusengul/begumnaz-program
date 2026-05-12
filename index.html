@@ -2609,13 +2609,14 @@ function getLowIntakeAlert(){
 // Cmt-Paz dinlenme. Yürüyüş 5/7 daily schedule'da bağımsız (07:30).
 // 4 güne düştüğünde Cum atlanır (en esnek gün). Geç luteal'de tipik skip.
 const SP={
-  0:null, // Paz · dinlenme
-  1:{n:'Alt Vücut · Squat',e:'🦵',f:'Quadriceps · Glute · Core'},
-  2:{n:'Üst Vücut · İtme',e:'💪',f:'Göğüs · Omuz · Triceps · Core'},
-  3:{n:'Glute & Posterior',e:'🍑',f:'Glute · Hamstring · Baldır · Derin Core'},
-  4:{n:'Üst Vücut · Çekme',e:'🏋️',f:'Sırt · Biceps · Arka Deltoid'},
-  5:{n:'Total Body · Hibrid',e:'⚡',f:'Tam vücut · Pull-up · Carry · Core'},
-  6:null  // Cmt · dinlenme
+  // Begümnaz programı: 3 ağırlık + 2 pelvik taban + 2 pilates dersi
+  0:{n:'Pelvik Taban 2 · Restoratif',e:'🌸',f:'Pelvik taban · Stretch · Nefes · Recovery'},  // Paz
+  1:{n:'Ağırlık 1 · Lower + Glute',e:'🦵',f:'Quadriceps · Glute · Hamstring · Adductor'},   // Pzt
+  2:{n:'Pelvik Taban 1 · Fizyopilates',e:'🌸',f:'Pelvik taban · Hip mobility · Core · Nefes'}, // Sal
+  3:{n:'Full Body Pilates 18:00',e:'🧘',f:'Begümnaz öğrencisiyle · orta seviye · 60-90 dk'}, // Çar (kendi dersi)
+  4:{n:'Ağırlık 2 · Upper + Sırt',e:'💪',f:'Omuz · Sırt · Göğüs · Biceps · Triceps'},        // Per
+  5:{n:'Sabah yürüyüş + Pilates 18:00',e:'🚶',f:'Uzun yürüyüş 45-60dk + kendi dersi'},       // Cum
+  6:{n:'Ağırlık 3 · Glute + Posterior',e:'🍑',f:'Glute (max/med/min) · Hamstring · Calf'}    // Cmt
 };
 
 // GIF URLs — public animations from ExerciseDB and Wger
@@ -2755,47 +2756,53 @@ function openYoutube(exId) {
 // Eski hareketler workout_log entry'lerinde kalır (sparkline + history korunur).
 // Yeni eklenenler: bss · gobl · step · ccf · bsht · cpt · db · apu · kbs · fc (10 yeni id)
 const EX={
-1:[ // Pzt — Alt Vücut · Squat
-  {id:'sq',n:'Smith Machine Squat',s:'4×8',m:['Quadriceps','Kalça'],h:'Bar omuzlarda. Ayaklar omuz genişliğinde. Kalçayı geri it. Uyluk yere paralel olana kadar in. Sırt nötr, dizler ayak parmağıyla aynı yön.',y:'smith machine squat form'},
-  {id:'bss',n:'Bulgarian Split Squat (Dumbbell)',s:'3×10/taraf',m:['Quadriceps','Glute','Tek-bacak stab'],h:'Arka ayak bench üstünde. Ön ayak 60-80 cm önde. Ön topuktan kalk. Diz ayak parmağıyla aynı yöne. Tek-bacak stability + glute aktivasyonu.',y:'bulgarian split squat form'},
-  {id:'gobl',n:'Goblet Squat (Dumbbell)',s:'3×12',m:['Quadriceps','Kalça','Core'],h:'Tek dumbbell göğüs hizasında dik tut. Geniş duruş. Dirseklerle dizleri it. Dik üstgövde. Ovulasyon haftasında Smith Squat alternatifi (lumbar tork ↓).',y:'goblet squat dumbbell form'},
-  {id:'gbr',n:'Glute Bridge (Bant)',s:'4×15',m:['Kalça','Hamstring'],h:'Sırtüstü uzan, bant kalçaların üstünde. Topuktan it. Tepede kalçayı 2 sn sıkıştır.',y:'glute bridge band form'},
-  {id:'step',n:'Step-Up (Dumbbell)',s:'3×12/taraf',m:['Quadriceps','Glute'],h:'Kutu/bench önünde. Bir bacakla bas, yukarı çık. Diğer bacak hafifçe değer. Aşağı kontrollü. Tek-bacak güç + balance.',y:'dumbbell step up form'},
-  {id:'cc',n:'Cable Crunch',s:'4×15',m:['Karın','Core'],c:1,h:'Kabloda diz çök. Halatı başın yanında tut. Core ile aşağı bük. Kalça sabit.',y:'cable crunch abs form'},
+// Begümnaz programı: Ev (2-3kg DB + bant + magic circle + pilates topu + mat) / Gym (tam) / Dışarı (yürüyüş)
+0:[ // Paz — Pelvik Taban 2 · Restoratif
+  {id:'pt2',n:'Pelvik Taban Video (Restoratif)',s:'≥45 dk',m:['Pelvik taban','Stretch','Nefes'],h:'YouTube: Move with Nicole / Pahla B / Yoga With Adriene — "restorative pelvic floor". Stretch + relaxation + breath odaklı. Cmt ağırlık sonrası recovery.',y:'restorative pelvic floor yoga'},
+  {id:'mc',n:'Magic Circle Yumuşak',s:'2×10',m:['İç bacak','Pelvik taban'],h:'Yatarak dizler arası magic circle. Yumuşak sıkıştır. Nefes ile koordinasyon.',y:'magic circle pilates'},
+  {id:'cs',n:'Clamshell (Yumuşak)',s:'2×15/yan',m:['Glute (med/min)','Pelvik taban'],h:'Yan yatış, dizler bükük, ayaklar birleşik. Üst dizi kaldır (ayaklar birleşik kalır). Pelvik taban koordinasyonu.',y:'clamshell exercise form'},
+  {id:'walk',n:'Hafif Yürüyüş (Bonus)',s:'20-30 dk',m:['Kardiyo'],h:'Sosyal/doğa yürüyüşü, hafif tempo.',y:'walking warmup'},
 ],
-2:[ // Sal — Üst Vücut · İtme (Push)
-  {id:'dbp',n:'Incline Dumbbell Press',s:'4×10',m:['Üst göğüs','Omuz'],h:'Bench 45 derece. Dirsekler 45 derecede. Tepede sıkıştır. Bel pede yapışık.',y:'incline dumbbell press'},
-  {id:'dsp',n:'Dumbbell Shoulder Press',s:'4×10',m:['Omuz','Triceps'],h:'Baş üstüne it. Core sıkı, sırt düz. Tepede dirsekler hafif yumuşak.',y:'dumbbell shoulder press'},
-  {id:'ccf',n:'Cable Chest Fly',s:'3×12',m:['Üst göğüs','Ön deltoid'],h:'Kablolar üst pozisyonda. Hafif öne eğil, kollar geniş. Yumuşak dirsekle orta hatta birleştir. Tepede 1 sn sıkıştır. Press hareketleri tamamlayıcı.',y:'cable chest fly form'},
-  {id:'lr',n:'Lateral Raise',s:'4×12',m:['Orta deltoid'],h:'Kolları T şekline kaldır. Deltoid çalışsın. Tepede 2 sn. Yükü vücutla değil deltoidle taşı.',y:'lateral raise proper form'},
-  {id:'tc',n:'Tricep Cable Pushdown',s:'3×15',m:['Triceps'],h:'Dirsekler sabit ve gövdeye yakın. Aşağı it, dipte sıkıştır.',y:'tricep cable pushdown'},
-  {id:'pall',n:'Pallof Press',s:'3×12/taraf',m:['Core','Yan karın'],c:1,h:'Kablonun yanında ayakta dur. Göğüs hizasında düz dışarı it. Dönme — anti-rotation.',y:'pallof press core'},
+1:[ // Pzt — Ağırlık 1 · Lower body + glute
+  {id:'gobl',n:'Goblet Squat',s:'3×12',m:['Quadriceps','Glute','Core'],h:'Ev: 3 kg DB göğüs hizasında. Gym: 8-12 kg DB veya kettlebell. Geniş duruş, dik üstgövde, dirseklerle dizleri it. Dışarı: yokuşta squat (BW).',y:'goblet squat form squat university'},
+  {id:'ht',n:'Hip Thrust',s:'3×12-15',m:['Glute max','Hamstring'],h:'Ev: mat + 3 kg DB lap üstünde. Gym: barbell 20-40 kg veya hip thrust machine. Üst sırt bench/yastıkta. Topuktan it. Tepede 2 sn tut.',y:'hip thrust form bret contreras'},
+  {id:'bss',n:'Bulgarian Split Squat',s:'3×10/bacak',m:['Quadriceps','Glute','Tek-bacak stab'],h:'Ev: 3 kg DB (1 elde). Gym: 5-8 kg DB her elde. Arka ayak bench üstünde. Ön topuktan kalk. Diz ayak parmağıyla aynı yöne.',y:'bulgarian split squat jeff nippard'},
+  {id:'rdl',n:'Romanian Deadlift (RDL)',s:'3×10-12',m:['Hamstring','Glute'],h:'Ev: banded RDL veya 3 kg DB. Gym: 8-12 kg DB her elde. Kalçayı geri it. SIRT DÜZ. Hamstringde gerilme hisset.',y:'romanian deadlift form'},
+  {id:'sll',n:'Yan Yatış Banded Leg Lift',s:'3×15/yan',m:['Glute (med/min)','Adductor'],h:'Ev: bant orta direnç. Gym: cable abductor 5-7 kg. Yan yatış, bant dizler üstünde, üst bacağı kaldır.',y:'side lying leg raise form'},
+  {id:'mc',n:'Magic Circle İç Bacak',s:'3×15',m:['Adductor (iç bacak)','Pelvik taban'],h:'Ev: magic circle dizler arası. Gym: adductor machine. Yatarak veya oturarak sıkıştırma.',y:'magic circle inner thigh'},
 ],
-3:[ // Çar — Glute & Posterior Chain
-  {id:'ht',n:'Hip Thrust (Smith/Barbell)',s:'5×8',m:['Kalça','Glute max','Hamstring'],h:'Üst sırt bench\'te. Barbell kalça çukurunda (ped kullan!). Topuktan it. Tepede 2 sn tut. Boyun nötr, bakış öne.',y:'hip thrust barbell form'},
-  {id:'rdl',n:'Romanian Deadlift',s:'4×10',m:['Hamstring','Kalça'],h:'Hafif diz bükümü. Kalçayı geri it. Dumbbell bacaklardan aşağı kayar. SIRT DÜZ. Hamstringde gerilme hisset.',y:'romanian deadlift dumbbell'},
-  {id:'bsht',n:'B-Stance Hip Thrust',s:'3×12/taraf',m:['Glute max','Hamstring'],h:'Sırt bench\'te. Ana bacak %80 yük, yardımcı bacak %20 destek (parmak ucu). Single-leg HT geçişi. Ovulasyon haftasında Single Leg HT alternatifi.',y:'b-stance hip thrust form'},
-  {id:'cpt',n:'Cable Pull-Through',s:'3×12',m:['Glute','Hamstring'],h:'Kabloya sırt dön, ayak omuz genişliğinde. Eller arasında kablo. Kalçayı geri it (RDL hareketi), kalçayla öne it. RDL alternatifi (lumbar yükü ↓).',y:'cable pull through form'},
-  {id:'cal',n:'Calf Raise (Leg Press)',s:'4×15',m:['Baldır'],h:'Platformda sadece ayak parmakları. Tepede 2 sn tut. Kontrollü indir, baldır gerilsin.',y:'leg press calf raise'},
-  {id:'db',n:'Dead Bug',s:'3×10/taraf',m:['Derin core (TVA)','Alt karın'],c:1,h:'Sırtüstü, kollar yukarı, dizler 90°. Karşı kol+bacak yavaşça yere uzat. Bel zemine bastırılmış kalsın. Diğer taraf. Anti-extension.',y:'dead bug form'},
+2:[ // Sal — Pelvik Taban 1 · Fizyopilates
+  {id:'pt1',n:'Pelvik Taban Video (Aktif)',s:'≥45 dk',m:['Pelvik taban','Nefes','Hip mobility'],h:'YouTube: Move with Nicole / Pahla B / Begüm Akar — "pelvic floor pilates". Nefes + Kegel + bridge + clamshell + hip mobility. HER HAFTA FARKLI VİDEO.',y:'pelvic floor pilates 45 min'},
+  {id:'mc',n:'Magic Circle Aktif',s:'3×15',m:['İç bacak','Pelvik taban'],h:'Yatarak dizler arası. Aktif sıkıştır + serbest bırak. Pelvik taban koordinasyonu güçlendir.',y:'magic circle pilates'},
+  {id:'cs',n:'Clamshell',s:'3×15/yan',m:['Glute (med/min)','Pelvik taban'],h:'Yan yatış, dizler bükük. Üst dizi yukarı kaldır. Glute medius + pelvik taban senkron.',y:'clamshell exercise form'},
+  {id:'db',n:'Dead Bug',s:'3×10/taraf',m:['Derin core (TVA)','Pelvik taban'],c:1,h:'Sırtüstü, kollar yukarı, dizler 90°. Karşı kol+bacak yavaşça uzat. Bel zeminde. Nefes verirken uzat.',y:'dead bug form'},
+  {id:'walk',n:'Bonus Yürüyüş',s:'30-45 dk',m:['Kardiyo'],h:'Hafif tempo, konuşabilir hızda.',y:'walking exercise'},
 ],
-4:[ // Per — Üst Vücut · Çekme (Pull)
-  {id:'lat',n:'Lat Pulldown (Wide Grip)',s:'4×10',m:['Sırt','Lat','Biceps'],h:'Göğse çek. Kürek kemiklerini sıkıştır. Yavaş bırak. Lat\'tan başla, kollardan değil.',y:'lat pulldown wide grip'},
-  {id:'cr',n:'Seated Cable Row',s:'4×10',m:['Orta sırt','Biceps'],h:'Göbeğe çek. Omurga düz. Kürek kemiklerini sıkıştır. 1 sn duraksat.',y:'seated cable row form'},
-  {id:'dbrow',n:'Dumbbell Row (Tek Kol)',s:'3×10/taraf',m:['Sırt','Biceps'],h:'Bench\'e dayan. Kalçaya doğru çek. Sırt kasını hisset, kürek kemiğini geri sıkıştır.',y:'single arm dumbbell row'},
-  {id:'fp',n:'Face Pull',s:'3×15',m:['Arka deltoid','Üst sırt'],h:'Kablo yüz hizasında. Kulaklara çek. Dirsekler yukarıda. External rotation kazandırır.',y:'face pull cable form'},
-  {id:'curl',n:'Dumbbell Bicep Curl',s:'3×12',m:['Biceps'],h:'Dirsekler sabit ve gövdeye yakın. Tepede 1 sn sıkıştır. Aşağıda tam uzat.',y:'dumbbell bicep curl form'},
-  {id:'ham',n:'Hammer Curl',s:'3×12',m:['Biceps','Önkol'],h:'Nötr tutuş (avuç içleri yan tarafa bakar). Dirsek sabit. Yavaş indir. Brachialis vurgu.',y:'hammer curl form'},
+3:[ // Çar — Full Body Pilates 18:00 (Begümnaz öğrencisiyle)
+  {id:'fbp',n:'Full Body Pilates Dersi (kendi öğrencisiyle)',s:'60-90 dk · 18:00',m:['Tam vücut','Core','Pelvik taban','Mobility'],h:'Begümnaz hem öğretmen hem katılımcı. Orta seviye. Ders sırasında: terleme sonrası hemen cilt temizliği. Endo flare varsa derin core/heavy hip yumuşat. Su SICAK.',y:'full body pilates intermediate'},
 ],
-5:[ // Cum — Total Body · Hibrid (4 güne düştüğünde es geçilebilir)
-  {id:'gobl',n:'Goblet Squat (Light)',s:'3×8',m:['Quadriceps','Kalça'],h:'Hafif yük, full ROM. Tam vücut günü için ısınma + form refresher. Set arası kısa.',y:'goblet squat dumbbell form'},
-  {id:'apu',n:'Assisted Pull-Up (Bant)',s:'3×6',m:['Sırt','Lat','Biceps'],h:'Bar üstünde, bant ayakların altında veya diz arkasında. Tam asılış → çene bara. Lat\'tan çek. Pull-up\'a köprü. Bantı küçülterek progres.',y:'assisted pull up band form'},
-  {id:'kbs',n:'Kettlebell Swing',s:'3×15',m:['Glute','Hamstring','Tam Core'],h:'KB iki elde, omuzlar arası. Hip-hinge — kalçayı geri it, dizleri hafif bük. Kalça patlamasıyla göğüs hizasına swing. Glute powermove.',y:'kettlebell swing two hand form'},
-  {id:'plk',n:'Plank (3 Varyasyon)',s:'3×45sn',m:['Core','Omuz'],c:1,h:'1) Standart plank 2) Yan plank 3) Omuz dokunuşu. Her set farklı varyasyon.',y:'plank variations core'},
-  {id:'fc',n:'Farmer\'s Carry',s:'3×30sn',m:['Tam Core','Trapez','Önkol','Kalça'],h:'İki dumbbell yanlarda. Düz duruş, omuzlar geri. Adım adım yürü. Core sıkı, nefes alıştır. Carrier — günlük yaşam gücü.',y:'farmers carry form'},
-  {id:'rt',n:'Russian Twist (Weighted)',s:'3×20',m:['Yan karın','Core'],c:1,h:'Dizler bükük, hafif geriye yaslan. Yana doğru dönüş. Ovulasyon haftasında Pallof\'a geç (omurga rotasyonu ligament dikkat).',y:'russian twist weighted'},
+4:[ // Per — Ağırlık 2 · Upper body + sırt + omuz
+  {id:'dsp',n:'DB Shoulder Press',s:'3×12',m:['Omuz (deltoid)','Triceps'],h:'Ev: 2 kg her el. Gym: 4-6 kg her el. Baş üstüne it. Core sıkı, sırt düz.',y:'dumbbell shoulder press form'},
+  {id:'lat',n:'Lat Pulldown / Banded',s:'3×10-12',m:['Sırt (lat)','Biceps'],h:'Ev: bant kapı kolundan. Gym: cable 20-30 kg. Göğse çek. Kürek kemiklerini sıkıştır.',y:'lat pulldown form jeremy ethier'},
+  {id:'cr',n:'Seated Row / Banded',s:'3×12',m:['Orta sırt','Biceps'],h:'Ev: bant + yere otur. Gym: cable seated row 20-30 kg. Göbeğe çek. Omurga düz.',y:'seated cable row form'},
+  {id:'pu',n:'Push-up / Chest Press',s:'3×8-12',m:['Göğüs','Omuz','Triceps'],h:'Ev: mat üzeri push-up (diz veya duvar modifikasyon). Gym: chest press machine 15-20 kg. Dışarı: wall push-up.',y:'push up modifications beginner'},
+  {id:'bpa',n:'Banded Pull-Apart / Face Pull',s:'3×15',m:['Arka deltoid','Üst sırt'],h:'Ev: bant. Gym: cable face pull 5-10 kg. Kulaklara çek. Dirsekler yukarıda.',y:'banded pull apart face pull'},
+  {id:'curl',n:'DB Biceps Curl',s:'3×12',m:['Biceps'],h:'Ev: 2 kg her el. Gym: 4-6 kg her el. Dirsekler sabit. Tepede sıkıştır.',y:'dumbbell biceps curl form'},
+  {id:'tc',n:'Triceps Kickback / Pushdown',s:'3×12',m:['Triceps'],h:'Ev: bant kickback. Gym: cable pushdown 5-10 kg. Dışarı: bench dips. Dirsekler sabit.',y:'triceps pushdown form'},
 ],
-6:null // Cmt · dinlenme
+5:[ // Cum — Sabah yürüyüş + Pilates 18:00
+  {id:'walk',n:'Uzun Yürüyüş (Sabah)',s:'45-60 dk',m:['Kardiyo','Endurance'],h:'Sahil/park/ağaçlık alan. Zone 2 — konuşabilir, şarkı söyleyemez. Soğukta termal alt + bel destekli üst.',y:'walking exercise zone 2'},
+  {id:'fbp',n:'Full Body Pilates Dersi (kendi öğrencisiyle)',s:'60-90 dk · 18:00',m:['Tam vücut','Core','Pelvik taban','Mobility'],h:'Çarşamba ile aynı ders. Endo flare varsa modifikasyon. Su sıcak.',y:'full body pilates intermediate'},
+],
+6:[ // Cmt — Ağırlık 3 · Glute + posterior chain
+  {id:'gact',n:'Glute Activation (Isınma)',s:'5-7 dk',m:['Glute (med/min)'],h:'Banded walk + clamshell 2×10. Gym: same + 5 dk bike. Dışarı: glute activation hareketleri.',y:'glute activation warm up'},
+  {id:'ht',n:'Banded/Loaded Hip Thrust',s:'3×12-15',m:['Glute max','Hamstring'],h:'Ev: bant + 3 kg lap üstü. Gym: barbell 30-50 kg / smith / machine.',y:'hip thrust progressions bret contreras'},
+  {id:'slht',n:'Single-Leg Glute Bridge',s:'3×10/bacak',m:['Glute max','Hamstring','Tek-bacak stab'],h:'Ev: mat + büyük top ayak altı. Gym: cable single-leg pull-through 5-8 kg. Bench single-leg bridge alternatif.',y:'single leg glute bridge'},
+  {id:'kk',n:'Cable Kickback / Banded',s:'3×12/bacak',m:['Glute max','Hamstring'],h:'Ev: bant kickback. Gym: cable kickback 5-7 kg her bacak. Diz hizasında kalça aktivasyonu.',y:'cable kickback glute'},
+  {id:'dk',n:'Donkey Kick (Top Destek)',s:'3×15',m:['Glute','Hamstring'],h:'Büyük top + bant. Gym: 45° back extension. Yumuşak kontrollü kalça extension.',y:'donkey kick exercise'},
+  {id:'cs',n:'Banded Clamshell',s:'3×15/yan',m:['Glute (med/min)'],h:'Ev: bant. Gym: seated abductor machine. Pelvik stabilite.',y:'banded clamshell exercise'},
+  {id:'cal',n:'Calf Raise',s:'3×15',m:['Baldır'],h:'Ev: 3 kg DB her el. Gym: calf raise machine. Dışarı: yokuş yürüyüşü.',y:'calf raise form'},
+]
 };
 
 // Soğuma rutinleri 5-gün split'le hizalandı (Phase 2 Hafta 3A)
@@ -2808,52 +2815,76 @@ const CD={
   6:null
 };
 
-// DIET
-// 1. ÖĞÜN ANA (10:00) — KARNİVOR: et + yumurta + yağ (süt/peynir/lor/hellim YOK)
+// DIET — Begümnaz Mizaç Temelli Bütüncül Tıp Protokolü
+// Kahvaltı: ACIKMADAN YENMEZ (saat sabit değil, ~09:00-11:00)
+// Öğle 12-13, ara 15:00, akşam 17-19, gece 21:00 çay, 22:00 probiyotik
+// YASAKLAR: pirinç (jasmin/basmati hariç), beyaz un, tatlı içecek, hazır gıda,
+// salam-sosis-sucuk, dana eti, tavuk, dondurma, SOĞUK SU, ÇİĞ SEBZE, SÜT ÜRÜNLERİ,
+// karabiber-acıbiber, salça, büyük dip balık, çay/kahve, yer fıstığı, patlıcan
+// İZİNLİ PROTEİN: kuzu/koyun/hindi (3x/hafta), doğal yumurta
+
+// 1. ÖĞÜN — Kahvaltı (acıkma sinyalinde) — yumurta + pişmiş sebze + çiğ kuruyemiş + zeytin + mayasız ekmek
 const M1=[
-  {n:'200g dana kıyma + 3 yumurta (tereyağı)',i:'🥩',p:55,f:50,c:0,k:710},
-  {n:'250g dana kıyma + 3 yumurta + ½ avokado',i:'🥩',p:60,f:62,c:2,k:830},
-  {n:'3 yumurta (ghee) + 100g pastırma',i:'🍳',p:48,f:55,c:0,k:680},
-  {n:'250g dana kıyma + 3 yumurta (tereyağı)',i:'🥩',p:62,f:55,c:0,k:780},
-  {n:'4 yumurta (sahanda) + 80g pastırma + kaymak',i:'🍳',p:48,f:60,c:1,k:740},
-  {n:'200g dana kıyma + 3 yumurta + tereyağı',i:'🥩',p:55,f:50,c:0,k:710},
-  {n:'300g dana kıyma + 4 yumurta (Pazar brunch)',i:'🍖',p:78,f:72,c:0,k:1010},
-];
-// 1. ÖĞÜN YAN — avokado + yeşillik / kaymak / tereyağı varyasyonları (süt yok, hayvansal yağ OK)
-const M1S=[
-  {n:'½ avokado + roka + zeytinyağ',i:'🥑',p:3,f:15,c:2,k:180,note:'tuz + limon'},
-  {n:'½ avokado + ıspanak + tereyağı',i:'🥑',p:4,f:18,c:2,k:200,note:'1 yk eritilmiş tereyağı'},
-  {n:'½ avokado + karalahana',i:'🥑',p:4,f:15,c:2,k:185,note:'el ile yumuşat'},
-  {n:'½ avokado + semizotu + zeytinyağ',i:'🥑',p:4,f:15,c:2,k:185,note:'omega-3'},
-  {n:'½ avokado + maydanoz-dereotu',i:'🥑',p:3,f:15,c:2,k:180,note:'sumak + tuz'},
-  {n:'1 yk kaymak + roka',i:'🥄',p:2,f:18,c:1,k:175,note:'çiğ tereyağ alternatifi'},
-  {n:'½ avokado + ıspanak + roka (Pazar)',i:'🥑',p:4,f:15,c:2,k:190,note:'kaya tuzu'},
-];
-// 2. ÖĞÜN ANA (17:00, post-workout) — et / balık + tereyağı/ghee
-const M2=[
-  {n:'180g Dana Bonfile (tereyağı)',i:'🥩',p:48,f:24,c:0,k:420},
-  {n:'200g Levrek (tereyağı + dereotu)',i:'🐟',p:42,f:18,c:0,k:340},
-  {n:'200g Kuzu Pirzola',i:'🍖',p:46,f:34,c:0,k:480},
-  {n:'200g Dana Ciğer (soğan + ghee)',i:'🫀',p:44,f:20,c:0,k:370},
-  {n:'250g Rib Eye (ghee)',i:'🥩',p:50,f:34,c:0,k:510},
-  {n:'200g Somon (tereyağı)',i:'🐟',p:46,f:30,c:0,k:460},
-  {n:'200g Bonfile + 50g kavurma (Pazar)',i:'🥩',p:54,f:32,c:0,k:500},
-];
-// 2. ÖĞÜN YAN — post-workout karb pencere VEYA karbsız yeşillik (15-20g karb opsiyonel)
-const M2S=[
-  {n:'1 küçük haşlanmış patates (soğutulmuş) + roka',i:'🥔',p:2,f:0,c:18,k:90,note:'leg day · resistant starch'},
-  {n:'1 yk bal + 60g böğürtlen',i:'🍯',p:1,f:0,c:24,k:100,note:'post-workout karb'},
-  {n:'Roka + zeytinyağ + limon',i:'🥗',p:3,f:14,c:2,k:155,note:'karbsız gün'},
-  {n:'1 küçük tatlı patates + tereyağı',i:'🍠',p:2,f:5,c:18,k:130,note:'pull/upper day'},
-  {n:'1 yk bal + 1 kivi',i:'🥝',p:1,f:0,c:24,k:100,note:'post-workout glikojen'},
-  {n:'Ispanak + zeytinyağ + sumak',i:'🥗',p:3,f:14,c:2,k:155,note:'karbsız gün'},
-  {n:'1 küçük haşlanmış patates + roka (Pazar)',i:'🥔',p:3,f:5,c:18,k:115,note:'family meal yan'},
+  {n:'1 yumurta + kabak sote + zeytinyağı + kaya tuzu',i:'🍳',p:8,f:18,c:6,k:230},   // Pzt
+  {n:'1 yumurta + ıspanak sote + zeytinyağı + kaya tuzu',i:'🍳',p:9,f:18,c:5,k:235}, // Sal
+  {n:'1 yumurta + pırasa sote + zeytinyağı + kaya tuzu',i:'🍳',p:8,f:18,c:7,k:240},  // Çar
+  {n:'1 yumurta + brokoli buharda + zeytinyağı + kaya tuzu',i:'🍳',p:9,f:18,c:6,k:235}, // Per
+  {n:'1 yumurta + havuç sote + zeytinyağı + kaya tuzu',i:'🍳',p:8,f:18,c:9,k:250},   // Cum
+  {n:'1 yumurta + karnabahar buharda + zeytinyağı + kaya tuzu',i:'🍳',p:9,f:18,c:5,k:235}, // Cmt
+  {n:'1 yumurta + karalahana sote + zeytinyağı + kaya tuzu',i:'🍳',p:9,f:18,c:6,k:240}, // Paz
 ];
 
-// SKIN
-const SM=['Tea Tree Foaming Face Wash','COSRX 6 Peptide Skin Booster (on damp skin)','Koreaco Brightening Ampoule (Alpha-Arbutin + Niacinamide)','Florence Bio Vitamin C Serum','Medicube Collagen Jelly Cream','COSRX SPF50 PA++++ (even indoors!)'];
-const SEB=['Garnier BHA Purifying Cleanser','COSRX 6 Peptide Skin Booster'];
-const SA={1:{l:'Retinol Gecesi',b:'bret',e:'🔴',p:'The Ordinary Retinol %0.2 in Squalane',no:'Üzerine Bioderma Atoderm Crème Ultra (tampon)'},2:{l:'Dinlenme Gecesi',b:'brest',e:'💤',p:'Medicube Collagen Jelly Cream',no:'Sadece nemlendirici'},3:{l:'Retinol Gecesi',b:'bret',e:'🔴',p:'The Ordinary Retinol %0.2 in Squalane',no:'Üzerine Bioderma Atoderm Crème Ultra (tampon)'},4:{l:'AHA/BHA Toner',b:'baha',e:'🟣',p:'COSRX AHA/BHA Clarifying Toner',no:'10 dk bırak, ardından Medicube'},5:{l:'Retinol Gecesi',b:'bret',e:'🔴',p:'The Ordinary Retinol %0.2 in Squalane',no:'Üzerine Bioderma Atoderm Crème Ultra (tampon)'},6:{l:'Dinlenme Gecesi',b:'brest',e:'💤',p:'Medicube Collagen Jelly Cream',no:'Sadece nemlendirici'},7:{l:'Yaprak Maske',b:'bmask',e:'🎭',p:'Yaprak Maske (seçimin)',no:'Maske + bitirişe Medicube'}};
+// 1. ÖĞÜN YAN — Kahvaltı yanı: çiğ kuruyemiş + zeytin + keten + mayasız ekmek
+const M1S=[
+  {n:'1 avuç çiğ badem + 7 dolmalık fıstık + 1 avuç zeytin + keten + mayasız ekmek',i:'🌰',p:9,f:24,c:14,k:330,note:'badem geceden ıslatılmış'},
+  {n:'1 avuç çiğ kabak çekirdeği + 1 avuç zeytin + keten + mayasız ekmek',i:'🌰',p:8,f:22,c:14,k:300,note:'gül+zeytin yaprağı çayı'},
+  {n:'1 avuç çiğ badem + zeytin + keten + mayasız ekmek',i:'🌰',p:8,f:22,c:14,k:310,note:'gül+zeytin yaprağı çayı'},
+  {n:'1 avuç çiğ kabak çekirdeği + dolmalık fıstık + zeytin + mayasız ekmek',i:'🌰',p:9,f:24,c:14,k:330,note:'keten tohumu salataya'},
+  {n:'1 avuç çiğ badem + zeytin + keten + mayasız ekmek',i:'🌰',p:8,f:22,c:14,k:310,note:'aynı safa çayı sonra'},
+  {n:'1 avuç çiğ kabak çekirdeği + 7 fıstık + zeytin + mayasız ekmek',i:'🌰',p:9,f:24,c:14,k:330,note:'tatlı meyve sonra'},
+  {n:'1 avuç çiğ badem + zeytin + keten + mayasız ekmek',i:'🌰',p:8,f:22,c:14,k:310,note:'gül çayı'},
+];
+
+// 2. ÖĞÜN — Öğle (12-13) — salçasız+unsuz sebze çorbası + sebze yemeği + et (3x/hafta) veya alternatif
+const M2=[
+  {n:'Sebze çorbası + sebze yemeği + 3 köfte KUZU',i:'🥣',p:30,f:18,c:25,k:380,note:'Pzt — et günü'},
+  {n:'Sebze çorbası + sebze yemeği (et yok, çiğ kuruyemiş ek)',i:'🥣',p:14,f:16,c:30,k:300,note:'Sal — vejeteryan'},
+  {n:'Sebze çorbası + sebze yemeği + 3 köfte KOYUN',i:'🥣',p:30,f:20,c:25,k:400,note:'Çar — et günü'},
+  {n:'Sebze çorbası + sebze yemeği + 2 yumurta',i:'🥣',p:18,f:18,c:28,k:330,note:'Per — yumurta ek'},
+  {n:'Sebze çorbası + sebze yemeği + 3 köfte HİNDİ',i:'🥣',p:32,f:14,c:25,k:360,note:'Cum — et günü'},
+  {n:'Sebze çorbası + mercimek/nohut yemek',i:'🥣',p:18,f:12,c:38,k:340,note:'Cmt — baklagil vejeteryan'},
+  {n:'Sebze çorbası + perde pilavı (basmati + çiğ badem + havuç)',i:'🍚',p:14,f:16,c:50,k:400,note:'Paz — pirinç günü'},
+];
+
+// 2. ÖĞÜN YAN = ARA ÖĞÜN 15:00 — 1 porsiyon tatlı meyve (ekşi HARİÇ)
+const M2S=[
+  {n:'1 muz',i:'🍌',p:1,f:0,c:27,k:105,note:'tatlı, ekşi değil'},
+  {n:'2-3 hurma',i:'🌴',p:1,f:0,c:24,k:90,note:'tatlı, mineral kaynağı'},
+  {n:'1 tatlı elma',i:'🍎',p:0,f:0,c:25,k:95,note:'pişmiş değil, ham olabilir (meyve hariç çiğ sebze yasak)'},
+  {n:'1 armut',i:'🍐',p:1,f:0,c:25,k:100,note:'tatlı çeşit'},
+  {n:'1 küçük salkım tatlı üzüm',i:'🍇',p:1,f:0,c:24,k:90,note:'tatlı, ekşi DEĞİL'},
+  {n:'3-4 incir (taze veya kuru)',i:'🍑',p:1,f:0,c:24,k:95,note:'kuru ise az'},
+  {n:'1 avuç kuru üzüm',i:'🍇',p:1,f:0,c:25,k:95,note:'sınırlı miktarda'},
+];
+
+// SKIN — Begümnaz post-iso bariyer + hassas + aşamalı protokol
+// Sabah 7 adım: temizlik (su) → hyaluron → niacinamide/VitC → nem → augencreme → SPF (+ opsiyonel BB)
+const SM=['Su yıkama (Garnier Vit C cleanser opsiyonel T-bölge)','ISANA Hyaluron + Panthenol serum','Niacinamide 10% (haftada 4) VEYA ISANA Vit C 10% (alternatif gün)','Garnier Hyaluron Fresh nemlendirici','ISANA Augencreme 0% göz','Garnier BHA + Niacinamide SPF 50 (mecbur)','(Opsiyonel) Purest Solutions BB Cream'];
+
+// Akşam base (her gün): yumuşak temizleyici + hyaluron
+const SEB=['Yumuşak temizleyici (CeraVe Hydrating / Bioderma Sensibio / La Roche Posay Toleriane)','ISANA Hyaluron + Panthenol serum'];
+
+// Akşam aktif rotasyonu (gün gün, JS Date day: 0=Paz, 1=Pzt, 2=Sal, 3=Çar, 4=Per, 5=Cum, 6=Cmt)
+const SA={
+  1:{l:'Azelaic Acid 10%',b:'baza',e:'🟠',p:'The Ordinary Azelaic Acid Suspension 10% (yeni alınacak)',no:'PIE + akne + leke. Kuruyana kadar bekle, üstüne Madescar.'},        // Pzt
+  2:{l:'Tretinoin (Sandwich)',b:'btret',e:'🔴',p:'Acnelyse 0.025% (mercimek tanesi)',no:'SANDWICH: Madescar → Acnelyse → 5-10 dk bekle → Madescar/Hyaluron. Göz çevresi + dudak köşeleri HARİÇ.'}, // Sal
+  3:{l:'Bariyer Gecesi (Pilates Sonrası)',b:'bbar',e:'🛡️',p:'Madescar (Centella)',no:'18:00 pilates dersi sonrası — tret/AHA YASAK. Sadece temizlik + hyaluron + Madescar.'}, // Çar
+  4:{l:'AHA Gecesi (Haftada 1)',b:'baha',e:'🟣',p:'ISANA AHA 6% Glycolic',no:'Cilt kurusun, AHA ince katman, 10 dk bekle, üstüne Madescar + nemlendirici. Üst vücut ağırlık günü → terleme az.'}, // Per
+  5:{l:'Bariyer Gecesi (Pilates Sonrası)',b:'bbar',e:'🛡️',p:'Madescar (Centella)',no:'18:00 pilates dersi sonrası — tret/AHA YASAK. Sadece temizlik + hyaluron + Madescar.'}, // Cum
+  6:{l:'Azelaic Acid 10%',b:'baza',e:'🟠',p:'The Ordinary Azelaic Acid Suspension 10%',no:'PIE + akne + leke. Madescar üstüne.'}, // Cmt
+  0:{l:'Tretinoin (Sandwich)',b:'btret',e:'🔴',p:'Acnelyse 0.025% (mercimek tanesi)',no:'SANDWICH tekniği. Pelvik taban restoratif sonrası — düşük aktivite akşamı, tret güvenli.'}, // Paz
+  7:{l:'Tretinoin (Sandwich)',b:'btret',e:'🔴',p:'Acnelyse 0.025%',no:'Sandwich tekniği'} // 7. anahtar (Bengisu kalıntısı uyumluluğu)
+};
 
 // STATE
 const S={calY:new Date().getFullYear(),calM:new Date().getMonth(),selD:new Date(),dD:new Date(),eD:new Date(),cD:new Date(),done:JSON.parse(localStorage.getItem('done')||'{}'),swaps:JSON.parse(localStorage.getItem('swaps')||'{}'),meas:JSON.parse(localStorage.getItem('meas')||'[]'),sTarget:null,sAlts:[],sIdx:null,rData:[],workoutLog:JSON.parse(localStorage.getItem('workout_log')||'{}'),activeTimer:null};
@@ -3022,67 +3053,67 @@ function renderSelDay(){
   const yestSd=getSkinD(yest);
   const yestRetinol=[1,3,5].includes(yestSd) && !inP(yest) && !preP(yest);
 
-  const lvDose=getLevotironDose(d);
-  const lvKombi=getLevotironKombi(d);
-  const lvDayLabel=[1,2,3].includes(d.getDay())?'Pzt-Sal-Çar':'Per-Cum-Cmt-Paz';
-  const levotiron_detail=`<div style="background:var(--pink-pale);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>📅 Bugünkü doz: ${lvDose} mcg</b> · ${lvKombi}<br><span style="font-size:11px;color:var(--text-mid);">${lvDayLabel} grubu</span><br><br><b>🗓️ Alterne doz şeması (Hakan Bey kararı):</b><br>• Pzt-Sal-Çar: <b>125 mcg</b> (100mg + 25mg tablet)<br>• Per-Cum-Cmt-Paz: <b>100 mcg</b><br>• Haftalık ortalama: ~110.7 mcg/gün<br><br><b>⚠️ Önemli kurallar:</b><br>• Boş mide · su · 30 dk bekle (ideal 1 saat)<br>• <b>☕ Kahve 11:00 öncesi YASAK</b> (Levo emilim %30 sabote · Benvenga 2008 PMID 18341372)<br>• Çay, süt, kalsiyum YOK — sadece su<br>• Calciday'den ≥4 saat ayrı (10:00 öğünle güvenli)</div>`;
-  const vidrate_detail=`<div style="background:var(--sage-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>ViDrate Hydration Sachets</b> (Variety Pack, Amazon UK)<br>• Sodyum 190mg + Potasyum 150mg + Magnezyum 37mg<br>• B vitaminleri + C vitamini<br>• Stevia ile tatlandırılmış · sucralose YOK<br>• <b>Kalsiyum içermez</b> → Levotiron'dan 30 dk sonra güvenli<br>1 sachet + 500ml su · yürüyüş öncesi şart<div style="margin-top:10px;padding:8px 10px;background:rgba(255,255,255,0.5);border-radius:8px;font-style:italic;font-family:'Cormorant Garamond',serif;font-size:13px;color:var(--text);"><b style="font-style:normal;font-family:Jost;">🕯️ Sabah ânı:</b> ViDrate'i karıştırırken pencereye bak — bugünün tek bir niyetini bul (sözcük yeterli: "sakinlik", "sabır", "merak"). Yürüyüş bu niyetle başlasın.</div></div>`;
-  const mini_spf_detail=`<div style="background:var(--gold-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>Yürüyüş öncesi 3 dakikalık koruma:</b><br>1. Yüzü ılık suyla durula (cleanser kullanma)<br>2. Mineral SPF sür<br>3. Hazırsın<br><br><b>Neden minimal?</b> Tam rutin yaparsan duşta yıkanır gider — £100+ ürün boşa.<br><b>SPF gerekli mi?</b> Evet — "cilt nefes alsın" efsanedir, cilt oksijenini kandan alır.<br><br><b>Mineral SPF önerileri</b> (ter + duş dirençli):<br>· La Roche-Posay Anthelios UVMune 400 SPF50+<br>· Bioderma Photoderm Mineral SPF50+<br>· Avène Mineral Fluid SPF50+<br>${yestRetinol?'<div style="margin-top:8px;padding:6px 8px;background:rgba(232,180,184,0.4);border-radius:6px;color:var(--pink-deep);"><b>🔴 Retinol gecesinden sonraki sabah:</b> SPF kesinlikle atlama, cilt hassas.</div>':''}</div>`;
-  const walk_detail=`<div style="background:var(--mauve-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>Fasted yürüyüş 7-8 km · ~90 dk</b><br>• Sabah elektrolit (ViDrate) sonrası<br>• Hafif tempo, konuşabilir hızda<br>• Su şişesi şart (elektrolit denge)<br>• 4-7°C altı ise rüzgarlık + boyunluk${(inP(d) && c && c.day<=2)?'<div style="margin-top:8px;padding:6px 8px;background:rgba(232,180,184,0.4);border-radius:6px;color:var(--pink-deep);"><b>🔴 Regl Gün '+c.day+':</b> 5-6 km yeterli. Enerji varsa 7-8 km tamam. +500ml ekstra su, ısıtıcı çay sonra.</div>':''}</div>`;
-  const skin_morning_detail=`<div style="background:var(--gold-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">${yestRetinol?'<div style="margin-bottom:8px;padding:8px;background:rgba(232,180,184,0.4);border-radius:6px;color:var(--pink-deep);font-weight:600;">🔴 Retinol gecesi sonrası: Vitamin C ve Koreaco ampulü atla → 4 adıma in (1, 2, 5, 6).</div>':''}${SM.map((p,i)=>{const skip=yestRetinol&&(i===2||i===3);return`<div style="display:flex;gap:8px;padding:5px 0;border-bottom:1px dashed var(--border-soft);align-items:center;${skip?'opacity:0.35;text-decoration:line-through;':''}"><span style="background:${skip?'var(--surface2)':'var(--pink-pale)'};border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:${skip?'var(--text-light)':'var(--pink-deep)'};flex-shrink:0;">${i+1}</span><span>${p}${skip?' <em style="font-size:10px;color:var(--text-light);">(atla)</em>':''}</span></div>`;}).join('')}<div style="margin-top:8px;font-size:11px;color:var(--text-mid);">Duş sonrası · 09:15 · SPF en son · "cilt nefes alsın" efsanedir.</div></div>`;
-  const ex_detail=sp?`<div style="background:var(--mauve-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">${exs.map((ex,i)=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px dashed var(--border-soft);"><span>${ex.c?'🎯 ':''}<b>${ex.n}</b></span><span style="color:var(--text-light);font-size:12px;">${ex.s}</span></div>`).join('')}<div style="margin-top:10px;padding-top:8px;border-top:1px solid var(--border);font-size:12px;color:var(--text-mid);">Toplam ${exs.length} hareket · Cooldown'u atlama!</div></div>`:`<div style="background:var(--mauve-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">🛌 Dinlenme günü. Hafif yürüyüş veya 15 dk stretch yeterli.</div>`;
-  // Pre-workout carb — phase-adjusted (regl/ovulation/late luteal extra glikojen)
-  const preCarb = inP(d) ? {kcal:90,detail:'1.5 yk bal + 1 kivi + tuzlu su',note:'Regl: kan kaybı + glikojen düşüşü → ekstra karb şart'}
-    : (c && c.phase==='Ovulation') ? {kcal:80,detail:'1 yk bal + 1 kivi + tuzlu su',note:'Ovulasyon: peak enerji → biraz fazla yakıt'}
-    : (c && c.phase==='Luteal Phase' && c.day>=getAvgCycleLen()-6) ? {kcal:80,detail:'1 yk bal + 1 kivi + tuzlu su',note:'Geç luteal: yüksek insülin sensitivity → karb iyi kullanılır'}
-    : {kcal:60,detail:'1 yk bal VEYA 1 kivi + tuzlu su',note:'Standart glikojen yükleme'};
-  const preworkout_detail=`<div style="background:var(--gold-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>Pre-workout · 14:00</b> (PPL antrenmanından 60 dk önce)<br><div style="margin-top:6px;padding:6px 8px;background:rgba(232,178,63,0.10);border-radius:6px;"><b>Karb (~30g):</b> ${preCarb.detail} (~${preCarb.kcal} kcal)<br><b>Protein (15-25g):</b> 3-4 yumurta beyazı VEYA 1 yk kıyma + 1 yumurta + tuzlu su</div><div style="margin-top:6px;padding:6px 8px;background:rgba(232,221,196,0.06);border-radius:6px;"><b>Opsiyonel 14:15 kafein 100-200 mg</b> — sade kahve VEYA yeşil çay (doktor onayı: tiroid hassas, T4 emilim aralığı sürdürülür · L-tirozin desteği için sabah)</div><div style="margin-top:6px;padding:6px 8px;background:rgba(232,221,196,0.06);border-radius:6px;"><b>Opsiyonel 14:30 +10-15g hızlı karb</b> — 1 yk bal · son anda glikojen takviyesi (özellikle ovulasyon/folliküler PR günü)</div><div style="margin-top:8px;font-size:11px;color:var(--text-mid);">${c?c.phase==='Menstruation'?'🔴':c.phase==='Ovulation'?'🌸':c.phase==='Luteal Phase'?'🌙':'🌱':'·'} ${preCarb.note}</div><div style="margin-top:6px;font-size:11px;color:var(--text-mid);font-style:italic;">💡 Karnivor uyumu: yumurta beyazı laktozsuz, hızlı emilim, leucine yüksek (3g eşik). Whey isolate %1 laktoz — deneme bazlı.</div></div>`;
-  const meal1_detail=`<div style="background:var(--sage-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">${[m1,ms].map(f=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed var(--border-soft);"><span>${f.i} ${f.n}</span><span style="color:var(--gold);font-weight:600;">${f.k} kcal</span></div>`).join('')}<div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);display:flex;justify-content:space-between;"><span style="font-weight:600;">Toplam</span><span style="color:var(--gold);font-weight:700;">${m1.k+ms.k} kcal</span></div><div style="margin-top:8px;font-size:11px;color:var(--text-mid);">💊 Omega-3 + B-Complex (P5P 25mg · Methylfolate 400mcg · Methyl-B12 500mcg) yemekle · Calciday 1. doz 10:30'da ayrı</div>${inP(d)?'<div style="margin-top:4px;font-size:11px;color:var(--pink-deep);">🔴 Regl: ciğer/kırmızı et + B12 yüksek günü · 🍋 yanına C vit kaynağı (limon sıkma, biber dilimi, maydanoz) → demir emilimi 3-4x artar (karnivor demirin önemli takviyesi)</div>':'<div style="margin-top:4px;font-size:11px;color:var(--text-mid);">🍋 Limon/biber/maydanoz yanında demir emilimini destekler</div>'}${(c&&c.phase==='Luteal Phase')?'<div style="margin-top:4px;font-size:11px;color:#6a4a60;">🌙 Luteal: B6 (P5P) magnezyum ile birlikte progesteron desteği</div>':''}</div>`;
-  const meal2_detail=`<div style="background:var(--sage-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">${[m2,m2s].map(f=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed var(--border-soft);"><span>${f.i} ${f.n}</span><span style="color:var(--gold);font-weight:600;">${f.k} kcal</span></div>`).join('')}<div style="margin-top:8px;padding-top:8px;border-top:1px solid var(--border);display:flex;justify-content:space-between;"><span style="font-weight:600;">Toplam</span><span style="color:var(--gold);font-weight:700;">${m2.k+m2s.k} kcal</span></div><div style="margin-top:8px;font-size:11px;color:var(--text-mid);">💊 Kreatin 5g · Calciday 2. doz 18:30'a kaydı (Hallberg etkisi) · Qalyviz 18:30 ayrı</div><div style="margin-top:4px;font-size:11px;color:var(--sage);">🥗 Karb pencere AÇIK (post-workout)</div>${(c&&c.day>=getAvgCycleLen()-6&&c.phase==='Luteal Phase')?'<div style="margin-top:4px;font-size:11px;color:#6a4a60;">🌙 Geç luteal: 50g karbı buradan al</div>':''}${(c&&c.phase==='Ovulation')?'<div style="margin-top:4px;font-size:11px;color:#7a5a20;">🌸 Ovulasyon: somon/levrek + omega-3 + bol yeşillik mükemmel uyum</div>':''}</div>`;
-  const creatine_detail=`<div style="background:var(--pink-pale);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>Bulk Creatine Monohydrate Creapure</b> Unflavoured 500g (~£20)<br>• <b>Doz: 5g/gün sabit</b> — yükleme YAPMA (kadın fizyolojisinde gereksiz, su tutmayı artırır)<br>• 2-3 hafta tartı +0.8-1.5 kg ↑ (kas içi su, yağ değil)<br>• 3L+ su şart (kreatin + tiroidektomi sonrası elektrolit denge)<br>• <b>Kan testi öncesi 14 gün önce kes</b> — kreatinin/eGFR yanlış yüksek çıkar (kanıt: PMID 30986825)</div>`;
-  const qalyviz_detail=`<div style="background:var(--pink-pale);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>Qalyviz (Calcitriol 0.5 mcg) — aktif D vit</b><br>• 2 cap/gün: 1× sabah Calciday'le + 1× akşam Calciday'le<br>• Hipoparatiroidi terapötik tedavi (E89.2)<br>• 1,25(OH)2D3 — böbrek 1α-hidroksilaz adımını bypass eder<br><br><span style="font-size:11px;color:var(--text-mid);">⚠️ <strong>Doktor onayı:</strong> Doz 2 ay daha aynı kalacak (Hakan Bey kararı). Mg form düzeltmesi sonrası adjusted Ca tekrar bakılacak. K2 MK-7 100-180 mcg ekleme tartışması doktor onayı bekliyor (Schurgers 2007).</span></div>`;
-  const window_close_detail=`<div style="background:var(--mauve-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">19:00 sonrası sadece su + bitki çayı (kafeinsiz). 14-15 saat gece açlığı = sabah hormon dengesi + kan şekerinin daha iyi yönetilmesi (insulin sensitivity).</div>`;
-  const skin_eve_detail=`<div style="background:var(--gold-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;">${SEB.map((p,i)=>`<div style="display:flex;gap:8px;padding:5px 0;border-bottom:1px dashed var(--border-soft);align-items:center;"><span style="background:var(--pink-pale);border-radius:50%;width:20px;height:20px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--pink-deep);flex-shrink:0;">${i+1}</span><span>${p}</span></div>`).join('')}<div style="display:flex;gap:8px;padding:8px;background:var(--pink-pale);border-radius:8px;margin-top:8px;align-items:flex-start;"><span style="font-size:16px;">${ea.e}</span><div><b style="color:var(--pink-deep);">${ea.l}</b><br>${ea.p}<br><span style="font-size:11px;color:var(--text-mid);">${ea.no}</span></div></div><div style="margin-top:8px;font-size:11px;color:var(--text-mid);">👁️ Son adım: COSRX Snail Peptide Eye Cream</div></div>`;
-  // Magnesium dose cycle-aware (Pure Encap Glycinate 120mg/cap):
-  // Folliküler/Ovulasyon: 2 cap (240mg) · Luteal: 3 cap (360mg) · Regl Day 1-2: 4 cap (480mg) · Day 3-5: 3 cap (360mg)
-  const mgCap = getMgCapCount(d);
-  const mgDose = getMgDose(d);
-  const mgNote = inP(d) && c && c.day<=2 ? '🔴 Regl Day 1-2: kramp + serotonin desteği için 4 cap (480mg)' : inP(d) ? '🔴 Regl Day 3-5: 3 cap (360mg)' : (c && c.phase==='Luteal Phase') ? '🌙 Luteal: 3 cap (360mg) · Mg + B6 progesteron desteği' : '🌱 Folliküler/Ovulasyon: 2 cap (240mg) taban';
-  const supp_night_detail=`<div style="background:var(--pink-pale);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><div style="padding:4px 0;">💊 <b>Magnezyum: Pure Encap Glycinate <u>${mgCap} cap</u> (${mgDose}mg)</b><br><span style="font-size:11px;color:var(--text-mid);">Cycle-aware doz · 120mg elemental/cap · %25-40 emilim (eski oxide form %4'tü, değiştirildi)</span></div><div style="padding:4px 0;">💊 <b>Marine Collagen Zooki</b> 11g/sachet — cilt + tendon</div><div style="padding:4px 0;">💊 <b>UC-II Type 2 Collagen 40mg</b> — eklem (oral immün tolerans)</div><div style="margin-top:6px;font-size:11px;color:var(--text-mid);">Yatmadan 30 dk önce.${mgNote?' · '+mgNote:''}</div><div style="margin-top:10px;padding:8px 10px;background:rgba(255,255,255,0.5);border-radius:8px;font-style:italic;font-family:'Cormorant Garamond',serif;font-size:13px;color:var(--text);"><b style="font-style:normal;font-family:Jost;">🕯️ Ritüel ânı:</b> Mg'yi yutmadan önce 3 derin nefes (4 sn al, 7 sn tut, 8 sn ver). Bedeninin günü kapatmasına izin ver.</div></div>`;
-  const vacuum_detail=`<div style="background:var(--mauve-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>İstisna yok — her sabah.</b><br><br>• Tam nefes ver, göbeği omurgaya doğru çek<br>• 30 sn tut, burnundan yavaş nefes al<br>• 3 set · setler arası 30 sn dinlen<br><br><span style="color:var(--pink-deep);">⭐ Fasted = derin core (TVA) için maksimum etki</span>${(inP(d) && c && c.day<=2)?'<div style="margin-top:8px;padding:6px 8px;background:rgba(232,180,184,0.4);border-radius:6px;color:var(--pink-deep);"><b>🔴 Şiddetli kramp varsa atla:</b> Vacuum karın fleksiyonunu artırır. Yerine 2 dk derin nefes (4-7-8 tekniği) yap.</div>':''}</div>`;
-  const calciday_detail=`<div style="background:var(--pink-pale);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>📋 Hipoparatiroidi terapötik tedavi</b> (E89.2 · Hakan Bey reçetesi)<br><br><b>Calciday (Ca Karbonat 1200mg + D3 800IU)</b><br>• 1. tablet: 1. öğün ile (10:00 — "öğlen" sayılır)<br>• 2. tablet: 2. öğün ile (17:00 — "akşam")<br>• Toplam: 2 tab/gün = 960mg elemental Ca<br><br><b>Qalyviz (Calcitriol 0.5 mcg) — aktif D vit</b><br>• 1. cap: Calciday'in hemen ardından (sabah)<br>• 2. cap: Calciday'in hemen ardından (akşam)<br>• Toplam: 2 cap/gün = 1.0 mcg<br><br><span style="font-size:11px;color:var(--text-mid);">📅 <b>Doz 2 ay daha aynı kalacak (Hakan Bey kararı)</b> · Mg form düzeltmesi sonrası adjusted Ca tekrar bakılacak. Aktif kramp/karıncalanma takibi ŞART.</span>${inP(d)?'<br><br>🔴 Regl günü: elektrolit kaybı + period → kramp riski yüksek, dozları atlamayalım.':''}</div>`;
-  const selenium_detail=`<div style="background:var(--pink-pale);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>Selenometyonin 200 mcg/gün</b> (Solgar Yeast-Free, L-Selenomethionine)<br>• Saat: <b>17:00 · 2. öğünle</b> — Levotiron gap 10.5h (Endokrinolog önerisi: ≥4h)<br>• ⚠️ Önceki ürün (Earthier) İYOT içeriyordu, değiştirildi (Hashimoto + post-tiroidektomi'de iyot riski · Yang 2007 PMID 17192577)<br>• Tiroidektomi sonrası <b>T4→T3 dönüşümünü destekler</b> — D1/D2 deiodinaz selenoproteindir (Köhrle 2018 PMID 30056825)<br>• Hashimoto antikor azaltma — Toulis 2010 PMID 20214597 (anti-TPO -%30-40, 6 ay)<br>• Methionine içeren proteinle iyi emilir (yumurta, et)<br>• UL 400 mcg/gün — 200 mcg makul güvenli aralık<br><br><span style="font-size:11px;color:var(--text-mid);">⚠️ <strong>6 ay sonra:</strong> anti-TPO + glukoz/HbA1c tekrar bak (Stranges 2007 NPC trial — uzun süre ≥200 mcg T2DM HR 1.55). Doz 100 mcg'a düşürülebilir.</span></div>`;
-  const zinc_detail=`<div style="background:var(--pink-pale);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>Çinko 15 mg + Bakır 1.5 mg</b> · 22:00 (yatmadan 1 saat önce)<br>• Karnivor diyette demir + protein yüksek, çinko da yeterli — supplement <b>insülin duyarlılığı + immün + cilt</b> için<br>• <b>Zn:Cu = 10:1 dengesi</b> kritik (yüksek Zn → Cu eksikliği → anemi/nöropati riski)<br>• Calciday'den (Ca/Zn antagonizmi) ve Levotiron'dan (en az 2 saat) ayrı<br>• Magnezyum'dan 1 saat sonra (mineral ayrımı için)<br><br><span style="font-size:11px;color:var(--text-mid);">⚠️ <strong>Doktor sorusu:</strong> Bakır supplement gerçekten gerekli mi (et yiyenlerde Cu eksikliği nadir)? Serum çinko/bakır oranı 0.7-1.0 sağlıklı; ölçümle başlamak ideal. Zinc gluconate vs picolinate vs bisglycinate — hangisi tercih?</span></div>`;
+  // ═══════════════════════════════════════════════════════════
+  // BEGÜMNAZ PROTOKOLÜ — 16 ÜRÜN DOKTOR REÇETESİ + MİZAÇ DİYET
+  // ═══════════════════════════════════════════════════════════
+  const isMonday = d.getDay()===1; // Pazartesi → Colewinde Vit D ekstra
+  const isExerciseDay = sp !== null && sp !== undefined; // Begümnaz'da her gün bir aktivite var
+  // ea (akşam aktifi) yukarıda zaten declare edildi (line 3049); fallback ifadesi Begümnaz SA'da tetiklenmez (sa.p hiçbir yerde "Retinol" içermez) → ea === sa her zaman
+
+  // Sabah AC paketi (08:30)
+  const sabah_ac_detail=`<div style="background:rgba(90,122,79,0.18);border:1px solid rgba(168,192,160,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>☀️ Sabah AC — kahvaltıdan önce (5 ürün, 20 dk akış):</b><br>• <b>08:30</b> Akavital 3 yk + 1 bardak ılık su (prebiyotik gut + endo)<br>• <b>08:35</b> Gül sirkesi 4 yk + 1 çay bardağı ılık su (sindirim)<br>• <b>08:40</b> NBT NADH 1 tablet AC <span style="color:var(--mustard-soft);">(doz doktor onayı bekleniyor)</span><br>• <b>08:45</b> NAC 1 kapsül (500 mg) AC <span style="color:var(--mustard-soft);">(şekil doktor onayı bekleniyor)</span><br>• <b>08:50</b> Bach çiçekleri 4 damla dil üstüne (1. doz)<br><br><span style="font-size:11px;color:var(--cream-mute);">Hepsi AC alınır, kahvaltı acıkma sinyaline göre (~09:00-11:00).</span></div>`;
+
+  const alkemist_detail=`<div style="background:rgba(168,192,160,0.18);border:1px solid rgba(168,192,160,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>🥥 Alkemist Hindistan Cevizi Yağı — Oil Pulling</b><br>• 1 yk yağı ağzında 5-10 dk dolaştır<br>• Tükür (lavaboda değil çöpe — sızdırma riski)<br>• Ilık suyla ağzı çalkala<br>• Diş fırçala<br><br><span style="font-size:11px;color:var(--cream-mute);">Ağız mikrobiyomu desteği + sabah ritüel başlangıcı. Hindistan cevizi yağı doğal antimikrobik.</span></div>`;
+
+  const kahvalti_supp_detail=`<div style="background:rgba(232,178,63,0.18);border:1px solid rgba(232,178,63,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>💊 Kahvaltı TOK karna (6 ürün):</b><br>• Anti turmeric 2 tablet (1. doz) — antiinflamatuvar, yağlı yemekle emilim<br>• More than (MSM+Vit C) 1 tablet (1. doz) — eklem+antioksidan<br>• NBT Life Guard 1 tablet — multivit<br>• Anti MM-12 1 tablet — gündüz alımı<br>• Lifextra On Hepa 1 tablet (1. doz) — karaciğer destek<br>• Time Magnezyum 1 tablet (1. doz)${isMonday?'<br><br><div style="margin-top:6px;padding:6px 8px;background:rgba(217,89,30,0.22);border-radius:6px;color:var(--coral-soft);"><b>🟠 PAZARTESİ EKSTRA:</b> Colewinde 50.000 IU Vit D — yağda eriyen, kahvaltıdaki zeytinyağı+zeytinle ideal emilim. Haftada 1, sabit gün.</div>':''}</div>`;
+
+  const lugol_detail=`<div style="background:rgba(232,178,63,0.18);border:1px solid rgba(232,178,63,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>💧 Lugol İyot %5</b><br>• <b>4 damla</b> + 1 bardak ılık su (2 hafta sonra 2 damlaya düş)<br>• Kahvaltıdan +2 saat sonra (mineral mesafesi)<br>• İdrar iyot 27 µg/L (düşük, ref 100-200) — doktor reçetesi<br><br><span style="font-size:11px;color:var(--cream-mute);">⚠️ Lugol ile magnezyum/çinko arası ≥2-4 saat ara. Lugol başlangıcı sonrası 6-8 hf TSH/T3/T4 tekrar.</span></div>`;
+
+  const meal1_detail=`<div style="background:rgba(90,122,79,0.18);border:1px solid rgba(168,192,160,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>🍳 Kahvaltı (acıkma sinyaline göre, ~09-11 arası):</b><br>${[m1,ms].map(f=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed rgba(255,255,255,0.10);"><span>${f.i} ${f.n}</span><span style="color:var(--mustard-soft);font-weight:600;">${f.k} kcal</span></div>`).join('')}<div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.14);display:flex;justify-content:space-between;"><span style="font-weight:600;">Toplam</span><span style="color:var(--mustard-soft);font-weight:700;">${m1.k+ms.k} kcal</span></div><div style="margin-top:8px;font-size:11px;color:var(--cream-mute);">🌿 Gül + zeytin yaprağı çayı eşliğinde. ⚠️ Süt ürünleri YOK, çiğ sebze YOK, karabiber YOK.</div>${inP(d)?'<div style="margin-top:4px;font-size:11px;color:var(--coral-soft);">🔴 Regl: ekstra yumurta + ıspanak (demir+folat) iyi gelir.</div>':''}</div>`;
+
+  const meal2_detail=`<div style="background:rgba(90,122,79,0.18);border:1px solid rgba(168,192,160,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>🍲 Öğle Yemeği (12:00-13:00):</b><br>${[m2].map(f=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed rgba(255,255,255,0.10);"><span>${f.i} ${f.n}</span><span style="color:var(--mustard-soft);font-weight:600;">${f.k} kcal</span></div>`).join('')}<div style="margin-top:8px;font-size:11px;color:var(--cream-mute);">⚠️ Sebze çorbası SALÇASIZ + UNSUZ. Sebze yemeği SALÇASIZ. Et izinli: kuzu/koyun/hindi (haftada 3x). Dana eti + tavuk YASAK. Aynı safa çayı sonrası.</div>${inP(d)?'<div style="margin-top:4px;font-size:11px;color:var(--coral-soft);">🔴 Regl: ekstra demir kaynağı (kuzu et + yumurta) iyi.</div>':''}</div>`;
+
+  const ara_detail=`<div style="background:rgba(232,178,63,0.18);border:1px solid rgba(232,178,63,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>🍎 Ara Öğün (15:00):</b><br>• ${m2s.i} <b>${m2s.n}</b><br>• <em>${m2s.note}</em><br><br><b>💊 Bu saatte alınanlar:</b><br>• NAC 1 kapsül (500 mg) — 2. doz (sabahla 6 saat ara)<br>• Bach çiçekleri 4 damla — 3. doz<br><br><span style="font-size:11px;color:var(--cream-mute);">⚠️ Ekşi meyve YOK (greyfurt, ekşi elma, limon yemek olarak). Tatlı meyveler izinli.</span></div>`;
+
+  const benfolife_detail=`<div style="background:rgba(217,89,30,0.18);border:1px solid rgba(217,89,30,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>💪 NBT Benfolife (Pre-workout)</b><br>• 1 tablet, hafif tok karna<br>• Antrenmandan 30 dk önce<br>• Benfotiamine (B1) — antrenman enerji<br><br><span style="font-size:11px;color:var(--cream-mute);">Bugün antrenman var (${sp?sp.n:'pelvik taban/pilates'}). Saat esnek — antrenmana en yakın yemek sonrası alın.</span></div>`;
+
+  const ex_detail=sp?`<div style="background:rgba(180,121,144,0.18);border:1px solid rgba(180,121,144,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>${sp.e} ${sp.n}</b><br><span style="font-size:11px;color:var(--cream-mute);">${sp.f}</span><br><br>${exs.map(ex=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px dashed rgba(255,255,255,0.10);"><span><b>${ex.n}</b></span><span style="color:var(--cream-mute);font-size:12px;">${ex.s}</span></div>`).join('')}<div style="margin-top:8px;font-size:11px;color:var(--cream-mute);">🏠 Ev (2-3 kg DB + bant + magic circle + pilates topu + mat) · 🏋️ Gym (tam) · 🌳 Dışarı (yürüyüş + park) — switch sistemi.</div></div>`:`<div style="background:rgba(180,121,144,0.18);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);">🛌 Dinlenme.</div>`;
+
+  const ikindi_ac_detail=`<div style="background:rgba(90,122,79,0.18);border:1px solid rgba(168,192,160,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>🕓 İkindi AC (akşam yemeğinden 1-1.5 saat önce):</b><br>• <b>16:00</b> Akavital 3 yk + 1 bardak ılık su (2. doz prebiyotik)<br>• <b>16:05</b> Gül sirkesi 4 yk + 1 çay bardağı ılık su (2. doz)</div>`;
+
+  const aksam_yemek_detail=`<div style="background:rgba(90,122,79,0.18);border:1px solid rgba(168,192,160,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>🍲 Akşam Yemeği (17:30-19:00):</b><br>• Doyana kadar SALÇASIZ + UNSUZ sebze çorbası<br>• Doyana kadar SALÇASIZ sebze yemeği<br><br><b>💊 Akşam TOK karna (4 ürün — 2. dozlar):</b><br>• Anti turmeric 2 tablet (2. doz)<br>• More than (MSM+Vit C) 1 tablet (2. doz)<br>• Lifextra On Hepa 1 tablet (2. doz)<br>• Time Magnezyum 1 tablet (2. doz) — uyku desteği<br><br><span style="font-size:11px;color:var(--cream-mute);">⚠️ Akşam yemeği saat 17-19 arası. Sonrası sadece izinli çaylar.</span></div>`;
+
+  const ayak_banyosu_detail=`<div style="background:rgba(180,121,144,0.18);border:1px solid rgba(180,121,144,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>🦶 Ayak Banyosu (her gece 15-20 dk):</b><br>1. Büyük leğen — ayaklar bileğe kadar girecek<br>2. Sıcak su 40-42°C<br>3. <b>4-5 damla ıtır yağı</b> (saf esansiyel)<br>4. <b>2 yk Epsom tuzu</b> (magnezyum sülfat)<br>5. Karıştır, 15-20 dk batır<br>6. Havluyla kurula → hemen kalın çorap<br><br><span style="font-size:11px;color:var(--cream-mute);">Magnezyum cilt yolu emilim (uyku+kramp) + ıtır aromaterapi (anksiyete+sirkülasyon) + pelvik bölge ısı yansıması (endo destek).</span>${(inP(d) || (c&&c.day&&c.day<=2))?'<div style="margin-top:6px;padding:6px 8px;background:rgba(217,89,30,0.22);border-radius:6px;color:var(--coral-soft);"><b>🔴 Regl/Endo flare:</b> 2x/gün ayak banyosu + heating pad bel.</div>':''}<br><br><b>20:00 ek:</b> Bach çiçekleri 4 damla (4. doz, son)</div>`;
+
+  const cay_detail=`<div style="background:rgba(232,178,63,0.18);border:1px solid rgba(232,178,63,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>🌿 Melissa + Papatya Çayı (21:00):</b><br>• 1 fincan sıcak<br>• Uykuya hazırlık + sakinleştirici<br><br><span style="font-size:11px;color:var(--cream-mute);">⚠️ Diğer çaylar (siyah/yeşil) ve kahve YASAK. İzinli 3 bitkisel: gül+zeytin yaprağı (kahvaltı), aynı safa (öğle), melissa+papatya (gece).</span></div>`;
+
+  const skin_eve_detail=`<div style="background:rgba(232,178,63,0.18);border:1px solid rgba(232,178,63,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>🌙 Akşam Cilt Rutini:</b><br>${SEB.map((p,i)=>`<div style="display:flex;gap:8px;padding:5px 0;border-bottom:1px dashed rgba(255,255,255,0.10);align-items:center;"><span style="background:rgba(255,255,255,0.10);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--cream-soft);flex-shrink:0;">${i+1}</span><span>${p}</span></div>`).join('')}<div style="display:flex;gap:8px;padding:8px;background:rgba(180,121,144,0.22);border-radius:8px;margin-top:8px;align-items:flex-start;"><span style="font-size:18px;">${ea.e}</span><div><b style="color:var(--mauve-evening);">${ea.l}</b><br>${ea.p}<br><span style="font-size:11px;color:var(--cream-mute);">${ea.no}</span></div></div><div style="margin-top:8px;font-size:11px;color:var(--cream-mute);">👁️ Göz: ISANA Peptid Augencreme. Madescar bariyer kapatıcı.</div></div>`;
+
+  const probiyotik_detail=`<div style="background:rgba(217,89,30,0.18);border:1px solid rgba(217,89,30,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>💊 Duobalance BV Cran Probiyotik (22:00):</b><br>• 2 kapsül 1 kerede, su ile<br>• Cranberry içerikli — idrar yolu sağlığı desteği<br>• Gece tek başına alınır (diğer supplementlerden ≥4 saat uzak)<br><br><span style="font-size:11px;color:var(--cream-mute);">Kan testindeki asemptomatik lökositüri (idrar) ile uyumlu seçim. Sonrası uyku.</span></div>`;
 
   document.getElementById('sel-day').innerHTML=`
     <div style="margin:0 16px 8px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
       <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;">${ds}</div>
       ${c?`<span style="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;" class="${c.cls}">${c.emoji} ${c.label} · Gün ${c.day}</span>`:`<span style="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;color:var(--text-light);background:var(--surface2);" onclick="showP('cycle',document.querySelectorAll('.nb')[1])" role="button">🌸 Döngü takibini başlat</span>`}
     </div>
-    ${(c&&inP(d))?`<div style="margin:0 16px 12px;"><div class="notice np"><div class="nicon">🔴</div><div><strong>Regl günü:</strong> Retinol ve AHA/BHA'yı bu hafta azalt — cilt hassas.</div></div></div>`:(c&&preP(d))?`<div style="margin:0 16px 12px;"><div class="notice nm"><div class="nicon">🌙</div><div><strong>PMS / yaklaşan regl (Gün ${c.day}):</strong> ~${getAvgCycleLen()-c.day} gün sonra regl bekleniyor. Retinol ve AHA/BHA'yı kademeli azaltmaya başla.</div></div></div>`:''}
+    ${(c&&inP(d))?`<div style="margin:0 16px 12px;"><div class="notice np"><div class="nicon">🔴</div><div><strong>Regl günü:</strong> Tret ve AHA'yı bu hafta yumuşat — cilt hassas. Egzersizde aktif iyileşme.</div></div></div>`:(c&&preP(d))?`<div style="margin:0 16px 12px;"><div class="notice nm"><div class="nicon">🌙</div><div><strong>PMS / yaklaşan regl (Gün ${c.day}):</strong> ~${getAvgCycleLen()-c.day} gün sonra regl bekleniyor. Antrenman yoğunluğu %20-30 düşür.</div></div></div>`:''}
     <div class="slbl">⏰ Günlük Program</div>
     <div class="card"><div class="cb"><div class="tl">
-      ${tliX('06:30',`💊 Levotiron <b>${lvDose} mcg</b>`,`${lvKombi} · boş mide · 30 dk bekle`,'tm',levotiron_detail)}
-      ${tliX('06:45','🫁 Stomach Vacuum','3 × 30 sn · fasted · her sabah','te',vacuum_detail)}
-      ${tliX('07:00','⚡ ViDrate elektrolit','1 sachet + 500ml su · kalsiyumsuz','tm',vidrate_detail)}
-      ${tliX('07:10','☀️ Mini SPF (Yürüyüş Öncesi)','Yüzü ılık suyla durula + mineral SPF · cleanser/serum YOK','ts',mini_spf_detail)}
-      ${tliX('07:30','🥄 EVOO + limon + tuz shot','1 yk high-phenolic EVOO + ½ limon + 1g kaya tuzu','tm','')}
-      ${tliX('07:35','🚶 Yürüyüş 5-6 km','Fasted · 60-75 dk (RED-S koruma · 90 dk yerine)','te',walk_detail)}
-      ${tliX('09:15','☀️ Tam Sabah Cilt Rutini',yestRetinol?'4 adım · duştan sonra · retinol gecesi sonrası':'6 adım · duştan sonra · SPF en son','ts',skin_morning_detail)}
-      ${tliX('10:00','🥩 1. Öğün (pencere açılışı · "öğlen")',m1.n+' + '+ms.n,'td',meal1_detail)}
-      ${tliX('10:05','💊 Calciday + Qalyviz (1. doz)','1 tab Calciday + 1 cap Qalyviz · öğünle · hipopara terapötik','tm',calciday_detail)}
-      ${tliX('10:10','💊 B-Complex + Omega-3','Methylated B-Complex + 2 softgel Omega-3 (4g/gün hedef · LDL için)','tm','')}
-      ${tliX('11:00','☕ Kahve serbest','Levo\'dan 4.5h sonra · 11:00 öncesi YASAKTI','tm','<div style="background:var(--gold-soft);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;"><b>☕ Kahve kuralı:</b><br>• Levo 06:30 → kahve 11:00 sonrası (4.5h gap ✓)<br>• Benvenga 2008 PMID 18341372: kahve Levotiron emilimini %30 azaltır<br>• 14:30 sonrası kafein YOK (uyku koruma)<br>• Sade kahve veya yeşil çay tercih</div>')}
-      ${tliX('14:00','🍯 Pre-WO Karb+Protein','30g karb + 15-25g protein · 60 dk WO öncesi','td',preworkout_detail)}
-      ${tliX('15:00','🏋️ Güç antrenmanı','5-gün split · beslenmiş halde','te',ex_detail)}
-      ${tliX('17:00','🥩 2. Öğün (post-WO · "akşam")',m2.n+' + '+(SEL_MEALS&&SEL_MEALS[d.toDateString()+'_m2_side']?SEL_MEALS[d.toDateString()+'_m2_side'].n:M2S[idx].n),'td',meal2_detail)}
-      ${tliX('17:05','💊 Calciday + Qalyviz (2. doz)','1 tab Calciday + 1 cap Qalyviz · öğünle','tm',calciday_detail)}
-      ${tliX('17:10','🌿 Selenometyonin 200mcg','Solgar Yeast-Free · 2. öğünle · Levo gap 10.5h ✓','tm',selenium_detail)}
-      ${tliX('17:15','💪 Kreatin 5g (Bulk Creapure)','Post-WO · 2. öğünle · 3L+ su · kan testinden 14g önce kes','tm',creatine_detail)}
-      ${tliX('19:00','🌙 Pencere kapanır','14-15 saat gece açlığı başlar','td',window_close_detail)}
-      ${tliX('22:00','💊 Çinko 15mg + Bakır 1mg','Vitabiotics Ultra Zinc · Zn:Cu 15:1 · Ca/Mg/Levo\'dan uzak','tm',zinc_detail)}
-      ${tliX('22:30','🌙 Akşam Cilt Rutini',ea.e+' '+ea.l,'ts',skin_eve_detail)}
-      ${tliX('23:00',`💊 Mg <b>${getMgCapCount(d)} cap</b> (${getMgDose(d)}mg) + Kolajen`,`Pure Encap Glycinate · cycle-aware${inP(d)?' · regl koruması ↑':''}`,'tm',supp_night_detail)}
+      ${tliX('08:00','🥥 Alkemist Oil Pulling','1 yk HC yağı · 5-10 dk · sonra diş fırçala','tm',alkemist_detail)}
+      ${tliX('08:30','☀️ Sabah AC (5 ürün)','Akavital + Gül sirkesi + NADH + NAC + Bach (1.) — kahvaltıdan ÖNCE','tm',sabah_ac_detail)}
+      ${tliX('~09-11','🍳 Kahvaltı (acıkma sinyali)',m1.n+' + '+ms.n,'td',meal1_detail)}
+      ${tliX('Kahvaltı tok','💊 Kahvaltı supplementleri',isMonday?'6 ürün + Colewinde Vit D (Pzt özel)':'6 ürün (Turmeric+MSM+Multivit+MM-12+Lifextra+Mg)','tm',kahvalti_supp_detail)}
+      ${tliX('+2 saat','💧 Lugol iyot 4 damla','+ 1 bardak ılık su · Bach (2. doz)','tm',lugol_detail)}
+      ${tliX('12:00-13:00','🍲 Öğle Yemeği',m2.n,'td',meal2_detail)}
+      ${tliX('14:30','🍎 Ara + NAC (2.) + Bach (3.)',m2s.n+' + NAC 500mg + Bach 4 damla','td',ara_detail)}
+      ${isExerciseDay?tliX('Pre-WO -30dk','💪 NBT Benfolife','1 tablet · antrenmandan 30 dk önce, hafif tok','tm',benfolife_detail):''}
+      ${isExerciseDay?tliX('Esnek saat',`${sp.e} ${sp.n}`,sp.f,'te',ex_detail):''}
+      ${tliX('16:00','🕓 İkindi AC','Akavital 3yk + Gül sirkesi 4yk (2. dozlar)','tm',ikindi_ac_detail)}
+      ${tliX('17:30-19:00','🍲 Akşam + 4 supplement','Sebze çorbası + yemeği + Anti turmeric (2.) + More than (2.) + Lifextra (2.) + Time Mg (2.)','td',aksam_yemek_detail)}
+      ${tliX('20:00','🦶 Ayak Banyosu + Bach (4.)','Sıcak su + 4-5 damla ıtır + 2 yk Epsom · 15-20 dk · son Bach','te',ayak_banyosu_detail)}
+      ${tliX('21:00','🌿 Melissa + Papatya Çayı','1 fincan sıcak · uykuya hazırlık','tm',cay_detail)}
+      ${tliX('~21:30','🌙 Akşam Cilt Rutini',ea.e+' '+ea.l,'ts',skin_eve_detail)}
+      ${tliX('22:00','💊 Duobalance Probiyotik','2 kapsül 1 kerede · cranberry içerikli · gece','tm',probiyotik_detail)}
     </div></div></div>`;
   // 🍏 Apple Health kartı (eğer o güne ait kayıt varsa)
   renderHealthCardForSelDay();
@@ -3161,58 +3192,52 @@ function buildDailyBlocks(d){
   const yestSd=getSkinD(yest);
   const yestRetinol=[1,3,5].includes(yestSd) && !inP(yest) && !preP(yest);
 
-  const lvDose=getLevotironDose(d);
-  const lvKombi=getLevotironKombi(d);
-  const lvDayLabel=[1,2,3].includes(d.getDay())?'Pzt-Sal-Çar':'Per-Cum-Cmt-Paz';
-  const levotiron_detail=`<div style="background:rgba(217,89,30,0.18);border:1px solid rgba(217,89,30,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>📅 Bugünkü doz: ${lvDose} mcg</b> · ${lvKombi}<br><span style="font-size:11px;color:var(--cream-mute);">${lvDayLabel} grubu</span><br><br><b>🗓️ Alterne doz şeması (Hakan Bey kararı):</b><br>• Pzt-Sal-Çar: 125 mcg (100mg + 25mg)<br>• Per-Cum-Cmt-Paz: 100 mcg<br>• Haftalık ortalama: ~110.7 mcg/gün<br><br><b>⚠️ Kurallar:</b><br>• Boş mide · su · 30 dk bekle<br>• <b>☕ Kahve 11:00 öncesi YASAK</b> (Benvenga 2008)<br>• Calciday'den ≥4 saat ayrı (10:00 öğünle güvenli)</div>`;
-  const vidrate_detail=`<div style="background:rgba(90,122,79,0.18);border:1px solid rgba(168,192,160,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>ViDrate Hydration Sachets</b> (Variety Pack, Amazon UK)<br>• Sodyum 190mg + Potasyum 150mg + Magnezyum 37mg<br>• B vitaminleri + C vitamini · stevia ile tatlandırılmış<br>• <b>Kalsiyum içermez</b> → Levotiron'dan 30 dk sonra güvenli<br>1 sachet + 500ml su · yürüyüş öncesi şart<div style="margin-top:10px;padding:8px 10px;background:rgba(255,255,255,0.08);border-radius:8px;font-style:italic;font-family:'Cormorant Garamond',serif;font-size:13px;"><b style="font-style:normal;font-family:Jost;">🕯️ Sabah ânı:</b> ViDrate'i karıştırırken pencereye bak — bugünün tek niyetini bul (sözcük yeterli: "sakinlik", "sabır", "merak").</div></div>`;
-  const mini_spf_detail=`<div style="background:rgba(232,178,63,0.18);border:1px solid rgba(232,178,63,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>Yürüyüş öncesi 3 dakikalık koruma:</b><br>1. Yüzü ılık suyla durula (cleanser kullanma)<br>2. Mineral SPF sür<br>3. Hazırsın<br><br><b>Mineral SPF önerileri:</b><br>· La Roche-Posay Anthelios UVMune 400 SPF50+<br>· Bioderma Photoderm Mineral SPF50+<br>· Avène Mineral Fluid SPF50+${yestRetinol?'<div style="margin-top:8px;padding:6px 8px;background:rgba(217,89,30,0.22);border-radius:6px;color:var(--coral-soft);"><b>🔴 Retinol gecesinden sonraki sabah:</b> SPF kesinlikle atlama, cilt hassas.</div>':''}</div>`;
-  const walk_detail=`<div style="background:rgba(180,121,144,0.18);border:1px solid rgba(180,121,144,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>Fasted yürüyüş 7-8 km · ~90 dk</b><br>• Sabah elektrolit (ViDrate) sonrası<br>• Hafif tempo, konuşabilir hızda<br>• Su şişesi şart (elektrolit denge)<br>• 4-7°C altı ise rüzgarlık + boyunluk${(inP(d) && c && c.day<=2)?'<div style="margin-top:8px;padding:6px 8px;background:rgba(217,89,30,0.22);border-radius:6px;color:var(--coral-soft);"><b>🔴 Regl Gün '+c.day+':</b> 5-6 km yeterli.</div>':''}</div>`;
-  const skin_morning_detail=`<div style="background:rgba(232,178,63,0.18);border:1px solid rgba(232,178,63,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);">${yestRetinol?'<div style="margin-bottom:8px;padding:8px;background:rgba(217,89,30,0.22);border-radius:6px;color:var(--coral-soft);font-weight:600;">🔴 Retinol gecesi sonrası: Vitamin C ve Koreaco ampulü atla → 4 adıma in.</div>':''}${SM.map((p,i)=>{const skip=yestRetinol&&(i===2||i===3);return`<div style="display:flex;gap:8px;padding:5px 0;border-bottom:1px dashed rgba(255,255,255,0.10);align-items:center;${skip?'opacity:0.45;text-decoration:line-through;':''}"><span style="background:rgba(255,255,255,0.10);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--cream-soft);flex-shrink:0;">${i+1}</span><span>${p}</span></div>`;}).join('')}<div style="margin-top:8px;font-size:11px;color:var(--cream-mute);">Duş sonrası · 09:15 · SPF en son.</div></div>`;
-  const calciday_detail=`<div style="background:rgba(217,89,30,0.18);border:1px solid rgba(217,89,30,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>📋 Hipoparatiroidi terapötik tedavi (E89.2)</b><br><br><b>Calciday (Ca + D3 800IU):</b> 1 tab × 2/gün — 10:00 ve 17:00 öğünleriyle<br><b>Qalyviz (Calcitriol 0.5 mcg):</b> 1 cap × 2/gün — Calciday'in hemen ardından<br><br><span style="font-size:11px;color:var(--cream-mute);">📅 Doz 2 ay daha aynı (Hakan Bey · Mg form düzeltmesi sonrası adj Ca tekrar bakılacak)</span>${inP(d)?'<br><br><span style="color:var(--coral-soft);">🔴 Regl: kramp riski ↑, dozları atlamayalım.</span>':''}</div>`;
-  const meal1_detail=`<div style="background:rgba(90,122,79,0.18);border:1px solid rgba(168,192,160,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);">${[m1,ms].map(f=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed rgba(255,255,255,0.10);"><span>${f.i} ${f.n}</span><span style="color:var(--mustard-soft);font-weight:600;">${f.k} kcal</span></div>`).join('')}<div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.14);display:flex;justify-content:space-between;"><span style="font-weight:600;">Toplam</span><span style="color:var(--mustard-soft);font-weight:700;">${m1.k+ms.k} kcal</span></div><div style="margin-top:8px;font-size:11px;color:var(--cream-mute);">💊 Omega-3 + B-Complex (P5P 25mg · Methylfolate 400mcg · Methyl-B12 500mcg) yemekle</div>${inP(d)?'<div style="margin-top:4px;font-size:11px;color:var(--coral-soft);">🔴 Regl: ciğer/kırmızı et + 🍋 limon yanına</div>':''}</div>`;
-  const preCarb = inP(d) ? {kcal:90,detail:'1.5 yk bal + 1 kivi + tuzlu su'} : (c && c.phase==='Ovulation') ? {kcal:80,detail:'1 yk bal + 1 kivi + tuzlu su'} : (c && c.phase==='Luteal Phase' && c.day>=getAvgCycleLen()-6) ? {kcal:80,detail:'1 yk bal + 1 kivi + tuzlu su'} : {kcal:60,detail:'1 yk bal VEYA 1 kivi + tuzlu su'};
-  const preworkout_detail=`<div style="background:rgba(232,178,63,0.18);border:1px solid rgba(232,178,63,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>Glikojen yükleme:</b> ${preCarb.detail} (~${preCarb.kcal} kcal).<br>• PPL'den 30 dk önce<br>• Tuzlu su = sodyum + intra-workout enerji</div>`;
-  const ex_detail=sp?`<div style="background:rgba(180,121,144,0.18);border:1px solid rgba(180,121,144,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);">${exs.map(ex=>`<div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px dashed rgba(255,255,255,0.10);"><span>${ex.c?'🎯 ':''}<b>${ex.n}</b></span><span style="color:var(--cream-mute);font-size:12px;">${ex.s}</span></div>`).join('')}</div>`:`<div style="background:rgba(180,121,144,0.18);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);">🛌 Dinlenme günü.</div>`;
-  const meal2_detail=`<div style="background:rgba(90,122,79,0.18);border:1px solid rgba(168,192,160,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);">${[m2,m2s].map(f=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed rgba(255,255,255,0.10);"><span>${f.i} ${f.n}</span><span style="color:var(--mustard-soft);font-weight:600;">${f.k} kcal</span></div>`).join('')}<div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.14);display:flex;justify-content:space-between;"><span style="font-weight:600;">Toplam</span><span style="color:var(--mustard-soft);font-weight:700;">${m2.k+m2s.k} kcal</span></div><div style="margin-top:8px;font-size:11px;color:var(--cream-mute);">💊 Kreatin 5g + Çinko 15mg + Bakır 1.5mg + Calciday (2. doz)</div></div>`;
-  const creatine_detail=`<div style="background:rgba(217,89,30,0.18);border:1px solid rgba(217,89,30,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>Bulk Creatine Monohydrate Creapure</b> 5g/gün<br>• Yükleme YAPMA (kadın fizyolojisinde gereksiz)<br>• 2-3 hafta tartı +0.8-1.5 kg ↑ (kas içi su, yağ değil)<br>• 3L+ su şart<br>• Kan testi öncesi 14 gün önce kes</div>`;
-  const qalyviz_detail=`<div style="background:rgba(217,89,30,0.18);border:1px solid rgba(217,89,30,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>Qalyviz (Calcitriol 0.5 mcg)</b> aktif D vit · 2 cap/gün · Calciday'le birlikte (sabah + akşam). Hipoparatiroidi terapötik tedavi (E89.2).</div>`;
-  const window_close_detail=`<div style="background:rgba(180,121,144,0.18);border:1px solid rgba(180,121,144,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);">19:00 sonrası sadece su + bitki çayı (kafeinsiz). 14-15 saat gece açlığı = sabah hormon dengesi.</div>`;
-  const skin_eve_detail=`<div style="background:rgba(232,178,63,0.18);border:1px solid rgba(232,178,63,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);">${SEB.map((p,i)=>`<div style="display:flex;gap:8px;padding:5px 0;border-bottom:1px dashed rgba(255,255,255,0.10);align-items:center;"><span style="background:rgba(255,255,255,0.10);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--cream-soft);flex-shrink:0;">${i+1}</span><span>${p}</span></div>`).join('')}<div style="display:flex;gap:8px;padding:8px;background:rgba(180,121,144,0.22);border-radius:8px;margin-top:8px;align-items:flex-start;"><span style="font-size:16px;">${ea.e}</span><div><b style="color:var(--mauve-evening);">${ea.l}</b><br>${ea.p}<br><span style="font-size:11px;color:var(--cream-mute);">${ea.no}</span></div></div></div>`;
-  const mgCap = getMgCapCount(d);
-  const mgDose = getMgDose(d);
-  const supp_night_detail=`<div style="background:rgba(217,89,30,0.18);border:1px solid rgba(217,89,30,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><div style="padding:4px 0;">💊 <b>Pure Encap Mg Glycinate <u>${mgCap} cap</u> (${mgDose}mg)</b> — cycle-aware (Folliküler 2, Luteal 3, Regl Day 1-2: 4)${inP(d)?' + kramp koruması':''}</div><div style="padding:4px 0;">💊 <b>Marine Collagen Zooki 11g</b> — cilt + tendon</div><div style="padding:4px 0;">💊 <b>UC-II Type 2 Collagen 40mg</b> — eklem</div><div style="margin-top:6px;font-size:11px;color:var(--cream-mute);">Yatmadan 30 dk önce.</div><div style="margin-top:10px;padding:8px 10px;background:rgba(255,255,255,0.08);border-radius:8px;font-style:italic;font-family:'Cormorant Garamond',serif;font-size:13px;"><b style="font-style:normal;font-family:Jost;">🕯️ Ritüel ânı:</b> Mg'yi yutmadan önce 3 derin nefes (4 sn al, 7 sn tut, 8 sn ver).</div></div>`;
-  const vacuum_detail=`<div style="background:rgba(180,121,144,0.18);border:1px solid rgba(180,121,144,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>İstisna yok — her sabah.</b><br>• Tam nefes ver, göbeği omurgaya doğru çek<br>• 30 sn tut, burnundan yavaş nefes al<br>• 3 set · 30 sn dinlen<br><span style="color:var(--coral-soft);">⭐ Fasted = TVA için maksimum etki</span>${(inP(d) && c && c.day<=2)?'<div style="margin-top:8px;padding:6px 8px;background:rgba(217,89,30,0.22);border-radius:6px;color:var(--coral-soft);"><b>🔴 Şiddetli kramp varsa atla:</b> Yerine 2 dk derin nefes (4-7-8) yap.</div>':''}</div>`;
+  // ═══════════════════════════════════════════════════════════
+  // BEGÜMNAZ buildDailyBlocks — Dashboard timeline (renderSelDay ile aynı protokol)
+  // ═══════════════════════════════════════════════════════════
+  const isMonday = d.getDay()===1;
+  const isExerciseDay = sp !== null && sp !== undefined;
+  // ea pre-declared yukarda; SA Begümnaz'da retinol içermiyor → ea === sa her zaman
+
+  const sabah_ac_detail=`<div style="background:rgba(90,122,79,0.18);border:1px solid rgba(168,192,160,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>☀️ Sabah AC (kahvaltıdan ÖNCE, 5 ürün):</b><br>• 08:30 Akavital 3 yk + ılık su (prebiyotik)<br>• 08:35 Gül sirkesi 4 yk + ılık su (sindirim)<br>• 08:40 NBT NADH 1 tab AC <span style="color:var(--mustard-soft);">(doktor onayı)</span><br>• 08:45 NAC 1 kap (500 mg) AC <span style="color:var(--mustard-soft);">(doktor onayı)</span><br>• 08:50 Bach çiçekleri 4 damla (1. doz)</div>`;
+  const alkemist_detail=`<div style="background:rgba(168,192,160,0.18);border:1px solid rgba(168,192,160,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>🥥 Alkemist Oil Pulling (08:00):</b><br>1 yk HC yağı 5-10 dk ağızda → tükür → ılık su → diş fırçala.</div>`;
+  const kahvalti_supp_detail=`<div style="background:rgba(232,178,63,0.18);border:1px solid rgba(232,178,63,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>💊 Kahvaltı TOK (6 ürün):</b><br>Anti turmeric 2 + More than 1 + NBT Life Guard 1 + Anti MM-12 1 + Lifextra On Hepa 1 + Time Magnezyum 1${isMonday?'<br><br><div style="padding:6px 8px;background:rgba(217,89,30,0.22);border-radius:6px;color:var(--coral-soft);"><b>🟠 PAZARTESİ:</b> Colewinde 50.000 IU Vit D ekstra (yağlı kahvaltıyla).</div>':''}</div>`;
+  const lugol_detail=`<div style="background:rgba(232,178,63,0.18);border:1px solid rgba(232,178,63,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>💧 Lugol İyot %5:</b> 4 damla + 1 bardak ılık su (2 hafta sonra 2 damla). Kahvaltıdan 2 saat sonra. + Bach 4 damla (2. doz). Min/Mg arası ≥2-4 saat.</div>`;
+  const meal1_detail=`<div style="background:rgba(90,122,79,0.18);border:1px solid rgba(168,192,160,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>🍳 Kahvaltı (acıkma):</b><br>${[m1,ms].map(f=>`<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px dashed rgba(255,255,255,0.10);"><span>${f.i} ${f.n}</span><span style="color:var(--mustard-soft);font-weight:600;">${f.k} kcal</span></div>`).join('')}<div style="margin-top:6px;font-size:11px;color:var(--cream-mute);">⚠️ Süt+çiğ sebze+karabiber YOK. Gül+zeytin yaprağı çayı.</div></div>`;
+  const meal2_detail=`<div style="background:rgba(90,122,79,0.18);border:1px solid rgba(168,192,160,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>🍲 Öğle (12-13):</b> ${m2.i} <b>${m2.n}</b> (${m2.k} kcal)<br><span style="font-size:11px;color:var(--cream-mute);">${m2.note||''} ⚠️ Salça/un YOK. Et: kuzu/koyun/hindi 3x/hafta.</span></div>`;
+  const ara_detail=`<div style="background:rgba(232,178,63,0.18);border:1px solid rgba(232,178,63,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>🍎 Ara 15:00:</b><br>• ${m2s.i} <b>${m2s.n}</b><br>• NAC 1 kap (500 mg) — 2. doz<br>• Bach 4 damla — 3. doz</div>`;
+  const benfolife_detail=`<div style="background:rgba(217,89,30,0.18);border:1px solid rgba(217,89,30,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>💪 NBT Benfolife Pre-workout:</b><br>1 tablet hafif tok karna, antrenmandan 30 dk önce. Bugün: ${sp?sp.n:'antrenman'}</div>`;
+  const ex_detail=sp?`<div style="background:rgba(180,121,144,0.18);border:1px solid rgba(180,121,144,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>${sp.e} ${sp.n}</b><br><span style="font-size:11px;color:var(--cream-mute);">${sp.f}</span><br>${exs.map(ex=>`<div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px dashed rgba(255,255,255,0.10);"><span><b>${ex.n}</b></span><span style="color:var(--cream-mute);font-size:12px;">${ex.s}</span></div>`).join('')}<div style="margin-top:6px;font-size:11px;color:var(--cream-mute);">🏠 Ev / 🏋️ Gym / 🌳 Dışarı switch</div></div>`:`<div style="background:rgba(180,121,144,0.18);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);">🛌 Dinlenme.</div>`;
+  const ikindi_ac_detail=`<div style="background:rgba(90,122,79,0.18);border:1px solid rgba(168,192,160,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>🕓 İkindi AC (16:00):</b><br>• Akavital 3 yk + ılık su (2.)<br>• Gül sirkesi 4 yk + ılık su (2.)</div>`;
+  const aksam_yemek_detail=`<div style="background:rgba(90,122,79,0.18);border:1px solid rgba(168,192,160,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>🍲 Akşam (17:30-19) + 4 supplement:</b><br>• Sebze çorbası SALÇASIZ/UNSUZ<br>• Sebze yemeği SALÇASIZ<br>• Anti turmeric 2 + More than 1 + Lifextra 1 + Time Mg 1 (2. dozlar)</div>`;
+  const ayak_banyosu_detail=`<div style="background:rgba(180,121,144,0.18);border:1px solid rgba(180,121,144,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>🦶 Ayak Banyosu (20:00, 15-20 dk):</b><br>Sıcak su 40-42°C + 4-5 damla ıtır yağı + 2 yk Epsom tuzu. Havlu → kalın çorap. + Bach 4 damla (4. doz son).${(inP(d) || (c&&c.day&&c.day<=2))?'<br><span style="color:var(--coral-soft);">🔴 Regl/flare: 2x/gün.</span>':''}</div>`;
+  const cay_detail=`<div style="background:rgba(232,178,63,0.18);border:1px solid rgba(232,178,63,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>🌿 Melissa+Papatya Çayı (21:00):</b> 1 fincan sıcak · uyku hazırlığı.</div>`;
+  const skin_eve_detail=`<div style="background:rgba(232,178,63,0.18);border:1px solid rgba(232,178,63,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);">${SEB.map((p,i)=>`<div style="display:flex;gap:8px;padding:4px 0;border-bottom:1px dashed rgba(255,255,255,0.10);"><span style="background:rgba(255,255,255,0.10);border-radius:50%;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--cream-soft);">${i+1}</span><span>${p}</span></div>`).join('')}<div style="display:flex;gap:8px;padding:8px;background:rgba(180,121,144,0.22);border-radius:8px;margin-top:6px;"><span style="font-size:18px;">${ea.e}</span><div><b style="color:var(--mauve-evening);">${ea.l}</b><br>${ea.p}<br><span style="font-size:11px;color:var(--cream-mute);">${ea.no}</span></div></div></div>`;
+  const probiyotik_detail=`<div style="background:rgba(217,89,30,0.18);border:1px solid rgba(217,89,30,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>💊 Duobalance Probiyotik (22:00):</b><br>2 kapsül 1 kerede su ile. Cranberry içerikli — idrar yolu desteği.</div>`;
 
   return {
     morning:[
-      tliX('06:30',`💊 Levotiron <b>${lvDose} mcg</b>`,`${lvKombi} · boş mide · 30 dk bekle`,'tm',levotiron_detail),
-      tliX('06:45','🫁 Stomach Vacuum','3 × 30 sn · fasted · her sabah','te',vacuum_detail),
-      tliX('07:00','⚡ ViDrate elektrolit','1 sachet + 500ml su','tm',vidrate_detail),
-      tliX('07:10','☀️ Mini SPF','Yürüyüş öncesi 3 dk · cleanser yok','ts',mini_spf_detail),
-      tliX('07:30','🥄 EVOO + limon + tuz shot','1 yk high-phenolic + ½ limon + 1g kaya tuzu','tm',''),
-      tliX('07:35','🚶 Yürüyüş 5-6 km','Fasted · 60-75 dk (RED-S koruma)','te',walk_detail),
-      tliX('09:15','☀️ Tam Sabah Cilt Rutini',yestRetinol?'4 adım · retinol sonrası':'6 adım · duştan sonra','ts',skin_morning_detail),
+      tliX('08:00','🥥 Alkemist Oil Pulling','1 yk HC yağı · 5-10 dk','tm',alkemist_detail),
+      tliX('08:30','☀️ Sabah AC (5 ürün)','Akavital + Gül sirkesi + NADH + NAC + Bach (1.)','tm',sabah_ac_detail),
+      tliX('~09-11','🍳 Kahvaltı (acıkma)',m1.n+' + '+ms.n,'td',meal1_detail),
+      tliX('Tok','💊 Kahvaltı supplementleri',isMonday?'6 ürün + Vit D (Pzt)':'6 ürün tok karna','tm',kahvalti_supp_detail),
     ],
     noon:[
-      tliX('10:00','🥩 1. Öğün (pencere açılışı · "öğlen")',m1.n+' + '+ms.n,'td',meal1_detail),
-      tliX('10:05','💊 Calciday + Qalyviz (1. doz)','1 tab Calciday + 1 cap Qalyviz · öğünle','tm',calciday_detail),
-      tliX('10:10','💊 B-Complex + Omega-3','Igennus Methylated B + 2 softgel Omega-3 (4g/gün hedef)','tm',''),
-      tliX('11:00','☕ Kahve serbest','Levo\'dan 4.5h sonra · 11:00 öncesi YASAKTI','tm','<div style="background:rgba(232,178,63,0.18);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>☕ Kahve kuralı:</b><br>• Levo 06:30 → kahve 11:00 sonrası<br>• Benvenga 2008: kahve Levo emilimini %30 azaltır<br>• 14:30 sonrası kafein YOK</div>'),
-      tliX('14:00','🍯 Pre-WO Karb+Protein','30g karb + 15-25g protein · 60 dk WO öncesi','td',preworkout_detail),
+      tliX('+2 saat','💧 Lugol iyot 4 damla','+ ılık su · + Bach (2. doz)','tm',lugol_detail),
+      tliX('12:00-13:00','🍲 Öğle Yemeği',m2.n,'td',meal2_detail),
+      tliX('14:30','🍎 Ara + NAC (2.) + Bach (3.)',m2s.n,'td',ara_detail),
     ],
     afternoon:[
-      tliX('15:00','🏋️ Güç antrenmanı','5-gün split · beslenmiş','te',ex_detail),
-      tliX('17:00','🥩 2. Öğün (post-WO · "akşam")',m2.n+' + '+(SEL_MEALS&&SEL_MEALS[d.toDateString()+'_m2_side']?SEL_MEALS[d.toDateString()+'_m2_side'].n:M2S[idx].n),'td',meal2_detail),
-      tliX('17:05','💊 Calciday + Qalyviz (2. doz)','1 tab Calciday + 1 cap Qalyviz · öğünle','tm',calciday_detail),
-      tliX('17:10','🌿 Selenometyonin 200mcg','Solgar Yeast-Free · Levo gap 10.5h ✓','tm',selenium_detail),
-      tliX('17:15','💪 Kreatin 5g (Bulk Creapure)','Post-WO · 3L+ su · kan testinden 14g önce kes','tm',creatine_detail),
+      ...(isExerciseDay?[tliX('Pre-WO','💪 NBT Benfolife','Antrenmandan 30 dk önce','tm',benfolife_detail)]:[]),
+      ...(isExerciseDay?[tliX('Esnek',`${sp.e} ${sp.n}`,sp.f,'te',ex_detail)]:[]),
+      tliX('16:00','🕓 İkindi AC','Akavital + Gül sirkesi (2.)','tm',ikindi_ac_detail),
+      tliX('17:30-19','🍲 Akşam + 4 supplement','Sebze çorba + yemek + 4 supp (2. doz)','td',aksam_yemek_detail),
     ],
     evening:[
-      tliX('19:00','🌙 Pencere kapanır','14-15 saat gece açlığı başlar','td',window_close_detail),
-      tliX('22:00','💊 Çinko 15mg + Bakır 1mg','Vitabiotics · Zn:Cu 15:1 · Ca/Mg/Levo\'dan uzak','tm',zinc_detail),
-      tliX('22:30','🌙 Akşam Cilt Rutini',ea.e+' '+ea.l,'ts',skin_eve_detail),
-      tliX('23:00',`💊 Mg <b>${mgCap} cap</b> (${mgDose}mg) + Kolajen`,`Pure Encap Glycinate · cycle-aware${inP(d)?' · regl koruması ↑':''}`,'tm',supp_night_detail),
+      tliX('20:00','🦶 Ayak Banyosu + Bach (4.)','Sıcak su + ıtır + Epsom · 15-20 dk','te',ayak_banyosu_detail),
+      tliX('21:00','🌿 Melissa+Papatya Çayı','Uyku hazırlığı','tm',cay_detail),
+      tliX('~21:30','🌙 Akşam Cilt Rutini',ea.e+' '+ea.l,'ts',skin_eve_detail),
+      tliX('22:00','💊 Duobalance Probiyotik','2 kapsül 1 kerede','tm',probiyotik_detail),
     ],
   };
 }
