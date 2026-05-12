@@ -1578,24 +1578,24 @@ select option{background:var(--bg-deep);color:var(--cream);}
       </div>
     </div>
     <div class="sgrid" id="sgrid"></div>
-    <div class="slbl">Pazartesi Ölçümü</div>
-    <div class="card"><div class="cb"><div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span><strong>Akıllı tartının/eczane terazisinin ekran görüntüsünü</strong> ekle, Claude AI rakamları okuyup cycle context'iyle yorum yapsın. <em>±%5-8 hata payı</em> (mizaç diyette su tutma değişkenliği) açıkça belirtilir.</div>
-      <div class="up"><label class="uplab" for="rp"><div class="upi">📷</div><div class="uptxt"><strong>Tartı ekran görüntüsünü yükle</strong><br>Haftada 1 — Pazartesi sabahı</div><input type="file" id="rp" accept="image/*" multiple style="display:none;" onchange="handleUp(event)"></label></div>
+    <div class="slbl" data-i18n="smart_meas_title">📷 Akıllı Ölçüm — AI Analizi</div>
+    <div class="card"><div class="cb"><div class="card-plain"><span class="card-plain-tag">🪞</span><span data-i18n="smart_meas_hint"><strong>Eczanedeki akıllı tartı, Tanita, Omron, InBody</strong> veya başka herhangi bir bioimpedance terazisinin ekran görüntüsünü yükle. Claude AI rakamları okur, döngü fazına göre yorumlar. ±%5-8 hata payı bioimpedance'in doğası — DEXA daha güvenilir ama akıllı tartı haftalık trend için yeterli.</span></div>
+      <div class="up"><label class="uplab" for="rp"><div class="upi">📷</div><div class="uptxt"><strong data-i18n="upload_meas">Tartı ekran görüntüsünü yükle</strong><br><span data-i18n="upload_meas_hint">Haftada 1 — sabah aç karna ideal</span></div><input type="file" id="rp" accept="image/*" multiple style="display:none;" onchange="handleUp(event)"></label></div>
       <div class="prev" id="rprev"></div>
-      <button id="abtn" class="btn bp bfull" disabled onclick="analyzeR()">🤖 Claude'la analiz et</button>
+      <button id="abtn" class="btn bp bfull" disabled onclick="analyzeR()" data-i18n="analyze_btn">🤖 Claude ile analiz et</button>
       <div id="rres"></div>
     </div></div>
-    <div class="slbl">Manuel Ölçüm Girişi</div>
+    <div class="slbl" data-i18n="manual_meas_title">✍️ Manuel Ölçüm Girişi</div>
     <div class="card"><div class="cb">
       <div class="fgrid">
-        <div class="fr"><label>Kilo (kg)</label><input type="number" id="mw" step="0.1" placeholder="76.9"></div>
-        <div class="fr"><label>Yağ (%)</label><input type="number" id="mf" step="0.1" placeholder="34.1"></div>
-        <div class="fr"><label>Kas (kg)</label><input type="number" id="mm" step="0.1" placeholder="49.3"></div>
-        <div class="fr"><label>Bel (cm)</label><input type="number" id="mwa" step="0.1" placeholder="84"></div>
-        <div class="fr"><label>Kalça (cm)</label><input type="number" id="mh" step="0.1" placeholder="110"></div>
-        <div class="fr"><label>Bacak (cm)</label><input type="number" id="mt" step="0.1" placeholder="68"></div>
+        <div class="fr"><label data-i18n="lbl_weight">Kilo (kg)</label><input type="number" id="mw" step="0.1" placeholder="—"></div>
+        <div class="fr"><label data-i18n="lbl_fat">Yağ (%)</label><input type="number" id="mf" step="0.1" placeholder="—"></div>
+        <div class="fr"><label data-i18n="lbl_muscle">Kas (kg)</label><input type="number" id="mm" step="0.1" placeholder="—"></div>
+        <div class="fr"><label data-i18n="lbl_waist">Bel (cm)</label><input type="number" id="mwa" step="0.1" placeholder="—"></div>
+        <div class="fr"><label data-i18n="lbl_hip">Kalça (cm)</label><input type="number" id="mh" step="0.1" placeholder="—"></div>
+        <div class="fr"><label data-i18n="lbl_thigh">Bacak (cm)</label><input type="number" id="mt" step="0.1" placeholder="—"></div>
       </div>
-      <button class="btn bp bfull" onclick="saveM()">Kaydet</button>
+      <button class="btn bp bfull" onclick="saveM()" data-i18n="save_btn">Kaydet</button>
     </div></div>
     <div class="slbl">Ölçüm Geçmişi</div>
     <div class="card"><div class="cb" id="mhist"></div></div>
@@ -1828,13 +1828,19 @@ select option{background:var(--bg-deep);color:var(--cream);}
 
 <!-- BOTTOM NAV -->
 <nav class="bnav" role="navigation" aria-label="Ana menü">
-  <button class="nb active" onclick="showP('takvim',this)" aria-label="Bugün"><span class="ni">🏠</span><span class="nl">Bugün</span></button>
-  <button class="nb" onclick="showP('cycle',this)" aria-label="Döngü"><span class="ni">🌸</span><span class="nl">Döngü</span></button>
-  <button class="nb" onclick="showP('diyet',this)" aria-label="Diyet"><span class="ni">🥩</span><span class="nl">Diyet</span></button>
-  <button class="nb" onclick="showP('egzersiz',this)" aria-label="Egzersiz"><span class="ni">💪</span><span class="nl">Egzersiz</span></button>
-  <button class="nb" onclick="showP('cilt',this)" aria-label="Cilt"><span class="ni">✨</span><span class="nl">Cilt</span></button>
-  <button class="nb" onclick="showP('medical',this)" aria-label="Medical Records"><span class="ni">🩺</span><span class="nl">Medical</span></button>
+  <button class="nb active" onclick="showP('takvim',this)" aria-label="Bugün"><span class="ni">🏠</span><span class="nl" data-i18n="nav_today">Bugün</span></button>
+  <button class="nb" onclick="showP('cycle',this)" aria-label="Döngü"><span class="ni">🌸</span><span class="nl" data-i18n="nav_cycle">Döngü</span></button>
+  <button class="nb" onclick="showP('diyet',this)" aria-label="Diyet"><span class="ni">🥩</span><span class="nl" data-i18n="nav_diet">Diyet</span></button>
+  <button class="nb" onclick="showP('egzersiz',this)" aria-label="Egzersiz"><span class="ni">💪</span><span class="nl" data-i18n="nav_exercise">Egzersiz</span></button>
+  <button class="nb" onclick="showP('cilt',this)" aria-label="Cilt"><span class="ni">✨</span><span class="nl" data-i18n="nav_skin">Cilt</span></button>
+  <button class="nb" onclick="showP('medical',this)" aria-label="Medical Records"><span class="ni">🩺</span><span class="nl" data-i18n="nav_medical">Medical</span></button>
 </nav>
+
+<!-- LANGUAGE TOGGLE (sağ alt sabit) -->
+<div id="lang-toggle" style="position:fixed;top:14px;right:14px;z-index:1000;background:rgba(15,30,38,0.78);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(232,221,196,0.20);border-radius:18px;padding:5px;display:flex;gap:2px;font-size:11px;font-weight:600;letter-spacing:0.5px;">
+  <button id="lang-tr" onclick="setLang('tr')" style="padding:5px 10px;border-radius:14px;border:none;background:transparent;color:var(--cream-mute);cursor:pointer;font-weight:600;">TR</button>
+  <button id="lang-en" onclick="setLang('en')" style="padding:5px 10px;border-radius:14px;border:none;background:transparent;color:var(--cream-mute);cursor:pointer;font-weight:600;">EN</button>
+</div>
 
 <!-- FOOD ALTS MODAL -->
 <div class="mo" id="food-alts-modal">
@@ -2181,6 +2187,79 @@ select option{background:var(--bg-deep);color:var(--cream);}
 </div>
 
 <script>
+// ══════════════════════════════════════════
+// I18N — Türkçe / English language toggle (Phase 2 Iter 8)
+// ══════════════════════════════════════════
+const I18N = {
+  tr: {
+    nav_today:'Bugün', nav_cycle:'Döngü', nav_diet:'Diyet',
+    nav_exercise:'Egzersiz', nav_skin:'Cilt', nav_medical:'Medical',
+    greet_morning:'Günaydın', greet_noon:'Tünaydın',
+    greet_evening:'İyi akşamlar', greet_night:'İyi geceler',
+    welcome_title:'Hoşgeldin', welcome_subtitle:'Bu app sana özel — döngün, sağlığın, antrenmanın, cilt bakımın 1 yerde. Başlamadan önce 3 şeyi netleştirelim:',
+    welcome_section1:'1️⃣ Regl Kaydın', welcome_section2:'2️⃣ Başlangıç Ölçülerin', welcome_section3:'3️⃣ Sana Özel Hatırlatma',
+    welcome_no_period:'Henüz regl kaydın yok. Cycle sekmesinden ekleyebilirsin.',
+    welcome_no_meas:'Henüz ölçüm yok. Ölçüm sekmesinden akıllı ölçüm verilerini ekle.',
+    welcome_ready_btn:'Hazırım, başlayalım 💪',
+    smart_meas_title:'📷 Akıllı Ölçüm — AI Analizi',
+    smart_meas_hint:'<strong>Eczanedeki akıllı tartı, Tanita, Omron, InBody</strong> veya başka herhangi bir bioimpedance terazisinin ekran görüntüsünü yükle. Claude AI rakamları okur, döngü fazına göre yorumlar. ±%5-8 hata payı bioimpedance’in doğası — DEXA daha güvenilir ama akıllı tartı haftalık trend için yeterli.',
+    upload_meas:'Tartı ekran görüntüsünü yükle', upload_meas_hint:'Haftada 1 — sabah aç karna ideal',
+    analyze_btn:'🤖 Claude ile analiz et',
+    manual_meas_title:'✍️ Manuel Ölçüm Girişi',
+    lbl_weight:'Kilo (kg)', lbl_fat:'Yağ (%)', lbl_muscle:'Kas (kg)',
+    lbl_waist:'Bel (cm)', lbl_hip:'Kalça (cm)', lbl_thigh:'Bacak (cm)',
+    save_btn:'Kaydet',
+    today_label:'BUGÜN', daily_program:'⏰ Günlük Program',
+    cycle_log_start:'🌸 Döngü takibini başlat',
+  },
+  en: {
+    nav_today:'Today', nav_cycle:'Cycle', nav_diet:'Diet',
+    nav_exercise:'Exercise', nav_skin:'Skin', nav_medical:'Medical',
+    greet_morning:'Good morning', greet_noon:'Good afternoon',
+    greet_evening:'Good evening', greet_night:'Good night',
+    welcome_title:'Welcome', welcome_subtitle:'This app is personalised for you — your cycle, health, training, and skincare in one place. Let’s clarify three things before we start:',
+    welcome_section1:'1️⃣ Your Period Log', welcome_section2:'2️⃣ Your Initial Measurements', welcome_section3:'3️⃣ Personalised Reminder',
+    welcome_no_period:'No period log yet. You can add one from the Cycle tab.',
+    welcome_no_meas:'No measurements yet. Add smart-scale data from the Measurements tab.',
+    welcome_ready_btn:'I’m ready, let’s start 💪',
+    smart_meas_title:'📷 Smart Measurement — AI Analysis',
+    smart_meas_hint:'Upload a screenshot from a <strong>pharmacy smart scale, Tanita, Omron, InBody</strong> or any other bioimpedance scale. Claude AI reads the numbers and interprets in your cycle context. ±5-8% margin is the nature of bioimpedance — DEXA is more accurate, but smart scales are fine for weekly trends.',
+    upload_meas:'Upload scale screenshot', upload_meas_hint:'Once a week — morning fasted ideal',
+    analyze_btn:'🤖 Analyse with Claude',
+    manual_meas_title:'✍️ Manual Entry',
+    lbl_weight:'Weight (kg)', lbl_fat:'Fat (%)', lbl_muscle:'Muscle (kg)',
+    lbl_waist:'Waist (cm)', lbl_hip:'Hip (cm)', lbl_thigh:'Thigh (cm)',
+    save_btn:'Save',
+    today_label:'TODAY', daily_program:'⏰ Daily Programme',
+    cycle_log_start:'🌸 Start cycle tracking',
+  }
+};
+function getLang(){return localStorage.getItem('lang')||'tr';}
+function t(key){const L=getLang();return (I18N[L]&&I18N[L][key])||I18N.tr[key]||key;}
+function setLang(lang){
+  if(lang!=='tr'&&lang!=='en')return;
+  localStorage.setItem('lang',lang);
+  document.documentElement.lang=lang;
+  applyTranslations();
+  if(typeof renderDashboard==='function')try{renderDashboard();}catch(e){}
+  if(typeof renderSelDay==='function')try{renderSelDay();}catch(e){}
+  const tr=document.getElementById('lang-tr'),en=document.getElementById('lang-en');
+  if(tr&&en){
+    const a='padding:5px 10px;border-radius:14px;border:none;cursor:pointer;font-weight:600;background:linear-gradient(135deg,rgba(232,178,63,0.32),rgba(217,89,30,0.28));color:var(--cream-soft);';
+    const i='padding:5px 10px;border-radius:14px;border:none;cursor:pointer;font-weight:600;background:transparent;color:var(--cream-mute);';
+    tr.style.cssText=lang==='tr'?a:i;
+    en.style.cssText=lang==='en'?a:i;
+  }
+}
+function applyTranslations(){
+  document.querySelectorAll('[data-i18n]').forEach(el=>{
+    const key=el.getAttribute('data-i18n');
+    const val=t(key);
+    if(val)el.innerHTML=val;
+  });
+}
+window.addEventListener('DOMContentLoaded',()=>{try{setLang(getLang());}catch(e){console.warn('i18n init',e);}});
+
 // ══════════════════════════════════════════
 // CYCLE ENGINE — driven by logged data, not hardcoded dates
 // ══════════════════════════════════════════
@@ -3104,11 +3183,11 @@ function renderHealthCardForSelDay(){
 // ══════════════════════════════════════════
 function getGreeting(){
   const h=new Date().getHours();
-  if(h<6)return 'İyi geceler';
-  if(h<12)return 'Günaydın';
-  if(h<17)return 'Tünaydın';
-  if(h<22)return 'İyi akşamlar';
-  return 'İyi geceler';
+  if(h<6)return t('greet_night');
+  if(h<12)return t('greet_morning');
+  if(h<17)return t('greet_noon');
+  if(h<22)return t('greet_evening');
+  return t('greet_night');
 }
 function toggleAccordion(id){
   const el=document.getElementById(id);
@@ -9414,12 +9493,12 @@ function getMultiMetricProgress(){
 }
 
 function renderMeas(){
-  const l=S.meas.length?S.meas[S.meas.length-1]:{weight:76.9,fat:34.1,muscle:49.3,waist:84,hip:110},pr=S.meas.length>1?S.meas[S.meas.length-2]:null;
-  const cur=l.weight||76.9;
+  const l=S.meas.length?S.meas[S.meas.length-1]:{weight:null,fat:null,muscle:null,waist:null,hip:null},pr=S.meas.length>1?S.meas[S.meas.length-2]:null;
+  const cur=l.weight||null;
   document.getElementById('cwbig').textContent=cur.toFixed(2);
-  const prog=Math.max(0,Math.min(100,((76.9-cur)/(76.9-58))*100));
+  const prog=null;
   document.getElementById('pbar').style.width=prog+'%';
-  const lostKg=(76.9-cur).toFixed(2);
+  const lostKg=(cur?(cur-cur).toFixed(2):0);
   const remKg=(cur-62.5).toFixed(2);
   // 5-metrik mini pano (Hafta 4A)
   const mmEl=document.getElementById('multi-metrics');
@@ -9448,7 +9527,7 @@ function renderMeas(){
   // Body neutrality dil — değer odaklı yerine ilişki odaklı (Hafta 4A — Ajan 6)
   const lostStr=parseFloat(lostKg)>=0?`<strong>${lostKg}</strong> kg yolculuğun başından`:`<strong>${Math.abs(lostKg)}</strong> kg başlangıçtan üstte`;
   document.getElementById('pnote').innerHTML=`${lostStr} · sağlık metriklerine <strong>${remKg>0?remKg:0}</strong> kg<div style="font-size:11px;color:var(--text-light);margin-top:4px;">Hız bedenine ait — cycle, uyku, regl etkili. Yüksekse tartı kızdırma; bedenin sana farklı dilden konuşuyor.<br>⚠️ Akıllı tartı (bioimpedance) mizaç temelli diyette ±%5-8 hata payı. DEXA daha güvenilir.<br>📌 5 metrikin 3'ü gelişiyor → kilo durağan olsa bile <strong>İLERLEME VAR</strong> (anti-kompulsif çerçeve).</div>`;
-  document.getElementById('sgrid').innerHTML=[{lb:'Vücut Yağı',v:(l.fat||34.1)+'%',d:pr?((l.fat||34.1)-(pr.fat||34.1)).toFixed(1):null,g:'<0'},{lb:'Kas Kütlesi',v:(l.muscle||49.3)+' kg',d:pr?((l.muscle||49.3)-(pr.muscle||49.3)).toFixed(1):null,g:'>0'},{lb:'Bel',v:(l.waist||84)+' cm',d:pr?((l.waist||84)-(pr.waist||84)).toFixed(1):null,g:'<0'},{lb:'Kalça',v:(l.hip||110)+' cm',d:pr?((l.hip||110)-(pr.hip||110)).toFixed(1):null,g:'<0'}].map(s=>`<div class="sbox"><div class="sv">${s.v}</div><div class="sl">${s.lb}</div>${s.d!==null?`<div class="sd ${((s.g.includes('<')&&parseFloat(s.d)<0)||(s.g.includes('>')&&parseFloat(s.d)>0))?'good':'warn'}">${parseFloat(s.d)>0?'+':''}${s.d}</div>`:''}</div>`).join('');
+  document.getElementById('sgrid').innerHTML=[{lb:'Vücut Yağı',v:(l.fat||0)+'%',d:pr?((l.fat||0)-(pr.fat||0)).toFixed(1):null,g:'<0'},{lb:'Kas Kütlesi',v:(l.muscle||0)+' kg',d:pr?((l.muscle||0)-(pr.muscle||0)).toFixed(1):null,g:'>0'},{lb:'Bel',v:(l.waist||0)+' cm',d:pr?((l.waist||0)-(pr.waist||0)).toFixed(1):null,g:'<0'},{lb:'Kalça',v:(l.hip||0)+' cm',d:pr?((l.hip||0)-(pr.hip||0)).toFixed(1):null,g:'<0'}].map(s=>`<div class="sbox"><div class="sv">${s.v}</div><div class="sl">${s.lb}</div>${s.d!==null?`<div class="sd ${((s.g.includes('<')&&parseFloat(s.d)<0)||(s.g.includes('>')&&parseFloat(s.d)>0))?'good':'warn'}">${parseFloat(s.d)>0?'+':''}${s.d}</div>`:''}</div>`).join('');
   const hist=document.getElementById('mhist');
   hist.innerHTML=S.meas.length?`<table class="mtbl"><thead><tr><th>Tarih</th><th>Kilo</th><th>Yağ</th><th>Kas</th><th>Bel</th></tr></thead><tbody>${[...S.meas].reverse().map(m=>`<tr><td>${m.date}</td><td>${m.weight} kg</td><td>${m.fat||'-'}%</td><td>${m.muscle||'-'}</td><td>${m.waist||'-'}</td></tr>`).join('')}</tbody></table>`:'<p style="font-size:13px;color:var(--text-light);text-align:center;padding:20px;">Henüz ölçüm kaydı yok.</p>';
 }
@@ -9527,47 +9606,7 @@ document.addEventListener('keydown',function(e){
 // ══════════════════════════════════════════
 // ─── PDF SEED DATA — extracted from PC_Report (Takvimim) on 2026-04-27 ───
 // Format: ['YYYY-MM-DD', durationDays] · pregnancy gap 28 Dec 2024 - 13 Mar 2025 excluded
-const PDF_PERIODS=[
-  ['2026-04-03',8],['2026-03-03',5],['2026-02-06',6],['2026-01-08',5],
-  ['2025-12-08',5],['2025-11-10',5],['2025-10-13',5],['2025-09-16',5],
-  ['2025-08-19',5],['2025-07-23',5],['2025-06-27',5],['2025-06-01',5],
-  ['2025-05-05',5],['2025-04-08',5],
-  // pregnancy 2024-12-28 → 2025-03-13 (excluded)
-  ['2024-11-30',5],['2024-11-02',5],['2024-10-06',6],['2024-09-08',5],
-  ['2024-08-13',4],['2024-07-17',5],['2024-06-22',5],['2024-05-23',5],
-  ['2024-04-25',4],['2024-04-01',4],['2024-03-04',4],['2024-02-09',6],
-  ['2024-01-12',4],['2023-12-17',4],['2023-11-21',4],['2023-10-27',4],
-  ['2023-09-30',5],['2023-09-04',4],['2023-07-14',4],['2023-06-13',2],
-  ['2023-05-21',5],['2023-04-20',5],['2023-03-22',5],['2023-02-20',5],
-  ['2023-01-26',5],['2023-01-01',5],['2022-12-05',5],['2022-11-09',5],
-  ['2022-10-10',5],['2022-09-13',5],['2022-08-19',5],['2022-07-23',5],
-  ['2022-06-27',5],['2022-05-28',5],['2022-05-01',5],['2022-04-03',5],
-  ['2022-03-10',5],['2022-02-07',5],['2022-01-11',5],['2021-12-15',5],
-  ['2021-11-18',5],['2021-09-13',5],['2021-08-24',5],['2021-07-31',5],
-  ['2021-07-02',5],['2021-06-05',5],['2021-04-27',5],['2021-03-24',5],
-  ['2021-02-22',5],['2021-01-20',5],['2020-12-28',5],['2020-11-26',6],
-  ['2020-10-30',5],['2020-10-02',5],['2020-09-04',6],['2020-08-13',5],
-  ['2020-07-17',4],['2020-06-18',5],['2020-05-20',5],['2020-04-26',7],
-  ['2020-03-30',6],['2020-03-02',8],['2020-02-01',9],['2019-12-25',7],
-  ['2019-11-28',7],['2019-11-02',6],['2019-10-05',8],['2019-09-03',6],
-  ['2019-08-09',6],['2019-07-13',6],['2019-06-16',6],['2019-05-23',5],
-  ['2019-04-25',5],['2019-03-30',6],['2019-02-28',6],['2019-02-03',5],
-  ['2019-01-05',5],['2018-12-04',6],['2018-11-08',6],['2018-10-11',8],
-  ['2018-09-13',6],['2018-08-18',6],['2018-07-21',5],['2018-06-22',6],
-  ['2018-05-26',6],['2018-04-30',5],['2018-04-02',6],['2018-03-05',7],
-  ['2018-02-08',6],['2018-01-09',6],['2017-12-16',6],['2017-11-17',6],
-  ['2017-10-19',7],['2017-09-23',5],['2017-08-27',6],['2017-07-27',7],
-  ['2017-06-21',6],['2017-05-27',7],['2017-04-27',7],['2017-03-31',5],
-  ['2017-02-27',5],['2017-01-31',5],['2017-01-01',5],['2016-12-06',6],
-  ['2016-11-05',5],['2016-10-13',5],['2016-09-21',5],['2016-08-29',5],
-  ['2016-08-09',5],['2016-07-13',5],['2016-06-16',5],['2016-05-20',6],
-  ['2016-04-22',6],['2016-03-26',5],['2016-02-28',5],['2016-01-31',6],
-  ['2016-01-04',7],['2015-12-07',8],['2015-11-10',6],['2015-10-15',6],
-  ['2015-09-19',6],['2015-08-16',7],['2015-07-19',5],['2015-06-22',5],
-  ['2015-05-24',7],['2015-04-17',5],['2015-03-23',5],['2015-02-25',5],
-  ['2015-01-28',5],['2015-01-03',5],['2014-12-07',5],['2014-11-12',5],
-  ['2014-10-13',5],['2014-09-17',5],['2014-08-19',5],
-];
+const PDF_PERIODS=[]; // Begümnaz fresh start — no seeded history
 
 function seedFromPDF(){
   const existing=getPeriods();
@@ -10051,7 +10090,7 @@ function renderCycleStripTop(){
   el.innerHTML=`<div class="cstrip" style="cursor:pointer;flex-direction:column;align-items:stretch;" onclick="showP('cycle',document.querySelectorAll('.nb')[1])"><div style="display:flex;align-items:center;gap:14px;"><div class="cicon">${c.emoji}</div><div class="cinfo" style="flex:1;"><div class="cphase">${c.label}</div><div class="cdetail">${c.archetype} · Son regl: ${lastStartLbl} · Döngü ~${cyc} gün</div></div><div class="cbadge"><div class="cn">${c.day}</div><div class="cl">gün</div></div></div><div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13px;color:var(--text-mid);margin-top:10px;padding-top:10px;border-top:1px dashed rgba(180,120,100,0.2);text-align:center;">${zen}</div></div>`;
 }
 // Auto-seed period history on first run — silent, no UI
-function autoSeedPeriodsIfEmpty(){
+function autoSeedPeriodsIfEmpty(){return;/* DISABLED for Begümnaz — no seed data */ // 
   if(localStorage.getItem('periods')!==null)return;
   const seeded=PDF_PERIODS.map(([start,days])=>{
     const startD=fromYmd(start);
@@ -10178,7 +10217,7 @@ function init(){
   }
   renderCycleStripTop();
   renderHomeEventCountdown();
-  if(!S.meas.length){S.meas.push({date:'26.04.2026',weight:76.9,fat:34.1,muscle:49.3,waist:84,hip:110,thigh:65});localStorage.setItem('meas',JSON.stringify(S.meas));}
+  // Measurement auto-seed disabled for Begümnaz — fresh start, kullanıcı kendi ölçüsünü girer
   // Phase 2 Hafta 2A: eski done boolean → workout_log migration (tek seferlik)
   if(typeof migrateDoneToWorkoutLog==='function')migrateDoneToWorkoutLog();
   // Dashboard ilk açılışta gösterilir; renderCal renderDashboard içinde Aylık Takvim accordion'u render edildiğinde çağrılır
