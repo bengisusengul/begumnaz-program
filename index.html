@@ -2501,7 +2501,7 @@ function getMacroTarget(d=new Date()){
 }
 
 // ══════════════════════════════════════════
-// LEVOTIRON ALTERNE DOZ (Hakan Bey kararı, 9 May 2026)
+// LEVOTIRON ALTERNE DOZ (Doktor kararı, 9 May 2026)
 // Pzt-Sal-Çar: 125 mcg (100mg + 25mg tablet kombi)
 // Per-Cum-Cmt-Paz: 100 mcg
 // Haftalık ortalama: ~110.7 mcg/gün (TSH suppression hedefi koruyup sT4 üst sınır → orta-üst)
@@ -2588,7 +2588,7 @@ function getLowIntakeAlert(){
     let msg='Enerji yetersizliği uyarısı — son 3 gün';
     if(avgEA)msg+=` ortalama EA ${avgEA} kcal/kg LBM (Begümnaz için ≥35 hedef · post-tiroidektomi adjustment)`;
     if(avgKcal)msg+=`${avgEA?' · ':' '}ortalama ${avgKcal} kcal`;
-    msg+='. Post-tiroidektomi + Hashimoto + hipopara konteksinde T3 sentezi + adaptive thermogenesis riski. +250-300 kcal düşün veya egzersiz volume azalt (Hakan Bey\'e danış · RED-S kritik).';
+    msg+='. Post-tiroidektomi + Hashimoto + hipopara konteksinde T3 sentezi + adaptive thermogenesis riski. +250-300 kcal düşün veya egzersiz volume azalt (Doktor\'e danış · RED-S kritik).';
     return{type:'critical',msg,lows,clinEA};
   }
   // Uyarı: 2+ gün subklinik EA VEYA 2 gün <1500 kcal
@@ -3003,7 +3003,7 @@ function renderDoctorQuestionsCard(){
   }).join('');
   const total=Object.values(THYROID_DOCTOR_QUESTIONS).reduce((a,b)=>a+b.length,0);
   el.innerHTML=`<div class="card">
-    <div class="ch"><h3>❓ Hakan Bey'e Soracaklarım</h3></div>
+    <div class="ch"><h3>❓ Doktora Soracaklarım</h3></div>
     <div class="cb">
       <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span><strong>${total} soru</strong> · ${Object.keys(THYROID_DOCTOR_QUESTIONS).length} kategori. Endokrinologa randevu öncesi ihtiyacın olanları seç. <em>medical-documents/HAKAN-BEY-RANDEVU-PAKETI.md</em> dosyasıyla birlikte götür.</div>
       ${cats}
@@ -4182,33 +4182,46 @@ const THYROID_BLOOD_TESTS=[
 ];
 
 const THYROID_DOCTOR_QUESTIONS={
-  'İlaç & Doz':[
-    'Levotiron dozumu nasıl kararlaştırıyorsun (TSH-based mi, sT4 üst yarıda mı)?',
-    'TSH suppresyon hedefimiz nedir (kanser nüks riski yoksa normal aralık tercih ederim)?',
-    'sT3 düşük geliyorsa kombine T4+T3 (Liothyronine) düşünür müyüz?',
-    'Levotiron sabah 06:30 aç karna; eğer kaçırırsam ertesi gün çift doz mu yoksa tek mi?',
-    'İlaç emilimini bozan supplement/yiyecek listesi (Ca, demir, çinko, soya, kahve, gluten) — minimum aralık 2 saat mi 4 saat mi?'
+  // Begümnaz'ın doktor görüşmesinde sorması gereken sorular — bekleyen 3 ana soru + ek
+  'Doktor Cevabı Bekleyen 3 Soru':[
+    'NADH dozu nedir? (Şimdilik 1 tablet sabah AC uygulanıyor — kutudaki doza göre düzenleme yapılır mı?)',
+    'NAC günde 2 kapsül (1000 mg toplam) — tek seferde mi yoksa 2 kerede mi alalım? Hangi saatlerde? (Şimdilik 2×500 mg, sabah AC + ikindi AC)',
+    'Probiyotik olarak Duobalance BV Cran dışında alternatif/ek bir probiyotik önerin var mı?'
   ],
-  'Supplement Onayı':[
-    'Selenyum 200 mcg/gün T4→T3 dönüşüm desteği için uygun mu (Sims literatürü)?',
-    'Çinko 15 mg + Bakır 1.5 mg (10:1 oranı) immün/cilt için uygun mu (et yiyenlerde Cu eksikliği nadir)?',
-    'Calciday içeriği (D3 + K2 MK-7 var mı, hangi formdaki kalsiyum)?',
-    'Kreatin 5 g/gün tiroid fonksiyonuna etki eder mi? Kan testi öncesi kaç gün kesmeliyim?'
+  'Tiroid Takibi (Lugol Sonrası)':[
+    'Lugol iyot %5 başlatıldıktan 6-8 hafta sonra TSH/T3/T4 tekrar bakılacak mı? (T3 4.20 hafif yüksekti)',
+    'İyot 27 µg/L → 4 damla başlangıç → 2 damlaya düşüş zamanlaması: 2 hafta yeterli mi?',
+    '2 hafta sonra damla sayısını düşürmenin işareti ne olacak (tiroid semptomu, kan değeri)?'
   ],
-  'Performans & Beslenme':[
-    'Tiroidektomi + direnç antrenmanı + karnivor diyet kombinasyonunda günlük protein/karb dağılımı önerin nedir?',
-    'Energy availability >45 kcal/kg LBM hedefliyorum — RED-S koruma için yeterli mi?',
-    'Cycle phase × performance pattern\'i takip ediyorum; T4 dozumu cycle\'a göre ayarlamak gerekir mi?'
+  'Demir + Hematoloji':[
+    'Serum demir 204-206 µg/L + Transferrin sat. %68 (yüksek) — 3 ay sonra tekrar test mantıklı mı?',
+    'Devam yüksekse hemokromatozis gen taraması (HFE) düşünülmeli mi?',
+    'Et tüketimi 3x/hafta sınırı yeterli mi yoksa daha mı azaltalım? (kuzu/koyun/hindi)'
   ],
-  'Kemik Sağlığı':[
-    'KMY için DEXA hangi sıklıkta? T-score şu anda nedir?',
-    'D vitamini hedef aralığı 30-50 ng/mL mi yoksa daha yüksek (40-60) mi tercih ediyorsun?',
-    'Bone loading egzersizleri (squat, hip thrust, deadlift) yeterli mi yoksa ek farmakolojik önlem (bisfosfonat) gerekir mi?'
+  'B12 + Multivitamin':[
+    'Kan B12 738 ng/L (yüksek) → Anti MM-12\'nin tam içeriği nedir? B12 metilcobalamin ise dozu sürdürmeli miyiz?',
+    'NBT Life Guard multivitamini içerisinde hangi B kompleks formları var?',
+    'Folik asit 9.70 normal — methylated form gerekiyor mu?'
   ],
-  'Mood & Cognitive':[
-    'Hipotiroidi semptomları (yorgunluk, brain fog, mood düşüklüğü) düzelmiyorsa T3 ekleme + sT3 hedefi nedir?',
-    'NREM uyku derinliği bozulmuş hissediyorum — tiroid ile bağlantı olabilir mi?',
-    'Levotiron dozumun sabah aldığım saate göre mood/enerji üzerine etkisi olur mu (Levotiron Diary verilerim mevcut)?'
+  'Endo + Hormonal':[
+    'Visanne sonrası içeride kalan endo aktivitesi takibi nasıl? (CA-125 / AMH bakılacak mı?)',
+    'Hormonal jawline akne yoğunlaşırsa nasıl tepki verelim (anti-androjen?)',
+    'FSH/LH/Östradiol/Progesteron paneli ne zaman bakılması mantıklı?'
+  ],
+  'Mezoterapi + Cilt':[
+    'Yeni mezoterapi planlanırsa tret/azelaic protokolü ne zaman kesilmeli? (5 gün önce yeterli mi?)',
+    'Acnelyse 0.025% 2x/hafta → 3x/hafta\'ya çıkış zamanı: 6-8 hafta tolerans sonrası mantıklı mı?',
+    'PIE (kırmızı izler) için ek müdahale (IPL / LED red light) öneri ne?'
+  ],
+  'Selenyum + İyot Güvenliği':[
+    'Selenyum 58 µg/L (düşük) çıktı — protokol içinde direkt selenyum yok. Doğal kaynak (Brazil cevizi 2/gün) ya da tablet eklenmeli mi?',
+    'İyot tedavisi sırasında selenyum yetersizliği otoimmün tetik mi? (Hashimoto antikorları zaten negatif, ama güvenlik?)',
+    'Hashimoto negatif olmasına rağmen anti-TPO 6 ay sonra tekrar bakılacak mı?'
+  ],
+  'Yaşam + Beslenme':[
+    'Mizaç temelli protokolün (sıcak su mecbur, çiğ sebze yasak, süt ürünleri yasak) ne kadar süre devam edecek?',
+    'Pazartesi sabah Colewinde 50.000 IU Vit D haftalık — kontrol kanında 25-OH D bakılacak mı?',
+    'Egzersiz hassasiyeti (3 ağırlık + 2 pelvik taban + 2 pilates) endo flare için doğru yoğunluk mu?'
   ]
 };
 
@@ -4333,7 +4346,7 @@ GÖREV:
    - **Hangi değerler iyi, hangileri dikkat?** (yumuşak ton, panik etmeden)
    - **Supplementlerin etkisi görünüyor mu?** (Selenium TPO etkisi, Mg form etkisi, Omega-3 lipid etkisi)
    - **Yeni sonuçlara göre supplement önerin var mı?** (örn. ferritin <70 → demir ekle, K2 yok → ekle vb.)
-   - **Hakan Bey'le konuşulacak 2-3 madde**
+   - **Doktorla konuşulacak 2-3 madde**
 
 TON: Şefkatli, yargısız. "Başarısız" gibi kelimeler kullanma. Klinik ama anlaşılır. Endokrinolog + diyetisyen sentezi.
 
@@ -5346,7 +5359,7 @@ function calculateAchievements(){
     {id:'mg_kramp',icon:'💊',name:'Mg Kramp Çözücü',progress:1,goal:1,desc:'Bisglycinate ile semptom geçti ✓'},
     {id:'esneklik',icon:'🌿',name:'Esneklik Kabulü',progress:1,goal:1,desc:'Modifiye karnivor + Pazar brunch'},
     {id:'5metrik',icon:'📊',name:'5 Metrik Bilgesi',progress:1,goal:1,desc:'Sadece kg değil 5 metrik'},
-    {id:'hakan_paket',icon:'🩺',name:'Doktor Hazırlık',progress:1,goal:1,desc:'Hakan Bey randevu paketi'},
+    {id:'hakan_paket',icon:'🩺',name:'Doktor Hazırlık',progress:1,goal:1,desc:'Doktor randevu hazırlığı'},
     {id:'pazar_brunch',icon:'🎉',name:'Pazar Hak Ettin',progress:0,goal:4,desc:'4 hafta Pazar brunch anti-kompulsif'},
     {id:'t3_dostu',icon:'🦋',name:'T3 Dostu',progress:supplementsActive*5,goal:30,desc:'30 gün Selenometyonin streak'},
     {id:'lipid',icon:'❤️',name:'Lipid Düşürücü',progress:lipidLog.length,goal:3,desc:'3 lipid test kaydı (FH takip)'},
@@ -7291,7 +7304,7 @@ const ACHIEVEMENTS_V2 = [
   {id:'lipid_dusurucu', emoji:'❤️', name:'Lipid Düşürücü', desc:'Omega-3 4g + zeytinyağ shot 21 gün arka arkaya', check:()=>0},
   {id:'esneklik_kabulu', emoji:'🌿', name:'Esneklik Kabulü', desc:'Yasaklı liste yumuşatıldı — kompulsif risk azaldı', check:()=>1},
   {id:'mg_kramp_cozucu', emoji:'💊', name:'Mg Kramp Çözücü', desc:'Pure Encap bisglycinate ile semptom geçti ✓', check:()=>1},
-  {id:'hakan_paket', emoji:'🩺', name:'Doktor Hazırlık', desc:'Hakan Bey randevu paketi hazırlandı', check:()=>1},
+  {id:'hakan_paket', emoji:'🩺', name:'Doktor Hazırlık', desc:'Doktor randevu hazırlığı hazırlandı', check:()=>1},
   {id:'5_metrik', emoji:'📊', name:'5 Metrik Bilgesi', desc:'Sadece kg değil 5 metrik takip ediliyor', check:()=>1}
 ];
 
@@ -7447,7 +7460,7 @@ function openBatchCook(){
 }
 
 function openTravelSnacks(){
-  const body=`<div style="font-size:11px;color:var(--cream-mute);margin-bottom:12px;line-height:1.5;">3 günlük taşınabilir snack listesi · Bosna düğün hazırlık</div>${TRAVEL_SNACK_LIST.map(s=>`<div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:12px;color:var(--cream);">📦 ${s}</div>`).join('')}<div style="margin-top:12px;padding:10px;background:rgba(232,178,63,0.10);border-radius:8px;font-size:11px;color:var(--cream-mute);line-height:1.5;"><b style="color:var(--mustard-soft);">✈️ Uçuş öncesi:</b> Levotiron sabah dozu zamanlama (zaman dilimi değişimi 5h+ ise Hakan Bey'e danış)</div>`;
+  const body=`<div style="font-size:11px;color:var(--cream-mute);margin-bottom:12px;line-height:1.5;">3 günlük taşınabilir snack listesi · Bosna düğün hazırlık</div>${TRAVEL_SNACK_LIST.map(s=>`<div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:10px 12px;margin-bottom:6px;font-size:12px;color:var(--cream);">📦 ${s}</div>`).join('')}<div style="margin-top:12px;padding:10px;background:rgba(232,178,63,0.10);border-radius:8px;font-size:11px;color:var(--cream-mute);line-height:1.5;"><b style="color:var(--mustard-soft);">✈️ Uçuş öncesi:</b> Levotiron sabah dozu zamanlama (zaman dilimi değişimi 5h+ ise Doktora danış)</div>`;
   showToolkitSubModal('✈️ Seyahat Snack Listesi',body);
 }
 
@@ -7481,13 +7494,13 @@ function openDoctorPDF(){
   const lastMeas=meas.length?meas[meas.length-1]:null;
   const activeModes=getActiveModes();
   const modesActive=Object.keys(activeModes).filter(k=>activeModes[k]).map(k=>SPECIAL_MODES[k]?.name).filter(Boolean).join(', ')||'Hiçbiri';
-  const body=`<div style="font-size:11px;color:var(--cream-mute);margin-bottom:12px;line-height:1.5;">3 ay log özeti · Endokrinolog/GP'ye PDF/yazılı paylaşım için</div><div style="background:rgba(255,255,255,0.04);border-radius:10px;padding:14px;font-size:12px;line-height:1.7;color:var(--cream);"><div style="font-weight:600;color:var(--cream-soft);font-size:13px;margin-bottom:8px;">📋 Begümnaz Sağlık Özeti · ${today}</div><hr style="border:none;border-top:1px dashed rgba(255,255,255,0.20);margin:8px 0;"><b>Tanılar:</b> Papiller karsinom remisyon · Hashimoto · Hipopara E89.2<br><b>Tedavi:</b> Levotiron alterne (Pzt-Sal-Çar 125 / Per-Paz 100 mcg) · Calciday 2 tab/gün · Qalyviz 2 cap/gün<br><b>Supplement:</b> Selenometyonin 200mcg · Methylated B-Complex · Mg Glycinate cycle-aware · Zn 15+Cu 1mg · Omega-3 4g · Kreatin 5g · Marine Collagen<br>${lastMeas?`<b>Son ölçüm:</b> ${lastMeas.weight}kg · %${lastMeas.fat||'-'} yağ · ${lastMeas.muscle||'-'}kg kas · bel ${lastMeas.waist||'-'}cm<br>`:''}${lastLipid?`<b>Son lipid:</b> Total ${lastLipid.total} · LDL ${lastLipid.ldl} · HDL ${lastLipid.hdl} · TG ${lastLipid.tg} mmol/L (${lastLipid.date})<br>`:''}<b>Aktif modlar:</b> ${modesActive}<br><b>FH şüphesi:</b> Dayı 18y kalp ölümü + anne yüksek kolesterol<br><b>Aktif semptom:</b> Kramp/karıncalanma <span style="color:var(--sage-leaf);">✅ Mg form değişimi sonrası geçti (10 May 2026)</span><hr style="border:none;border-top:1px dashed rgba(255,255,255,0.20);margin:8px 0;"><b style="color:var(--mustard-soft);">📋 Tam paket:</b> medical-documents/HAKAN-BEY-RANDEVU-PAKETI.md</div><button class="btn bp bfull" style="margin-top:14px;" onclick="window.print()">🖨️ Yazdır / PDF olarak kaydet</button>`;
+  const body=`<div style="font-size:11px;color:var(--cream-mute);margin-bottom:12px;line-height:1.5;">3 ay log özeti · Fonksiyonel/bütüncül tıp doktoru veya dermatologa PDF paylaşım için</div><div style="background:rgba(255,255,255,0.04);border-radius:10px;padding:14px;font-size:12px;line-height:1.7;color:var(--cream);"><div style="font-weight:600;color:var(--cream-soft);font-size:13px;margin-bottom:8px;">📋 Begümnaz Sağlık Özeti · ${today}</div><hr style="border:none;border-top:1px dashed rgba(255,255,255,0.20);margin:8px 0;"><b>Tanılar:</b> Endometriozis (ameliyat sonrası Visanne tamamlandı) · Post-isotretinoin hassas cilt · Hormonal jawline akne · İyot eksikliği · Düşük selenyum<br><b>Cilt geçmişi:</b> 8 ay × 40 mg Zoretanin (etki etmedi) + 3× akne+scar mezoterapi (en yenisi 2 ay önce)<br><b>Tedavi protokolü (16 ürün doktor reçetesi · Mayıs 2026):</b><br>• Akavital prebiyotik 2x AC · Alkemist oil pulling · Gül sirkesi 2x AC · NAC 2×500mg AC · NADH 1 tab AC<br>• Anti turmeric 2x2 tok · More than (MSM+VitC) 2x1 · Anti MM-12 1x · NBT Life Guard 1x · Lifextra On Hepa 2x · Time Mg 2x<br>• Lugol iyot %5 4 damla (2 hf sonra 2) · Colewinde 50000 IU haftada 1 · Benfolife pre-workout<br>• Duobalance BV Cran probiyotik 22:00 · Bach çiçekleri 4x/gün<br><b>Cilt rutini:</b> Acnelyse 0.025% Sal+Paz · Azelaic Pzt+Cmt · AHA Per · Bariyer (Madescar+Hyaluron) Çar+Cum · SPF 50 her sabah<br><b>Egzersiz:</b> 3 ağırlık (Pzt+Per+Cmt) + 2 pelvik taban (Sal+Paz) + 2 full body pilates dersi (Çar+Cum 18:00) + 5-6 yürüyüş<br>${lastMeas?`<b>Son ölçüm:</b> ${lastMeas.weight}kg${lastMeas.fat?` · %${lastMeas.fat} yağ`:''}${lastMeas.muscle?` · ${lastMeas.muscle}kg kas`:''}${lastMeas.waist?` · bel ${lastMeas.waist}cm`:''}<br>`:''}<b>Kan paneli (21.04.2026):</b> İyot 27 µg/L (↓ 100-200) · Selenyum 58 µg/L (↓ 70-150) · Demir 204-206 µg/L (↑ 50-155) · T3 4.20 ng/L (↑ 2.5-3.9) · B12 738 ng/L (↑ 134-590) · TSH 2.42 ✓ · Anti-TPO negatif ✓ · HbA1c %5.10 ✓ · CRP 0.18 ✓<br><b>Doktor cevabı bekleyen 3 soru:</b> NADH dozu · NAC tek/iki sefer · Probiyotik markası alternatifi<br><b>Aktif modlar:</b> ${modesActive}<hr style="border:none;border-top:1px dashed rgba(255,255,255,0.20);margin:8px 0;"><b style="color:var(--mustard-soft);">📋 Repo:</b> github.com/bengisusengul/begumnaz-program</div><button class="btn bp bfull" style="margin-top:14px;" onclick="window.print()">🖨️ Yazdır / PDF olarak kaydet</button>`;
   showToolkitSubModal('📋 Doktor PDF Rapor',body);
 }
 
 function openHacettepeLab(){
-  const body=`<div style="font-size:11px;color:var(--cream-mute);margin-bottom:12px;line-height:1.5;">Bilim Modu L3 derin · papiller karsinom + Hashimoto + hipopara fizyolojisi</div><div style="background:rgba(232,178,63,0.10);border-radius:10px;padding:12px;margin-bottom:8px;"><div style="font-size:13px;font-weight:600;color:var(--mustard-soft);margin-bottom:6px;">🧬 D2 Thr92Ala polimorfizmi</div><div style="font-size:11px;color:var(--cream);line-height:1.5;">Türk popülasyonunda ~%30 · T4-only tedavide T3 yetersizliği ile bağlantılı (Panicker 2009 PMID 19390003). Pozitifse T4+T3 kombinasyon adayı.</div></div><div style="background:rgba(232,178,63,0.10);border-radius:10px;padding:12px;margin-bottom:8px;"><div style="font-size:13px;font-weight:600;color:var(--mustard-soft);margin-bottom:6px;">⚗️ T4→T3 Dönüşüm Zinciri</div><div style="font-size:11px;color:var(--cream);line-height:1.5;">D1 (karaciğer/böbrek) + D2 (kas/beyin) selenoproteinler · Selenium 200mcg ko-faktör · Demir + Zn yapısal · Begümnaz için sT3 ölçümü #1 öncelik (Wiersinga 2014).</div></div><div style="background:rgba(232,178,63,0.10);border-radius:10px;padding:12px;margin-bottom:8px;"><div style="font-size:13px;font-weight:600;color:var(--mustard-soft);margin-bottom:6px;">🦴 Hipopara fizyolojisi</div><div style="font-size:11px;color:var(--cream);line-height:1.5;">PTH eksik → kalsiyum metabolizması bozulur · Calcitriol böbrek 1α-hidroksilaz adımını bypass · Mg yeterliliği CaSR sinyal iletimi için şart (Whang 1985, Uwitonze 2018). Begümnaz doğrulandı: Mg form ✓ kramp geçti.</div></div><div style="background:rgba(232,178,63,0.10);border-radius:10px;padding:12px;"><div style="font-size:13px;font-weight:600;color:var(--mustard-soft);margin-bottom:6px;">❤️ Lipid + FH Şüphesi</div><div style="font-size:11px;color:var(--cream);line-height:1.5;">Norwitz 2022 LMHR (PMID 35106434) vs Ference 2017 LDL-ASCVD nedensellik (PMID 28444290) · Begümnaz için: aile öyküsü + sT3 ölçülmemiş + hipotiroidi şüphesi → klasik LDL risk baskın. 6 hf sonra tekrar test + statin tartışması.</div></div>`;
-  showToolkitSubModal('🧪 Hacettepe Lab',body);
+  const body=`<div style="font-size:11px;color:var(--cream-mute);margin-bottom:12px;line-height:1.5;">Bilim Modu L3 derin · endometriozis + post-isotretinoin + iyot/selenyum fizyolojisi</div><div style="background:rgba(232,178,63,0.10);border-radius:10px;padding:12px;margin-bottom:8px;"><div style="font-size:13px;font-weight:600;color:var(--mustard-soft);margin-bottom:6px;">🌸 Endometriozis Patofizyolojisi</div><div style="font-size:11px;color:var(--cream);line-height:1.5;">Estrojen-bağımlı kronik inflamatuvar hastalık · Östrojen dominance + progesteron yetersizliği · Visanne (dienogest) sonrası remisyon → içerde kalan endo aktivitesi (CA-125 takip · Burney & Giudice 2012 PMID 22819424). Mizaç temelli "sıcak vücut" yaklaşımı pelvik bölge sirkülasyonunu artırarak ağrı azaltır.</div></div><div style="background:rgba(232,178,63,0.10);border-radius:10px;padding:12px;margin-bottom:8px;"><div style="font-size:13px;font-weight:600;color:var(--mustard-soft);margin-bottom:6px;">🧴 Post-Isotretinoin Bariyer</div><div style="font-size:11px;color:var(--cream);line-height:1.5;">8 ay 40 mg Zoretanin (Begümnaz'da etki etmedi) → sebase atrofi + stratum corneum incelmesi + TEWL ↑ · 3× mezo sonrası kapiller dilatasyonu (PIE kaynağı) · Bariyer-önce yaklaşım: ceramide + panthenol + hyaluron 4-6 hafta önce aktif başlamadan (Del Rosso 2011 · AAD post-iso care).</div></div><div style="background:rgba(232,178,63,0.10);border-radius:10px;padding:12px;margin-bottom:8px;"><div style="font-size:13px;font-weight:600;color:var(--mustard-soft);margin-bottom:6px;">💧 İyot + Selenyum Düalitesi</div><div style="font-size:11px;color:var(--cream);line-height:1.5;">İdrar iyot 27 µg/L (↓ ref 100-200) → Lugol %5 reçete · ⚠️ Selenyum 58 µg/L (↓ ref 70-150) — iyot tedavisinde selenyum eksikliği otoimmün tetik potansiyeli (Toulis 2010 PMID 20214597). Anti-TPO negatif olduğu için Hashimoto riski düşük ama 6-8 hafta TSH/T3/T4 tekrar şart. T3 4.20 hafif yüksek — Wolff-Chaikoff etkisi takibi.</div></div><div style="background:rgba(232,178,63,0.10);border-radius:10px;padding:12px;margin-bottom:8px;"><div style="font-size:13px;font-weight:600;color:var(--mustard-soft);margin-bottom:6px;">🩸 Demir Yüklenme Paterni</div><div style="font-size:11px;color:var(--cream);line-height:1.5;">Serum demir 204-206 µg/L (↑) + Transferrin sat. %68 (↑) → demir yükü desenli AMA ferritin 31.7 (normal/orta) — paradoks · Demir takviyesi YASAK · Et 3x/hafta sınırı · 3 ay sonra tekrar test, devam yüksekse hemokromatozis (HFE C282Y/H63D) gen taraması (Bacon 2011 PMID 21452290).</div></div><div style="background:rgba(232,178,63,0.10);border-radius:10px;padding:12px;"><div style="font-size:13px;font-weight:600;color:var(--mustard-soft);margin-bottom:6px;">🌿 Mizaç Temelli Bütüncül Tıp + Bilim</div><div style="font-size:11px;color:var(--cream);line-height:1.5;">Geleneksel "sıcak/soğuk denge" + modern "kronoritm + parasempatik aktivasyon" · Ayak banyosu Mg sülfat (Epsom) transdermal emilim (Gröber 2017 PMID 28505159) + ıtır (Pelargonium graveolens) aromaterapi anxiolytic (Lis-Balchin 2002). Acıkmadan kahvaltı = leptin-ghrelin saygı + circadian eating ilkesiyle uyumlu.</div></div>`;
+  showToolkitSubModal('🧪 Bilim Modu — Endo & Cilt',body);
 }
 
 // ══════════════════════════════════════════
@@ -7583,7 +7596,7 @@ function renderFamilyHistoryCard(){
         <div style="background:rgba(90,122,79,0.10);border-left:3px solid var(--sage-leaf);border-radius:6px;padding:12px;">
           <div style="font-size:13px;font-weight:600;color:var(--cream-soft);">📋 Aksiyon</div>
           <div style="font-size:12px;color:var(--cream);margin-top:4px;line-height:1.5;">
-            • Hakan Bey'e iletildi ✓<br>
+            • Doktora iletildi ✓<br>
             • UK NHS lipidolog/kardiyolog refer iste<br>
             • <b>FH genetik test:</b> LDLR / APOB / PCSK9<br>
             • <b>ApoB + Lp(a) + hsCRP</b> sıradaki kan testinde<br>
