@@ -6,35 +6,52 @@
 <title>Begümnaz ☀️</title>
 <!-- PWA · Phase 3.B-A -->
 <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#0F4147">
+<meta name="theme-color" content="#6E1A28">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Begümnaz">
 <link rel="apple-touch-icon" href="bg.jpeg">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root {
-  /* Akşam Bahçesi paleti — surrealist Mediterranean dream */
-  --bg-deep:#0F4147;--bg-mid:#1A5A5F;
-  --cream:#E8DDC4;--cream-soft:#F0E6D0;
-  --cream-mute:rgba(232,221,196,0.72);--cream-faint:rgba(232,221,196,0.48);
-  --coral:#D9591E;--coral-soft:#E5743C;
-  --mustard:#E8B23F;--mustard-soft:#F4C04E;
-  --sage-deep:#3E5A3A;--sage-leaf:#5A7A4F;
+  /* Pembe & Bordo paleti — Begümnaz cheetah/şerit hero referansı */
+  --bg-deep:#6E1A28;       /* Derin bordo (koyu şerit) */
+  --bg-mid:#A8364A;        /* Orta bordo */
+  --bg-pink:#E5A8B5;       /* Soft pembe (açık şerit) */
+  --bg-pink-light:#F5C5D2; /* Açık pembe */
+  --bg-pink-cream:#FAEDD4; /* Pembe krem */
+
+  --cream:#FFF8F0;         /* Sıcak krem-beyaz (Billie Eilish "the world is mine" beyazı) */
+  --cream-soft:#FAEDD4;
+  --cream-mute:rgba(255,248,240,0.74);
+  --cream-faint:rgba(255,248,240,0.46);
+
+  /* Eski renk isimleri yeni paletle remap (kod kırılmasın) */
+  --coral:#C25A6C;--coral-soft:#D67A8A;
+  --mustard:#D4AF6A;--mustard-soft:#E0BD7A;
+  --sage-deep:#8C7060;--sage-leaf:#A48B7A;
   --mauve-evening:#B47990;
-  --ink:#0A0E10;
-  --glass-bg:rgba(15,65,71,0.42);
-  --glass-border:rgba(232,221,196,0.18);
-  --glass-highlight:rgba(255,255,255,0.08);
-  /* Eski isimleri yeni palette'e remap (kod kırılmasın) */
-  --bg:#0F4147;--surface:rgba(15,65,71,0.42);--surface2:rgba(232,221,196,0.06);
-  --pink:#E5743C;--pink-deep:#D9591E;--pink-soft:rgba(217,89,30,0.38);--pink-pale:rgba(217,89,30,0.10);
-  --mauve:#B47990;--mauve-soft:rgba(180,121,144,0.10);
-  --sage:#5A7A4F;--sage-soft:rgba(90,122,79,0.10);
-  --gold:#E8B23F;--gold-soft:rgba(232,178,63,0.12);
-  --text:#E8DDC4;--text-mid:rgba(232,221,196,0.72);--text-light:rgba(232,221,196,0.48);
-  --border:rgba(232,221,196,0.18);--border-soft:rgba(232,221,196,0.10);
-  --shadow:0 8px 32px rgba(0,0,0,0.28);
+  --ink:#2A0E14;           /* Derin şarap mürekkep */
+
+  --glass-bg:rgba(110,26,40,0.42);
+  --glass-border:rgba(255,248,240,0.20);
+  --glass-highlight:rgba(255,255,255,0.10);
+
+  --bg:#6E1A28;
+  --surface:rgba(110,26,40,0.42);
+  --surface2:rgba(255,248,240,0.06);
+
+  --pink:#DDA0AE;--pink-deep:#B8536B;
+  --pink-soft:rgba(229,168,181,0.42);--pink-pale:rgba(229,168,181,0.12);
+  --mauve:#C8869C;--mauve-soft:rgba(200,134,156,0.12);
+  --sage:#A48B7A;--sage-soft:rgba(164,139,122,0.10);   /* Yeşil sage yerine sıcak toprak */
+  --gold:#D4AF6A;--gold-soft:rgba(212,175,106,0.14);
+
+  --text:#FFF8F0;
+  --text-mid:rgba(255,248,240,0.74);
+  --text-light:rgba(255,248,240,0.48);
+  --border:rgba(255,248,240,0.20);--border-soft:rgba(255,248,240,0.10);
+  --shadow:0 8px 32px rgba(74,16,24,0.40);
   --r:18px;--r-sm:14px;--r-xs:8px;
 }
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
@@ -47,104 +64,93 @@ body{
   padding-bottom:90px;
   position:relative;
 }
-/* TEMA B — NET, CANLI solid renkler · görsel sadece Takvim'de tam görünür */
-/* Görsel: sadece Takvim sayfasında, diğer sayfalarda gizli (canlı renk için) */
+
+/* Tüm başlık + ritüel metinler için Playfair Display (Billie Eilish-style klasik serif) */
+h1,h2,h3,h4,h5,h6,.serif,.dash-greet-hi,.cphase,.tlti,.slbl{
+  font-family:'Playfair Display','Playfair Display',Georgia,serif;
+  font-weight:500;
+  letter-spacing:-0.005em;
+}
+
+/* PEMBE & BORDO TEMASI · cheetah/şerit hero referansı */
+/* Background pattern: pembe + bordo şerit (dekoratif, sayfa boyunca) */
 body::before{
   content:'';position:fixed;inset:0;z-index:-2;
-  background:url('bg.jpeg') center top/cover no-repeat;
+  background:
+    repeating-linear-gradient(90deg,
+      #E5A8B5 0px,#E5A8B5 24px,
+      #6E1A28 24px,#6E1A28 48px);
   background-color:var(--bg-deep);
-  opacity:0;
+  opacity:0.32;
   transition:opacity 0.4s ease;
 }
-body[data-page="takvim"]::before{opacity:1;}
+body[data-page="takvim"]::before{opacity:0.48;}
 
-/* Her sayfa: solid canlı renk gradient (%100 alpha — bulanık karışım yok) */
+/* Sayfa rengi overlay (şerit pattern üstüne, okunabilirlik için yarı opak gradient) */
 body::after{
   content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;
   transition:background 0.4s ease;
 }
-/* Takvim: görsel açık olduğu için hafif scrim (okunabilirlik) */
 body[data-page="takvim"]::after{
   background:linear-gradient(180deg,
-    rgba(15,65,71,0.40) 0%,
-    rgba(15,65,71,0.60) 100%);
+    rgba(110,26,40,0.62) 0%,
+    rgba(74,16,24,0.78) 100%);
 }
-/* Diğer sayfalar: %100 solid renk — canlı, net, görsel görünmez */
 body[data-page="cycle"]::after{
   background:linear-gradient(180deg,
-    #B47990 0%,                     /* MAUVE alacakaranlık net */
-    #8C5070 55%,
-    #4A2837 100%);
+    #B8536B 0%,                     /* Pembe-bordo (rose) */
+    #832232 55%,
+    #4A1018 100%);
 }
 body[data-page="diyet"]::after{
   background:linear-gradient(180deg,
-    #8C6520 0%,                     /* Topbar zone — koyu amber (metin okunsun) */
-    #C8923A 25%,
-    #E8B23F 50%,                    /* HARDAL güneşi orta zonda parlak splash */
-    #8C6520 75%,
-    #3C2A0A 100%);
+    #FAEDD4 0%,                     /* Krem (mizaç sıcak ton) */
+    #F5C5D2 35%,                    /* Açık pembe */
+    #DDA0AE 70%,
+    #B8536B 100%);
 }
-/* Phase 3.D feedback (12 May 2026) — Diyet sekmesi okunabilirlik
-   Begümnaz: "yazıların renkleri çok açık kalmış, okunmuyor"
-   Koyu hardal gradient üzerinde kart text'leri koyulaştırılır */
-body[data-page="diyet"] .card,
-body[data-page="diyet"] .cycle-diet-card,
-body[data-page="diyet"] .notice,
-body[data-page="diyet"] .water-card{
-  color:#1a1208 !important; /* Koyu kahve · hardal üzerinde max kontrast */
-  background:rgba(255,250,235,0.92) !important; /* Krem opak arka plan · saydam kalkıyor */
-  border:1px solid rgba(60,42,10,0.25) !important;
-}
-body[data-page="diyet"] .card-plain{
-  color:#2a1f0a !important;
-  background:rgba(255,250,235,0.78) !important;
-  border-left-color:#8C6520 !important;
-}
-body[data-page="diyet"] .card-plain strong,
-body[data-page="diyet"] .card .ch h3,
-body[data-page="diyet"] .water-title{color:#1a1208 !important;font-weight:600 !important;}
-body[data-page="diyet"] .cb,
-body[data-page="diyet"] .ch h3,
-body[data-page="diyet"] .tlti,
-body[data-page="diyet"] .tlt,
-body[data-page="diyet"] .tlde,
-body[data-page="diyet"] .water-title,
-body[data-page="diyet"] .mrow,
-body[data-page="diyet"] .slbl{color:#1a1208 !important;text-shadow:none !important;}
-body[data-page="diyet"] .slbl{color:#fdf3e0 !important;text-shadow:0 2px 8px rgba(0,0,0,0.50) !important;} /* Section labels arka plan üzerinde - light */
-body[data-page="diyet"] .pnote,
-body[data-page="diyet"] .cdc-msg,
-body[data-page="diyet"] .ach-desc{color:#3a2c14 !important;}
-body[data-page="diyet"] .water-cup{border-color:#5d9ab1 !important;}
-body[data-page="diyet"] .water-cup.full{background:#7eb5cc !important;color:white !important;}
-body[data-page="diyet"] .tlbar,body[data-page="diyet"] .tlline{background:rgba(60,42,10,0.30) !important;}
-body[data-page="diyet"] .tldot{background:#8C6520 !important;border:2px solid #fdf3e0 !important;}
 body[data-page="egzersiz"]::after{
   background:linear-gradient(180deg,
-    #5A7A4F 0%,                     /* SAGE ormanı net */
-    #3E5A3A 55%,
-    #1E3220 100%);
+    #832232 0%,                     /* Bordo üst */
+    #6E1A28 55%,
+    #4A1018 100%);                  /* Derin şarap alt */
 }
 body[data-page="cilt"]::after{
   background:linear-gradient(180deg,
-    #6B3E2F 0%,                     /* Topbar zone — koyu kestane (metin okunsun) */
-    #A0664A 25%,
-    #D4A48D 50%,                    /* PEACH parlak splash orta */
-    #8A4F3A 75%,
-    #3C1F14 100%);                  /* derin kahve alt */
+    #F5C5D2 0%,                     /* Açık pembe üst */
+    #E5A8B5 35%,                    /* Pembe orta */
+    #B8536B 70%,
+    #6E1A28 100%);                  /* Bordo alt */
 }
 body[data-page="olcum"]::after,
 body[data-page="medical"]::after{
   background:linear-gradient(180deg,
-    #B47990 0%,                     /* Mauve akşam üst */
-    #7BA8B0 35%,                    /* Su mavisi orta */
-    #1A5A5F 75%,
-    #0F4147 100%);                  /* Petrol derin */
+    #DDA0AE 0%,                     /* Pembe üst */
+    #B8536B 45%,
+    #832232 75%,
+    #4A1018 100%);                  /* Şarap derin */
 }
+/* Diyet sayfasında metin koyu (krem-pembe gradient üzerinde) */
+body[data-page="diyet"] .card,
+body[data-page="diyet"] .cycle-diet-card,
+body[data-page="diyet"] .notice,
+body[data-page="diyet"] .water-card{
+  color:#2A0E14 !important;
+  background:rgba(255,248,240,0.92) !important;
+  border:1px solid rgba(110,26,40,0.22) !important;
+}
+body[data-page="diyet"] .slbl{color:#FFF8F0 !important;text-shadow:0 2px 8px rgba(74,16,24,0.55) !important;}
+body[data-page="diyet"] .ch h3,
+body[data-page="diyet"] .tlti,
+body[data-page="diyet"] .tlt,
+body[data-page="diyet"] .tlde{color:#2A0E14 !important;}
+/* Cilt sayfasında üst kısımda açık pembe → metin koyu */
+body[data-page="cilt"] .slbl{color:#2A0E14 !important;}
+
 /* backdrop-filter desteklemeyen tarayıcı için solid fallback */
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
   .card,.notice,.modal,.bnav,.water-card,.health-card,.cstrip,.cy-hero{
-    background:rgba(15,65,71,0.88) !important;
+    background:rgba(110,26,40,0.88) !important;
   }
 }
 
@@ -188,17 +194,17 @@ body[data-page="medical"]::after{
 .topbar{padding:56px 20px 20px;background:transparent;position:relative;overflow:visible;}
 .topbar::before{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;background:radial-gradient(circle,var(--tab-accent-glow,rgba(232,178,63,0.18)) 0%,transparent 70%);border-radius:50%;pointer-events:none;}
 .tb-label{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--cream-soft);margin-bottom:6px;text-shadow:0 2px 8px rgba(0,0,0,0.55),0 0 24px rgba(0,0,0,0.4);}
-.topbar h1{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:400;color:var(--cream-soft);line-height:1.2;letter-spacing:0.5px;text-shadow:0 2px 16px rgba(0,0,0,0.6),0 0 32px rgba(0,0,0,0.4);}
+.topbar h1{font-family:'Playfair Display','Playfair Display',serif;font-size:34px;font-weight:400;color:var(--cream-soft);line-height:1.2;letter-spacing:0.5px;text-shadow:0 2px 16px rgba(0,0,0,0.6),0 0 32px rgba(0,0,0,0.4);}
 .topbar h1 em{font-style:italic;color:var(--cream-soft);font-weight:300;}
 .tb-sub{font-size:13px;color:var(--cream);margin-top:6px;text-shadow:0 2px 10px rgba(0,0,0,0.55);font-weight:500;}
 
 /* TEMA A — Per-page accent renkleri (her sekme paletten 1 ana rengi sahiplenir) */
-#page-takvim{--tab-accent:#F4C04E;--tab-accent-deep:#E8B23F;--tab-accent-glow:rgba(232,178,63,0.22);}    /* Hardal Güneş */
-#page-cycle{--tab-accent:#E5743C;--tab-accent-deep:#D9591E;--tab-accent-glow:rgba(217,89,30,0.22);}     /* Coral Yangın */
-#page-diyet{--tab-accent:#A8C0A0;--tab-accent-deep:#5A7A4F;--tab-accent-glow:rgba(90,122,79,0.22);}     /* Yaprak Sage */
-#page-egzersiz{--tab-accent:#A8D2DA;--tab-accent-deep:#7BA8B0;--tab-accent-glow:rgba(123,168,176,0.22);} /* Su Mavisi */
-#page-cilt{--tab-accent:#D4A4B5;--tab-accent-deep:#B47990;--tab-accent-glow:rgba(180,121,144,0.22);}    /* Mauve Akşam */
-#page-olcum,#page-medical{--tab-accent:#D4A4B5;--tab-accent-deep:#B47990;--tab-accent-glow:rgba(180,121,144,0.28);}      /* Mauve + su mavisi karışım — Medical */
+#page-takvim{--tab-accent:#E5A8B5;--tab-accent-deep:#B8536B;--tab-accent-glow:rgba(229,168,181,0.28);}    /* Soft Pembe */
+#page-cycle{--tab-accent:#C8869C;--tab-accent-deep:#832232;--tab-accent-glow:rgba(200,134,156,0.28);}     /* Rose Bordo */     /* Coral Yangın */
+#page-diyet{--tab-accent:#F5C5D2;--tab-accent-deep:#B8536B;--tab-accent-glow:rgba(245,197,210,0.30);}     /* Blush */
+#page-egzersiz{--tab-accent:#B8536B;--tab-accent-deep:#6E1A28;--tab-accent-glow:rgba(184,83,107,0.28);}     /* Bordo */ /* Su Mavisi */
+#page-cilt{--tab-accent:#F5C5D2;--tab-accent-deep:#DDA0AE;--tab-accent-glow:rgba(245,197,210,0.30);}     /* Açık Pembe */    /* Mauve Akşam */
+#page-olcum,#page-medical{--tab-accent:#DDA0AE;--tab-accent-deep:#832232;--tab-accent-glow:rgba(221,160,174,0.28);}     /* Şarap Pembe */      /* Mauve + su mavisi karışım — Medical */
 
 /* CYCLE STRIP */
 .cstrip{margin:0 16px 16px;background:rgba(15,30,38,0.55);backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);border-radius:var(--r);padding:16px 18px;display:flex;align-items:center;gap:14px;border:1px solid rgba(255,255,255,0.18);box-shadow:0 12px 40px rgba(0,0,0,0.35),inset 0 1px 0 rgba(255,255,255,0.12);color:var(--cream);}
@@ -206,7 +212,7 @@ body[data-page="medical"]::after{
 .cinfo .cphase{font-size:13px;font-weight:600;color:var(--text);}
 .cinfo .cdetail{font-size:12px;color:var(--text-mid);margin-top:2px;}
 .cbadge{margin-left:auto;background:rgba(232,221,196,0.10);border:1px solid var(--glass-border);border-radius:12px;padding:8px 14px;text-align:center;flex-shrink:0;backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);}
-.cbadge .cn{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;color:var(--mustard-soft);line-height:1;}
+.cbadge .cn{font-family:'Playfair Display','Playfair Display',serif;font-size:24px;font-weight:600;color:var(--mustard-soft);line-height:1;}
 .cbadge .cl{font-size:9px;color:var(--cream-mute);text-transform:uppercase;letter-spacing:0.8px;}
 .cinfo .cphase{color:var(--cream-soft);font-weight:500;}
 .cinfo .cdetail{color:var(--cream-mute);}
@@ -215,7 +221,7 @@ body[data-page="medical"]::after{
 /* CARDS */
 .card{background:rgba(15,30,38,0.55);backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);border-radius:var(--r);border:1px solid rgba(255,255,255,0.18);box-shadow:0 12px 40px rgba(0,0,0,0.35),inset 0 1px 0 rgba(255,255,255,0.12);overflow:hidden;margin:0 16px 16px;color:var(--cream);}
 .ch{padding:16px 18px 12px;border-bottom:1px solid var(--glass-border);display:flex;align-items:center;justify-content:space-between;}
-.ch h3{font-family:'Cormorant Garamond',serif;font-size:19px;font-weight:400;color:var(--tab-accent,var(--cream-soft));}
+.ch h3{font-family:'Playfair Display','Playfair Display',serif;font-size:19px;font-weight:400;color:var(--tab-accent,var(--cream-soft));}
 .cb{padding:16px 18px;color:var(--cream);}
 
 /* SEC LABEL */
@@ -254,7 +260,7 @@ input:focus, select:focus, textarea:focus{outline:2px solid var(--pink-deep);out
 .wd.active{background:var(--coral);border-color:var(--coral);box-shadow:0 4px 16px rgba(217,89,30,0.45);}
 .wd.active .wdn,.wd.active .wdnum{color:var(--cream-soft);}
 .wdn{font-size:9px;text-transform:uppercase;letter-spacing:0.8px;color:var(--cream-mute);font-weight:600;}
-.wdnum{font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--cream-soft);line-height:1.2;margin:2px 0;}
+.wdnum{font-family:'Playfair Display','Playfair Display',serif;font-size:20px;color:var(--cream-soft);line-height:1.2;margin:2px 0;}
 .wddot{width:5px;height:5px;border-radius:50%;margin:0 auto;}
 .wd.active .wddot{background:rgba(232,221,196,0.7);}
 .wd.gym .wddot{background:var(--sage-leaf);}
@@ -295,7 +301,7 @@ input:focus, select:focus, textarea:focus{outline:2px solid var(--pink-deep);out
 /* STATS */
 .sgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 16px 16px;}
 .sbox{background:rgba(15,30,38,0.55);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border:1px solid rgba(255,255,255,0.16);border-radius:var(--r-sm);padding:14px 12px;text-align:center;color:var(--cream);box-shadow:0 8px 24px rgba(0,0,0,0.28),inset 0 1px 0 rgba(255,255,255,0.10);}
-.sv{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:600;color:var(--cream-soft);line-height:1;}
+.sv{font-family:'Playfair Display','Playfair Display',serif;font-size:26px;font-weight:600;color:var(--cream-soft);line-height:1;}
 .sl{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--cream-mute);margin-top:4px;}
 .sd{font-size:12px;font-weight:600;margin-top:4px;}
 .sd.good{color:#A8C0A0;}.sd.warn{color:var(--coral-soft);}
@@ -332,12 +338,12 @@ input:focus, select:focus, textarea:focus{outline:2px solid var(--pink-deep);out
 .fin{flex:1;}
 .fname{font-size:14px;font-weight:500;color:var(--text);}
 .fmac{font-size:11px;color:var(--text-light);margin-top:2px;}
-.fkcal{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--gold);flex-shrink:0;}
+.fkcal{font-family:'Playfair Display','Playfair Display',serif;font-size:18px;color:var(--gold);flex-shrink:0;}
 
 /* MACRO ROW */
 .mrow{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px;}
 .mbox{text-align:center;padding:14px 6px;background:rgba(15,30,38,0.50);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);border-radius:var(--r-xs);border:1px solid rgba(255,255,255,0.14);box-shadow:0 4px 12px rgba(0,0,0,0.2);}
-.mval{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;color:var(--cream-soft);}
+.mval{font-family:'Playfair Display','Playfair Display',serif;font-size:22px;font-weight:600;color:var(--cream-soft);}
 .mlbl{font-size:9px;text-transform:uppercase;letter-spacing:0.8px;color:var(--cream-mute);margin-top:3px;}
 
 /* SKIN */
@@ -363,7 +369,7 @@ input:focus, select:focus, textarea:focus{outline:2px solid var(--pink-deep);out
 .modal input,.modal select,.modal textarea{background:rgba(232,221,196,0.08);color:var(--cream);border:1px solid var(--glass-border);}
 @keyframes su{from{transform:translateY(100%)}to{transform:translateY(0)}}
 .mhandle{width:40px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 20px;}
-.modal h3{font-family:'Cormorant Garamond',serif;font-size:22px;margin-bottom:6px;}
+.modal h3{font-family:'Playfair Display','Playfair Display',serif;font-size:22px;margin-bottom:6px;}
 .msub{font-size:13px;color:var(--text-mid);margin-bottom:18px;}
 .macts{display:flex;gap:10px;margin-top:20px;}
 
@@ -385,7 +391,7 @@ input:focus, select:focus, textarea:focus{outline:2px solid var(--pink-deep);out
 .edu-lvl-btn{padding:10px 6px;border-radius:10px;background:rgba(232,221,196,0.06);border:1px solid var(--glass-border);color:var(--cream-mute);cursor:pointer;text-align:center;font-family:inherit;transition:all 0.15s;-webkit-tap-highlight-color:transparent;}
 .edu-lvl-btn:active{transform:scale(0.94);}
 .edu-lvl-btn.active{background:rgba(90,122,79,0.30);border-color:var(--sage-leaf);color:var(--cream);box-shadow:inset 0 0 0 1px rgba(90,122,79,0.45);}
-.edu-lvl-name{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:300;line-height:1.1;}
+.edu-lvl-name{font-family:'Playfair Display','Playfair Display',serif;font-size:18px;font-weight:300;line-height:1.1;}
 .edu-lvl-sub{font-size:10px;text-transform:uppercase;letter-spacing:0.6px;font-weight:600;margin-top:2px;}
 .egc-l3-tip{margin-top:10px;padding:10px 12px;border-radius:10px;background:rgba(232,178,63,0.10);border:1px solid rgba(232,178,63,0.32);font-size:12px;color:var(--cream-soft);line-height:1.55;}
 .egc-l3-tip strong{color:var(--mustard);}
@@ -422,7 +428,7 @@ input:focus, select:focus, textarea:focus{outline:2px solid var(--pink-deep);out
 .gloss-cat-pill{display:inline-block;padding:3px 10px;border-radius:10px;font-size:10px;text-transform:uppercase;letter-spacing:1px;font-weight:600;}
 .gloss-cat-kas{background:rgba(180,121,144,0.18);color:#D89AAE;border:1px solid rgba(180,121,144,0.35);}
 .gloss-cat-antrenman{background:rgba(90,122,79,0.18);color:#A8C0A0;border:1px solid rgba(90,122,79,0.35);}
-.gloss-cat-hormon{background:rgba(232,178,63,0.18);color:#E8B23F;border:1px solid rgba(232,178,63,0.35);}
+.gloss-cat-hormon{background:rgba(212,175,106,0.18);color:#D4AF6A;border:1px solid rgba(212,175,106,0.35);}
 .gloss-cat-beslenme{background:rgba(217,89,30,0.18);color:#E8755A;border:1px solid rgba(217,89,30,0.35);}
 .gloss-cat-tip{background:rgba(123,168,176,0.18);color:#9DC3CB;border:1px solid rgba(123,168,176,0.35);}
 .gloss-cat-cycle{background:rgba(180,121,144,0.18);color:#D89AAE;border:1px solid rgba(180,121,144,0.35);}
@@ -451,7 +457,7 @@ input:focus, select:focus, textarea:focus{outline:2px solid var(--pink-deep);out
 
 /* CAL */
 .cnav{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
-.cnav h4{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:var(--tab-accent,var(--cream-soft));}
+.cnav h4{font-family:'Playfair Display','Playfair Display',serif;font-size:22px;font-weight:400;color:var(--tab-accent,var(--cream-soft));}
 .cnbtn{background:rgba(232,221,196,0.10);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid var(--glass-border);border-radius:10px;width:38px;height:38px;cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;color:var(--cream-soft);}
 .cnbtn:hover{background:rgba(232,221,196,0.16);}
 .cgrid{display:grid;grid-template-columns:repeat(7,1fr);gap:3px;}
@@ -493,7 +499,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .gif-overlay.open{display:flex;}
 .gif-sheet{background:white;border-radius:24px 24px 0 0;padding:24px 20px 40px;width:100%;animation:su 0.3s ease;}
 .gif-handle{width:40px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 16px;}
-.gif-title{font-family:'Cormorant Garamond',serif;font-size:20px;margin-bottom:4px;}
+.gif-title{font-family:'Playfair Display','Playfair Display',serif;font-size:20px;margin-bottom:4px;}
 .gif-muscles{font-size:12px;color:var(--text-mid);margin-bottom:16px;}
 .gif-img-wrap{width:100%;background:var(--surface2);border-radius:var(--r);overflow:hidden;display:flex;align-items:center;justify-content:center;min-height:200px;margin-bottom:16px;position:relative;}
 .gif-img-wrap img{width:100%;max-height:280px;object-fit:contain;}
@@ -508,10 +514,10 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .health-paste-btn:active{transform:scale(0.95);background:var(--pink-pale);}
 .health-card{background:rgba(15,30,38,0.55);backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);border:1px solid rgba(168,192,160,0.35);border-radius:var(--r);padding:14px 16px;margin:0 16px 12px;color:var(--cream);box-shadow:0 12px 40px rgba(0,0,0,0.35),inset 0 1px 0 rgba(255,255,255,0.12);}
 .health-card-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
-.health-card-h h4{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:600;color:var(--cream-soft);}
+.health-card-h h4{font-family:'Playfair Display','Playfair Display',serif;font-size:16px;font-weight:600;color:var(--cream-soft);}
 .health-card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
 .health-stat{background:rgba(255,255,255,0.6);border-radius:10px;padding:8px 6px;text-align:center;}
-.health-stat-v{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:#A8C0A0;line-height:1;}
+.health-stat-v{font-family:'Playfair Display','Playfair Display',serif;font-size:18px;font-weight:600;color:#A8C0A0;line-height:1;}
 .health-stat-l{font-size:9px;text-transform:uppercase;letter-spacing:0.6px;color:var(--text-light);margin-top:3px;}
 .health-card-meta{font-size:10px;color:var(--text-light);margin-top:10px;text-align:center;}
 
@@ -526,7 +532,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .wm-cell.today{border-width:2px;border-color:var(--text);}
 .wm-cell.today.active{border-color:var(--pink-deep);}
 .wm-day{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:0.4px;color:var(--text-light);}
-.wm-num{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--text);line-height:1;margin:2px 0 4px;}
+.wm-num{font-family:'Playfair Display','Playfair Display',serif;font-size:18px;font-weight:600;color:var(--text);line-height:1;margin:2px 0 4px;}
 .wm-meal{font-size:9px;color:var(--text-light);line-height:1.3;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 2px;}
 .wm-kcal{font-size:9px;color:var(--gold);font-weight:700;margin-top:4px;}
 .wm-cell.active .wm-num,.wm-cell.active .wm-day{color:var(--pink-deep);}
@@ -562,7 +568,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
 /* AI SUGGESTION — "Bana öner" sonucu */
 .ai-suggest-trigger{display:flex;justify-content:flex-end;margin-bottom:8px;}
 .ai-result-card{background:linear-gradient(135deg,var(--pink-pale),var(--mauve-soft));border:1px solid var(--pink-soft);border-radius:var(--r-sm);padding:14px 16px;margin-top:8px;}
-.aim-name{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--text);line-height:1.2;}
+.aim-name{font-family:'Playfair Display','Playfair Display',serif;font-size:20px;font-weight:600;color:var(--text);line-height:1.2;}
 .aim-macros{font-size:13px;color:var(--gold);font-weight:600;margin-top:4px;}
 .aim-why{font-size:12px;color:var(--text-mid);margin-top:12px;background:rgba(255,255,255,0.5);padding:8px 12px;border-radius:8px;line-height:1.5;}
 .aim-recipe{font-size:13px;color:var(--text);margin-top:10px;line-height:1.6;background:rgba(255,255,255,0.6);padding:10px 12px;border-radius:8px;}
@@ -585,7 +591,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .streak-card.cool{border:1px solid rgba(255,255,255,0.18);color:var(--cream-mute);}
 .streak-num{color:var(--mustard-soft);font-weight:700;}
 .streak-flame{font-size:22px;line-height:1;}
-.streak-num{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:600;line-height:1;}
+.streak-num{font-family:'Playfair Display','Playfair Display',serif;font-size:24px;font-weight:600;line-height:1;}
 
 /* MACRO RINGS — 4 svg ring (kcal/P/F/C) */
 .ring-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px;}
@@ -593,14 +599,14 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .ring-svg{width:64px;height:64px;display:block;margin:0 auto;}
 .ring-bg{stroke:var(--surface2);stroke-width:6;fill:none;}
 .ring-fg{stroke-width:6;fill:none;stroke-linecap:round;transition:stroke-dashoffset 0.6s ease-out, stroke 0.3s ease;}
-.ring-num{font-family:'Cormorant Garamond',serif;font-size:14px;text-anchor:middle;font-weight:600;dominant-baseline:central;}
+.ring-num{font-family:'Playfair Display','Playfair Display',serif;font-size:14px;text-anchor:middle;font-weight:600;dominant-baseline:central;}
 .ring-lbl{font-size:9px;text-transform:uppercase;letter-spacing:0.6px;color:var(--text-light);margin-top:6px;font-weight:600;}
 .ring-pct{font-size:10px;font-weight:600;margin-top:2px;}
 
 /* CYCLE-AWARE DIET CARD — faza göre dinamik mesaj */
 .cycle-diet-card{margin:0 16px 16px;border-radius:var(--r);padding:18px 20px;border:1px solid var(--border);position:relative;overflow:hidden;}
 .cdc-icon{font-size:28px;line-height:1;margin-bottom:6px;}
-.cdc-title{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--text);margin-bottom:4px;}
+.cdc-title{font-family:'Playfair Display','Playfair Display',serif;font-size:18px;font-weight:600;color:var(--text);margin-bottom:4px;}
 .cdc-msg{font-size:13px;color:var(--text-mid);line-height:1.6;}
 .cdc-bonus{display:inline-flex;align-items:center;gap:5px;margin-top:10px;padding:4px 12px;background:rgba(255,255,255,0.6);border-radius:20px;font-size:11px;font-weight:600;letter-spacing:0.3px;}
 
@@ -619,7 +625,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .water-card{margin:0 16px 12px;background:rgba(15,30,38,0.55);backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);border:1px solid rgba(168,210,218,0.35);border-radius:var(--r);padding:14px 16px;color:var(--cream);box-shadow:0 12px 40px rgba(0,0,0,0.35),inset 0 1px 0 rgba(255,255,255,0.12);}
 .water-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
 .water-title{font-size:13px;font-weight:600;color:var(--cream-soft);}
-.water-count{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:#A8D2DA;}
+.water-count{font-family:'Playfair Display','Playfair Display',serif;font-size:18px;font-weight:600;color:#A8D2DA;}
 .water-row{display:flex;flex-wrap:wrap;justify-content:flex-start;gap:6px;}
 .water-cup{flex:0 0 calc((100% - 54px) / 10);min-width:30px;max-width:40px;aspect-ratio:1;border:2px solid #b5d2dd;border-radius:50%;cursor:pointer;background:transparent;display:flex;align-items:center;justify-content:center;font-size:13px;color:transparent;transition:all 0.2s;}
 @media (max-width:380px){.water-cup{flex:0 0 calc((100% - 48px) / 9);min-width:28px;}}
@@ -631,7 +637,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .fi{transition:transform 0.15s, opacity 0.2s;border-left:3px solid transparent;padding-left:9px;margin-left:-9px;}
 .fi:active{transform:scale(0.98);}
 .fi[data-cat="protein"]{border-left-color:#7A9B6A;}
-.fi[data-cat="fat"]{border-left-color:#E8B23F;}
+.fi[data-cat="fat"]{border-left-color:#D4AF6A;}
 .fi[data-cat="carb"]{border-left-color:#E5743C;}
 
 /* Checkbox animasyon (tik patlasın) */
@@ -655,7 +661,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .fi.eaten .fkcal{color:var(--sage);}
 .macro-actual-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid var(--border-soft);}
 .macro-actual-cell{text-align:center;}
-.macro-actual-val{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:600;line-height:1;}
+.macro-actual-val{font-family:'Playfair Display','Playfair Display',serif;font-size:22px;font-weight:600;line-height:1;}
 .macro-actual-lbl{font-size:9px;text-transform:uppercase;letter-spacing:0.8px;color:var(--text-light);margin-top:3px;}
 .macro-actual-pct{font-size:11px;font-weight:600;margin-top:2px;}
 .macro-pct-low{color:#7a92aa;}
@@ -666,13 +672,13 @@ select option{background:var(--bg-deep);color:var(--cream);}
 /* CYCLE — phase hero card */
 .cy-hero{background:rgba(15,30,38,0.55);backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);border-radius:var(--r);padding:24px 20px;margin:0 16px 16px;text-align:center;border:1px solid rgba(255,255,255,0.18);box-shadow:0 12px 40px rgba(0,0,0,0.35),inset 0 1px 0 rgba(255,255,255,0.12);color:var(--cream);}
 .cy-hero-emoji{font-size:52px;line-height:1;margin-bottom:8px;filter:drop-shadow(0 4px 16px rgba(232,178,63,0.4));}
-.cy-hero-day{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:300;color:var(--cream-soft);line-height:1.1;}
+.cy-hero-day{font-family:'Playfair Display','Playfair Display',serif;font-size:34px;font-weight:300;color:var(--cream-soft);line-height:1.1;}
 .cy-hero-day em{font-style:normal;color:var(--mustard-soft);font-weight:600;}
 .cy-hero-phase{font-size:14px;color:var(--cream);margin-top:6px;letter-spacing:0.5px;font-weight:500;}
 .cy-hero-meta{display:flex;justify-content:center;gap:14px;margin-top:16px;flex-wrap:wrap;}
 .cy-hero-pill{background:rgba(232,221,196,0.10);border:1px solid var(--glass-border);border-radius:20px;padding:6px 14px;font-size:11px;color:var(--cream-mute);font-weight:500;}
-.cy-quote{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--cream);margin-top:12px;font-size:14px;line-height:1.5;}
-.cy-quote{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:15px;color:var(--text);margin-top:14px;padding-top:14px;border-top:1px dashed var(--border);line-height:1.5;}
+.cy-quote{font-family:'Playfair Display','Playfair Display',serif;font-style:italic;color:var(--cream);margin-top:12px;font-size:14px;line-height:1.5;}
+.cy-quote{font-family:'Playfair Display','Playfair Display',serif;font-style:italic;font-size:15px;color:var(--text);margin-top:14px;padding-top:14px;border-top:1px dashed var(--border);line-height:1.5;}
 
 /* CYCLE — quick actions */
 .cy-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:0 16px 16px;}
@@ -707,7 +713,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
 
 /* CYCLE — 1-5 scale row */
 .scale-row{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;}
-.scale-btn{padding:16px 0;border-radius:12px;border:1px solid var(--border);background:var(--surface2);cursor:pointer;text-align:center;font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--text-mid);transition:all 0.15s;min-height:48px;}
+.scale-btn{padding:16px 0;border-radius:12px;border:1px solid var(--border);background:var(--surface2);cursor:pointer;text-align:center;font-family:'Playfair Display','Playfair Display',serif;font-size:18px;font-weight:600;color:var(--text-mid);transition:all 0.15s;min-height:48px;}
 .scale-btn.active{background:var(--pink-deep);border-color:var(--pink-deep);color:white;}
 
 /* CYCLE — note textarea */
@@ -728,9 +734,9 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .cy-pred-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .cy-pred{background:rgba(232,221,196,0.06);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid var(--glass-border);border-radius:var(--r-sm);padding:14px;color:var(--cream);}
 .cy-pred-l{color:var(--cream-mute);font-size:11px;text-transform:uppercase;letter-spacing:1px;}
-.cy-pred-v{color:var(--cream-soft);font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;}
+.cy-pred-v{color:var(--cream-soft);font-family:'Playfair Display','Playfair Display',serif;font-size:22px;font-weight:400;}
 .cy-pred-l{font-size:10px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-light);margin-bottom:4px;}
-.cy-pred-v{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:600;color:var(--text);line-height:1.2;}
+.cy-pred-v{font-family:'Playfair Display','Playfair Display',serif;font-size:18px;font-weight:600;color:var(--text);line-height:1.2;}
 .cy-pred-s{font-size:11px;color:var(--text-mid);margin-top:2px;}
 
 /* CYCLE — onboarding bulk row */
@@ -741,10 +747,10 @@ select option{background:var(--bg-deep);color:var(--cream);}
 
 /* DASHBOARD — Greeting hero */
 .dash-greeting-card{margin:0 16px 14px;background:rgba(15,30,38,0.55);backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);border:1px solid rgba(255,255,255,0.18);border-radius:22px;padding:22px 22px;color:var(--cream);box-shadow:0 12px 40px rgba(0,0,0,0.35),inset 0 1px 0 rgba(255,255,255,0.12);}
-.dash-greet-hi{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;color:var(--cream-soft);line-height:1.2;}
+.dash-greet-hi{font-family:'Playfair Display','Playfair Display',serif;font-size:24px;font-weight:300;color:var(--cream-soft);line-height:1.2;}
 .dash-greet-hi em{font-style:italic;color:var(--mustard-soft);font-weight:400;}
 .dash-greet-meta{font-size:12px;color:var(--cream-mute);margin-top:6px;letter-spacing:0.4px;}
-.dash-greet-zen{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--cream);margin-top:14px;font-size:15px;line-height:1.55;padding-top:12px;border-top:1px dashed rgba(255,255,255,0.14);}
+.dash-greet-zen{font-family:'Playfair Display','Playfair Display',serif;font-style:italic;color:var(--cream);margin-top:14px;font-size:15px;line-height:1.55;padding-top:12px;border-top:1px dashed rgba(255,255,255,0.14);}
 .dash-greet-pills{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap;}
 .dash-greet-pill{background:rgba(232,221,196,0.10);border:1px solid rgba(255,255,255,0.16);border-radius:18px;padding:5px 12px;font-size:11px;color:var(--cream-mute);font-weight:500;letter-spacing:0.4px;}
 
@@ -754,7 +760,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .dash-stat:active{transform:scale(0.97);}
 .dash-stat:hover{background:rgba(15,30,38,0.65);}
 .dash-stat-i{font-size:20px;line-height:1;margin-bottom:4px;}
-.dash-stat-v{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:600;color:var(--cream-soft);line-height:1;}
+.dash-stat-v{font-family:'Playfair Display','Playfair Display',serif;font-size:20px;font-weight:600;color:var(--cream-soft);line-height:1;}
 .dash-stat-l{font-size:9px;text-transform:uppercase;letter-spacing:0.7px;color:var(--cream-mute);margin-top:3px;}
 
 /* DASHBOARD — Accordion (4 zaman bloğu) */
@@ -775,7 +781,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
 
 /* CYCLE — onboarding overlay (full-screen) */
 .cy-onboard{margin:0 16px 16px;background:linear-gradient(135deg,var(--pink-pale),var(--mauve-soft));border:1px solid var(--pink-soft);border-radius:var(--r);padding:20px;}
-.cy-onboard h4{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;margin-bottom:6px;color:var(--text);}
+.cy-onboard h4{font-family:'Playfair Display','Playfair Display',serif;font-size:22px;font-weight:400;margin-bottom:6px;color:var(--text);}
 .cy-onboard p{font-size:13px;color:var(--text-mid);line-height:1.6;margin-bottom:14px;}
 
 /* ════════════════════════════════════════════ */
@@ -836,7 +842,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .rest-timer-progress{position:absolute;left:0;top:0;bottom:0;background:linear-gradient(90deg,rgba(90,122,79,0.20),rgba(232,178,63,0.30));transition:width 1s linear;border-radius:18px;}
 .rest-timer-content{position:relative;z-index:1;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
 .rest-timer-text{display:flex;align-items:baseline;gap:6px;flex:1;min-width:0;}
-.rest-timer-time{font-family:'Cormorant Garamond',serif;font-size:34px;font-weight:300;color:var(--cream-soft);line-height:1;letter-spacing:-0.5px;}
+.rest-timer-time{font-family:'Playfair Display','Playfair Display',serif;font-size:34px;font-weight:300;color:var(--cream-soft);line-height:1;letter-spacing:-0.5px;}
 .rest-timer-time.low{color:var(--coral);animation:pulseLow 1s ease-in-out infinite;}
 .rest-timer-time.done-msg{font-size:22px;color:var(--mustard);}
 .rest-timer-label{font-size:12px;color:var(--cream-mute);font-weight:500;}
@@ -864,12 +870,12 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .pr-modal-backdrop{position:absolute;inset:0;background:rgba(15,30,38,0.88);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);}
 .pr-modal-content{position:relative;z-index:1;background:linear-gradient(160deg,rgba(15,30,38,0.96),rgba(60,42,10,0.92));border:1px solid rgba(232,178,63,0.45);border-radius:24px;padding:32px 28px 24px;max-width:340px;width:100%;text-align:center;color:var(--cream);box-shadow:0 24px 80px rgba(0,0,0,0.6),inset 0 1px 0 rgba(255,255,255,0.18),0 0 0 1px rgba(232,178,63,0.12);}
 .pr-trophy{font-size:64px;margin-bottom:8px;filter:drop-shadow(0 4px 16px rgba(232,178,63,0.6));animation:prTrophy 0.6s ease-out;}
-.pr-title{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:400;color:var(--mustard);letter-spacing:0.5px;margin-bottom:6px;}
+.pr-title{font-family:'Playfair Display','Playfair Display',serif;font-size:26px;font-weight:400;color:var(--mustard);letter-spacing:0.5px;margin-bottom:6px;}
 .pr-exercise{font-size:14px;color:var(--cream-mute);text-transform:uppercase;letter-spacing:1.4px;font-weight:600;margin-bottom:18px;}
 .pr-numbers{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:6px;flex-wrap:wrap;}
 .pr-prev{font-size:16px;color:var(--cream-mute);text-decoration:line-through;text-decoration-color:rgba(232,221,196,0.5);}
 .pr-arrow{font-size:18px;color:var(--mustard-soft);}
-.pr-new{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:300;color:var(--mustard);letter-spacing:-0.5px;line-height:1;}
+.pr-new{font-family:'Playfair Display','Playfair Display',serif;font-size:42px;font-weight:300;color:var(--mustard);letter-spacing:-0.5px;line-height:1;}
 .pr-delta{font-size:12px;color:var(--mustard-soft);margin-bottom:14px;letter-spacing:0.4px;}
 .pr-arch{font-size:11px;color:var(--coral-soft);text-transform:uppercase;letter-spacing:1.6px;margin-bottom:14px;font-weight:600;}
 .pr-zen{font-style:italic;font-size:14px;color:var(--cream-soft);line-height:1.55;margin:8px 8px 24px;padding:12px 14px;background:rgba(232,178,63,0.08);border-left:2px solid var(--mustard);border-radius:0 12px 12px 0;text-align:left;}
@@ -886,11 +892,11 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .session-summary-h{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
 .session-summary-icon{font-size:24px;}
 .session-summary-titles{flex:1;}
-.session-summary-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:400;color:var(--cream-soft);letter-spacing:0.3px;}
+.session-summary-title{font-family:'Playfair Display','Playfair Display',serif;font-size:20px;font-weight:400;color:var(--cream-soft);letter-spacing:0.3px;}
 .session-summary-sub{font-size:11px;color:var(--cream-mute);text-transform:uppercase;letter-spacing:0.8px;margin-top:2px;}
 .session-summary-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(70px,1fr));gap:8px;}
 .ss-stat{padding:8px 6px;background:rgba(232,221,196,0.06);border:1px solid rgba(255,255,255,0.08);border-radius:12px;text-align:center;display:flex;flex-direction:column;gap:3px;}
-.ss-stat-v{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;color:var(--cream-soft);line-height:1;}
+.ss-stat-v{font-family:'Playfair Display','Playfair Display',serif;font-size:22px;font-weight:400;color:var(--cream-soft);line-height:1;}
 .ss-stat-l{font-size:9px;color:var(--cream-mute);text-transform:uppercase;letter-spacing:0.5px;font-weight:600;}
 
 /* ════════════════════════════════════════════ */
@@ -912,7 +918,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .mm-cell{padding:10px 12px;border-radius:12px;background:rgba(232,221,196,0.06);border:1px solid var(--glass-border);text-align:center;display:flex;flex-direction:column;gap:2px;}
 .mm-cell .mm-icon{font-size:20px;margin-bottom:2px;}
 .mm-cell .mm-lbl{font-size:10px;text-transform:uppercase;letter-spacing:0.6px;color:var(--cream-mute);font-weight:600;}
-.mm-cell .mm-val{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;color:var(--cream-soft);line-height:1.1;}
+.mm-cell .mm-val{font-family:'Playfair Display','Playfair Display',serif;font-size:24px;font-weight:300;color:var(--cream-soft);line-height:1.1;}
 .mm-cell .mm-val.empty{color:var(--cream-mute);font-style:italic;}
 .mm-cell .mm-target{font-size:10px;color:var(--cream-mute);margin-top:2px;line-height:1.3;}
 .mm-section-lbl{font-size:11px;color:var(--cream-mute);text-transform:uppercase;letter-spacing:1px;margin-bottom:10px;text-align:center;}
@@ -951,7 +957,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
 /* WEEKLY DIGEST (Phase 2 Hafta 4C) */
 /* ════════════════════════════════════════════ */
 .weekly-digest-card{margin:0 16px 16px;padding:18px 16px;border-radius:18px;background:rgba(15,30,38,0.62);backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);border:1px solid rgba(232,178,63,0.32);box-shadow:0 12px 40px rgba(0,0,0,0.45),inset 0 1px 0 rgba(255,255,255,0.10);color:var(--cream);animation:eveSlideIn 0.3s ease-out;}
-.wd-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;color:var(--cream-soft);text-align:center;letter-spacing:0.3px;}
+.wd-title{font-family:'Playfair Display','Playfair Display',serif;font-size:24px;font-weight:300;color:var(--cream-soft);text-align:center;letter-spacing:0.3px;}
 .wd-subtitle{font-size:11px;text-transform:uppercase;letter-spacing:1.2px;color:var(--cream-mute);text-align:center;margin:4px 0 16px;font-weight:600;}
 .wd-rings{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:14px;}
 .wd-ring{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 4px;}
@@ -963,7 +969,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .wd-ring-lbl{font-size:9px;color:var(--cream-mute);text-transform:uppercase;letter-spacing:0.4px;}
 .wd-stats{display:flex;gap:10px;justify-content:center;padding:10px 0;border-top:1px dashed rgba(255,255,255,0.10);border-bottom:1px dashed rgba(255,255,255,0.10);margin-bottom:12px;}
 .wd-stat{text-align:center;flex:1;}
-.wd-stat-v{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;color:var(--cream-soft);line-height:1.1;}
+.wd-stat-v{font-family:'Playfair Display','Playfair Display',serif;font-size:20px;font-weight:300;color:var(--cream-soft);line-height:1.1;}
 .wd-stat-l{font-size:10px;text-transform:uppercase;letter-spacing:0.5px;color:var(--cream-mute);font-weight:600;margin-top:2px;}
 .wd-pr-row{text-align:center;margin-bottom:12px;}
 .wd-pr-badge{display:inline-block;padding:6px 14px;border-radius:14px;background:linear-gradient(135deg,var(--mustard),var(--coral));color:var(--ink);font-weight:700;font-size:12px;letter-spacing:0.5px;}
@@ -980,7 +986,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
 /* ════════════════════════════════════════════ */
 .monday-focus-card{margin:0 16px 16px;padding:18px 16px;border-radius:18px;background:rgba(15,30,38,0.62);backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);border:1px solid rgba(90,122,79,0.40);box-shadow:0 12px 40px rgba(0,0,0,0.45),inset 0 1px 0 rgba(255,255,255,0.10);color:var(--cream);animation:eveSlideIn 0.3s ease-out;}
 .mf-tag{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--sage-leaf);font-weight:700;text-align:center;}
-.mf-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;color:var(--cream-soft);text-align:center;margin:4px 0 6px;letter-spacing:0.3px;}
+.mf-title{font-family:'Playfair Display','Playfair Display',serif;font-size:24px;font-weight:300;color:var(--cream-soft);text-align:center;margin:4px 0 6px;letter-spacing:0.3px;}
 .mf-subtitle{font-size:12px;color:var(--cream-mute);text-align:center;margin-bottom:14px;font-style:italic;line-height:1.5;}
 .mf-intro{font-size:13px;line-height:1.65;color:var(--cream-soft);padding:12px 14px;border-radius:12px;background:rgba(90,122,79,0.10);border-left:3px solid var(--sage-leaf);margin-bottom:12px;}
 .mf-section{margin-bottom:10px;padding:10px 12px;border-radius:10px;background:rgba(232,221,196,0.04);}
@@ -999,7 +1005,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
 /* GÜÇ TRENDİ · 6 lift × 1RM grid (Phase 2 Hafta 6A — Ajan 9) */
 /* ════════════════════════════════════════════ */
 .strength-grid-card{margin:0 16px 16px;padding:18px 16px;border-radius:18px;background:rgba(15,30,38,0.62);backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);border:1px solid rgba(232,178,63,0.32);box-shadow:0 12px 40px rgba(0,0,0,0.45),inset 0 1px 0 rgba(255,255,255,0.10);color:var(--cream);}
-.sg-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--cream-soft);text-align:center;margin-bottom:4px;letter-spacing:0.3px;}
+.sg-title{font-family:'Playfair Display','Playfair Display',serif;font-size:22px;font-weight:300;color:var(--cream-soft);text-align:center;margin-bottom:4px;letter-spacing:0.3px;}
 .sg-subtitle{font-size:11px;text-transform:uppercase;letter-spacing:1.2px;color:var(--cream-mute);text-align:center;margin-bottom:14px;font-weight:600;}
 .sg-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .sg-cell{padding:12px 10px;border-radius:12px;background:rgba(232,221,196,0.04);border:1px solid var(--glass-border);position:relative;overflow:hidden;}
@@ -1009,7 +1015,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .sg-cell.phase-ng{border-left:3px solid var(--mauve-evening);}
 .sg-cell.phase-nm{border-left:3px solid var(--mustard);}
 .sg-name{font-size:11px;font-weight:600;color:var(--cream-soft);margin-bottom:4px;line-height:1.2;}
-.sg-1rm{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--cream);line-height:1.1;}
+.sg-1rm{font-family:'Playfair Display','Playfair Display',serif;font-size:22px;font-weight:300;color:var(--cream);line-height:1.1;}
 .sg-1rm small{font-size:11px;color:var(--cream-mute);font-family:inherit;}
 .sg-delta{font-size:10px;font-weight:600;margin-top:2px;}
 .sg-delta.up{color:var(--sage-leaf);}
@@ -1025,7 +1031,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
 /* Haftalık volume × MEV//MRV oranı → 5-renk gradient */
 /* ════════════════════════════════════════════ */
 .muscle-heatmap-card{margin:0 16px 16px;padding:18px 16px;border-radius:18px;background:rgba(15,30,38,0.62);backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);border:1px solid rgba(90,122,79,0.32);box-shadow:0 12px 40px rgba(0,0,0,0.45),inset 0 1px 0 rgba(255,255,255,0.10);color:var(--cream);}
-.mh-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--cream-soft);text-align:center;margin-bottom:4px;letter-spacing:0.3px;}
+.mh-title{font-family:'Playfair Display','Playfair Display',serif;font-size:22px;font-weight:300;color:var(--cream-soft);text-align:center;margin-bottom:4px;letter-spacing:0.3px;}
 .mh-subtitle{font-size:11px;text-transform:uppercase;letter-spacing:1.2px;color:var(--cream-mute);text-align:center;margin-bottom:14px;font-weight:600;}
 .mh-bodies{display:flex;justify-content:center;gap:12px;align-items:flex-start;margin-bottom:14px;}
 .mh-body{flex:1;max-width:160px;}
@@ -1049,7 +1055,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
 /* VOLUME TRENDI · 12 hafta × kas grubu × MEV//MRV (Phase 2 Hafta 6C — Ajan 9) */
 /* ════════════════════════════════════════════ */
 .volume-trend-card{margin:0 16px 16px;padding:18px 16px;border-radius:18px;background:rgba(15,30,38,0.62);backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);border:1px solid rgba(232,178,63,0.32);box-shadow:0 12px 40px rgba(0,0,0,0.45),inset 0 1px 0 rgba(255,255,255,0.10);color:var(--cream);}
-.vt-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--cream-soft);text-align:center;margin-bottom:4px;letter-spacing:0.3px;}
+.vt-title{font-family:'Playfair Display','Playfair Display',serif;font-size:22px;font-weight:300;color:var(--cream-soft);text-align:center;margin-bottom:4px;letter-spacing:0.3px;}
 .vt-subtitle{font-size:11px;text-transform:uppercase;letter-spacing:1.2px;color:var(--cream-mute);text-align:center;margin-bottom:12px;font-weight:600;}
 .vt-chips{display:flex;gap:6px;overflow-x:auto;padding:0 4px 8px;margin-bottom:10px;scrollbar-width:none;}
 .vt-chips::-webkit-scrollbar{display:none;}
@@ -1068,7 +1074,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .vt-ref-label{font-size:8px;font-weight:700;}
 .vt-summary{display:flex;justify-content:space-around;padding:10px 0 0;margin-top:10px;border-top:1px dashed rgba(255,255,255,0.10);font-size:11px;color:var(--cream-mute);}
 .vt-summary-stat{text-align:center;flex:1;}
-.vt-summary-v{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--cream-soft);font-weight:300;line-height:1.1;}
+.vt-summary-v{font-family:'Playfair Display','Playfair Display',serif;font-size:18px;color:var(--cream-soft);font-weight:300;line-height:1.1;}
 .vt-summary-l{font-size:9px;text-transform:uppercase;letter-spacing:0.5px;}
 .vt-empty{text-align:center;padding:18px 12px;font-size:12px;color:var(--cream-mute);font-style:italic;line-height:1.55;}
 
@@ -1076,11 +1082,11 @@ select option{background:var(--bg-deep);color:var(--cream);}
 /* PR TIMELINE · son 12 ay rekor zaman çizelgesi (Phase 2 Hafta 6D — Ajan 6 + Ajan 9) */
 /* ════════════════════════════════════════════ */
 .pr-timeline-card{margin:0 16px 16px;padding:18px 16px;border-radius:18px;background:rgba(15,30,38,0.62);backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);border:1px solid rgba(232,178,63,0.40);box-shadow:0 12px 40px rgba(0,0,0,0.45),inset 0 1px 0 rgba(255,255,255,0.10);color:var(--cream);}
-.pt-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--cream-soft);text-align:center;margin-bottom:4px;letter-spacing:0.3px;}
+.pt-title{font-family:'Playfair Display','Playfair Display',serif;font-size:22px;font-weight:300;color:var(--cream-soft);text-align:center;margin-bottom:4px;letter-spacing:0.3px;}
 .pt-subtitle{font-size:11px;text-transform:uppercase;letter-spacing:1.2px;color:var(--cream-mute);text-align:center;margin-bottom:14px;font-weight:600;}
 .pt-counts{display:flex;justify-content:space-around;padding:12px 0;margin-bottom:12px;border-top:1px dashed rgba(255,255,255,0.10);border-bottom:1px dashed rgba(255,255,255,0.10);}
 .pt-count{text-align:center;flex:1;}
-.pt-count-v{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;color:var(--cream);line-height:1.1;}
+.pt-count-v{font-family:'Playfair Display','Playfair Display',serif;font-size:24px;font-weight:300;color:var(--cream);line-height:1.1;}
 .pt-count-l{font-size:9px;text-transform:uppercase;letter-spacing:0.8px;color:var(--cream-mute);font-weight:600;margin-top:2px;}
 .pt-list{display:flex;flex-direction:column;gap:8px;}
 .pt-item{padding:10px 12px;border-radius:12px;background:rgba(232,221,196,0.04);border-left:3px solid var(--mustard);display:flex;justify-content:space-between;align-items:center;gap:10px;}
@@ -1091,7 +1097,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .pt-item-left{flex:1;min-width:0;}
 .pt-item-name{font-size:13px;font-weight:600;color:var(--cream);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .pt-item-meta{font-size:10px;color:var(--cream-mute);margin-top:2px;}
-.pt-item-1rm{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--mustard);font-weight:400;line-height:1.1;flex-shrink:0;text-align:right;}
+.pt-item-1rm{font-family:'Playfair Display','Playfair Display',serif;font-size:18px;color:var(--mustard);font-weight:400;line-height:1.1;flex-shrink:0;text-align:right;}
 .pt-item-1rm small{font-size:10px;color:var(--cream-mute);}
 .pt-item-delta{font-size:10px;font-weight:600;color:var(--sage-leaf);}
 .pt-empty{text-align:center;padding:20px 12px;font-size:12px;color:var(--cream-mute);font-style:italic;line-height:1.6;}
@@ -1100,7 +1106,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
 /* MİKRONUTRIENT GAP · 4 mikro × Begümnaz mizaç (Phase 2 Hafta 7A — Ajan 4) */
 /* ════════════════════════════════════════════ */
 .micro-card{margin:0 16px 16px;padding:18px 16px;border-radius:18px;background:rgba(15,30,38,0.62);backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);border:1px solid rgba(217,89,30,0.32);box-shadow:0 12px 40px rgba(0,0,0,0.45),inset 0 1px 0 rgba(255,255,255,0.10);color:var(--cream);}
-.mc-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--cream-soft);text-align:center;margin-bottom:4px;letter-spacing:0.3px;}
+.mc-title{font-family:'Playfair Display','Playfair Display',serif;font-size:22px;font-weight:300;color:var(--cream-soft);text-align:center;margin-bottom:4px;letter-spacing:0.3px;}
 .mc-subtitle{font-size:11px;text-transform:uppercase;letter-spacing:1.2px;color:var(--cream-mute);text-align:center;margin-bottom:14px;font-weight:600;}
 .mc-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
 .mc-item{padding:12px 12px;border-radius:12px;background:rgba(232,221,196,0.04);border:1px solid var(--glass-border);position:relative;}
@@ -1129,7 +1135,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .bc-tag{font-size:11px;text-transform:uppercase;letter-spacing:1.2px;font-weight:700;margin-bottom:6px;}
 .bc-morning-card .bc-tag{color:var(--mustard);}
 .bc-evening-card .bc-tag{color:var(--mauve-evening);}
-.bc-prompt{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:300;color:var(--cream-soft);line-height:1.4;margin-bottom:12px;}
+.bc-prompt{font-family:'Playfair Display','Playfair Display',serif;font-size:18px;font-weight:300;color:var(--cream-soft);line-height:1.4;margin-bottom:12px;}
 .bc-chips{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:8px;}
 .bc-chip{background:rgba(232,221,196,0.06);border:1px solid var(--glass-border);border-radius:14px;padding:10px 4px;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;color:var(--cream-soft);transition:all 0.15s;-webkit-tap-highlight-color:transparent;}
 .bc-chip:active{transform:scale(0.92);background:rgba(232,178,63,0.18);}
@@ -1139,7 +1145,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .bc-done{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px;background:rgba(232,178,63,0.10);border:1px solid rgba(232,178,63,0.32);font-size:13px;color:var(--cream-soft);}
 .bc-done-icon{font-size:18px;}
 .bc-done-edit{margin-left:auto;background:transparent;border:none;color:var(--cream-mute);cursor:pointer;font-size:11px;font-style:italic;}
-.bc-eve-q{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:300;color:var(--cream-soft);line-height:1.5;margin-bottom:10px;}
+.bc-eve-q{font-family:'Playfair Display','Playfair Display',serif;font-size:16px;font-weight:300;color:var(--cream-soft);line-height:1.5;margin-bottom:10px;}
 .bc-eve-q em{font-style:normal;font-weight:600;color:var(--mustard);}
 .bc-rating{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;}
 .bc-rating-btn{background:rgba(232,221,196,0.06);border:1px solid var(--glass-border);border-radius:12px;padding:12px 4px;cursor:pointer;color:var(--cream-soft);font-size:18px;font-weight:600;text-align:center;transition:all 0.15s;-webkit-tap-highlight-color:transparent;}
@@ -1154,14 +1160,14 @@ select option{background:var(--bg-deep);color:var(--cream);}
 /* HACETTEPE LAB · Bilim Modu L3 özel sekme (Phase 2 Hafta 8C — Ajan 7 + sentezci) */
 /* ════════════════════════════════════════════ */
 .hlab-card{margin:0 16px 16px;padding:18px 16px;border-radius:18px;background:rgba(15,30,38,0.66);backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);border:1px solid rgba(90,122,79,0.45);box-shadow:0 12px 40px rgba(0,0,0,0.50),inset 0 1px 0 rgba(255,255,255,0.10);color:var(--cream);}
-.hl-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;color:var(--cream-soft);text-align:center;margin-bottom:4px;letter-spacing:0.3px;}
+.hl-title{font-family:'Playfair Display','Playfair Display',serif;font-size:24px;font-weight:300;color:var(--cream-soft);text-align:center;margin-bottom:4px;letter-spacing:0.3px;}
 .hl-subtitle{font-size:11px;text-transform:uppercase;letter-spacing:1.2px;color:var(--cream-mute);text-align:center;margin-bottom:14px;font-weight:600;}
 .hl-tabs{display:flex;gap:4px;background:rgba(232,221,196,0.04);border-radius:12px;padding:4px;margin-bottom:14px;}
 .hl-tab{flex:1;padding:8px 4px;border-radius:9px;cursor:pointer;color:var(--cream-mute);font-size:10px;font-weight:600;letter-spacing:0.2px;text-align:center;border:none;background:transparent;transition:all 0.15s;-webkit-tap-highlight-color:transparent;line-height:1.2;}
 .hl-tab.active{background:rgba(90,122,79,0.32);color:var(--cream);}
 .hl-tab:active{transform:scale(0.96);}
 .hl-pane{padding:12px 0;font-size:13px;color:var(--cream-soft);line-height:1.6;}
-.hl-pane h4{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:400;color:var(--cream-soft);margin:8px 0 6px;letter-spacing:0.2px;}
+.hl-pane h4{font-family:'Playfair Display','Playfair Display',serif;font-size:18px;font-weight:400;color:var(--cream-soft);margin:8px 0 6px;letter-spacing:0.2px;}
 .hl-pane p{margin:6px 0;}
 .hl-pane ul{margin:6px 0;padding-left:18px;}
 .hl-pane li{padding:3px 0;}
@@ -1190,8 +1196,8 @@ select option{background:var(--bg-deep);color:var(--cream);}
 /* ════════════════════════════════════════════ */
 .wm-card{margin:0 16px 16px;padding:18px 16px;border-radius:18px;background:linear-gradient(140deg,rgba(180,121,144,0.20),rgba(15,30,38,0.62));backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);border:1px solid rgba(180,121,144,0.45);box-shadow:0 12px 40px rgba(0,0,0,0.45),inset 0 1px 0 rgba(255,255,255,0.10);color:var(--cream);}
 .wm-tag{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--mauve-evening);font-weight:700;text-align:center;}
-.wm-label{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:300;color:var(--cream-soft);text-align:center;margin:4px 0 6px;letter-spacing:0.3px;}
-.wm-countdown{font-family:'Cormorant Garamond',serif;font-size:42px;font-weight:300;color:var(--mauve-evening);text-align:center;line-height:1.1;margin-bottom:4px;letter-spacing:0.5px;}
+.wm-label{font-family:'Playfair Display','Playfair Display',serif;font-size:24px;font-weight:300;color:var(--cream-soft);text-align:center;margin:4px 0 6px;letter-spacing:0.3px;}
+.wm-countdown{font-family:'Playfair Display','Playfair Display',serif;font-size:42px;font-weight:300;color:var(--mauve-evening);text-align:center;line-height:1.1;margin-bottom:4px;letter-spacing:0.5px;}
 .wm-countdown small{font-size:14px;color:var(--cream-mute);}
 .wm-mode{font-size:12px;text-transform:uppercase;letter-spacing:1px;color:var(--cream-soft);font-weight:600;text-align:center;margin-bottom:14px;}
 .wm-mode-detail{padding:12px 14px;border-radius:12px;background:rgba(232,221,196,0.04);font-size:13px;color:var(--cream-soft);line-height:1.55;margin-bottom:10px;}
@@ -1210,7 +1216,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .wm-soft{padding:14px 16px;border-radius:14px;background:rgba(180,121,144,0.12);border:1px solid rgba(180,121,144,0.30);font-size:13px;color:var(--cream-soft);line-height:1.6;text-align:center;font-style:italic;margin-bottom:10px;}
 .wm-soft em{color:var(--mauve-evening);font-style:normal;font-weight:600;}
 .wm-reframe{display:flex;flex-direction:column;gap:8px;margin-top:8px;}
-.wm-reframe-prompt{font-family:'Cormorant Garamond',serif;font-size:16px;font-weight:300;color:var(--cream-soft);line-height:1.5;text-align:center;margin-bottom:8px;}
+.wm-reframe-prompt{font-family:'Playfair Display','Playfair Display',serif;font-size:16px;font-weight:300;color:var(--cream-soft);line-height:1.5;text-align:center;margin-bottom:8px;}
 .wm-reframe-input{width:100%;padding:10px 12px;border-radius:10px;background:rgba(232,221,196,0.06);border:1px solid var(--glass-border);color:var(--cream);font-family:inherit;font-size:13px;line-height:1.5;}
 .wm-reframe-input:focus{outline:none;border-color:rgba(180,121,144,0.55);background:rgba(180,121,144,0.08);}
 .wm-mode-toggle{display:flex;gap:6px;margin-top:6px;}
@@ -1260,7 +1266,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
 /* TİROİDEKTOMİ DESTEK · "Bedenim ve Tiroidim" (Phase 2 P2.5 — Ajan 6 + Ajan 1) */
 /* ════════════════════════════════════════════ */
 .thy-card{margin:0 16px 16px;padding:18px 16px;border-radius:18px;background:rgba(15,30,38,0.62);backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);border:1px solid rgba(123,168,176,0.40);box-shadow:0 12px 40px rgba(0,0,0,0.45),inset 0 1px 0 rgba(255,255,255,0.10);color:var(--cream);}
-.thy-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--cream-soft);text-align:center;margin-bottom:4px;letter-spacing:0.3px;}
+.thy-title{font-family:'Playfair Display','Playfair Display',serif;font-size:22px;font-weight:300;color:var(--cream-soft);text-align:center;margin-bottom:4px;letter-spacing:0.3px;}
 .thy-subtitle{font-size:11px;text-transform:uppercase;letter-spacing:1.2px;color:var(--cream-mute);text-align:center;margin-bottom:14px;font-weight:600;}
 .thy-tabs{display:flex;gap:4px;background:rgba(232,221,196,0.04);border-radius:12px;padding:4px;margin-bottom:14px;}
 .thy-tab{flex:1;padding:8px 4px;border-radius:9px;cursor:pointer;color:var(--cream-mute);font-size:10px;font-weight:600;letter-spacing:0.2px;text-align:center;border:none;background:transparent;transition:all 0.15s;-webkit-tap-highlight-color:transparent;line-height:1.2;}
@@ -1280,7 +1286,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .thy-question-item:last-child{border-bottom:none;}
 .thy-question-item::before{content:'❓ ';color:var(--mustard);font-weight:700;}
 .thy-phys{padding:12px 14px;border-radius:12px;background:rgba(123,168,176,0.10);border-left:3px solid rgba(123,168,176,0.55);font-size:13px;color:var(--cream-soft);line-height:1.6;margin-bottom:10px;}
-.thy-phys h4{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:400;color:var(--cream-soft);margin:8px 0 6px;letter-spacing:0.2px;}
+.thy-phys h4{font-family:'Playfair Display','Playfair Display',serif;font-size:18px;font-weight:400;color:var(--cream-soft);margin:8px 0 6px;letter-spacing:0.2px;}
 .thy-phys p{margin:6px 0;}
 .thy-pill{display:inline-block;padding:3px 9px;border-radius:8px;background:rgba(232,178,63,0.18);color:var(--mustard);font-size:11px;font-weight:600;margin:2px 4px 2px 0;}
 
@@ -1288,7 +1294,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
 /* NOTIFICATION SETTINGS · iOS PWA web push (Phase 2 P2.6 — Ajan 8 + Ajan 11) */
 /* ════════════════════════════════════════════ */
 .notif-card{margin:0 16px 16px;padding:18px 16px;border-radius:18px;background:rgba(15,30,38,0.55);backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);border:1px solid rgba(232,178,63,0.32);color:var(--cream);}
-.notif-title{font-family:'Cormorant Garamond',serif;font-size:20px;font-weight:300;color:var(--cream-soft);margin-bottom:4px;}
+.notif-title{font-family:'Playfair Display','Playfair Display',serif;font-size:20px;font-weight:300;color:var(--cream-soft);margin-bottom:4px;}
 .notif-subtitle{font-size:11px;text-transform:uppercase;letter-spacing:1.2px;color:var(--cream-mute);margin-bottom:12px;font-weight:600;}
 .notif-status{padding:10px 12px;border-radius:10px;background:rgba(232,221,196,0.04);font-size:12px;color:var(--cream-soft);line-height:1.5;margin-bottom:12px;border-left:3px solid var(--cream-mute);}
 .notif-status.granted{border-left-color:var(--sage-leaf);background:rgba(90,122,79,0.10);}
@@ -1297,7 +1303,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .notif-row{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 8px;border-radius:10px;transition:background 0.15s;}
 .notif-row+.notif-row{border-top:1px dashed rgba(255,255,255,0.10);}
 .notif-info{flex:1;min-width:0;}
-.notif-time{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--cream);font-weight:300;line-height:1.1;}
+.notif-time{font-family:'Playfair Display','Playfair Display',serif;font-size:18px;color:var(--cream);font-weight:300;line-height:1.1;}
 .notif-name{font-size:12px;color:var(--cream-soft);font-weight:600;}
 .notif-desc{font-size:10px;color:var(--cream-mute);line-height:1.4;}
 .notif-toggle{flex-shrink:0;}
@@ -1322,14 +1328,14 @@ select option{background:var(--bg-deep);color:var(--cream);}
 /* ADAPTIVE LOAD · HRV-driven yük önerisi (Phase 2 P2.8 — Ajan 11) */
 /* ════════════════════════════════════════════ */
 .al-card{margin:0 16px 16px;padding:18px 16px;border-radius:18px;background:rgba(15,30,38,0.62);backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);border:1px solid rgba(123,168,176,0.36);box-shadow:0 12px 40px rgba(0,0,0,0.45),inset 0 1px 0 rgba(255,255,255,0.10);color:var(--cream);}
-.al-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--cream-soft);text-align:center;margin-bottom:4px;letter-spacing:0.3px;}
+.al-title{font-family:'Playfair Display','Playfair Display',serif;font-size:22px;font-weight:300;color:var(--cream-soft);text-align:center;margin-bottom:4px;letter-spacing:0.3px;}
 .al-subtitle{font-size:11px;text-transform:uppercase;letter-spacing:1.2px;color:var(--cream-mute);text-align:center;margin-bottom:14px;font-weight:600;}
 .al-readiness{padding:14px 16px;border-radius:14px;margin-bottom:12px;text-align:center;}
 .al-readiness.green{background:rgba(90,122,79,0.18);border:1px solid rgba(90,122,79,0.50);}
 .al-readiness.yellow{background:rgba(232,178,63,0.15);border:1px solid rgba(232,178,63,0.45);}
 .al-readiness.red{background:rgba(217,89,30,0.15);border:1px solid rgba(217,89,30,0.45);}
 .al-readiness-emoji{font-size:32px;line-height:1;margin-bottom:4px;}
-.al-readiness-status{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;letter-spacing:0.3px;}
+.al-readiness-status{font-family:'Playfair Display','Playfair Display',serif;font-size:22px;font-weight:300;letter-spacing:0.3px;}
 .al-readiness.green .al-readiness-status{color:var(--sage-leaf);}
 .al-readiness.yellow .al-readiness-status{color:var(--mustard);}
 .al-readiness.red .al-readiness-status{color:var(--coral);}
@@ -1337,7 +1343,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .al-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;margin-bottom:12px;}
 .al-stat{padding:8px 6px;border-radius:10px;background:rgba(232,221,196,0.04);text-align:center;}
 .al-stat-label{font-size:9px;text-transform:uppercase;letter-spacing:0.5px;color:var(--cream-mute);font-weight:600;margin-bottom:2px;}
-.al-stat-val{font-family:'Cormorant Garamond',serif;font-size:18px;color:var(--cream);font-weight:300;line-height:1.1;}
+.al-stat-val{font-family:'Playfair Display','Playfair Display',serif;font-size:18px;color:var(--cream);font-weight:300;line-height:1.1;}
 .al-stat-delta{font-size:10px;font-weight:600;margin-top:2px;}
 .al-stat-delta.up{color:var(--sage-leaf);}
 .al-stat-delta.down{color:var(--coral);}
@@ -1353,7 +1359,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
 /* CYCLE PATTERN EMERGENCE · 3 cycle sonra atlas (Phase 2 Hafta 8E — sentezci) */
 /* ════════════════════════════════════════════ */
 .cpe-card{margin:0 16px 16px;padding:18px 16px;border-radius:18px;background:linear-gradient(140deg,rgba(180,121,144,0.10),rgba(15,30,38,0.62));backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);border:1px solid rgba(180,121,144,0.36);box-shadow:0 12px 40px rgba(0,0,0,0.45),inset 0 1px 0 rgba(255,255,255,0.10);color:var(--cream);}
-.cpe-title{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:300;color:var(--cream-soft);text-align:center;margin-bottom:4px;letter-spacing:0.3px;}
+.cpe-title{font-family:'Playfair Display','Playfair Display',serif;font-size:22px;font-weight:300;color:var(--cream-soft);text-align:center;margin-bottom:4px;letter-spacing:0.3px;}
 .cpe-subtitle{font-size:11px;text-transform:uppercase;letter-spacing:1.2px;color:var(--cream-mute);text-align:center;margin-bottom:14px;font-weight:600;}
 .cpe-phase-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:12px;}
 .cpe-phase-cell{padding:10px 6px;border-radius:10px;background:rgba(232,221,196,0.04);text-align:center;}
@@ -1363,7 +1369,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .cpe-phase-cell.nm{border-left:3px solid var(--mustard);}
 .cpe-phase-emoji{font-size:18px;line-height:1;margin-bottom:2px;}
 .cpe-phase-label{font-size:9px;text-transform:uppercase;letter-spacing:0.5px;color:var(--cream-mute);font-weight:600;}
-.cpe-phase-num{font-family:'Cormorant Garamond',serif;font-size:18px;font-weight:300;color:var(--cream);line-height:1.1;margin-top:3px;}
+.cpe-phase-num{font-family:'Playfair Display','Playfair Display',serif;font-size:18px;font-weight:300;color:var(--cream);line-height:1.1;margin-top:3px;}
 .cpe-phase-sub{font-size:9px;color:var(--cream-mute);margin-top:1px;}
 .cpe-insight{padding:12px 14px;border-radius:12px;background:rgba(180,121,144,0.10);border-left:3px solid var(--mauve-evening);font-size:13px;color:var(--cream-soft);line-height:1.6;margin-bottom:10px;}
 .cpe-insight-title{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--mauve-evening);font-weight:700;margin-bottom:6px;}
@@ -1556,7 +1562,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
       <div class="cb">
         <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span>Begümnaz'ın programında <strong>kilo değil sağlık metrikleri</strong> ana hedef: endo flare yönetimi + cilt iyileşmesi (PIE/PIH/lekeler) + saç + supplement etkisi (Lugol iyot, NAC vs.) + döngüsel enerji + uyku + ruh hali. <em>"Hız bedenine ait"</em> — Ölçüm sekmesinden istediğinde manuel kilo ve vücut ölçüleri girebilirsin.</div>
         <div style="text-align:center;margin-bottom:16px;">
-          <div style="font-family:'Cormorant Garamond',serif;font-size:52px;font-weight:300;color:var(--text);line-height:1;" id="cwbig">—</div>
+          <div style="font-family:'Playfair Display','Playfair Display',serif;font-size:52px;font-weight:300;color:var(--text);line-height:1;" id="cwbig">—</div>
           <div style="font-size:12px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">kg · ölçüm sekmesinden gir</div>
         </div>
         <div id="multi-metrics" style="margin-top:18px;padding-top:14px;border-top:1px dashed var(--glass-border);"></div>
@@ -1747,7 +1753,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
 <div class="mo" id="settings-modal">
   <div class="modal" style="max-width:500px;max-height:90vh;overflow-y:auto;">
     <div class="mhandle"></div>
-    <h3 style="font-family:'Cormorant Garamond',serif;font-size:26px;margin-bottom:14px;">⚙️ Ayarlar</h3>
+    <h3 style="font-family:'Playfair Display','Playfair Display',serif;font-size:26px;margin-bottom:14px;">⚙️ Ayarlar</h3>
 
     <div class="slbl" style="padding:0;margin:0 0 8px;">🌸 Döngü Varsayılanları</div>
     <div class="card" style="margin:0 0 14px;">
@@ -3111,7 +3117,7 @@ function renderSelDay(){
 
   document.getElementById('sel-day').innerHTML=`
     <div style="margin:0 16px 8px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;">
-      <div style="font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:400;">${ds}</div>
+      <div style="font-family:'Playfair Display','Playfair Display',serif;font-size:22px;font-weight:400;">${ds}</div>
       ${c?`<span style="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;" class="${c.cls}">${c.emoji} ${c.label} · Gün ${c.day}</span>`:`<span style="display:inline-flex;align-items:center;gap:5px;padding:5px 12px;border-radius:20px;font-size:12px;font-weight:600;color:var(--text-light);background:var(--surface2);" onclick="showP('cycle',document.querySelectorAll('.nb')[1])" role="button">🌸 Döngü takibini başlat</span>`}
     </div>
     ${(c&&inP(d))?`<div style="margin:0 16px 12px;"><div class="notice np"><div class="nicon">🔴</div><div><strong>Regl günü:</strong> Tret ve AHA'yı bu hafta yumuşat — cilt hassas. Egzersizde aktif iyileşme.</div></div></div>`:(c&&preP(d))?`<div style="margin:0 16px 12px;"><div class="notice nm"><div class="nicon">🌙</div><div><strong>PMS / yaklaşan regl (Gün ${c.day}):</strong> ~${getAvgCycleLen()-c.day} gün sonra regl bekleniyor. Antrenman yoğunluğu %20-30 düşür.</div></div></div>`:''}
@@ -3899,7 +3905,7 @@ function renderHeroCard(){
     <div class="cb">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
         <span style="font-size:32px;">${emoji}</span>
-        <div style="flex:1;"><div style="font-family:'Cormorant Garamond',serif;font-size:24px;color:var(--cream-soft);">${greeting}</div>${cycleLine}</div>
+        <div style="flex:1;"><div style="font-family:'Playfair Display','Playfair Display',serif;font-size:24px;color:var(--cream-soft);">${greeting}</div>${cycleLine}</div>
       </div>
       <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--mustard-soft);margin-bottom:6px;">⏰ Sıradaki ${nextActions.length} aksiyon</div>
       ${actionsHtml}
@@ -3934,7 +3940,7 @@ function renderPazarBrunch(){
     <div class="cb">
       <div style="text-align:center;margin-bottom:12px;">
         <div style="font-size:42px;line-height:1;margin-bottom:6px;">🎉</div>
-        <div style="font-family:'Cormorant Garamond',serif;font-size:30px;font-weight:400;color:var(--coral-soft);">Pazar Esnek Gün'ı</div>
+        <div style="font-family:'Playfair Display','Playfair Display',serif;font-size:30px;font-weight:400;color:var(--coral-soft);">Pazar Esnek Gün'ı</div>
         <div style="font-size:13px;color:var(--cream);margin-top:4px;font-style:italic;">İyi eğlenceler · hak ettin ✨</div>
       </div>
       <div style="background:rgba(255,255,255,0.06);border-radius:10px;padding:12px;margin-bottom:10px;">
@@ -4950,7 +4956,7 @@ function triggerConfetti(particleCount){
   const container=document.createElement('div');
   container.className='confetti-burst';
   // Akşam Bahçesi paleti — coral, mustard, sage, mauve, cream parçacıklar
-  const colors=['#D9591E','#E5743C','#E8B23F','#F4C04E','#5A7A4F','#A8C0A0','#B47990','#E8DDC4','#F0E6D0'];
+  const colors=['#6E1A28','#B8536B','#DDA0AE','#E5A8B5','#A48B7A','#C8869C','#B47990','#FFF8F0','#FAEDD4'];
   const shapes=['','round','tall'];
   for(let i=0;i<n;i++){
     const p=document.createElement('div');
@@ -5127,7 +5133,7 @@ function ringColor(pct){
   if(pct<0.7) return '#7BA8B0';      // soft teal — eksik ("henüz")
   if(pct<0.9) return '#A8C0A0';      // light sage — yaklaşıyor
   if(pct<=1.10) return '#7A9B6A';    // sage — hedef ±10% tolerans
-  if(pct<=1.20) return '#E8B23F';    // mustard — hafif aşım
+  if(pct<=1.20) return '#D4AF6A';    // şampanya altın — hafif aşım
   return '#D9591E';                  // coral — ciddi aşım (palette uyumlu)
 }
 function renderMacroRings(d){
@@ -5175,7 +5181,7 @@ const PHASE_DIET={
   'Follicular Phase':{
     icon:'🌱',title:'Folliküler · İlkbahar · Genç Kız',
     msg:'Östrojen yükseliyor, merakın açılıyor. Sebzede çeşitlilik, hafif ama doyurucu. Yeni tatları deneyebilir, yapılmayan şeyleri ele alabilirsin.',
-    bg:'linear-gradient(135deg, var(--sage-soft), #e8f0e0)',
+    bg:'linear-gradient(135deg, var(--mauve-soft), #e8f0e0)',
   },
   'Ovulation':{
     icon:'🌸',title:'Ovulasyon · Yaz · Anne',
@@ -5238,7 +5244,7 @@ function renderFastingCountdown(){
     const diff=eatStart-minNow;
     icon='🟢';
     label=`Yeme penceresi 10:00'a ${Math.floor(diff/60)}s ${diff%60}dk`;
-    bg='var(--sage-soft)';fg='#4a6e47';
+    bg='var(--mauve-soft)';fg='#4a6e47';
   } else if(minNow<eatEnd){
     const diff=eatEnd-minNow;
     icon='🍽';
@@ -5564,7 +5570,7 @@ function renderDietDay(){
         <div style="font-size:13px;font-weight:500;color:var(--text);">${cm.n}${cm.ai?'<span class="ai-badge">💭 AI</span>':''}</div>
         <div style="font-size:11px;color:var(--text-light);margin-top:2px;">P: ${cm.p}g · Y: ${cm.f}g · K: ${cm.c}g</div>
       </div>
-      <div style="font-family:'Cormorant Garamond',serif;font-size:16px;color:var(--gold);flex-shrink:0;">${cm.k}</div>
+      <div style="font-family:'Playfair Display','Playfair Display',serif;font-size:16px;color:var(--gold);flex-shrink:0;">${cm.k}</div>
       <button class="cm-del" onclick="removeCustomMeal(S.dD,'${cm.id}')" title="Sil">✕</button>
     </div>`).join('');
 
@@ -5577,7 +5583,7 @@ function renderDietDay(){
     <div style="border-top:1px solid var(--border-soft);padding-top:10px;margin-top:10px;">
       <div style="display:flex;justify-content:space-between;align-items:center;">
         <span style="font-size:13px;font-weight:600;">Öğün Toplamı</span>
-        <span style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--gold);">${m1.k+ms.k+cms.filter(cm=>cm.slot==='m1').reduce((s,cm)=>s+cm.k,0)} kcal</span>
+        <span style="font-family:'Playfair Display','Playfair Display',serif;font-size:20px;color:var(--gold);">${m1.k+ms.k+cms.filter(cm=>cm.slot==='m1').reduce((s,cm)=>s+cm.k,0)} kcal</span>
       </div>
       <div style="font-size:11px;color:var(--text-mid);margin-top:6px;">💊 Omega-3 + B-Complex yemekle (Anti turmeric 1. doz 10:30'da, ayrı)</div>
       ${inP(d)?`<div style="font-size:11px;color:var(--pink-deep);margin-top:4px;">🔴 Regl: ciğer / kırmızı et seçimini öne çıkar</div>`:''}
@@ -5592,7 +5598,7 @@ function renderDietDay(){
     <div style="border-top:1px solid var(--border-soft);padding-top:10px;margin-top:10px;">
       <div style="display:flex;justify-content:space-between;align-items:center;">
         <span style="font-size:13px;font-weight:600;">Öğün Toplamı</span>
-        <span style="font-family:'Cormorant Garamond',serif;font-size:20px;color:var(--gold);">${m2.k+m2s.k+cms.filter(cm=>cm.slot==='m2').reduce((s,cm)=>s+cm.k,0)} kcal</span>
+        <span style="font-family:'Playfair Display','Playfair Display',serif;font-size:20px;color:var(--gold);">${m2.k+m2s.k+cms.filter(cm=>cm.slot==='m2').reduce((s,cm)=>s+cm.k,0)} kcal</span>
       </div>
       <div style="font-size:11px;color:var(--text-mid);margin-top:4px;">💊 Time Magnezyum (Time Magnezyum) + Çinko 15mg + Anti turmeric (2. doz) yemekle</div>
       <div style="font-size:11px;color:var(--sage);margin-top:4px;">🥗 Karb pencere AÇIK (post-workout): bal+kivi/böğürtlen veya küçük patates · karbsız gün ise sadece yeşillik</div>
@@ -5626,10 +5632,10 @@ function renderDietDay(){
     <div style="background:linear-gradient(135deg,rgba(232,178,63,0.18),rgba(168,192,160,0.12));border-radius:14px;padding:16px;margin-bottom:14px;text-align:center;border:1px solid rgba(232,178,63,0.30);">
       <div style="font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--mustard-soft);font-weight:700;margin-bottom:8px;">⏳ Bugün Kalan</div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;">
-        <div><div style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:600;line-height:1;color:${remColor(rem.kcal)};">${rem.kcal}</div><div style="font-size:10px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">kcal</div></div>
-        <div><div style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:600;line-height:1;color:${remColor(rem.p)};">${rem.p}</div><div style="font-size:10px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">g protein</div></div>
-        <div><div style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:600;line-height:1;color:${remColor(rem.f)};">${rem.f}</div><div style="font-size:10px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">g yağ</div></div>
-        <div><div style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:600;line-height:1;color:${remColor(rem.c*5)};">${rem.c}</div><div style="font-size:10px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">g karb</div></div>
+        <div><div style="font-family:'Playfair Display','Playfair Display',serif;font-size:32px;font-weight:600;line-height:1;color:${remColor(rem.kcal)};">${rem.kcal}</div><div style="font-size:10px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">kcal</div></div>
+        <div><div style="font-family:'Playfair Display','Playfair Display',serif;font-size:32px;font-weight:600;line-height:1;color:${remColor(rem.p)};">${rem.p}</div><div style="font-size:10px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">g protein</div></div>
+        <div><div style="font-family:'Playfair Display','Playfair Display',serif;font-size:32px;font-weight:600;line-height:1;color:${remColor(rem.f)};">${rem.f}</div><div style="font-size:10px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">g yağ</div></div>
+        <div><div style="font-family:'Playfair Display','Playfair Display',serif;font-size:32px;font-weight:600;line-height:1;color:${remColor(rem.c*5)};">${rem.c}</div><div style="font-size:10px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">g karb</div></div>
       </div>
     </div>
     <div style="font-size:11px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;text-align:center;">📊 Gerçek tüketim ringleri</div>
@@ -6557,7 +6563,7 @@ function openRestoranScenarios(){
   modal.className='mo open';modal.style.cssText='z-index:9999;';
   modal.innerHTML=`<div class="modal" style="max-width:480px;">
     <div class="mhandle"></div>
-    <h3 style="font-family:'Cormorant Garamond',serif;font-size:24px;margin-bottom:8px;">🥩 Restoran Modu</h3>
+    <h3 style="font-family:'Playfair Display','Playfair Display',serif;font-size:24px;margin-bottom:8px;">🥩 Restoran Modu</h3>
     <div class="msub" style="font-size:13px;margin-bottom:16px;">5 dk önceden plan · 4 senaryo</div>
     ${scenarios.map(s=>`<div style="background:rgba(255,255,255,0.04);border-radius:10px;padding:12px;margin-bottom:10px;">
       <div style="font-size:14px;font-weight:600;color:var(--cream-soft);margin-bottom:4px;">${s.emoji} ${s.n}</div>
@@ -6680,7 +6686,7 @@ function openNutritionToolkit(){
   modal.className='mo open';modal.style.cssText='z-index:9999;';
   modal.innerHTML=`<div class="modal" style="max-width:480px;max-height:80vh;overflow-y:auto;">
     <div class="mhandle"></div>
-    <h3 style="font-family:'Cormorant Garamond',serif;font-size:26px;margin-bottom:8px;">🛠️ Beslenme Araçları</h3>
+    <h3 style="font-family:'Playfair Display','Playfair Display',serif;font-size:26px;margin-bottom:8px;">🛠️ Beslenme Araçları</h3>
     <div class="msub" style="font-size:13px;margin-bottom:16px;">Phase 3.C P1+P2 · 8 araç</div>
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
       <button class="tk-btn" onclick="openDamakAtlas()">📊<br>Damak Atlası</button>
@@ -6704,7 +6710,7 @@ function showToolkitSubModal(title,bodyHtml){
   modal.className='mo open';modal.style.cssText='z-index:10000;';
   modal.innerHTML=`<div class="modal" style="max-width:440px;max-height:80vh;overflow-y:auto;">
     <div class="mhandle"></div>
-    <h3 style="font-family:'Cormorant Garamond',serif;font-size:22px;margin-bottom:10px;">${title}</h3>
+    <h3 style="font-family:'Playfair Display','Playfair Display',serif;font-size:22px;margin-bottom:10px;">${title}</h3>
     ${bodyHtml}
     <button class="btn bghost bfull" style="margin-top:14px;" onclick="this.closest('.mo').remove()">Kapat</button>
   </div>`;
@@ -6817,7 +6823,7 @@ function renderSupplementsInventory(){
   const groups={};
   SUAğırlıkEMENTS_INVENTORY.forEach(s=>{(groups[s.cat]=groups[s.cat]||[]).push(s);});
   const alarmsHtml=SUAğırlıkEMENT_ALARMS.map(a=>{
-    const sev=a.severity==='resolved'?'#5A7A4F':a.severity==='warn'?'#D9591E':'#E8B23F';
+    const sev=a.severity==='resolved'?'#7A8A6A':a.severity==='warn'?'#D9591E':'#E8B23F';
     const icon=a.severity==='resolved'?'✅':a.severity==='warn'?'🔴':'ℹ️';
     return `<div style="background:rgba(255,255,255,0.04);border-left:3px solid ${sev};border-radius:6px;padding:10px 12px;margin-bottom:8px;">
       <div style="display:flex;align-items:center;gap:8px;font-size:13px;font-weight:600;color:var(--cream-soft);">${icon} ${a.title}</div>
@@ -6910,7 +6916,7 @@ function renderLipidTrackingCard(){
   const nextTestDays=dayssince!==null?Math.max(0,42-dayssince):42;
   const ldlDelta=(last&&prev)?(last.ldl-prev.ldl).toFixed(1):null;
   const ldlPct=(last&&prev)?Math.round(((last.ldl-prev.ldl)/prev.ldl)*100):null;
-  const ldlBadge=last?(last.ldl<3?'#5A7A4F':last.ldl<5?'#E8B23F':last.ldl<7?'#E5743C':'#D9591E'):'#888';
+  const ldlBadge=last?(last.ldl<3?'#7A8A6A':last.ldl<5?'#E8B23F':last.ldl<7?'#E5743C':'#D9591E'):'#888';
   el.innerHTML=`<div class="card" style="margin-top:16px;">
     <div class="ch"><h3>🩺 Lipid Takibi · FH Şüphesi</h3></div>
     <div class="cb">
@@ -6918,7 +6924,7 @@ function renderLipidTrackingCard(){
       ${last?`<div style="margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:8px;">
         <div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:10px;">
           <div style="font-size:10px;color:var(--cream-mute);text-transform:uppercase;letter-spacing:1px;">Son LDL</div>
-          <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:600;color:${ldlBadge};">${last.ldl}</div>
+          <div style="font-family:'Playfair Display','Playfair Display',serif;font-size:28px;font-weight:600;color:${ldlBadge};">${last.ldl}</div>
           <div style="font-size:10px;color:var(--cream-mute);">mmol/L · ${last.date}</div>
         </div>
         <div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:10px;">
@@ -9736,7 +9742,7 @@ function renderCyDailyLog(){
     const c=ci(new Date());
     if(c){
       const tip=c.phase==='Menstruation'?'Sınırlarını çiz, kendini koru. Hayır söyleme hakkın var. Akış + ağrı + ruh hâli ön planda.':c.phase==='Follicular Phase'?'Merakını dinle. Yapamayacağını düşündüğün neler? Enerji yükseliyor.':c.phase==='Ovulation'?'Bağlantı kur, paylaş. En sosyal halinin penceresi açık. Peak enerji, parlaklık.':'Sükunete ihtiyacın olduğunda kararlı ol. Sonlandırma döngüsü. Şişkinlik/sebum/kramp önbelirti olabilir.';
-      phaseHintEl.innerHTML=`<div style="margin-bottom:12px;padding:12px 14px;background:linear-gradient(135deg, rgba(232,180,184,0.15), rgba(220,200,210,0.15));border-radius:10px;font-size:12px;color:var(--text-mid);"><strong style="color:var(--text);">${c.emoji} ${c.label} · Gün ${c.day}</strong> <span style="font-size:11px;color:var(--text-light);">· ${c.archetype}</span><br><span style="font-style:italic;font-family:'Cormorant Garamond',serif;font-size:13px;">${tip}</span></div>`;
+      phaseHintEl.innerHTML=`<div style="margin-bottom:12px;padding:12px 14px;background:linear-gradient(135deg, rgba(232,180,184,0.15), rgba(220,200,210,0.15));border-radius:10px;font-size:12px;color:var(--text-mid);"><strong style="color:var(--text);">${c.emoji} ${c.label} · Gün ${c.day}</strong> <span style="font-size:11px;color:var(--text-light);">· ${c.archetype}</span><br><span style="font-style:italic;font-family:'Playfair Display','Playfair Display',serif;font-size:13px;">${tip}</span></div>`;
     } else {
       phaseHintEl.innerHTML='';
     }
@@ -10087,7 +10093,7 @@ function renderCycleStripTop(){
   const lastStartLbl=lastStart.getDate()+' '+MN[lastStart.getMonth()];
   const cyc=getAvgCycleLen();
   const zen=getZen(c.phase);
-  el.innerHTML=`<div class="cstrip" style="cursor:pointer;flex-direction:column;align-items:stretch;" onclick="showP('cycle',document.querySelectorAll('.nb')[1])"><div style="display:flex;align-items:center;gap:14px;"><div class="cicon">${c.emoji}</div><div class="cinfo" style="flex:1;"><div class="cphase">${c.label}</div><div class="cdetail">${c.archetype} · Son regl: ${lastStartLbl} · Döngü ~${cyc} gün</div></div><div class="cbadge"><div class="cn">${c.day}</div><div class="cl">gün</div></div></div><div style="font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13px;color:var(--text-mid);margin-top:10px;padding-top:10px;border-top:1px dashed rgba(180,120,100,0.2);text-align:center;">${zen}</div></div>`;
+  el.innerHTML=`<div class="cstrip" style="cursor:pointer;flex-direction:column;align-items:stretch;" onclick="showP('cycle',document.querySelectorAll('.nb')[1])"><div style="display:flex;align-items:center;gap:14px;"><div class="cicon">${c.emoji}</div><div class="cinfo" style="flex:1;"><div class="cphase">${c.label}</div><div class="cdetail">${c.archetype} · Son regl: ${lastStartLbl} · Döngü ~${cyc} gün</div></div><div class="cbadge"><div class="cn">${c.day}</div><div class="cl">gün</div></div></div><div style="font-family:'Playfair Display','Playfair Display',serif;font-style:italic;font-size:13px;color:var(--text-mid);margin-top:10px;padding-top:10px;border-top:1px dashed rgba(180,120,100,0.2);text-align:center;">${zen}</div></div>`;
 }
 // Auto-seed period history on first run — silent, no UI
 function autoSeedPeriodsIfEmpty(){return;/* DISABLED for Begümnaz — no seed data */ // 
@@ -10144,7 +10150,7 @@ function showOnboarding(){
   modal.style.cssText='z-index:9999;';
   modal.innerHTML=`<div class="modal" style="max-width:420px;">
     <div class="mhandle"></div>
-    <h3 style="font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;margin-bottom:8px;">Hoşgeldin, <em style="color:var(--pink-deep);">Begümnaz</em> ✨</h3>
+    <h3 style="font-family:'Playfair Display','Playfair Display',serif;font-size:26px;font-weight:300;margin-bottom:8px;">Hoşgeldin, <em style="color:var(--pink-deep);">Begümnaz</em> ✨</h3>
     <div class="msub" style="font-size:14px;line-height:1.6;margin-bottom:20px;">Bu app sana özel — döngün, sağlığın, antrenmanın, cilt bakımın 1 yerde. Başlamadan önce 3 şeyi netleştirelim:</div>
 
     <div style="background:var(--surface2);border-radius:12px;padding:14px;margin-bottom:14px;">
