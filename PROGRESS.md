@@ -26,34 +26,48 @@
 - ✅ `PROGRESS.md` (bu dosya)
 - ✅ `.gitignore`
 
+**Faz 1 — Konu klasörü içeriği** (TAMAMLANDI):
+- ✅ supplements-ultimate/ SYNTHESIS + DAILY-SCHEDULE + BLOOD-VALUES + ETKILESIM + DOKTOR-SORULARI + 2 agent
+- ✅ skin-ultimate/ SYNTHESIS + HAFTALIK-CIZELGE + DAILY-RUTIN + URUN-LISTESI + TRET-PROTOKOL + PIE-PIH-STRATEJI + 3 agent
+- ✅ workout-ultimate/ SYNTHESIS + WEEKLY-PLAN + EV-DISARI-GYM-SWITCH + DOGUSAL-ENERGY-CYCLE + PELVIK-TABAN-VIDEOLARI + KAS-GRUBU + AGIRLIK-GUNLERI + 4 agent
+- ✅ diet-ultimate/ SYNTHESIS + DAILY-PLAN + YASAKLAR-IZINLI + 3 agent
+- ✅ lifestyle-ultimate/ SYNTHESIS + AYAK-BANYOSU + SICAK-VUCUT + ITIR + UYKU + SAC-BAKIM
+- ✅ medical-documents/ README + KAN-DEGERLERI-TREND
+
+**Agent perspektifleri** (12 dosya — kompakt):
+- ✅ skin: 3 agent (dermatolog / endo-hormonal / leke-uzman)
+- ✅ supplements: 2 agent (fonksiyonel tıp / eczacı-etkileşim)
+- ✅ workout: 4 agent (endo-cycle / pelvik fizyo / spor bilim / fonksiyonel pilates)
+- ✅ diet: 3 agent (mizaç / endo anti-inflamatuvar / fonksiyonel tıp)
+
+**Faz 2 — PWA Adaptasyonu** (BAŞLADI — Iterasyon 1):
+- ✅ Bengisu `index.html` fetch (raw GitHub URL)
+- ✅ `manifest.json`, `sw.js`, `cloudflare-worker.js`, `bg.jpeg` Begümnaz'a uyarlandı
+- ✅ `HEALTH_SHORTCUT.md`, `DEPLOY-API-PROXY.md` Begümnaz'a uyarlandı
+- ✅ `index.html` global Bengisu→Begümnaz find-replace
+- ⏳ Bengisu medikal terim temizliği (211 referans, detay [`PWA-ADAPTATION-TODO.md`](PWA-ADAPTATION-TODO.md))
+- ⏳ Begümnaz verisi entegrasyon (16 ürün + endo + post-iso)
+- ⏳ "Supplements" sekmesi eklenmesi
+- ⏳ Cycle engine endo flare awareness
+- ⏳ AI prompt'lar Begümnaz'a göre yeniden yazılması
+
 ### 🚧 Devam Eden
 
-**Faz 1 — Konu klasörü içeriği** (bu commit'te tamamlanacak):
-- supplements-ultimate/ SYNTHESIS + DAILY-SCHEDULE + BLOOD-VALUES + ETKILESIM + DOKTOR-SORULARI
-- skin-ultimate/ SYNTHESIS + HAFTALIK-CIZELGE + DAILY-RUTIN + URUN-LISTESI + TRET-PROTOKOL + PIE-PIH-STRATEJI
-- workout-ultimate/ SYNTHESIS + WEEKLY-PLAN + EV-DISARI-GYM-SWITCH + DOGUSAL-ENERGY-CYCLE + PELVIK-TABAN-VIDEOLARI + KAS-GRUBU + AGIRLIK-GUNLERI
-- diet-ultimate/ SYNTHESIS + DAILY-PLAN + YASAKLAR-IZINLI
-- lifestyle-ultimate/ SYNTHESIS + AYAK-BANYOSU + SICAK-VUCUT + ITIR + UYKU + SAC-BAKIM
-- medical-documents/ README + KAN-DEGERLERI-TREND
+**Faz 2 — Iterasyon 2+ (PWA İçerik Adaptasyonu)**
 
-**Agent perspektifleri** (13 dosya, kompakt):
-- skin: 3 agent (dermatolog / endo-hormonal / leke-uzman)
-- supplements: 2 agent (fonksiyonel tıp / eczacı-etkileşim)
-- workout: 4 agent (endo-cycle / pelvik fizyo / spor bilim / fonksiyonel pilates)
-- diet: 3 agent (mizaç / endo anti-inflamatuvar / fonksiyonel tıp)
-- lifestyle: opsiyonel agent ekleme
+Detay → [`PWA-ADAPTATION-TODO.md`](PWA-ADAPTATION-TODO.md)
 
-### 📋 Bekleyen — Faz 2 (PWA Adaptasyonu)
+Sıra:
+1. Bengisu medikal terim temizliği (211 referans → 0)
+2. Diet sekmesi adaptasyonu
+3. Exercise sekmesi yeniden yapılandırma
+4. Skin sekmesi adaptasyonu
+5. Measurements sekmesi
+6. Supplements sekmesi (yeni — 16 ürün)
+7. AI prompt'lar
+8. iOS Safari test + bug fix
 
-- Bengisu `index.html` fetch (raw GitHub URL)
-- Bengisu-spesifik içerik temizleme (kanser/Hashimoto/Levotiron/Calciday/NHS/Hakan Bey)
-- Begümnaz verisi entegrasyon (16 ürün + endo + post-iso + Türkçe e-nabız)
-- Yeni "Supplements" sekmesi ekleme
-- Cycle engine endo flare awareness eklenmesi
-- CSS/branding Begümnaz için
-- manifest.json + sw.js (cache versiyon, name, icons)
-- Cloudflare Worker proxy (Bengisu'dan adapte)
-- iOS Safari test + PWA install
+Her iterasyon ~1-2 saat + test. Toplam ~15-20 saat PWA emek.
 
 ### 📋 Bekleyen — Faz 3 (Deploy)
 

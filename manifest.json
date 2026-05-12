@@ -1,0 +1,27 @@
+{
+  "name": "Begümnaz Program",
+  "short_name": "Begümnaz",
+  "description": "Kişisel sağlık takip · endo + post-iso cilt + 16 ürün protokolü + cycle-aware antrenman + mizaç temelli beslenme",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0F4147",
+  "theme_color": "#0F4147",
+  "icons": [
+    {
+      "src": "bg.jpeg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any"
+    },
+    {
+      "src": "bg.jpeg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["health", "fitness", "lifestyle"],
+  "lang": "tr-TR"
+}
