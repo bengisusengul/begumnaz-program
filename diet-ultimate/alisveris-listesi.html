@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Begümnaz — Alışveriş + Yasaklar Listesi</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    line-height: 1.5;
+    color: #1f1f1f;
+    background: #fafaf7;
+    padding: 24px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  h1 {
+    font-size: 26px;
+    text-align: center;
+    margin-bottom: 4px;
+    color: #2d2a26;
+  }
+  .subtitle {
+    text-align: center;
+    color: #6b6b6b;
+    margin-bottom: 28px;
+    font-size: 13px;
+    letter-spacing: 0.4px;
+  }
+  .section {
+    background: #fff;
+    border-radius: 14px;
+    padding: 22px 24px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    page-break-inside: avoid;
+  }
+  .section h2 {
+    font-size: 19px;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .yasak h2 { color: #b03a2e; border-color: #b03a2e; }
+  .izin h2 { color: #1e8449; border-color: #1e8449; }
+  .supplement h2 { color: #6c3483; border-color: #6c3483; }
+  .lifestyle h2 { color: #b9770e; border-color: #b9770e; }
+  .yasak { background: #fff5f3; }
+  .izin { background: #f3faf5; }
+  .supplement { background: #faf5ff; }
+  .lifestyle { background: #fff9ed; }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px 18px;
+  }
+  .grid-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px 18px;
+  }
+  .item {
+    padding: 5px 0;
+    font-size: 14px;
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+  }
+  .item::before { flex-shrink: 0; }
+  .yasak .item::before { content: "✗"; color: #b03a2e; font-weight: 700; }
+  .izin .item::before { content: "✓"; color: #1e8449; font-weight: 700; }
+  .supplement .item::before { content: "▪"; color: #6c3483; }
+  .lifestyle .item::before { content: "◆"; color: #b9770e; }
+  .cat {
+    font-weight: 700;
+    color: #555;
+    margin-top: 14px;
+    margin-bottom: 6px;
+    font-size: 13px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    grid-column: 1 / -1;
+  }
+  .note {
+    font-size: 12px;
+    color: #6b6b6b;
+    margin-top: 12px;
+    font-style: italic;
+    padding: 8px 12px;
+    background: #f0f0eb;
+    border-radius: 8px;
+  }
+  .footer {
+    text-align: center;
+    font-size: 11px;
+    color: #888;
+    margin-top: 18px;
+  }
+  @media print {
+    body { background: #fff; padding: 12px; }
+    .section { box-shadow: none; border: 1px solid #e0e0e0; }
+  }
+</style>
+</head>
+<body>
+
+<h1>🌿 Begümnaz — Alışveriş & Yasaklar Listesi</h1>
+<p class="subtitle">Doktor protokolüne göre — Mayıs 2026</p>
+
+<div class="section yasak">
+  <h2>✗ YASAKLAR — Almayacaklarım</h2>
+  <div class="grid">
+    <div class="item">Pirinç (jasmin/basmati haşlama hariç)</div>
+    <div class="item">Beyaz un + beyaz undan yapılan her şey</div>
+    <div class="item">Tatlı içecekler (gazoz, hazır meyve suyu, şekerli)</div>
+    <div class="item">Hazır gıdalar (paketli, konserve)</div>
+    <div class="item">Salam, sosis, sucuk</div>
+    <div class="item">Dana eti (sığır)</div>
+    <div class="item">Tavuk</div>
+    <div class="item">Dondurma</div>
+    <div class="item">Soğuk su / soğuk içecek</div>
+    <div class="item">Çiğ sebze (her şey pişirilmeli)</div>
+    <div class="item">Süt ürünleri (süt, yoğurt, peynir, ayran)</div>
+    <div class="item">Karabiber + acıbiber</div>
+    <div class="item">Salça</div>
+    <div class="item">Büyük dip balıkları (kefal, sazan vb.)</div>
+    <div class="item">Çay + kahve (siyah/yeşil)</div>
+    <div class="item">Yer fıstığı</div>
+    <div class="item">Patlıcan</div>
+  </div>
+</div>
+
+<div class="section izin">
+  <h2>✓ İZİNLİ — Alışveriş Listesi</h2>
+
+  <div class="cat">🥩 Protein (kasap)</div>
+  <div class="grid">
+    <div class="item">Kuzu eti</div>
+    <div class="item">Koyun eti</div>
+    <div class="item">Hindi eti</div>
+    <div class="item">Doğal yumurta (köy)</div>
+  </div>
+
+  <div class="cat">🌰 Çekirdek & Kuruyemiş</div>
+  <div class="grid">
+    <div class="item">Çiğ badem (geceden ıslat → kabuğunu soy)</div>
+    <div class="item">Çiğ kabak çekirdeği</div>
+    <div class="item">Dolmalık fıstık</div>
+    <div class="item">Keten tohumu</div>
+  </div>
+
+  <div class="cat">🫒 Yağ & Zeytin</div>
+  <div class="grid">
+    <div class="item">Sızma zeytinyağı (cam şişe)</div>
+    <div class="item">Siyah zeytin (az tuzlu)</div>
+    <div class="item">Yeşil zeytin (az tuzlu)</div>
+    <div class="item">Hindistan cevizi yağı (oil pulling — varsa Alkemist devam)</div>
+  </div>
+
+  <div class="cat">🌾 Karbonhidrat & Ekmek</div>
+  <div class="grid">
+    <div class="item">Mayasız yufka ekmeği</div>
+    <div class="item">Kavulca unu</div>
+    <div class="item">Karakılçık unu</div>
+    <div class="item">Siyez unu</div>
+    <div class="item">Jasmin pirinci</div>
+    <div class="item">Basmati pirinci</div>
+  </div>
+
+  <div class="cat">🥬 Sebze (hepsi pişirilecek)</div>
+  <div class="grid-3">
+    <div class="item">Kabak</div>
+    <div class="item">Havuç</div>
+    <div class="item">Brokoli</div>
+    <div class="item">Karnabahar</div>
+    <div class="item">Pırasa</div>
+    <div class="item">Ispanak</div>
+    <div class="item">Lahana</div>
+    <div class="item">Sarımsak</div>
+    <div class="item">Soğan</div>
+    <div class="item">Taze fasulye</div>
+    <div class="item">Bezelye</div>
+    <div class="item">Pancar</div>
+    <div class="item">Kereviz</div>
+    <div class="item">Enginar</div>
+    <div class="item">Yeşil yapraklı (semizotu, ıspanak, vb.)</div>
+  </div>
+
+  <div class="cat">🍎 Meyve (sadece tatlı — ekşi yok)</div>
+  <div class="grid-3">
+    <div class="item">Muz</div>
+    <div class="item">Hurma</div>
+    <div class="item">Tatlı elma</div>
+    <div class="item">Armut</div>
+    <div class="item">Tatlı üzüm</div>
+    <div class="item">İncir (taze/kuru)</div>
+    <div class="item">Kuru üzüm</div>
+    <div class="item">Şeftali (tatlı)</div>
+    <div class="item">Kavun (tatlı)</div>
+  </div>
+
+  <div class="cat">🧂 Baharat & Tuz</div>
+  <div class="grid">
+    <div class="item">Kaya tuzu (Çankırı veya Himalaya)</div>
+    <div class="item">Kekik, nane, fesleğen (yumuşak)</div>
+    <div class="item">Zerdeçal toz (yemekte kullanılabilir)</div>
+    <div class="item">Zencefil (taze veya toz, ölçülü)</div>
+  </div>
+
+  <div class="cat">🍵 İçecek & Çay (sadece bitkisel)</div>
+  <div class="grid">
+    <div class="item">Gül + zeytin yaprağı çayı (aktar)</div>
+    <div class="item">Aynı safa çayı (aktar)</div>
+    <div class="item">Melissa çayı</div>
+    <div class="item">Papatya çayı</div>
+    <div class="item">Cam termos (sıcak su için)</div>
+  </div>
+</div>
+
+<div class="section supplement">
+  <h2>▪ SUPPLEMENT — Eczane / Aktar / Online</h2>
+  <div class="note">
+    Doktorun verdiği 16 ürün ayrı reçete listesinde. Aşağıda <strong>tamamlayıcı / eksik</strong> olarak alınması gerekenler:
+  </div>
+  <div class="grid">
+    <div class="item"><strong>Itır yağı</strong> — eczane veya aktar, saf/esansiyel %100 (Geranium / Pelargonium graveolens)</div>
+    <div class="item"><strong>Epsom tuzu (magnezyum sülfat)</strong> — eczane veya aktar, gıda kalitesi</div>
+    <div class="item">Yedek Bach çiçekleri damlası</div>
+    <div class="item">Kuru kapı koluna takılacak kapı kancalı bant (egzersiz için, varsa atla)</div>
+  </div>
+</div>
+
+<div class="section lifestyle">
+  <h2>◆ YAŞAM — Ev/Banyo/Yatak</h2>
+  <div class="grid">
+    <div class="item">Termal/yünlü iç çamaşırı (bel + alt karın koruyacak yükseklikte)</div>
+    <div class="item">Yün veya kalın pamuk çorap (ev içinde sürekli)</div>
+    <div class="item">İpek/saten yastık kılıfı (saç + cilt)</div>
+    <div class="item">Yüksek bel pijama / pantolon</div>
+    <div class="item">Kalın yorgan (vücut sıcak)</div>
+    <div class="item">Ayak banyosu için büyük leğen / küvet</div>
+    <div class="item">Şal / battaniye (soğuk yere oturmamak için)</div>
+  </div>
+</div>
+
+<div class="section izin">
+  <h2>✓ CİLT — Bütçe Dostu Temiz Eklemeler</h2>
+  <div class="cat">Eczane</div>
+  <div class="grid">
+    <div class="item"><strong>Yumuşak temizleyici</strong> — CeraVe Hydrating Cleanser <em>veya</em> Bioderma Sensibio Gel Moussant <em>veya</em> La Roche Posay Toleriane</div>
+  </div>
+
+  <div class="cat">Trendyol / Watson's / Gratis</div>
+  <div class="grid">
+    <div class="item"><strong>Niacinamide serum 10%</strong> — The Ordinary <em>veya</em> COSRX 15% <em>veya</em> Naacare 10%</div>
+    <div class="item"><strong>Azelaic acid 10%</strong> — The Ordinary Azelaic Acid Suspension <em>veya</em> Naturium 10%</div>
+    <div class="item"><em>(Opsiyonel)</em> Salisilik asit gövde temizleyici — CeraVe SA <em>veya</em> Some By Mi AHA-BHA-PHA</div>
+  </div>
+
+  <div class="note">
+    Cilt rutini için <strong>İLK 2 HAFTA</strong> sadece: yumuşak temizleyici + Hyaluron serum + Garnier nemlendirici + SPF + Madescar. Aktifler hafta hafta eklenecek.
+  </div>
+</div>
+
+<p class="footer">
+  📋 Bu liste plan dosyasının özetidir. Tam protokol için:
+  <code>/Users/agent9/.claude/plans/haftalik-program-olarak-kardesim-golden-clarke.md</code>
+</p>
+
+</body>
+</html>
