@@ -130,22 +130,64 @@ body[data-page="medical"]::after{
     #832232 75%,
     #4A1018 100%);                  /* Şarap derin */
 }
-/* Diyet sayfasında metin koyu (krem-pembe gradient üzerinde) */
+/* ──── DİYET SAYFASI · cream/pink gradient üstüne KOYU metin (krem-pembe-bordo) ──── */
+/* Kart: opak krem arka plan, dark wine border */
 body[data-page="diyet"] .card,
 body[data-page="diyet"] .cycle-diet-card,
 body[data-page="diyet"] .notice,
 body[data-page="diyet"] .water-card{
   color:#2A0E14 !important;
-  background:rgba(255,248,240,0.92) !important;
-  border:1px solid rgba(110,26,40,0.22) !important;
+  background:rgba(255,248,240,0.94) !important;
+  border:1px solid rgba(110,26,40,0.28) !important;
 }
-body[data-page="diyet"] .slbl{color:#FFF8F0 !important;text-shadow:0 2px 8px rgba(74,16,24,0.55) !important;}
+/* Kart İÇİNDEKİ TÜM metinler zorla koyu wine — krem üstüne krem yazı görünmesin */
+body[data-page="diyet"] .card *,
+body[data-page="diyet"] .notice *,
+body[data-page="diyet"] .water-card *{
+  color:#2A0E14 !important;
+  text-shadow:none !important;
+}
+/* Kart içinde gold/mustard renk korunur (kcal sayıları, çubuklar) */
+body[data-page="diyet"] .card .gold,
+body[data-page="diyet"] .card [style*="var(--gold)"],
+body[data-page="diyet"] .card [style*="--mustard"],
+body[data-page="diyet"] .fkcal,
+body[data-page="diyet"] .card span[style*="color:var(--gold)"],
+body[data-page="diyet"] .card div[style*="color:var(--gold)"],
+body[data-page="diyet"] .card .mval{color:#8C5A1A !important;} /* gold yerine koyu honey */
+
+/* Üst label "1. ÖĞÜN — KAHVALTI..." (slbl) açık zeminde KOYU bordo */
+body[data-page="diyet"] .slbl{
+  color:#4A1018 !important;
+  text-shadow:0 1px 2px rgba(255,248,240,0.85) !important;
+  font-weight:600 !important;
+}
+
+/* Section header h3 vs title */
 body[data-page="diyet"] .ch h3,
 body[data-page="diyet"] .tlti,
 body[data-page="diyet"] .tlt,
-body[data-page="diyet"] .tlde{color:#2A0E14 !important;}
-/* Cilt sayfasında üst kısımda açık pembe → metin koyu */
-body[data-page="cilt"] .slbl{color:#2A0E14 !important;}
+body[data-page="diyet"] .tlde,
+body[data-page="diyet"] .fname,
+body[data-page="diyet"] .fmac,
+body[data-page="diyet"] .fi,
+body[data-page="diyet"] strong,
+body[data-page="diyet"] b{color:#2A0E14 !important;}
+
+/* Pnote / cdc-msg / ach-desc — orta tonda */
+body[data-page="diyet"] .pnote,
+body[data-page="diyet"] .cdc-msg,
+body[data-page="diyet"] .ach-desc{color:#5C1722 !important;}
+
+/* Buton ve "+ Listede yok mu" gibi etkileşim elemanları */
+body[data-page="diyet"] .cf-add-btn,
+body[data-page="diyet"] .btn{
+  color:#6E1A28 !important;
+  border-color:rgba(110,26,40,0.40) !important;
+}
+
+/* ──── CİLT SAYFASI · üst kısım açık pembe → koyu metin ──── */
+body[data-page="cilt"] .slbl{color:#2A0E14 !important;text-shadow:0 1px 2px rgba(255,248,240,0.85) !important;}
 
 /* backdrop-filter desteklemeyen tarayıcı için solid fallback */
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
