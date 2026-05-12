@@ -10101,16 +10101,8 @@ function autoSeedPeriodsIfEmpty(){return;/* DISABLED for Begümnaz — no seed d
 // Bu migration, [20 Nisan – 5 Mayıs 2026] aralığındaki tüm regl kayıtlarını silip
 // doğru kaydı yerleştirir. Flag ile sadece bir kez çalışır.
 function fixPeriodData20260504(){
-  if(localStorage.getItem('fix_period_20260504')==='1')return;
-  const ps=JSON.parse(localStorage.getItem('periods')||'[]');
-  const inRange=p=>p.start>='2026-04-20' && p.start<='2026-05-05';
-  const removed=ps.filter(inRange);
-  if(removed.length)console.warn('🩹 [fix] Aşağıdaki regl kayıtları temizleniyor:',removed);
-  const cleaned=ps.filter(p=>!inRange(p));
-  cleaned.push({id:'p_apr28_2026_fix',start:'2026-04-28',end:'2026-05-03',flow:null,note:'auto-fixed 2026-05-04 (28 Nis - 3 May, 6 gün)'});
-  localStorage.setItem('periods',JSON.stringify(cleaned));
-  localStorage.setItem('fix_period_20260504','1');
-  console.log(`✅ [fix] ${removed.length} yanlış regl kaydı silindi · doğru kayıt eklendi: 28 Nis → 3 May (6 gün)`);
+  // DISABLED for Begümnaz — Bengisu'ya özel one-time migration (28 Nis 2026 period seed)
+  return;
 }
 
 // ──────────────────────────────────────────
