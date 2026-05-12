@@ -2382,7 +2382,7 @@ function getWeeklyDigest(){
   let phaseNote='';
   if(c){
     if(inP(today))phaseNote='Bu hafta regl döngüsündeydin — bedeninle yumuşak gitmek doğru.';
-    else if(c.phase==='Ovulation')phaseNote='Bu hafta ovulasyon penceresinde — kuvvetin parlaktı, ama ligamentler hassas.';
+    else if(c.phase==='Ovulation')phaseNote='Bu hafta ovulasyon penceresinde — enerjin yüksek, ama ligamentler hassas (mid-cycle pelvik flare riski).';
     else if(c.phase==='Luteal Phase' && c.day>=getAvgCycleLen()-6)phaseNote='Bu hafta geç luteal — BMR yüksek, vücut sıkı çalıştı. Hafifletmek mantıklı.';
     else if(c.phase==='Follicular Phase')phaseNote='Bu hafta folliküler — östrojen yükseldi, kas yapımı için iyi pencere.';
     else phaseNote='Bu hafta erken luteal — volume ve fat oxidation için iyi hafta.';
@@ -3493,7 +3493,7 @@ const WEEKLY_FOCUS_TEXTS={
     hormone:'Progesteron peak 10-15 ng/mL, sonra son 2-3 gün düşüş. Östrojen ikinci pikten düşer. Kortizol +%15-20 (progesteron-aracılı). Serotonin ↓ (mood değişim).',
     physiology:'BMR +%8-12 (kalori ihtiyacı +100-150 kcal). Vücut ısısı +0.3°C (uyku verimi etkilenebilir). Su tutma normal (ödem değil). NREM uyku derinliği ↓ (progesteron-aracılı).',
     training:'Set sayısı koru, ağırlığı %5-10 düşür (otoregülasyon). Cum (Total Hibrid) opsiyonel skip. Compound hareketler RPE 7-8 max. Plyometric/sprint kontrindike (kortizol stresor + bağışıklık ↓). Yürüyüş + yoga akışı bonus.',
-    nutrition:'Geç luteal cycle bonus +150 kcal (RED-S koruma, BMR +%8-12). Karb 60g post-WO (insülin duyarlılık koruma). Magnezyum 350-400 mg + tryptophan kaynakları (yumurta, hindi) → serotonin sentezi. Hidrasyon +500 ml.',
+    nutrition:'Geç luteal: BMR +%8-12 artışı normal. Yoğunluk %20-30 düşür, pilates + pelvik taban öne al. Karb 60g post-WO (insülin duyarlılık koruma). Magnezyum 350-400 mg + tryptophan kaynakları (yumurta, hindi) → serotonin sentezi. Hidrasyon +500 ml.',
     risk:'PMS 2-3 gün öncesi: "yargısız bilgi" tutumu. Antrenman atlama düşüncesi gelirse → cevabı bedeninle ilişkide ara, "disiplin" söyleminde değil. Compulsive screening pazar gece check.',
     closing:'Bu hafta <em>stratejik</em> hafta. Yarım değil — bedenine notlar düştüğün hafta. Bedeninle ilişkin dürüst kalsın. Pazartesi taze başlangıç hakkın saklı.'
   }
@@ -6882,7 +6882,7 @@ function renderLipidTrackingCard(){
   const el=document.getElementById('lipid-tracking-card');
   if(!el)return;
   let log=getLipidLog();
-  // Begümnaz'nun bilinen geçmişi seed et (sadece ilk açılışta)
+  // Begümnaz'ın bilinen geçmişi seed et (sadece ilk açılışta)
   if(!localStorage.getItem('lipid_seeded_v1')){
     if(!log.find(e=>e.date==='2025-12-09')) log.push({date:'2025-12-09',total:7.1,ldl:5.4,hdl:1.2,tg:1.2,apoB:null,ts:Date.now()});
     if(!log.find(e=>e.date==='2026-04-15')) log.push({date:'2026-04-15',total:9.6,ldl:8.1,hdl:1.0,tg:1.0,apoB:null,ts:Date.now()});
@@ -7306,9 +7306,9 @@ const GLOSSARY={
   'lh':{cat:'hormon',def:'Luteinizing Hormone — ovulasyonu tetikler. Day 12-14 keskin peak.',ref:'Sims 2016',l3:'LH peak 24-36 saat sürer → ovulasyon. Ovulasyon test çubukları LH ölçer. Peak sırasında relaxin de yüksek → ligament gevşekliği +30-50%.'},
   'fsh':{cat:'hormon',def:'Follicle-Stimulating Hormone — folliküler fazda yumurta gelişimini uyarır.',ref:'Sims 2016',l3:'FSH erken folliküler fazda yüksek (Day 3-7), ardından östrojen yükselişi inhibe eder. PCOS\'ta FSH:LH oranı bozulur (LH baskın).'},
   'relaxin':{cat:'hormon',def:'Ovulasyon ve gebelikte yükselen hormon — ligament gevşekliği yapar. ACL ve sakroiliac yaralanma riski 2-3×.',ref:'Wojtys 1998',l3:'Day 11-15 relaxin peak (LH peak ile beraber). ACL non-contact riski ovulasyon haftasında 2-3× yüksek (Wojtys 1998 PMID 9568310). Plyometric, sprint, Smith squat valgus risk → cycle-safe alternatifler önerilir.'},
-  't3':{cat:'hormon',def:'Aktif tiroid hormonu (triiodotironin). Metabolizma, ısı üretimi, kas protein sentezi.',ref:'Roti 1993',l3:'T3 = aktif form (T4 → T3 dönüşüm hücre düzeyinde). T4-only Lugol iyot alanlarda T3 düşük olabilir (Wiersinga 2014). Selenium T4→T3 deiodinaz enzim ko-faktörü.'},
+  't3':{cat:'hormon',def:'Aktif tiroid hormonu (triiodotironin). Metabolizma, ısı üretimi, kas protein sentezi.',ref:'Roti 1993',l3:'T3 = aktif form (T4 → T3 dönüşüm hücre düzeyinde). Tiroid hormon dengesinde T4 (depo) → T3 (aktif) dönüşümü için selenyum (deiodinaz ko-faktörü) ve iyot kritik. Begümnaz iyot ölçümü düşük (27 µg/L) → Lugol reçete.'},
   't4':{cat:'hormon',def:'Tiroksin — tiroidin ürettiği ana hormon, T3\'e dönüşür. Lugol iyot (levotiroksin) sentetik T4.',ref:'Roti 1993',l3:'T4 yarı ömrü ~7 gün → günlük dozda kararlı seviye. Total endometriozis sonrası life-long T4 replacement gerekir. Dose titration TSH + serbest T4\'e göre.'},
-  'tsh':{cat:'hormon',def:'Thyroid-Stimulating Hormone — hipofizden salgılanır, tiroid uyarır. Tiroidektomi sonrası replacement dozu TSH\'a göre.',ref:'Wiersinga 2014',l3:'Total endometriozis sonrası TSH suppresyonu (kanser riski varsa <0.1) veya normal aralık (0.4-4.0). Kemik koruma için aşırı suppresyon (osteoporoz riski) önerilmez.'},
+  'tsh':{cat:'hormon',def:'Thyroid-Stimulating Hormone — hipofizden salgılanır, tiroid uyarır. Tiroidektomi sonrası replacement dozu TSH\'a göre.',ref:'Wiersinga 2014',l3:'TSH 0.4-4.0 normal aralık. Begümnaz TSH 2.42 (sağlıklı sınır içi). T3 hafif yüksek (4.20) → Lugol başlangıcı sonrası 6-8 hf tekrar bakılacak.'},
 
   // ── Beslenme (10) ──
   'makro':{cat:'beslenme',def:'Makronutrient — protein, yağ, karbonhidrat. Mikro = vitamin/mineral. Kalori bu üçünden gelir.',ref:'ISSN 2018',l3:'Protein 4 kcal/g, karb 4 kcal/g, yağ 9 kcal/g, alkol 7 kcal/g. Diet for athletes (Burke 2018): protein 1.6-2.2 g/kg, yağ 0.8-1.2 g/kg, kalan karb.'},
@@ -7328,7 +7328,7 @@ const GLOSSARY={
   'levotiroksin':{cat:'tip',def:'Sentetik T4 — tiroid hormon replacement. Aç karna, sabah, su ile. Diğer ilaç/supplementten 4 saat ayrı.',ref:'Wiersinga 2014',l3:'Calcium, demir, çinko, magnezyum, soya, kahve, gluten emilimi bozar (≥4 saat ara). Kahve özellikle ≥30 dk (Benvenga 2008 PMID 18341372 — emilim %30 sabote). Yarı ömür 7 gün → günlük doz kararlı seviye yapar. Doz değişimi 4-6 hafta sonra TSH\'da görünür. Begümnaz alterne doz: hafta ortalama 110.7 mcg.'},
   'calciday':{cat:'tip',def:'Kalsiyum karbonat + D3 800IU efervesan. Begümnaz endo terapötik tedavi (E89.2): 2 tablet/gün — sabah/öğlen + akşam öğünleriyle.',ref:'Bilezikian 2016',l3:'Begümnaz için profilaktik DEĞİL, terapötik (post-cerrahi endo komplikasyonu). 2 tab × 1200mg karbonat = 960mg elemental Ca/gün. Yağla emilim ↑ (Heaney 1989 PMID 2922526). Lugol iyot\'dan ≥4 saat ayrı (Hallberg etkisi). Lifextra destek 2× ile birlikte → toplam Ca emilim destek.'},
   'qalyviz':{cat:'tip',def:'destek 0.5 mcg yumuşak kapsül. Aktif D vitamini (1,25(OH)2D3). Begümnaz post-cerrahi endo için 2 kapsül/gün.',ref:'Bilezikian 2016',l3:'D vit aktif form, böbrek 1α-hidroksilaz adımını bypass eder (paratiroid yetersizliğinde gerekli). 0.5 mcg × 2/gün = 1.0 mcg toplam, orta doz aralık. Anti turmeric\'in hemen ardından alınır (yağ emilim sinerjisi). Mg yeterliliği şart (Mg eksikliği destek etkinliğini düşürür — Whang 1985).'},
-  'kmy':{cat:'tip',def:'Kemik Mineral Yoğunluğu (Bone Mineral Density). DEXA tarama ölçer. T-score: -1 normal, -2.5 osteoporoz.',ref:'Beck 2017',l3:'Tiroidektomi sonrası TSH suppresyonu → KMY %5-15 düşebilir (5 yıl). Direnç antrenmanı + bone loading exercises (squat, hip thrust) + Anti turmeric + D3 kombine koruyucu (PMID 27875836).'},
+  'kmy':{cat:'tip',def:'Kemik Mineral Yoğunluğu (Bone Mineral Density). DEXA tarama ölçer. T-score: -1 normal, -2.5 osteoporoz.',ref:'Beck 2017',l3:'Hormonal eksenin uzun süreli süpresyonu kemik yoğunluğunu etkileyebilir. Direnç antrenmanı + bone loading exercises (squat, hip thrust) + Anti turmeric + D3 kombine koruyucu (PMID 27875836).'},
   'sakroiliac':{cat:'tip',def:'Sacrum (kuyruk sokumu) ve ilium (leğen kemiği) arasındaki eklem. Hip thrust ve RDL\'de yüklenir.',ref:'Vleeming 2012',l3:'Sakroiliak eklem düşük hareket, yüksek stabilite. Relaxin gevşeklik yapar (gebelik + ovulasyon). Tek-bacak hareketler (B-stance HT) sakral yük yönetimi için önemli — ovulasyon haftası dikkat.'},
   'valgus':{cat:'tip',def:'Diz içe çökme — squat/yürüyüşte diz orta hatta doğru kayar. Gluteus medius zayıflığı + ACL riski.',ref:'Hewett 2005',l3:'Drop-jump testi valgus skor ≥6 cm = ACL non-contact riski 5× (Hewett 2005). Cycle: ovulasyon haftası relaxin ile valgus eğilimi artar. Goblet squat + cue "dizler dışa" eğitim.'},
 
@@ -8998,9 +8998,9 @@ function renderHacettepeLab(){
       <ul style="font-size:12px;">
         <li><strong>Scaffolding:</strong> Basit cycle takip (P0) → set log + 1RM tahmini (P0/P1) → istatistiksel slope + hipotez test (P1 lab).</li>
         <li><strong>MKO (More Knowledgeable Other):</strong> Bilim Modu açıklamaları "deneyimli antrenör/hekim" rolünü oynar.</li>
-        <li><strong>Internalization:</strong> Body Conversation niyet sözcükleri Begümnaz'nun kendi iç sesine dönüşür zamanla.</li>
+        <li><strong>Internalization:</strong> Body Conversation niyet sözcükleri Begümnaz'ın kendi iç sesine dönüşür zamanla.</li>
       </ul>
-      <p style="margin-top:14px;font-size:11.5px;color:var(--cream-mute);font-style:italic;">Sentezci notu: Bilim Modu L3, Mayer'in "expertise reversal" prensibine karşıdır — yeni başlayanlar için fazla yük. Bu nedenle L3 toggle, Begümnaz'nun kendi seçimiyle açılır (öğrenen otonomisi).</p>
+      <p style="margin-top:14px;font-size:11.5px;color:var(--cream-mute);font-style:italic;">Sentezci notu: Bilim Modu L3, Mayer'in "expertise reversal" prensibine karşıdır — yeni başlayanlar için fazla yük. Bu nedenle L3 toggle, Begümnaz'ın kendi seçimiyle açılır (öğrenen otonomisi).</p>
     </div>`;
   }
   el.innerHTML=`<div class="hlab-card">
@@ -9137,7 +9137,7 @@ function renderCyclePatternEmergence(){
       <div class="cpe-title">🪞 Cycle × Performance Atlas</div>
       <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span>3 cycle (yaklaşık 3 ay) sonra senin <strong>kişisel pattern'in</strong>: hangi dönemde daha güçlüsün, hangisinde mood'un düşük, hangisinde enerjin peakta. Bedeninin haritası.</div>
       ${getEduLevel()!=='L1'?'<div class="cpe-subtitle">3 cycle sonra otomatik açılır</div>':''}
-      <div class="cpe-locked">Henüz ${have} cycle kayıtlı. ${need} cycle daha sonra Begümnaz'nun kişisel cycle × güç + mood + enerji pattern'i otomatik belirir.<div class="cpe-locked-progress"><div class="cpe-locked-fill" style="width:${(have/3*100).toFixed(0)}%;"></div></div></div>
+      <div class="cpe-locked">Henüz ${have} cycle kayıtlı. ${need} cycle daha sonra Begümnaz'ın kişisel cycle × güç + mood + enerji pattern'i otomatik belirir.<div class="cpe-locked-progress"><div class="cpe-locked-fill" style="width:${(have/3*100).toFixed(0)}%;"></div></div></div>
     </div>`;
     return;
   }
@@ -9164,7 +9164,7 @@ function renderCyclePatternEmergence(){
   el.innerHTML=`<div class="cpe-card">
     <div class="cpe-title">🪞 Cycle × Performance Atlas</div>
     <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span>3 cycle sonra senin <strong>kişisel pattern'in</strong>: hangi dönemde daha güçlüsün, hangisinde mood'un düşük, hangisinde enerjin peakta. Bedeninin haritası ortaya çıktı.</div>
-    ${getEduLevel()!=='L1'?`<div class="cpe-subtitle">Son 3 cycle · ${stats.totalPRs} PR · Begümnaz'nun kişisel pattern'i</div>`:''}
+    ${getEduLevel()!=='L1'?`<div class="cpe-subtitle">Son 3 cycle · ${stats.totalPRs} PR · Begümnaz'ın kişisel pattern'i</div>`:''}
     <div class="cpe-phase-grid">${phaseCells}</div>
     <div class="cpe-insight">
       <div class="cpe-insight-title">🪞 Pattern Bulundu</div>
