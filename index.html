@@ -3817,54 +3817,48 @@ function renderHeroCard(){
   const h=now.getHours();
   const dow=now.getDay();
   const c=ci(now);
-  const lvDose=getLevotironDose(now);
-  const mgCap=getMgCapCount(now);
+  const isMonday = now.getDay()===1;
 
-  // Mode tespiti
+  // Mode tespiti — Begümnaz protokolü
   let mode,emoji,greeting,nextActions;
   if(h>=5&&h<11){
     mode='sabah';
     emoji='🌅';
     greeting='Günaydın Begümnaz';
     nextActions=[
-      h<7?{t:'06:30',a:`💊 Levotiron <b>${lvDose} mcg</b>`,d:'Aç karın · 30 dk bekle'}:null,
-      h<7?{t:'07:00',a:'⚡ ViDrate elektrolit',d:'Calcium-FREE · Levo emilim güvenli'}:null,
-      h<8?{t:'07:30',a:'🥄 EVOO + limon + tuz shot',d:'Polifenol + 90 dk yürüyüş hazırlık'}:null,
-      h<10?{t:'10:00',a:'🥩 1. Öğün ("öğlen")',d:'Yumurta + peynir + avokado + roka'}:null,
-      h<10?{t:'10:05',a:'💊 Calciday + Qalyviz (1. doz)',d:'1 tab + 1 cap · öğünle'}:null,
-      h<10?{t:'10:10',a:'💊 B-Complex + Omega-3 (2 softgel)',d:'Igennus + MAV · LDL için'}:null,
-      h>=10&&h<11?{t:'11:00',a:'☕ Kahve serbest!',d:'Levo\'dan 4.5h sonra ✓'}:null
+      h<8?{t:'08:00',a:'🥥 Alkemist oil pulling',d:'1 yk HC yağı · 5-10 dk ağızda'}:null,
+      h<9?{t:'08:30',a:'☀️ Sabah AC (5 ürün)',d:'Akavital + Gül sirkesi + NADH + NAC + Bach (1.)'}:null,
+      h<11?{t:'Acıkma',a:'🍳 Kahvaltı + 6 supplement (tok)',d:'Yumurta + pişmiş salata + çiğ kuruyemiş'+(isMonday?' · Pzt: Colewinde Vit D':'')}:null,
+      h<11?{t:'+2 saat',a:'💧 Lugol iyot 4 damla + Bach (2.)',d:'1 bardak ılık su · mineral mesafesi'}:null
     ].filter(Boolean).slice(0,3);
   } else if(h>=11&&h<15){
     mode='oglen';
     emoji='☀️';
     greeting='Tünaydın';
     nextActions=[
-      h<14?{t:'14:00',a:'🍯 Pre-WO Karb+Protein',d:'30g karb + 15-25g protein'}:null,
-      h<14?{t:'14:15',a:'☕ Son kafein (opsiyonel)',d:'14:30 sonrası YOK · uyku koruma'}:null,
-      h<15?{t:'15:00',a:'🏋️ Güç antrenmanı',d:'5-gün split'}:null,
-      {t:'17:00',a:'🥩 2. Öğün ("akşam")',d:'Et/balık + salata'}
+      h<13?{t:'12-13',a:'🍲 Öğle Yemeği',d:'Sebze çorbası + sebze yemeği + et (3x/hafta)'}:null,
+      h<15?{t:'14:30',a:'🍎 Ara + NAC (2.) + Bach (3.)',d:'1 porsiyon tatlı meyve'}:null,
+      h<15?{t:'Pre-WO',a:'💪 NBT Benfolife',d:'Antrenmandan 30 dk önce'}:null
     ].filter(Boolean).slice(0,3);
   } else if(h>=15&&h<20){
     mode='aksam';
     emoji='🌇';
     greeting='İyi akşamlar';
     nextActions=[
-      h<17?{t:'17:00',a:'🥩 2. Öğün',d:'Et/balık + salata'}:null,
-      h<17?{t:'17:05',a:'💊 Calciday + Qalyviz (2. doz)',d:'1 tab + 1 cap · öğünle'}:null,
-      h<17?{t:'17:10',a:'🌿 Selenometyonin 200mcg',d:'Solgar · Levo gap 10.5h ✓'}:null,
-      h<18?{t:'17:15',a:'💪 Kreatin 5g',d:'Bulk Creapure · post-WO'}:null,
-      {t:'19:00',a:'🌙 Pencere kapanır',d:'14-15h gece açlığı başlar'}
+      h<16?{t:'16:00',a:'🕓 İkindi AC',d:'Akavital + Gül sirkesi (2. dozlar)'}:null,
+      h<19?{t:'17:30-19',a:'🍲 Akşam yemeği + 4 supplement',d:'Anti turmeric + More than + Lifextra + Mg (2.)'}:null,
+      h>=19?{t:'20:00',a:'🦶 Ayak Banyosu + Bach (4.)',d:'Sıcak su + ıtır + Epsom · 15-20 dk'}:null
     ].filter(Boolean).slice(0,3);
   } else {
     mode='gece';
     emoji='🌙';
     greeting='İyi geceler';
     nextActions=[
-      h<22?{t:'22:00',a:'💊 Çinko + Bakır',d:'Vitabiotics · Zn:Cu 15:1'}:null,
-      h<23?{t:'22:30',a:'🌙 Akşam cilt rutini',d:'Retinol/serum/moisturizer'}:null,
-      h<23?{t:'23:00',a:`💊 Mg <b>${mgCap} cap</b> + Kolajen + UC-II`,d:'Pure Encap · cycle-aware'}:null,
-      h<23?{t:'23:30',a:'😴 Yatak zamanı',d:'7-8 saat uyku hedef'}:null
+      h<20?{t:'20:00',a:'🦶 Ayak Banyosu + Bach (4.)',d:'Sıcak su + ıtır + Epsom'}:null,
+      h<21?{t:'21:00',a:'🌿 Melissa+Papatya Çayı',d:'Uyku hazırlığı'}:null,
+      h<22?{t:'~21:30',a:'🌙 Akşam Cilt Rutini',d:'Bugünün aktifi: SA[gün]'}:null,
+      h<23?{t:'22:00',a:'💊 Duobalance Probiyotik',d:'2 kapsül · cranberry · idrar yolu'}:null,
+      h<23?{t:'23:00',a:'😴 Yatak zamanı',d:'7-8 saat uyku hedef'}:null
     ].filter(Boolean).slice(0,3);
   }
 
