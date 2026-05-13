@@ -197,7 +197,7 @@ body[data-page="cilt"] .slbl{color:#2A0E14 !important;text-shadow:0 1px 2px rgba
 }
 
 /* BOTTOM NAV */
-.bnav{position:fixed;bottom:0;left:0;right:0;height:80px;background:rgba(15,65,71,0.78);backdrop-filter:blur(28px) saturate(180%);-webkit-backdrop-filter:blur(28px) saturate(180%);border-top:1px solid var(--glass-border);display:flex;align-items:center;justify-content:space-around;z-index:999;padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -2px 24px rgba(0,0,0,0.2);}
+.bnav{position:fixed;bottom:0;left:0;right:0;height:80px;background:rgba(110,26,40,0.86);backdrop-filter:blur(28px) saturate(180%);-webkit-backdrop-filter:blur(28px) saturate(180%);border-top:1px solid var(--glass-border);display:flex;align-items:center;justify-content:space-around;z-index:999;padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -2px 24px rgba(0,0,0,0.2);}
 .nb{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 10px;border-radius:16px;cursor:pointer;border:none;background:transparent;min-width:48px;color:var(--cream-mute);transition:color 0.2s;}
 @media (max-width:360px){.nb{padding:8px 6px;min-width:42px;}.nb .nl{font-size:9px;letter-spacing:0.3px;}}
 .nb .ni{font-size:22px;transition:transform 0.2s;filter:saturate(1.1);}
@@ -404,7 +404,7 @@ input:focus, select:focus, textarea:focus{outline:2px solid var(--pink-deep);out
 /* MODAL */
 .mo{position:fixed;inset:0;background:rgba(61,46,42,0.4);backdrop-filter:blur(6px);z-index:1000;display:none;align-items:flex-end;}
 .mo.open{display:flex;}
-.modal{background:rgba(15,65,71,0.92);backdrop-filter:blur(32px) saturate(180%);-webkit-backdrop-filter:blur(32px) saturate(180%);border-radius:24px 24px 0 0;padding:24px 20px 40px;width:100%;max-height:80vh;overflow-y:auto;box-shadow:0 -8px 40px rgba(0,0,0,0.4);animation:su 0.3s ease;color:var(--cream);border-top:1px solid var(--glass-border);}
+.modal{background:rgba(110,26,40,0.94);backdrop-filter:blur(32px) saturate(180%);-webkit-backdrop-filter:blur(32px) saturate(180%);border-radius:24px 24px 0 0;padding:24px 20px 40px;width:100%;max-height:80vh;overflow-y:auto;box-shadow:0 -8px 40px rgba(0,0,0,0.4);animation:su 0.3s ease;color:var(--cream);border-top:1px solid var(--glass-border);}
 .modal h3{color:var(--cream-soft);}
 .modal .msub{color:var(--cream-mute);}
 .modal label{color:var(--cream-mute);}
@@ -910,7 +910,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .pr-modal{position:fixed;inset:0;z-index:9500;display:none;align-items:center;justify-content:center;padding:20px;}
 .pr-modal.open{display:flex;animation:prFadeIn 0.32s ease-out;}
 .pr-modal-backdrop{position:absolute;inset:0;background:rgba(15,30,38,0.88);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);}
-.pr-modal-content{position:relative;z-index:1;background:linear-gradient(160deg,rgba(15,30,38,0.96),rgba(60,42,10,0.92));border:1px solid rgba(232,178,63,0.45);border-radius:24px;padding:32px 28px 24px;max-width:340px;width:100%;text-align:center;color:var(--cream);box-shadow:0 24px 80px rgba(0,0,0,0.6),inset 0 1px 0 rgba(255,255,255,0.18),0 0 0 1px rgba(232,178,63,0.12);}
+.pr-modal-content{position:relative;z-index:1;background:linear-gradient(160deg,rgba(110,26,40,0.96),rgba(60,42,10,0.92));border:1px solid rgba(232,178,63,0.45);border-radius:24px;padding:32px 28px 24px;max-width:340px;width:100%;text-align:center;color:var(--cream);box-shadow:0 24px 80px rgba(0,0,0,0.6),inset 0 1px 0 rgba(255,255,255,0.18),0 0 0 1px rgba(232,178,63,0.12);}
 .pr-trophy{font-size:64px;margin-bottom:8px;filter:drop-shadow(0 4px 16px rgba(232,178,63,0.6));animation:prTrophy 0.6s ease-out;}
 .pr-title{font-family:'Playfair Display','Playfair Display',serif;font-size:26px;font-weight:400;color:var(--mustard);letter-spacing:0.5px;margin-bottom:6px;}
 .pr-exercise{font-size:14px;color:var(--cream-mute);text-transform:uppercase;letter-spacing:1.4px;font-weight:600;margin-bottom:18px;}
@@ -1165,8 +1165,8 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .mc-source{font-size:11px;color:var(--cream-soft);line-height:1.5;margin-top:4px;}
 .mc-source-title{font-size:9px;text-transform:uppercase;letter-spacing:0.5px;color:var(--cream-mute);margin-bottom:2px;font-weight:600;}
 .mc-action{font-size:11px;color:var(--cream-soft);line-height:1.5;margin-top:6px;padding:6px 8px;border-radius:8px;background:rgba(232,221,196,0.04);font-style:italic;}
-.mc-doctor{margin-top:14px;padding:12px 14px;border-radius:12px;background:rgba(123,168,176,0.10);border-left:3px solid rgba(123,168,176,0.55);font-size:12px;color:var(--cream-soft);line-height:1.55;}
-.mc-doctor-title{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:rgba(123,168,176,0.95);font-weight:700;margin-bottom:6px;}
+.mc-doctor{margin-top:14px;padding:12px 14px;border-radius:12px;background:rgba(212,175,106,0.10);border-left:3px solid rgba(212,175,106,0.55);font-size:12px;color:var(--cream-soft);line-height:1.55;}
+.mc-doctor-title{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:rgba(232,178,63,0.95);font-weight:700;margin-bottom:6px;}
 
 /* ════════════════════════════════════════════ */
 /* BODY CONVERSATION · sabah niyet → akşam diyalog (Phase 2 Hafta 8A — Ajan 6 + sentezci) */

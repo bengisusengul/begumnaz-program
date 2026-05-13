@@ -2,7 +2,7 @@
 
 > **Bu dosya yeni oturumun ilk okunan dosyasıdır.** Burada nerede kaldığımız, yarın ne yapacağımız, hangi kararların değişmediği yazılır. Önceki oturumda olan her kritik şey buraya yansır.
 
-**Son güncelleme**: 13 Mayıs 2026 — Faz 4 İterasyon 23 (Pop-up kapatma UX — 4 template modal sağ üst ✕ butonu)
+**Son güncelleme**: 13 Mayıs 2026 — Faz 4 İterasyon 24 (Renk paleti tutarlılık — modal/nav/dr-card teal → bordo)
 
 ---
 
@@ -69,6 +69,30 @@ PWA artık prod'da Cloudflare Worker AI proxy ile çalışıyor. Begümnaz 1-2 h
 ---
 
 ## 📜 Bu Oturumda Yapılanlar (13 Mayıs 2026)
+
+### Iter 24 — Renk paleti tutarlılığı (M11)
+
+PROGRESS Iter 9 (pembe/bordo Billie Eilish tema) sonrası bazı CSS class'ları **teal-blue** kalıntısı taşıyordu — eski Bengisu paletinden miras. Iter 24 ana modal + nav + uyarı kart paletini **bordo (rgba(110,26,40,...))** tonuna çekti.
+
+**Değişen CSS class'ları**:
+
+| Class | Eski | Yeni |
+|---|---|---|
+| `.bnav` (bottom nav, 200) | `rgba(15,65,71,0.78)` teal | `rgba(110,26,40,0.86)` bordo |
+| `.modal` (407) | `rgba(15,65,71,0.92)` teal | `rgba(110,26,40,0.94)` bordo |
+| `.pr-modal-content` (PR celebration modal, 913) | `linear-gradient(160deg,rgba(15,30,38,0.96),...)` teal-gold | `linear-gradient(160deg,rgba(110,26,40,0.96),...)` bordo-gold |
+| `.mc-doctor` (1168) | `rgba(123,168,176,...)` blue-sage | `rgba(212,175,106,...)` gold |
+| `.mc-doctor-title` (1169) | `rgba(123,168,176,0.95)` blue-sage | `rgba(232,178,63,0.95)` gold |
+
+**Dokunulmayan teal kalıntılar** (küçük UI elementleri, görsel etki düşük):
+- `.dash-stat`, `.set-log`, `.set-bottom-sheet`, `.rest-timer`, `.wd-ring-inner`, `.mh-silhouette` — `rgba(15,30,38,...)` (koyu teal-blue)
+- Bu artıklar future Iter'da temizlenebilir; ana görsel kimlik artık bordo dominant.
+
+**Önem**: Begümnaz PWA'sı şimdi tutarlı bordo-cream-gold paletinde. Iter 9 tema kararı (Billie Eilish + cheetah hero referansı) artık tüm modal/nav'da yansıyor.
+
+**SW cache bump**: `v12-popup-x-btn` → **`v13-renk-paleti-bordo`**
+
+---
 
 ### Iter 23 — Pop-up kapatma UX iyileştirme (M10)
 
