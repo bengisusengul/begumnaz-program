@@ -2,7 +2,7 @@
 
 > **Bu dosya yeni oturumun ilk okunan dosyasıdır.** Burada nerede kaldığımız, yarın ne yapacağımız, hangi kararların değişmediği yazılır. Önceki oturumda olan her kritik şey buraya yansır.
 
-**Son güncelleme**: 13 Mayıs 2026 — **Faz 3 LIVE** İterasyon 19 (Cloudflare Worker AI proxy deploy + CORS fix)
+**Son güncelleme**: 13 Mayıs 2026 — **Faz 4 BAŞLADI** İterasyon 20 (Cleanup: Adaptive Yük + Bilim Modu kaldırıldı, -293 satır)
 
 ---
 
@@ -64,10 +64,41 @@ PWA artık prod'da Cloudflare Worker AI proxy ile çalışıyor. Begümnaz 1-2 h
 - ✅ **Faz 1**: Markdown dokümantasyon iskeleti (tamamlandı)
 - ✅ **Faz 2**: PWA içerik adaptasyonu (Iter 18'de bitti — büyük temizlikler + cheetah hero)
 - ✅ **Faz 3**: Deploy LIVE (GitHub Pages + Cloudflare Worker AI proxy — Iter 19'da tamamlandı)
+- 🟢 **Faz 4**: PWA üretim olgunluğu (Iter 20 başladı — 13 maddelik iyileştirme listesi, plan: 11 Iter)
 
 ---
 
 ## 📜 Bu Oturumda Yapılanlar (13 Mayıs 2026)
+
+### Iter 20 — Faz 4 Cleanup: Adaptive Yük + Bilim Modu kaldırıldı
+
+Faz 4 başlangıcı. Kullanıcı 13 maddelik iyileştirme listesi verdi (plan: `/Users/agent9/.claude/plans/hey-frolicking-journal.md`). Iter 20 ilk adım — kaldırılacak iki büyük modülü temizledi.
+
+**Adaptive Yük (M4) — Apple Health entegrasyonu yok**:
+- Silinen fonksiyonlar: `getReadinessScore()`, `generateAdaptiveRecommendation()`, `renderAdaptiveLoad()`, `askClaudeAdaptive()` (4 fn, ~165 satır)
+- Silinen CSS: `.al-*` class'ları (~27 satır)
+- Silinen HTML: `#e-adaptive-load` container + Phase 2 yorumu (2 satır)
+- Düzelt: `renderEx()` caller'ı temizlendi (`.renderAdaptiveLoad()` çağrısı kaldırıldı)
+- AI helper comment güncellendi
+
+**Bilim Modu (M9) — Hacettepe Lab Iter 15'te gitmişti, geriye sadece L1/L2/L3 toggle kalmıştı**:
+- `getEduLevel()` fonksiyonu sadeleştirildi: sabit `return 'L1';` (tüm `getEduLevel()!=='L1'` conditional'lar otomatik false → subtitle/tag/L3 görünmez)
+- Silinen fns: `setEduLevel()`, `toggleEduLevel()`, `setEduLevelGlobal()`, `renderEduGlobalCard()`, `toggleExerciseEdu()`, `updateGlossModalLevel()` (6 fn)
+- Silinen UI: Settings modal "🔬 Bilim Modu" kartı, Glossary modal "🔬 Bilim Modu Değiştir" butonu, Inline exercise edu accordion (chip + panel)
+- Glossary L3 check sadeleştirildi: `l3Wrap.style.display='none'` her zaman (mevcut L3 metinleri kodda kalır, görünmez)
+- `openSettingsModal()` comment güncel + `renderEduGlobalCard()` çağrısı temizlendi
+
+**SW cache bump**: `v8-glossary-fix-2026-05-13` → **`v9-cleanup-adaptive-bilim-2026-05-13`**
+
+**Metrikler**:
+- index.html satır sayısı: 9912 → **9619** (-293 satır)
+- 7 fonksiyon, 3 UI bloğu, 1 CSS bloğu silindi
+- Hiçbir conditional render manuel temizlenmedi (getEduLevel sabit L1 olduğu için otomatik gizlendi)
+- Kalan iş (sonraki Iter'lara): LEGEND_DEFS l3:'...' alanları (~50 maddede), CSS `.edu-*`/`.al-*` artıkları, BACKUP_KEYS'den `edu_level` çıkarma
+
+**Önem**: PWA daha sade. Kullanıcı bilim modu toggle'ı kaybetmedi (Hacettepe Lab gitmiş, anlamsız kalmıştı). Adaptive Yük Apple Health bağlantısı olmadığı için boş duruyordu, kaldırma temiz.
+
+---
 
 ### Iter 19 — Faz 3 LIVE: Cloudflare Worker AI proxy deploy + CORS fix
 
