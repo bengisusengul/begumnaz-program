@@ -285,6 +285,8 @@ body[data-page="cilt"] .snote{color:var(--cilt-text-secondary) !important;}
 .ex-utab.active{background:rgba(232,178,63,0.20);}
 .med-utab{font-size:12px;padding:9px 12px;flex:0 0 auto;}
 .med-utab.active{background:rgba(180,121,144,0.22);}
+/* Iter 54 B4 — Cilt sekmesi alt-tab (Yüz/Saç) */
+.skin-utab.active{background:rgba(245,197,210,0.32);}
 
 /* BOTTOM NAV */
 .bnav{position:fixed;bottom:0;left:0;right:0;height:80px;background:rgba(110,26,40,0.86);backdrop-filter:blur(28px) saturate(180%);-webkit-backdrop-filter:blur(28px) saturate(180%);border-top:1px solid var(--glass-border);display:flex;align-items:center;justify-content:space-around;z-index:999;padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -2px 24px rgba(0,0,0,0.2);}
@@ -1775,22 +1777,23 @@ select option{background:var(--bg-deep);color:var(--cream);}
 <div id="page-cilt" class="page">
   <div class="topbar">
     <div class="tb-label">Cilt Bakım Rutini</div>
-    <h1><em>Cilt</em> ✨</h1>
-    <div class="tb-sub">7 Günlük Döngü · Karma Cilt</div>
+    <h1 id="c-page-title"><em>Saç & Cilt</em> ✨</h1>
+    <div class="tb-sub" id="c-page-subtitle">7 Günlük Döngü · Karma Cilt</div>
   </div>
+  <!-- Iter 54 B3: Alt-tab seçici (Yüz / Saç) -->
+  <div style="margin:0 16px 14px;display:flex;gap:6px;background:rgba(255,255,255,0.06);border-radius:14px;padding:5px;">
+    <button class="utab skin-utab active" id="skin-utab-yuz" onclick="setSkinUTab('yuz')">👩 Yüz</button>
+    <button class="utab skin-utab" id="skin-utab-sac" onclick="setSkinUTab('sac')">💇 Saç</button>
+  </div>
+
+  <!-- Yüz pane (mevcut) -->
+  <div id="skin-pane-yuz">
   <div class="wstrip" id="c-strip"></div>
-  <div class="card-plain" style="margin:0 16px 12px;"><span class="card-plain-tag">🪞 Bu sekme</span>Cilt rutini <strong>cycle fazına göre değişir</strong> — regl haftası retinol/AHA atla (cilt hassas), ovulasyon C vit + niasinamid peakta, luteal BHA + sebum kontrol. 7 günlük rotasyon: retinol Day 1/3/5, AHA/BHA Day 4, mask Day 7. <em>Bugün hangi gündesin sayfa otomatik söyler.</em></div>
+  <!-- Iter 54 A1: BU SEKME card-plain — Begümnaz protokolü + bilingual (renderSkinDay set eder) -->
+  <div class="card-plain" id="c-tab-intro" style="margin:0 16px 12px;"></div>
   <div id="c-notice" style="margin:0 16px 12px;"></div>
-  <div style="margin:0 16px 12px;">
-    <div class="notice ng">
-      <div class="nicon">⏰</div>
-      <div>
-        <strong>Sıralama:</strong> Sabah yürüyüşe çıkmadan ÖNCE sadece mineral SPF sür (3 dk).
-        Yürüyüş sonrası DUŞ → ardından bu 6 adımlı tam rutini yap (09:15).
-        Detay için Takvim sayfasındaki günlük programa bak.
-      </div>
-    </div>
-  </div>
+  <!-- Iter 54 A2: Sıralama notice — renderSkinDay set eder bilingual -->
+  <div style="margin:0 16px 12px;" id="c-order-notice-wrap"></div>
   <div class="slbl">☀️ Sabah Rutini</div>
   <div id="c-retinol-after" style="margin:0 16px 12px;"></div>
   <div class="card"><div class="cb" id="c-morn"></div></div>
@@ -1803,9 +1806,26 @@ select option{background:var(--bg-deep);color:var(--cream);}
     <div class="notice ng"><div class="nicon">👁️</div><div><strong><span data-i18n-tr="Her Akşam Son Adım:" data-i18n-en="Every Evening Final Step:">Her Akşam Son Adım:</span></strong><br><span data-i18n-tr="ISANA Peptid Augencreme — peptid + ince çizgi (akşam göz)" data-i18n-en="ISANA Peptid Augencreme — peptide + fine line (evening eye)">ISANA Peptid Augencreme — peptid + ince çizgi (akşam göz)</span></div></div>
   </div>
   <div id="c-brush" style="margin:0 16px 12px;"></div>
-  <div class="slbl">🛍 Ürün Listesi</div>
+  <div class="slbl" id="c-prods-lbl">🛍 Ürün Listesi</div>
   <div class="card"><div class="cb" id="c-prods"></div></div>
   <div style="height:8px;"></div>
+  </div><!-- /skin-pane-yuz -->
+
+  <!-- Iter 55 D-E: Saç pane (cycle-aware) -->
+  <div id="skin-pane-sac" style="display:none;">
+    <div class="wstrip" id="h-strip"></div>
+    <div class="card-plain" id="h-tab-intro" style="margin:0 16px 12px;"></div>
+    <div id="h-phase-notice" style="margin:0 16px 12px;"></div>
+    <div class="slbl" id="h-routine-lbl" style="margin:0 16px 8px;">💇 Günlük Rutin</div>
+    <div id="h-routine-card" style="margin:0 16px 12px;"></div>
+    <div class="slbl" id="h-weekly-lbl" style="margin:0 16px 8px;">📅 Haftalık Takvim</div>
+    <div id="h-weekly-card" style="margin:0 16px 12px;"></div>
+    <div class="slbl" id="h-prods-lbl" style="margin:0 16px 8px;">🛍 Saç Ürünleri</div>
+    <div id="h-prods-card" style="margin:0 16px 12px;"></div>
+    <div class="slbl" id="h-supplement-lbl" style="margin:0 16px 8px;">💊 Doktor Supplement ↔ Saç</div>
+    <div id="h-supplement-card" style="margin:0 16px 12px;"></div>
+    <div style="height:8px;"></div>
+  </div>
 </div>
 
 <!-- CYCLE -->
@@ -2020,7 +2040,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
   <button class="nb" onclick="showP('cycle',this)" aria-label="Döngü"><span class="ni">🌸</span><span class="nl" data-i18n="nav_cycle">Döngü</span></button>
   <button class="nb" onclick="showP('diyet',this)" aria-label="Diyet"><span class="ni">🥩</span><span class="nl" data-i18n="nav_diet">Diyet</span></button>
   <button class="nb" onclick="showP('egzersiz',this)" aria-label="Egzersiz"><span class="ni">💪</span><span class="nl" data-i18n="nav_exercise">Egzersiz</span></button>
-  <button class="nb" onclick="showP('cilt',this)" aria-label="Cilt"><span class="ni">✨</span><span class="nl" data-i18n="nav_skin">Cilt</span></button>
+  <button class="nb" onclick="showP('cilt',this)" aria-label="Saç & Cilt"><span class="ni">✨</span><span class="nl" data-i18n="nav_skin">Saç & Cilt</span></button>
   <button class="nb" onclick="showP('medical',this)" aria-label="Sağlık Kayıtları"><span class="ni">🩺</span><span class="nl" data-i18n="nav_medical">Sağlık</span></button>
 </nav>
 
@@ -2411,7 +2431,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
 const I18N = {
   tr: {
     nav_today:'Bugün', nav_cycle:'Döngü', nav_diet:'Diyet',
-    nav_exercise:'Egzersiz', nav_skin:'Cilt', nav_medical:'Sağlık',
+    nav_exercise:'Egzersiz', nav_skin:'Saç & Cilt', nav_medical:'Sağlık',
     greet_morning:'Günaydın', greet_noon:'Tünaydın',
     greet_evening:'İyi akşamlar', greet_night:'İyi geceler',
     welcome_title:'Hoşgeldin', welcome_subtitle:'Bu app sana özel — döngün, sağlığın, antrenmanın, cilt bakımın 1 yerde. Başlamadan önce 3 şeyi netleştirelim:',
@@ -2579,7 +2599,7 @@ const I18N = {
   },
   en: {
     nav_today:'Today', nav_cycle:'Cycle', nav_diet:'Diet',
-    nav_exercise:'Exercise', nav_skin:'Skin', nav_medical:'Medical',
+    nav_exercise:'Exercise', nav_skin:'Skin & Hair', nav_medical:'Medical',
     greet_morning:'Good morning', greet_noon:'Good afternoon',
     greet_evening:'Good evening', greet_night:'Good night',
     welcome_title:'Welcome', welcome_subtitle:'This app is personalised for you — your cycle, health, training, and skincare in one place. Let’s clarify three things before we start:',
@@ -2775,6 +2795,8 @@ function setLang(lang){
   safeCall('renderEx');
   safeCall('renderMeas');
   safeCall('renderAnalyticsToggle');
+  // Iter 55 — Saç bakımı dil senkron
+  safeCall('renderHairDay');
   // Diet ek render fns (Iter 49: dil değişiminde burnout/cycle-diet/streak güncellensin)
   safeCall('renderCycleDietCard');
   safeCall('renderStreakBadge');
@@ -7783,7 +7805,9 @@ const BACKUP_KEYS=[
   // Iter 42 O6 + O7 — daily log mod + exercise analytics expanded
   'log_mode','analytics_expanded',
   // Iter 43 M7 — glossary EN AI çeviri cache
-  'glossary_en_cache'
+  'glossary_en_cache',
+  // Iter 54 — Saç & Cilt alt-tab state
+  'skin_active_tab'
 ];
 
 function exportAllData(){
@@ -10688,7 +10712,242 @@ function getRecentHealthData(daysBack){
 
 // SKIN
 function getSkinD(d){const ref=new Date('2026-03-25');return((Math.floor((d-ref)/86400000)%7)+7)%7+1;}
-function renderSkin(){renderStrip('c-strip',S.cD,d=>{S.cD=d;renderSkinDay();});renderSkinDay();renderProds();}
+// ════════════════════════════════════════════════
+// Iter 55 — SAÇ BAKIMI (cycle-aware)
+// Begümnaz: yağlı kafa + kuru uçlar paradoksu · Pzt/Çar/Cmt yıkama
+// Selenyum 58 düşük + İyot 27 düşük → Lugol tedavi · saç sağlığı bağı
+// ════════════════════════════════════════════════
+const HAIR_ROUTINE_STEPS=[
+  {n:'Şampuan (Pzt/Çar/Cmt)', nEn:'Shampoo (Mon/Wed/Sat)', d:'Sülfatsız · scalp masaj 2 dk', dEn:'Sulfate-free · scalp massage 2 min'},
+  {n:'Saç Maskesi (Pzt haftalık)', nEn:'Hair mask (Mon, weekly)', d:'Kuru uçlara 5-10 dk', dEn:'On dry ends, 5-10 min'},
+  {n:'Kafa Derisi Serumu', nEn:'Scalp serum', d:'Niacinamide veya kafein · yağlı kafaya, her yıkama', dEn:'Niacinamide or caffeine · on oily scalp, every wash'},
+  {n:'Leave-in Conditioner', nEn:'Leave-in conditioner', d:'Sadece uçlara · yaş saça', dEn:'Ends only · on wet hair'},
+  {n:'Saç Yağı (gece)', nEn:'Hair oil (night)', d:'Argan / jojoba · uçlara · yatmadan', dEn:'Argan / jojoba · ends · before bed'},
+  {n:'Kuru Şampuan (2. gün scalp)', nEn:'Dry shampoo (day 2 scalp)', d:'Yağlanma için root spray', dEn:'Root spray for sebum days'},
+  {n:'İpek/Saten Yastık', nEn:'Silk/satin pillowcase', d:'Sürtünme ↓ · uç kırılma ↓', dEn:'Less friction · less breakage'},
+  {n:'Isı Kontrol', nEn:'Heat control', d:'Fön orta · düzleştirici max 1×/hf · heat protectant', dEn:'Medium dryer · flat iron max 1x/wk · heat protectant'},
+  {n:'Yumuşak Tarama', nEn:'Gentle detangling', d:'Geniş diş tarak · uçtan başla', dEn:'Wide-tooth comb · start from ends'},
+  {n:'Kafa Derisi Eksfoliasyon (haftalık)', nEn:'Scalp exfoliation (weekly)', d:'AHA/BHA scalp scrub · Çar veya Cmt', dEn:'AHA/BHA scalp scrub · Wed or Sat'}
+];
+
+const HAIR_PHASE_NOTES={
+  'Menstruation':{
+    icon:'🔴',
+    tr:'<strong>Hassas tarama:</strong> Saç + kafa derisi bu hafta daha hassas. Sıcak ısıdan kaç, fön orta, düzleştirici atla. Demir kaybı → saç dökülme normal, panik yok.',
+    en:'<strong>Gentle handling:</strong> Hair + scalp more sensitive this week. Avoid hot heat, medium dryer, skip flat iron. Iron loss → some shedding normal, no panic.'
+  },
+  'Follicular Phase':{
+    icon:'🌱',
+    tr:'<strong>Kollajen sentez yükselişi:</strong> Östrojen artıyor, saç büyüme pencere açık. Leave-in serum + scalp masaj + saç yağı uçlara — yeni saç sağlıklı çıkar.',
+    en:'<strong>Collagen synthesis rising:</strong> Estrogen up, hair growth window open. Leave-in serum + scalp massage + hair oil ends — new strands grow healthy.'
+  },
+  'Ovulation':{
+    icon:'🌸',
+    tr:'<strong>Peak parlaklık:</strong> Östrojen tavanda, doğal saç parlaklığı maksimum. Bu hafta saç mask haftalık + leave-in günlük. Görsel olarak en iyi gün.',
+    en:'<strong>Peak shine:</strong> Estrogen at peak, natural shine maximum. Weekly mask + daily leave-in conditioner. Visually your best day.'
+  },
+  'Luteal Phase':{
+    icon:'🌙',
+    tr:'<strong>Sebum artışı:</strong> Progesteron kafa derisinde yağlanma artırır. Kuru şampuan 2. gün, scalp serum sebum-balance, yıkama sıklığı +1 olabilir (ek Cum yıkama).',
+    en:'<strong>Sebum increase:</strong> Progesterone boosts scalp oil. Dry shampoo day 2, scalp serum sebum-balance, wash frequency +1 possible (extra Fri wash).'
+  }
+};
+
+const HAIR_WEEKLY_SCHEDULE=[
+  {d:'Pzt', dEn:'Mon', act:'Yıkama + Maske + Scalp Serum', actEn:'Wash + Mask + Scalp Serum', wash:true},
+  {d:'Sal', dEn:'Tue', act:'Kuru şampuan (gerekirse)', actEn:'Dry shampoo (if needed)', wash:false},
+  {d:'Çar', dEn:'Wed', act:'Yıkama + Scalp Serum + Scalp eksfoliasyon (alternatif)', actEn:'Wash + Scalp Serum + Scalp exfoliation (alt)', wash:true},
+  {d:'Per', dEn:'Thu', act:'Kuru şampuan + leave-in', actEn:'Dry shampoo + leave-in', wash:false},
+  {d:'Cum', dEn:'Fri', act:'Saç yağı uçlara (gece) · Luteal\'da yıkama ek', actEn:'Hair oil ends (night) · extra wash if luteal', wash:false},
+  {d:'Cmt', dEn:'Sat', act:'Yıkama + Scalp Serum', actEn:'Wash + Scalp Serum', wash:true},
+  {d:'Paz', dEn:'Sun', act:'Restoratif — saç yağı + ipek yastık + tarama', actEn:'Restorative — hair oil + silk pillow + detangle', wash:false}
+];
+
+const HAIR_PRODUCTS=[
+  {c:'Şampuan', cEn:'Shampoo', items:[
+    {n:'🛒 Yumuşak sülfatsız şampuan (Bioderma Nodé / Klorane)', nEn:'🛒 Gentle sulfate-free shampoo (Bioderma Nodé / Klorane)', shop:'Eczane · 250-450 TL', key:'hair-shampoo-mild'},
+    {n:'🛒 Yulaf/anti-kepek şampuan (Klorane Yulaf)', nEn:'🛒 Oat/anti-dandruff shampoo (Klorane Oat)', shop:'Eczane · 220-320 TL', key:'hair-shampoo-oat'}
+  ]},
+  {c:'Maske', cEn:'Mask', items:[
+    {n:'🛒 ISANA Hyaluron saç maskesi', nEn:'🛒 ISANA Hyaluron hair mask', shop:'Rossmann · ~70 TL', key:'hair-mask-isana'},
+    {n:'🛒 Olaplex No.3 (kuru uçlar onarım)', nEn:'🛒 Olaplex No.3 (dry ends repair)', shop:'Sephora · 800-1200 TL', key:'hair-mask-olaplex'}
+  ]},
+  {c:'Scalp Serum', cEn:'Scalp Serum', items:[
+    {n:'🛒 Niacinamide scalp serum (yağlı kafa)', nEn:'🛒 Niacinamide scalp serum (oily scalp)', shop:'Trendyol · 250-450 TL', key:'hair-scalp-niacinamide'}
+  ]},
+  {c:'Leave-in + Yağ', cEn:'Leave-in + Oil', items:[
+    {n:'✅ Argan yağı (uçlara, gece)', nEn:'✅ Argan oil (ends, night)', shop:'Aktar · ~60 TL', key:'hair-oil-argan'},
+    {n:'🛒 Leave-in conditioner spray', nEn:'🛒 Leave-in conditioner spray', shop:'Eczane · 200-350 TL', key:'hair-leavein-spray'}
+  ]},
+  {c:'Kuru Şampuan + Aksesuar', cEn:'Dry Shampoo + Accessory', items:[
+    {n:'🛒 Klorane kuru şampuan', nEn:'🛒 Klorane dry shampoo', shop:'Eczane · 200-300 TL', key:'hair-dryshampoo'},
+    {n:'🛒 İpek/saten yastık kılıfı', nEn:'🛒 Silk/satin pillowcase', shop:'Trendyol · 150-300 TL', key:'hair-silk-pillow'}
+  ]}
+];
+
+function _hpField(p, field){const v=p[field];if(typeof v==='string')return v;return v?(v[getLang()==='en'?'en':'tr']||v.tr||''):'';}
+
+function renderHairDay(){
+  const en=getLang()==='en';
+  const c=ci(S.cD);
+  // Wstrip Saç (haftalık takvim) — wstrip pattern reuse (h-strip)
+  if(typeof renderStrip==='function'){
+    try{renderStrip('h-strip',S.cD,d=>{S.cD=d;renderHairDay();});}catch(e){}
+  }
+  // BU SEKME card-plain
+  const intro=document.getElementById('h-tab-intro');
+  if(intro){
+    const tag=en?'🪞 This tab':'🪞 Bu sekme';
+    const body=en
+      ?'Hair routine is <strong>cycle-aware</strong> — Begümnaz: oily scalp + dry ends paradox. Wash Mon/Wed/Sat (extra Fri in late luteal). Sebum/shine/breakage shift with hormones. Doctor supplements (Lugol iodine, Selenium, Time Magnesium) support hair growth from inside.'
+      :'Saç rutini <strong>cycle-aware</strong> — Begümnaz: yağlı kafa + kuru uçlar paradoksu. Pzt/Çar/Cmt yıkama (geç luteal\'da ek Cum). Sebum/parlaklık/kırılma hormonlara göre değişir. Doktor supplementleri (Lugol iyot, Selenyum, Time Magnezyum) içerden saç büyümeyi destekler.';
+    intro.innerHTML=`<span class="card-plain-tag">${tag}</span>${body}`;
+  }
+  // Phase notice (cycle-aware)
+  const phaseEl=document.getElementById('h-phase-notice');
+  if(phaseEl){
+    if(c && HAIR_PHASE_NOTES[c.phase]){
+      const note=HAIR_PHASE_NOTES[c.phase];
+      const dayLbl=en?'Day':'Gün';
+      const text=en?note.en:note.tr;
+      phaseEl.innerHTML=`<div class="notice ${c.cls}"><div class="nicon">${note.icon}</div><div>${c.phase} · ${dayLbl} ${c.day} — ${text}</div></div>`;
+    } else {
+      const noCycle=en?'No cycle tracking · add a period from the Cycle tab so phase recommendations activate.':'Döngü takibi yok · Cycle sekmesinden regl ekle, phase önerileri aktif olsun.';
+      phaseEl.innerHTML=`<div class="notice np"><div class="nicon">🌸</div><div>${noCycle}</div></div>`;
+    }
+  }
+  // Etiketler bilingual
+  document.getElementById('h-routine-lbl').textContent=en?'💇 Daily Routine':'💇 Günlük Rutin';
+  document.getElementById('h-weekly-lbl').textContent=en?'📅 Weekly Schedule':'📅 Haftalık Takvim';
+  document.getElementById('h-prods-lbl').textContent=en?'🛍 Hair Products':'🛍 Saç Ürünleri';
+  document.getElementById('h-supplement-lbl').textContent=en?'💊 Doctor Supplements ↔ Hair':'💊 Doktor Supplement ↔ Saç';
+  // Rutin 10 adım
+  const routineEl=document.getElementById('h-routine-card');
+  if(routineEl){
+    const steps=HAIR_ROUTINE_STEPS.map((s,i)=>`<div class="sstep">
+      <div class="snum">${i+1}</div>
+      <div>
+        <div class="sprod">${en?s.nEn:s.n}</div>
+        <div class="snote">${en?s.dEn:s.d}</div>
+      </div>
+    </div>`).join('');
+    routineEl.innerHTML=`<div class="card"><div class="cb">${steps}</div></div>`;
+  }
+  // Haftalık takvim
+  const weekEl=document.getElementById('h-weekly-card');
+  if(weekEl){
+    const todayDow=(new Date().getDay()+6)%7;  // Pzt=0
+    const rows=HAIR_WEEKLY_SCHEDULE.map((w,i)=>{
+      const isToday=i===todayDow;
+      return `<div style="display:grid;grid-template-columns:50px 1fr;gap:10px;padding:8px 10px;border-bottom:1px dashed var(--border-soft);${isToday?'background:rgba(245,197,210,0.18);border-radius:6px;':''}">
+        <div style="font-weight:${isToday?'700':'500'};color:${isToday?'var(--pink-deep)':'var(--text)'};">${en?w.dEn:w.d}${w.wash?' 💧':''}</div>
+        <div style="font-size:12.5px;color:var(--text-mid);line-height:1.5;">${en?w.actEn:w.act}</div>
+      </div>`;
+    }).join('');
+    weekEl.innerHTML=`<div class="card"><div class="cb">${rows}</div></div>`;
+  }
+  // Ürün listesi
+  renderHairProds();
+  // Doktor supplement ↔ saç bağı kartı
+  const suppEl=document.getElementById('h-supplement-card');
+  if(suppEl){
+    const tag=en?'🪞 Why supplements matter':'🪞 Supplementler neden önemli';
+    const body=en
+      ?'• <strong>Lugol iodine 5%</strong> · iodine 27 µg/L (low) → thyroid → hair growth cycle (TSH/T4 recheck 6-8 weeks)<br>• <strong>Selenium</strong> · 58 µg/L (low) → selenoproteins → hair keratin synthesis<br>• <strong>Iron 204</strong> (high) → IRON SUPPLEMENTS FORBIDDEN, but iron-adequate for hair<br>• <strong>Time Magnesium</strong> · stress → hair shedding control<br>• <strong>NAC + B-complex</strong> · liver detox → cleaner hormone metabolism'
+      :'• <strong>Lugol iyot %5</strong> · iyot 27 µg/L (düşük) → tiroid → saç büyüme döngüsü (TSH/T4 6-8 hafta sonra kontrol)<br>• <strong>Selenyum</strong> · 58 µg/L (düşük) → selenoproteinler → saç keratin sentezi<br>• <strong>Demir 204</strong> (yüksek) → DEMİR TAKVİYESİ YASAK, ama demir saç için yeterli<br>• <strong>Time Magnezyum</strong> · stres → saç dökülme kontrol<br>• <strong>NAC + B-kompleks</strong> · karaciğer detoks → temiz hormon metabolizması';
+    suppEl.innerHTML=`<div class="card"><div class="cb"><div class="card-plain"><span class="card-plain-tag">${tag}</span><span style="font-size:12.5px;line-height:1.7;">${body}</span></div></div></div>`;
+  }
+}
+
+function renderHairProds(){
+  const en=getLang()==='en';
+  const el=document.getElementById('h-prods-card');
+  if(!el)return;
+  // Owned helper reuse (Iter 41 M12)
+  const isOwned=(typeof isProductOwned==='function')?isProductOwned:(()=>false);
+  let toBuyCount=0;
+  const groups=HAIR_PRODUCTS.map(cat=>{
+    const items=cat.items.map(it=>{
+      const name=en?it.nEn:it.n;
+      const isShoppingItem=name.startsWith('🛒');
+      const owned=isShoppingItem && isOwned(it.key);
+      if(isShoppingItem && !owned)toBuyCount++;
+      const displayName=owned?name.replace('🛒','✅'):name;
+      const ownedBg=owned?'background:rgba(168,192,160,0.18);border-left:3px solid var(--accent-sage);padding-left:8px;':'';
+      const ownedLbl=en?'I have it':'Aldım';
+      const ownedDoneLbl=en?'Have it ✓':'Sahibim ✓';
+      const toggleBtn=isShoppingItem
+        ?`<button onclick="toggleProductOwned('${it.key}')" style="background:transparent;border:1px solid ${owned?'var(--accent-sage)':'var(--gold)'};color:${owned?'var(--accent-sage)':'var(--gold)'};font-size:10px;font-weight:600;padding:3px 9px;border-radius:14px;cursor:pointer;margin-left:8px;white-space:nowrap;flex-shrink:0;">${owned?ownedDoneLbl:'+ '+ownedLbl}</button>`
+        :'';
+      return `<div style="font-size:13px;padding:6px 8px;border-bottom:1px dashed var(--border-soft);${ownedBg}">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:6px;">
+          <span style="flex:1;">${displayName}</span>${toggleBtn}
+        </div>
+        ${it.shop?`<div style="font-size:10px;color:var(--text-light);margin-top:2px;font-weight:400;">${it.shop}</div>`:''}
+      </div>`;
+    }).join('');
+    return `<div style="margin-bottom:14px;">
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-light);margin-bottom:8px;">${en?cat.cEn:cat.c}</div>
+      ${items}
+    </div>`;
+  }).join('');
+  const shoppingBadge=toBuyCount>0
+    ?`<div style="margin-top:14px;padding:10px 12px;background:rgba(140,90,26,0.12);border-left:3px solid var(--gold);border-radius:6px;font-size:11px;color:var(--text);">${en?`<strong>🛒 ${toBuyCount} product${toBuyCount>1?'s':''} to buy</strong> for full hair routine.`:`<strong>🛒 Alınacak ${toBuyCount} ürün</strong> tam saç rutini için.`}</div>`
+    :`<div style="margin-top:14px;padding:10px 12px;background:rgba(168,192,160,0.15);border-left:3px solid var(--accent-sage);border-radius:6px;font-size:11.5px;color:var(--text);"><strong>✓ ${en?'All shopping complete':'Tüm alışveriş tamam'}</strong> · ${en?'hair routine ready':'saç rutini hazır'} 🌱</div>`;
+  el.innerHTML=`<div class="card"><div class="cb">${groups}${shoppingBadge}</div></div>`;
+}
+
+// Iter 54 B6 — Skin sekmesi alt-tab (Yüz / Saç)
+function setSkinUTab(tab){
+  const yuz=document.getElementById('skin-pane-yuz');
+  const sac=document.getElementById('skin-pane-sac');
+  const tY=document.getElementById('skin-utab-yuz');
+  const tS=document.getElementById('skin-utab-sac');
+  const isSac=tab==='sac';
+  if(yuz)yuz.style.display=isSac?'none':'block';
+  if(sac)sac.style.display=isSac?'block':'none';
+  if(tY){tY.classList.toggle('active',!isSac);const en=getLang()==='en';tY.textContent=en?'👩 Face':'👩 Yüz';}
+  if(tS){tS.classList.toggle('active',isSac);const en=getLang()==='en';tS.textContent=en?'💇 Hair':'💇 Saç';}
+  localStorage.setItem('skin_active_tab',tab);
+  if(isSac && typeof renderHairDay==='function')renderHairDay();
+}
+
+function renderSkin(){
+  // Iter 54 B2 — bilingual topbar
+  const en=getLang()==='en';
+  const t1=document.getElementById('c-page-title');
+  if(t1)t1.innerHTML=en?'<em>Skin & Hair</em> ✨':'<em>Saç & Cilt</em> ✨';
+  const t2=document.getElementById('c-page-subtitle');
+  if(t2)t2.textContent=en?'7-Day Rotation · Combination skin':'7 Günlük Döngü · Karma Cilt';
+  // Iter 54 A1 — BU SEKME card-plain (Begümnaz protokolü)
+  const intro=document.getElementById('c-tab-intro');
+  if(intro){
+    const tag=en?'🪞 This tab':'🪞 Bu sekme';
+    const body=en
+      ?'Your face routine shifts with your cycle — period week skip tret/AHA (sensitive), ovulation peak Vit C + niacinamide, luteal BHA + sebum control. <strong>Acnelyse 0.025% Tue+Sun sandwich</strong> · Azelaic Mon+Sat · AHA 6% Thu · Madescar+Hyaluron every night barrier. This page shows you which day you\'re on.'
+      :'Yüz rutini cycle fazına göre değişir — regl haftası tret/AHA atla (cilt hassas), ovulasyon Vit C + niasinamid peak, luteal BHA + sebum kontrol. <strong>Acnelyse 0.025% Sal+Paz sandwich</strong> · Azelaic Pzt+Cmt · AHA 6% Per · Madescar+Hyaluron her gece bariyer. <em>Bugün hangi gündesin sayfa otomatik söyler.</em>';
+    intro.innerHTML=`<span class="card-plain-tag">${tag}</span>${body}`;
+  }
+  // Iter 54 A2 — Sıralama notice (Begümnaz akış)
+  const orderWrap=document.getElementById('c-order-notice-wrap');
+  if(orderWrap){
+    const orderStrong=en?'Order:':'Sıralama:';
+    const orderBody=en
+      ?'Before morning walk apply only SPF (Garnier BHA + Niacinamide SPF 50, 3 min). After walk SHOWER → then this 7-step full routine. See Calendar for daily schedule.'
+      :'Sabah yürüyüşe çıkmadan önce sadece SPF (Garnier BHA + Niacinamide SPF 50) sür (3 dk). Yürüyüş sonrası DUŞ → ardından bu 7 adımlı tam rutini yap. Detay için Takvim sayfasındaki günlük programa bak.';
+    orderWrap.innerHTML=`<div class="notice ng"><div class="nicon">⏰</div><div><strong>${orderStrong}</strong> ${orderBody}</div></div>`;
+  }
+  // slbl labels bilingual
+  const morningLbl=document.querySelector('#skin-pane-yuz .slbl:nth-of-type(1)');
+  const prodsLbl=document.getElementById('c-prods-lbl');
+  if(prodsLbl)prodsLbl.textContent=en?'🛍 Product List':'🛍 Ürün Listesi';
+  renderStrip('c-strip',S.cD,d=>{S.cD=d;renderSkinDay();});
+  renderSkinDay();
+  renderProds();
+  // Hair pane render if active
+  const activeTab=localStorage.getItem('skin_active_tab')||'yuz';
+  setSkinUTab(activeTab);  // tab state restore + render
+}
 function renderSkinDay(){
   const d=S.cD,sd=getSkinD(d),c=ci(d),per=inP(d),pre=preP(d);
   const sa=SA[sd],ea=(per||pre)&&sa.p.includes('Retinol')?{l:'Period Protocol',b:'brest',e:'💤',p:'Medicube Collagen Jelly Cream',no:'Skip retinol this week'}:sa;
@@ -11524,6 +11783,7 @@ function refreshAll(){
   safeCall('renderDashboard');
   safeCall('renderDiet');
   safeCall('renderSkin');
+  safeCall('renderHairDay');
   safeCall('renderEx');
   safeCall('renderCycleDietCard');
   // Iter 51 — Phase-aware sync %100 (audit bulgusu, eksik 2 fn)
