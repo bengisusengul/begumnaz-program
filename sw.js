@@ -1,7 +1,7 @@
 // Begümnaz Program · Service Worker (Phase 3.B-A)
 // Görev: PWA install + offline cache + (gelecek) push notification
 
-const CACHE_NAME = 'begumnaz-v23-i18n-content-objects-2026-05-13';
+const CACHE_NAME = 'begumnaz-v30-faz6-iter43-final-polish-2026-05-13';
 const ASSETS = [
   './',
   './index.html',

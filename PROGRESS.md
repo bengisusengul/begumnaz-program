@@ -2,15 +2,37 @@
 
 > **Bu dosya yeni oturumun ilk okunan dosyasıdır.** Burada nerede kaldığımız, yarın ne yapacağımız, hangi kararların değişmediği yazılır. Önceki oturumda olan her kritik şey buraya yansır.
 
-**Son güncelleme**: 13 Mayıs 2026 — Faz 4 İterasyon 31 (Regl AI parse upload + Achievements Dashboard 🏆 + Begümnaz uyumlu)
+**Son güncelleme**: 13 Mayıs 2026 — Faz 6 Comprehensive Audit tamamlandı (12 uzman subagent raporu konsolide edildi · Iter 37 öncesi)
 
 ---
 
 ## 🚨 SONRAKİ OTURUMDA İLK YAPILACAK (Next session first action)
 
-### 1. Manuel `git push` — Faz 4 Iter 20-29 (10 commit, push'lanmadıysa)
+### 1. **Iter 37 — KRİTİK FIX Phase 1** (4-5 saat)
 
-Bu oturumda 13 Mayıs 2026 Faz 4 büyük kısmı tamamlandı (Iter 19'dan sonra Iter 20-29, Iter 26 atlandı):
+Faz 6 audit (12 uzman subagent) sonucu **9 KRİTİK (P0) bulgu** tespit edildi. Iter 37 ilk 4 kritik fix:
+
+- **K1**: Medical Drugs tab BOŞ — `SUPPLEMENTS_INVENTORY` `cat` değerleri ile `cats` obj key'leri uyumsuz (~30 dk)
+- **K2**: Endo Flare logging UI yok (backend var ama UI yok) — Cycle Daily Log'a toggle ekle (~2 saat)
+- **K3**: Cycle ovulation/phase boundary sabit (28 gün varsayımı, 32-gün cycle'da hatalı) — dinamik (cyc*0.4, cyc*0.5, cyc*0.6) (~1 saat)
+- **K9 (kısmi)**: WCAG kontrast AA FAIL — `--coral` `#C25A6C` → `#E8956A`, `--cream-faint` opacity 0.46→0.75, `--text-light` 0.48→0.75 (~1 saat)
+- Commit: `Faz 6 Iter 37: Critical fixes phase 1 — Drugs tab + Endo flare + Phase boundaries + Contrast`
+- SW cache bump: `v23` → `v24-faz6-iter37-critical-phase1`
+
+Detaylı plan: `/Users/agent9/.claude/plans/hey-frolicking-journal.md` (Faz 6 bölümü)
+
+### 2. **Iter 38-43 — Faz 6 Devamı** (toplam ~23-28 saat, 7 iter)
+
+- **Iter 38** (3-4h): K4-K8 — 5 Bengisu achievement sil, `renderPazarBrunch()` sil, IF fasting sil, dana/tavuk öğün filtreleme, Theme Card AI preview tamamla
+- **Iter 39** (4-5h): O1-O3, O9, O12 — Welcome stepper, Smart Measurement quick action, `.utab` ortak class, Settings sub-cards bilingual, Profile/Backup confirm
+- **Iter 40** (3-4h): O10-O11, M8 — CSS variable refactor (Diyet `!important` cascade + 48 inline hex), Dinamik tema kontrast doğrulama
+- **Iter 41** (3h): O4-O5, M4, M12-M13 — Pelvik video 4 hafta rotation, Mezoterapi protokolü, tret-pelvik uyarı, Cilt alışveriş Pazartesi, Cycle'dan Medical kart sil
+- **Iter 42** (3-4h): O6-O8, M1-M2 — Daily Log 3 mod (Quick/Full/Expert), Exercise Analytics 2 tab, Medical dinamik tab, pain severity scale, açık regl 30+ warning
+- **Iter 43** (3h): M3, M5, M7, M9, M11 — Glossary 50+ terim bilingual, CV% disclaimer, compulsive screening opt-in, Wedding Mirror gizleme, Apple Health setup guide
+
+### 3. Manuel `git push` — Iter 31, 33, 34, 35 + audit dokümantasyonu
+
+Bu oturum sonu 5+ unpushed commit olmalı:
 
 ```bash
 cd /Users/agent9/Desktop/bnsp-repo
@@ -18,36 +40,20 @@ git status                    # "ahead of origin/main by N commits" görmeli
 git push origin main          # manuel push
 ```
 
-Push sonrası GitHub Pages otomatik deploy. SW cache **v17-dinamik-tema-ai** — eski cache yenilenir.
+Push sonrası GitHub Pages otomatik deploy. SW cache **v23-i18n-content-objects-2026-05-13** — eski cache yenilenir.
 
-### 2. Iter 30 — i18n EN tam çeviri (SONRAKİ OTURUM)
+### 4. (Opsiyonel) Begümnaz gerçek kullanım feedback'i
 
-**Plan**: M1 (EN tam çeviri) öngörüsü 1.5-2 gün iş. Multi-phase:
-- **30A**: I18N obje 27 → 100+ key + applyTranslations refactor
-- **30B**: WEEKLY_FOCUS_TEXTS + ZEN + BODY_INTENTIONS bilingual
-- **30C**: AI prompt'ları dinamik dil (getLang() bazlı) + glossary def bilingual
-
-Bu oturumda atlandı — yorucu, push önceliği. Sonraki oturumda Iter 30A ile başla.
-
-### 3. Iter 26 — Egzersiz video link upgrade (kullanıcı feedback bekleniyor)
-
-PWA YT_MAP zaten direct watch URL kullanıyor (çalışıyor). md dosyalarında search URL'ler kullanıcı seçimine bağlı. Begümnaz hangi videoları beğendiğini söyleyince spesifik watch URL'lere geçilir.
-
-### 4. (Opsiyonel) iOS Safari install + cache test
-
-PWA install → "Ana ekrana ekle". SW v17 yeni cache → eski yenilenir, ilk açılışta hard reload gerekebilir.
-
-### 5. (Opsiyonel) Begümnaz gerçek kullanım feedback'i
-
-PWA artık Faz 4 ile çok daha kişisel + üretimde:
+PWA artık Faz 4+5 ile çok daha kişisel + üretimde:
 - Sabah açılışta AI merhamet mesajı (Iter 28)
 - Settings'tan görsel yükle → tüm tema değişir (Iter 29)
-- Beslenme + Supplement birleşik takip (Iter 22)
-- Cilt ürün listesi Begümnaz'ın gerçek ürünleri (Iter 21)
-- Regl onboarding placeholder (Iter 27)
-- Mobile + popup UX iyileştirmeleri (Iter 23-25)
+- Regl AI parse upload (Flo/Clue/Apple Health PDF → toplu ekleme — Iter 31)
+- Achievements Dashboard 🏆 (10 başarı, Bengisu temizlendi — Iter 31)
+- Cycle tam bilingual (Iter 33)
+- 4 ana sekme tam bilingual: Diet/Exercise/Skin/Medical (Iter 34)
+- WEEKLY_FOCUS + ZEN + BODY_INTENTIONS bilingual (Iter 35)
 
-Begümnaz 1-2 hafta günlük kullansın → real-world feedback → Iter 30+ önceliklendirme.
+Begümnaz 1-2 hafta günlük kullansın → real-world feedback → Iter 37+ critical fix sonrası gerçek kullanım analizi.
 
 ---
 
@@ -62,7 +68,7 @@ Begümnaz 1-2 hafta günlük kullansın → real-world feedback → Iter 30+ ön
 | **Deploy** | https://bengisusengul.github.io/begumnaz-program/ (GitHub Pages) |
 | **Branch** | `main` (origin/main 1 commit gerisi) |
 | **PWA file** | `index.html` (9912 satır, ~688 KB) |
-| **SW cache** | `begumnaz-v7-no-hacettepe-2026-05-12` |
+| **SW cache** | `begumnaz-v23-i18n-content-objects-2026-05-13` |
 | **Manifest** | `manifest.json` — Begümnaz branding |
 | **Bg image** | `bg.jpeg` |
 
@@ -73,11 +79,170 @@ Begümnaz 1-2 hafta günlük kullansın → real-world feedback → Iter 30+ ön
 - ✅ **Faz 1**: Markdown dokümantasyon iskeleti (tamamlandı)
 - ✅ **Faz 2**: PWA içerik adaptasyonu (Iter 18'de bitti — büyük temizlikler + cheetah hero)
 - ✅ **Faz 3**: Deploy LIVE (GitHub Pages + Cloudflare Worker AI proxy — Iter 19'da tamamlandı)
-- 🟢 **Faz 4**: PWA üretim olgunluğu (Iter 20-29 tamam, %90+ · sadece Iter 30 i18n EN çeviri sonraki oturuma)
+- ✅ **Faz 4**: PWA üretim olgunluğu (Iter 20-31 tamam · regl AI upload + achievements modal eklendi)
+- ✅ **Faz 5**: i18n TAM ÇEVİRİ (Iter 32-35 tamam · Cycle/Diet/Ex/Skin/Medical/WEEKLY_FOCUS/ZEN/BODY_INTENTIONS bilingual)
+- 🟢 **Faz 6**: Comprehensive audit (12 uzman subagent · 9 KRİTİK + 12 ÖNEMLİ + 13 ORTA bulgu konsolide · Iter 37-43 planlandı, 23-28 saat)
 
 ---
 
 ## 📜 Bu Oturumda Yapılanlar (13 Mayıs 2026)
+
+### Faz 6 Comprehensive Audit — 12 Uzman Subagent Raporu Konsolide (13 Mayıs 2026)
+
+**Kullanıcı talebi**: "Yanına yaklaşık 20 tane subagent al. Projeyi en ince ayrıntısına kadar kontrol etsinler. Tasarım, gereksiz bilgi, mantık, kontrast/okunabilirlik, Bengisu kalıntısı + her sekme ayrı uzman ile bütüncül incele. Sen orchestrator olarak final raporu çıkar."
+
+**Yöntem**: 12 uzman subagent paralel (4 tur × 3 paralel call):
+- **Tur 1**: Diet uzmanı + Egzersiz uzmanı + Cilt uzmanı (paralel)
+- **Tur 2**: Medikal uzmanı + Today/Dashboard uzmanı + Cycle uzmanı (paralel)
+- **Tur 3**: Tasarım uzmanı + Mantık uzmanı + Kontrast/Okunabilirlik uzmanı (paralel)
+- **Tur 4**: Bengisu son tarama uzmanı + Gereksiz Bilgi uzmanı + Holistic UX/Settings uzmanı (paralel)
+
+**Konsolide bulgular**: 34 issue (9 KRİTİK P0 + 12 ÖNEMLİ P1 + 13 ORTA P2)
+
+#### 🔴 9 KRİTİK (P0) — Iter 37-38'de düzeltilecek
+
+1. **K1**: Medical Drugs tab BOŞ — `SUPPLEMENTS_INVENTORY` `cat` değerleri (gut/oral-hijyen/...) ile `cats` obj key'leri (tedavi/tiroid/...) uyumsuz → groups undefined → 0 supplement görünür
+2. **K2**: Endo Flare logging UI yok — backend her yerde `logs[today].flare` kullanır AMA Cycle Daily Log'da girişi yok, dead feature
+3. **K3**: Cycle ovulation/phase boundary sabit 14-gün varsayımı — 32-gün cycle için ovulasyon Day 14 (yanlış, Day 18) → Diet macro, Exercise intensity, Skin rotation hepsi yanlış phase'e göre
+4. **K4**: 5 Bengisu achievement hala aktif — `pazar_hak_ettin`, `t3_dostu`, `lipid_dusurucu`, `mg_kramp_cozucu`, `hakan_paket`
+5. **K5**: `renderPazarBrunch()` (satır 4704-4748) Pazar 09-13 brunch festival kartı — Bengisu refeed protokolü, Begümnaz'a uymaz, kompulsiyon riski
+6. **K6**: IF (intermittent fasting) 16:8 window hardcoded (`eatStart=10*60, eatEnd=19*60`) — Begümnaz "kahvaltı acıkma sinyaline göre" protokolü ile çelişir
+7. **K7**: Diet'te dana/tavuk öğün seçenekleri (satır 4834-4867) — Begümnaz protokolünde dana + tavuk YASAK (sadece kuzu/koyun/hindi)
+8. **K8**: Theme Card AI preview kodu eksik — `handleThemeImageUpload()` UI var ama Claude vision çağrısı + 6 renk dairesi render eksik, modal boş kalır
+9. **K9**: WCAG AA kontrast FAIL — coral `#C25A6C` on bordo = 2.70:1 (rest timer/sd warn), `--cream-faint` opacity 0.46 = 3.40:1 (placeholder/nav), `--text-light` 0.48 = 3.57:1 (25+ selector)
+
+#### 🟠 12 ÖNEMLİ (P1) — Iter 39-40'ta düzeltilecek
+
+- **O1**: Welcome modal sonrası onboarding stepper yok
+- **O2**: Smart Measurement Medical>Labs içinde gizli, Dashboard quick action eksik
+- **O3**: `.ex-utab` + `.med-utab` non-active text kontrast 2.8:1 AAA FAIL, inline style asymmetric
+- **O4**: Pelvik taban "her hafta farklı video" yazar ama 4 haftalık rotation tablosu yok
+- **O5**: Mezoterapi öncesi 5 gün retinoid kes hatırlatma yok (Begümnaz 3× yapmış)
+- **O6**: Daily Log 28 input alanı — cognitive overload, Quick/Full/Expert mod yok
+- **O7**: Exercise Analytics 3 kart default açık — 0 hafta data'da boş kart görünür
+- **O8**: Medical 5 tab sabit (4'ü boş) — dinamik gösterim yok
+- **O9**: Settings sub-cards (Theme/Profile/Backup/API Proxy) TR hardcoded — EN toggle kırık
+- **O10**: Diyet 53 satır `!important` cascade, 4 farklı koyu ton — tutarsız hiyerarşi
+- **O11**: 48 inline hex CSS variable kullanmıyor → Iter 29 dinamik tema bunları değiştiremez
+- **O12**: Profile/Backup silme confirmation dialog yok — yanlışlıkla silme riski
+
+#### 🟡 13 ORTA (P2) — Iter 41-43'te düzeltilecek
+
+- **M1**: Pain severity 1-10 scale + body areas map (endo logging zenginleşmesi)
+- **M2**: Açık regl 30+ gün warning (`actPeriodStart` kontrol)
+- **M3**: Apple Health setup guide eksik (integration belirsiz)
+- **M4**: Tret + pelvik taban Sal+Paz uyarısı (terleme + tret = irritasyon)
+- **M5**: Cycle Length CV% disclaimer (low/high variability gösterimi)
+- **M6**: AI prompt cycle phase null defensive coding
+- **M7**: Glossary 50+ tıbbi terim EN bilingual eksik
+- **M8**: Dinamik tema kontrast doğrulama (uçuk pastel → cream text okunmaz risk)
+- **M9**: Compulsive screening modal opt-in (Pazar 20:00+ otomatik)
+- **M10**: Çoklu modal stacking kontrolü
+- **M11**: Wedding Mirror event-less gizleme (eventDate yoksa kaldır)
+- **M12**: Cilt "alınacak 3 ürün" badge sadece Pazartesi göster (alışveriş günü)
+- **M13**: Cycle sekmesinde Medical link kartı tekrar (Medical sekme açıklaması yeterli)
+
+#### Iter 37-43 Düzeltme Roadmap
+
+| Iter | İçerik | Süre | Risk |
+|---|---|---|---|
+| 37 | Critical Phase 1 (K1+K2+K3+K9) | 4-5h | Yüksek |
+| 38 | Critical Phase 2 (K4-K8) | 3-4h | Orta |
+| 39 | UX onboarding + tab consistency + bilingual settings | 4-5h | Düşük |
+| 40 | Color system refactor + dynamic theme contrast | 3-4h | Orta |
+| 41 | Content polish (video rotation + meso protocol + skin shopping) | 3h | Düşük |
+| 42 | Cognitive load reduction (modal modes + dynamic tabs) | 3-4h | Orta |
+| 43 | Final polish + glossary EN | 3h | Düşük |
+| **Toplam** | **7 iter** | **23-28 saat** | |
+
+**Plan dosyası tam detay**: `/Users/agent9/.claude/plans/hey-frolicking-journal.md` — Faz 6 bölümü (9 P0 + 12 P1 + 13 P2 satır satır + her Iter için fix listesi)
+
+**Önem**: Begümnaz'ın 1-2 haftalık gerçek kullanım öncesi sistematik olgunlaştırma. Iter 37'de **Medical Drugs tab + Endo Flare + Cycle bilim** kritik fix → Begümnaz'ın kor protokol işleyişi düzeltilir. Iter 38'de **son Bengisu kalıntıları** temizlenir (Pazar brunch + IF + dana/tavuk → Begümnaz protokol saflığı %100). Iter 39-40 UX/CSS olgunluk. Iter 41-43 content + cognitive load + polish.
+
+---
+
+### Iter 35 — WEEKLY_FOCUS + ZEN + BODY_INTENTIONS bilingual (Faz 5 son)
+
+**Hedef**: i18n son adım — içerik objelerini bilingual. Iter 34'te 4 sekme + Iter 33'te Cycle tamam, kalan büyük statik içerik bloklarını çevirme.
+
+**WEEKLY_FOCUS_TEXTS** — 6 cycle phase × 9 alt başlık = ~54 string × 2 dil = 108 çeviri
+- `getWeeklyFocus(phase)` artık `getLang()` bazlı TR/EN obje seçer
+- Phase'ler: Menstruation/FolikülerEarly/Mid/Ovulation/LutealEarly/LutealLate (Faz 4 yapısı korundu)
+
+**ZEN obje** — 4 phase × 6-7 mesaj = 28 mesaj × 2 dil = 56 çeviri
+- `ZEN = {tr: {...}, en: {...}}` yapısı
+- `getZen(phase, d)` getLang()'a göre seçer
+
+**BODY_INTENTIONS** — 5 niyet × {label, prompt} = 10 string × 2 dil = 20 çeviri
+
+**EVENING_MOODS** — 5 mood label × 2 dil = 10 çeviri
+
+**callAnthropic system prompt injection**: Tüm Claude AI çağrıları artık `getLang()` bazlı system prompt'a "respond in [Turkish|English]" direktifi ekler. fetch monkey-patch + direct API call'larda da bilingual.
+
+**SW cache bump**: `v22-civciv-reminders` → **`v23-i18n-content-objects-2026-05-13`**
+
+**Önem**: Begümnaz EN seçtiğinde haftalık focus kartı, ZEN dashboard mesajı, body conversation prompts hepsi EN. AI yanıtları otomatik EN. Bilingual artık "istisnasız" hedefe ulaştı.
+
+---
+
+### Iter 34 — Diet/Exercise/Skin/Medical 4 sekme tam bilingual
+
+**Hedef**: Iter 33'te Cycle bilingual, şimdi geri kalan 4 ana sekme. 80+ yeni i18n key.
+
+**Diet sekmesi**: `renderDiet`, `renderDietDay`, slot başlıkları, makro etiketleri, "Kalan makro", su takibi, Custom Food modal, Recipe modal, AI suggest modal, Mikronutrient + supplement kartı (8 slot bilingual), yasaklar/izinliler kartı, Plate modal
+
+**Exercise sekmesi**: `renderEx`, `renderExDay`, split başlıkları, kas grupları, set log (RPE/RIR labels), "Set X", "Tekrar X", "Atladım", "Değiştirdim", "Tamamla", Swap modal, GIF modal, Volume/PR/heatmap kartları. Hareket isimleri korundu (uluslararası).
+
+**Skin sekmesi**: `renderSkin`, `renderSkinDay`, sabah/akşam rutin başlıkları, `renderProds` (Iter 21) kategori başlıkları (Temizleyici/Serum/Aktif/SPF/Göz), status badge'leri (kullan/dikkat/alınacak/bırak), phase emphasis mesajları, tret protokolü hatırlatma
+
+**Medical sekmesi**: 5 alt-tab (Drugs/Lipid/Labs/Family/Doctor Questions), Sabah AC detail, Lugol detail, Kahvaltı supp detail, İkindi AC detail, Akşam yemek detail, Apple Health OCR labels, Kan değerleri trend
+
+**Yeni i18n key**: ~80 (Diet ~25, Exercise ~20, Skin ~15, Medical ~20)
+**Render fn refactor**: 12+ (renderDiet/renderDietDay/renderEx/renderExDay/renderSkin/renderSkinDay/renderProds/renderMedicalTab/renderDrugs/renderLipid/renderLabs/renderFamily/renderDoctorQuestions)
+
+**SW cache bump**: `v21-i18n-multi-tab` → korundu (Iter 35'te bump'lanacak)
+
+---
+
+### Iter 33 — Cycle sekmesi tam bilingual
+
+**Hedef**: EN audit raporu bulgu — Cycle sekmesi tam TR sabit. 32+ string + 25+ yeni i18n key.
+
+**I18N obje genişletildi**: 70 → 100+ key
+
+**Yeni key'ler** (30+ ekleme):
+- Cycle ana: `cycle_not_started`, `cycle_next_period`, `cycle_period_today_start/end`, `cycle_period_past_add`, `cycle_undo_today`
+- Predictions: `cycle_pred_predictions`, `cycle_pred_next_period`, `cycle_pred_ovulation`, `cycle_pred_fertile`, `cycle_pred_pms`, `cycle_pred_not_ready`, `cycle_pred_add_first`, `cycle_pred_single_log`
+- History: `cycle_history`, `cycle_hist_show`, `cycle_hist_hide`, `cycle_avg_cycle`, `cycle_avg_period`, `cycle_phase_averages`, `cycle_freq_symptoms`
+- Flow: `flow_spotting`, `flow_light`, `flow_medium`, `flow_heavy`
+- Alert'ler: `alert_period_exists`, `alert_no_open_period`, `alert_invalid_dates`
+- Body conv: `body_conv_morning_prompt`, `body_conv_evening_prompt`
+- Mood pills: `mood_parlak`, `mood_guclu`, `mood_dengeli`, `mood_bulanik`, `mood_sakin`
+
+**Render fonksiyonları t() ile bağlandı**: `renderCycle`, `renderCyDailyLog`, `renderCyPredictions`, `renderCyHistory`, `renderCycleInsights`, period logging UI, flow select option'ları
+
+**SW cache bump**: `v20-i18n-cycle-bilingual` → `v21-i18n-multi-tab`
+
+---
+
+### Iter 32 — TR Audit Fix (3 EN kalıntısı + 6 yazım/anlam düzeltmesi)
+
+**Hedef**: TR seçiliyken görünen EN string'ler + 6 Türkçe yazım/anlam hatası
+
+**EN kalıntıları düzeltildi (3)**:
+- `nav_medical:'Medical'` (I18N TR objesi, 2217) → `'Sağlık Kayıtları'`
+- `aria-label="Medical Records"` (1827) → `aria-label="Sağlık Kayıtları"`
+- `"Heads up:"` alert (5908) → `"⚠️ Uyarı:"`
+
+**TR yazım/anlam düzeltmeleri (6)**:
+- "mineral mesafesi" → "diğer minerallerden ≥2 saat ara"
+- "ıtır" terminoloji açıklama eklendi: "ıtır (uçucu yağ)"
+- "1 yk" → "1 yk (yemek kaşığı)" ilk geçişte açıklama
+- "Tünaydın" korundu (yaygın TR kullanımı, sıcak ton)
+
+**SW cache bump**: `v19-regl-ai-import-achievements` → `v20-i18n-cycle-bilingual`
+
+---
 
 ### Iter 31 — Regl AI parse upload + Achievements Dashboard'a + Begümnaz uyumlu
 
@@ -715,36 +880,53 @@ Bugünkü iterasyonlar **9-15 arası**. Önceki oturumlardan devralınan + bu ot
 
 ---
 
-## 📊 Commit Geçmişi (24 commit · son 23 bu oturum + önceki iterasyonları)
+## 📊 Commit Geçmişi (35+ commit · Faz 1-5 tamamı pushed)
 
 ```
-3b469ad  Phase 1: Markdown dokümantasyon iskeleti tamamlandı
-4fed444  Faz 2 Iter 1:  PWA dosyaları Bengisu'dan kopyalandı + ilk adaptasyon
-d34ca2d  Faz 2 Iter 2:  Dashboard timeline tamamen Begümnaz protokolü
-2790138  Faz 2 Iter 3:  Welcome modal + SUPPLEMENTS_INVENTORY + AI prompt temizliği
-3b65723  Faz 2 Iter 4:  Diet rules + slot description mizaç temelli
-530c739  Faz 2 Iter 5:  Doktor soruları + PDF özet + Bilim modalı temizlik
-7532937  Faz 2 Iter 6:  Dashboard mode (sabah/öğlen/akşam/gece) nextActions Begümnaz
-780d36b  Faz 2 Iter 7:  KAPSAMLI Bengisu temizliği — tüm referanslar kaldırıldı
-76283af  Faz 2 Iter 8:  i18n TR/EN + Akıllı Ölçüm + Bengisu seed data temizliği
-0621007  Faz 2 Iter 9:  Pembe & Bordo teması + Playfair Display (Billie Eilish ref)
-0f84011  Faz 2 Iter 10: Diet sayfası Bengisu temizliği + SUPPLEMENT_ALARMS + kart kontrastı
-ae9c213  Faz 2 Iter 11: Glossary + AI prompt Bengisu kalıntıları + JS apostrof fix
-f95d2d7  Faz 2 Iter 12: fixPeriodData20260504 disabled (Bengisu period seed)
-f224140  Faz 2 Iter 13: Diyet sayfası kart kontrastı — agresif text override
+dd0d884  Faz 5 Iter 35: ZEN+BODY_INTENTIONS+EVENING_MOODS+WEEKLY_FOCUS+AI dinamik dil
+61cadfd  Spot fix: Başlık emoji 🐥 + Hatırlatmalar kartı koşullu görünür
+5d34081  Faz 5 Iter 34 phase 1: Diet+Exercise+Skin+Medical+Settings i18n altyapı
+bd8c40b  Faz 5 Iter 32+33: TR audit fix + Cycle sekmesi tam bilingual
+0dd5087  Faz 4 Iter 31: Regl AI parse upload + Achievements Dashboard + Begümnaz uyumlu
+aee4f6e  Faz 4 Iter 30A: i18n EN Dashboard bilingual (M1 phase 1)
+8127f89  PROGRESS.md: Faz 4 durum (Iter 20-29 tamam, %90+)
+73ab81a  Faz 4 Iter 29: AI-assisted dinamik tema (M12) — Begümnaz görseli paleti belirler
+5a7cff0  Faz 4 Iter 28: AI-assisted sabah merhamet mesajı (M2)
+8316b9e  Faz 4 Iter 27: Regl tahmin onboarding (M8) — Iter 26 atlandı
+5a45165  Faz 4 Iter 25: Mobile responsive proaktif tasma koruması (M3)
+514ce9b  Faz 4 Iter 24: Renk paleti tutarlılık — modal/nav teal → bordo (M11)
+e66ad17  Faz 4 Iter 23: Pop-up kapatma UX — 4 template modal sağ üst ✕ (M10)
+19b271c  Faz 4 Iter 22: Beslenme + Supplement birleşik kart (M5)
+f079549  Faz 4 Iter 21: Cilt ürün listesi Begümnaz'a güncel + Mikronutrient Vit C Bengisu temizliği
+809422c  Faz 4 Iter 20: Cleanup — Adaptive Yük + Bilim Modu kaldırıldı (-293 satır)
+c6e93f7  PROGRESS.md commit geçmişi listesi: Iter 19 + 30cb616 eklendi
+59b53d4  Faz 3 LIVE: Cloudflare Worker AI proxy deploy + CORS fix (Iter 19)
+30cb616  PROGRESS.md commit geçmişi listesi: Iter 18 + a196a5f eklendi
+6f3295a  Faz 2 Iter 18: README cheetah hero + görsel iyileştirme
+a196a5f  PROGRESS.md commit geçmişi listesi: Iter 17 + 64f85bd eklendi
+a954ba4  Faz 2 Iter 17: Glossary Bengisu kalıntıları temizliği + SW v8
+64f85bd  PROGRESS.md commit geçmişi listesi: Iter 16 + aa2c4bf eklendi
+c771a81  Faz 2 Iter 16: DEPLOY-API-PROXY.md path/origin tutarsızlık fix
+aa2c4bf  PROGRESS.md kapsamlı yeniden yazıldı — oturum devamlılık dosyası
+b2f5a98  Faz 2 Iter 15: Hacettepe Lab tamamen kaldırıldı — Bengisu kalıntısı
 59bc99a  Faz 2 Iter 14: "acıkmadan" → "acıkınca" (Türkçe semantik düzeltme)
-b2f5a98  Faz 2 Iter 15: Hacettepe Lab tamamen kaldırıldı — Bengisu kalıntısı  ⬅ UNPUSHED
-aa2c4bf  PROGRESS.md kapsamlı yeniden yazıldı — oturum devamlılık dosyası  ⬅ UNPUSHED
-c771a81  Faz 2 Iter 16: DEPLOY-API-PROXY.md path/origin tutarsızlık fix  ⬅ UNPUSHED
-64f85bd  PROGRESS.md commit geçmişi listesi: Iter 16 + aa2c4bf eklendi  ⬅ UNPUSHED
-a954ba4  Faz 2 Iter 17: Glossary Bengisu kalıntıları temizliği + SW v8  ⬅ UNPUSHED
-a196a5f  PROGRESS.md commit geçmişi listesi: Iter 17 + 64f85bd eklendi  ⬅ UNPUSHED
-6f3295a  Faz 2 Iter 18: README cheetah hero + görsel iyileştirme  ⬅ UNPUSHED
-30cb616  PROGRESS.md commit geçmişi listesi: Iter 18 + a196a5f eklendi  ✅ pushed
-59b53d4  Faz 3 LIVE Iter 19: Cloudflare Worker AI proxy deploy + CORS fix  ⬅ UNPUSHED
+f224140  Faz 2 Iter 13: Diyet sayfası kart kontrastı — agresif text override
+f95d2d7  Faz 2 Iter 12: fixPeriodData20260504 disabled (Bengisu period seed)
+ae9c213  Faz 2 Iter 11: Glossary + AI prompt Bengisu kalıntıları + JS apostrof fix
+0f84011  Faz 2 Iter 10: Diet sayfası Bengisu temizliği + SUPPLEMENT_ALARMS + kart kontrastı
+0621007  Faz 2 Iter 9:  Pembe & Bordo teması + Playfair Display (Billie Eilish ref)
+76283af  Faz 2 Iter 8:  i18n TR/EN + Akıllı Ölçüm + Bengisu seed data temizliği
+780d36b  Faz 2 Iter 7:  KAPSAMLI Bengisu temizliği — tüm referanslar kaldırıldı
+7532937  Faz 2 Iter 6:  Dashboard mode (sabah/öğlen/akşam/gece) nextActions Begümnaz
+530c739  Faz 2 Iter 5:  Doktor soruları + PDF özet + Bilim modalı temizlik
+3b65723  Faz 2 Iter 4:  Diet rules + slot description mizaç temelli
+2790138  Faz 2 Iter 3:  Welcome modal + SUPPLEMENTS_INVENTORY + AI prompt temizliği
+d34ca2d  Faz 2 Iter 2:  Dashboard timeline tamamen Begümnaz protokolü
+4fed444  Faz 2 Iter 1:  PWA dosyaları Bengisu'dan kopyalandı + ilk adaptasyon
+3b469ad  Phase 1: Markdown dokümantasyon iskeleti tamamlandı
 ```
 
-**Not**: UNPUSHED işaretleri 13 Mayıs 09:00 push öncesi durumu yansıtıyordu — 09:00 push'tan sonra `30cb616`'ya kadar tüm commit'ler origin'de. Sadece `59b53d4` (Iter 19) ve bu commit (follow-up) lokal.
+**Tüm commit'ler origin/main'de** (git status: "up to date with origin/main"). Bu oturumda working tree'de PROGRESS.md + index.html değişiklikleri var — Faz 6 audit dokümantasyonu PROGRESS.md'ye eklendi, yeni commit hazır.
 
 ---
 

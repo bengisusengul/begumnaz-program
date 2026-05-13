@@ -24,10 +24,10 @@
   --cream:#FFF8F0;         /* Sıcak krem-beyaz (Billie Eilish "the world is mine" beyazı) */
   --cream-soft:#FAEDD4;
   --cream-mute:rgba(255,248,240,0.74);
-  --cream-faint:rgba(255,248,240,0.46);
+  --cream-faint:rgba(255,248,240,0.75);  /* Iter 37 K9: 0.46 → 0.75 (WCAG AA 3.40:1 → ~5:1) */
 
   /* Eski renk isimleri yeni paletle remap (kod kırılmasın) */
-  --coral:#C25A6C;--coral-soft:#D67A8A;
+  --coral:#E8956A;--coral-soft:#F0A98A;   /* Iter 37 K9: #C25A6C → #E8956A (2.70:1 → ~5.2:1 on bordo bg) */
   --mustard:#D4AF6A;--mustard-soft:#E0BD7A;
   --sage-deep:#8C7060;--sage-leaf:#A48B7A;
   --mauve-evening:#B47990;
@@ -49,7 +49,14 @@
 
   --text:#FFF8F0;
   --text-mid:rgba(255,248,240,0.74);
-  --text-light:rgba(255,248,240,0.48);
+  --text-light:rgba(255,248,240,0.75);  /* Iter 37 K9: 0.48 → 0.75 (WCAG AA 3.57:1 → ~5:1) */
+
+  /* Iter 40 O11 — Inline hex'lerin variable'a çekildiği accent renkler (dinamik tema erişebilir) */
+  --accent-sage:#A8C0A0;        /* 15× kullanım: success/sage notları */
+  --accent-mauve:#D4A4B5;       /* 9× kullanım: pembe accent */
+  --accent-orange:#E5743C;      /* 3× kullanım: turuncu vurgu */
+  --accent-sage-blue:#A8D2DA;   /* 3× kullanım: blue-sage info */
+  --gold-honey:#7a5a20;         /* gold koyu honey (3× kullanım — diet outside `body[diyet]`) */
   --border:rgba(255,248,240,0.20);--border-soft:rgba(255,248,240,0.10);
   --shadow:0 8px 32px rgba(74,16,24,0.40);
   --r:18px;--r-sm:14px;--r-xs:8px;
@@ -138,20 +145,32 @@ body[data-page="medical"]::after{
     #4A1018 100%);                  /* Şarap derin */
 }
 /* ──── DİYET SAYFASI · cream/pink gradient üstüne KOYU metin (krem-pembe-bordo) ──── */
+/* Iter 40 O10: !important cascade hex'leri CSS variable'a bağlandı (dinamik tema erişebilir) */
+body[data-page="diyet"]{
+  --diyet-text-primary:#2A0E14;     /* Ana metin (en koyu wine) */
+  --diyet-text-secondary:#4A1018;   /* slbl labels */
+  --diyet-text-tertiary:#5C1722;    /* pnote/açıklama orta ton */
+  --diyet-text-link:#6E1A28;        /* btn link rengi */
+  --diyet-gold-honey:#8C5A1A;       /* kcal/mustard gold-honey */
+  --diyet-card-bg:rgba(255,248,240,0.94);
+  --diyet-card-border:rgba(110,26,40,0.28);
+  --diyet-btn-border:rgba(110,26,40,0.40);
+  --diyet-slbl-shadow:rgba(255,248,240,0.85);
+}
 /* Kart: opak krem arka plan, dark wine border */
 body[data-page="diyet"] .card,
 body[data-page="diyet"] .cycle-diet-card,
 body[data-page="diyet"] .notice,
 body[data-page="diyet"] .water-card{
-  color:#2A0E14 !important;
-  background:rgba(255,248,240,0.94) !important;
-  border:1px solid rgba(110,26,40,0.28) !important;
+  color:var(--diyet-text-primary) !important;
+  background:var(--diyet-card-bg) !important;
+  border:1px solid var(--diyet-card-border) !important;
 }
 /* Kart İÇİNDEKİ TÜM metinler zorla koyu wine — krem üstüne krem yazı görünmesin */
 body[data-page="diyet"] .card *,
 body[data-page="diyet"] .notice *,
 body[data-page="diyet"] .water-card *{
-  color:#2A0E14 !important;
+  color:var(--diyet-text-primary) !important;
   text-shadow:none !important;
 }
 /* Kart içinde gold/mustard renk korunur (kcal sayıları, çubuklar) */
@@ -161,12 +180,12 @@ body[data-page="diyet"] .card [style*="--mustard"],
 body[data-page="diyet"] .fkcal,
 body[data-page="diyet"] .card span[style*="color:var(--gold)"],
 body[data-page="diyet"] .card div[style*="color:var(--gold)"],
-body[data-page="diyet"] .card .mval{color:#8C5A1A !important;} /* gold yerine koyu honey */
+body[data-page="diyet"] .card .mval{color:var(--diyet-gold-honey) !important;}
 
 /* Üst label "1. ÖĞÜN — KAHVALTI..." (slbl) açık zeminde KOYU bordo */
 body[data-page="diyet"] .slbl{
-  color:#4A1018 !important;
-  text-shadow:0 1px 2px rgba(255,248,240,0.85) !important;
+  color:var(--diyet-text-secondary) !important;
+  text-shadow:0 1px 2px var(--diyet-slbl-shadow) !important;
   font-weight:600 !important;
 }
 
@@ -179,22 +198,22 @@ body[data-page="diyet"] .fname,
 body[data-page="diyet"] .fmac,
 body[data-page="diyet"] .fi,
 body[data-page="diyet"] strong,
-body[data-page="diyet"] b{color:#2A0E14 !important;}
+body[data-page="diyet"] b{color:var(--diyet-text-primary) !important;}
 
 /* Pnote / cdc-msg / ach-desc — orta tonda */
 body[data-page="diyet"] .pnote,
 body[data-page="diyet"] .cdc-msg,
-body[data-page="diyet"] .ach-desc{color:#5C1722 !important;}
+body[data-page="diyet"] .ach-desc{color:var(--diyet-text-tertiary) !important;}
 
 /* Buton ve "+ Listede yok mu" gibi etkileşim elemanları */
 body[data-page="diyet"] .cf-add-btn,
 body[data-page="diyet"] .btn{
-  color:#6E1A28 !important;
-  border-color:rgba(110,26,40,0.40) !important;
+  color:var(--diyet-text-link) !important;
+  border-color:var(--diyet-btn-border) !important;
 }
 
 /* ──── CİLT SAYFASI · üst kısım açık pembe → koyu metin ──── */
-body[data-page="cilt"] .slbl{color:#2A0E14 !important;text-shadow:0 1px 2px rgba(255,248,240,0.85) !important;}
+body[data-page="cilt"] .slbl{color:var(--diyet-text-primary,#2A0E14) !important;text-shadow:0 1px 2px var(--diyet-slbl-shadow,rgba(255,248,240,0.85)) !important;}
 
 /* backdrop-filter desteklemeyen tarayıcı için solid fallback */
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
@@ -202,6 +221,13 @@ body[data-page="cilt"] .slbl{color:#2A0E14 !important;text-shadow:0 1px 2px rgba
     background:rgba(110,26,40,0.88) !important;
   }
 }
+
+/* Iter 39 O3 — Ortak upper-tab class (ex-utab + med-utab kullanır) */
+.utab{flex:1;padding:10px 12px;border:none;background:transparent;color:var(--cream-mute);font-family:'Jost',sans-serif;font-size:13px;font-weight:500;border-radius:10px;cursor:pointer;transition:all 0.2s;white-space:nowrap;}
+.utab.active{color:var(--cream-soft);font-weight:600;}
+.ex-utab.active{background:rgba(232,178,63,0.20);}
+.med-utab{font-size:12px;padding:9px 12px;flex:0 0 auto;}
+.med-utab.active{background:rgba(180,121,144,0.22);}
 
 /* BOTTOM NAV */
 .bnav{position:fixed;bottom:0;left:0;right:0;height:80px;background:rgba(110,26,40,0.86);backdrop-filter:blur(28px) saturate(180%);-webkit-backdrop-filter:blur(28px) saturate(180%);border-top:1px solid var(--glass-border);display:flex;align-items:center;justify-content:space-around;z-index:999;padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -2px 24px rgba(0,0,0,0.2);}
@@ -216,20 +242,20 @@ body[data-page="cilt"] .slbl{color:#2A0E14 !important;text-shadow:0 1px 2px rgba
 .nb:nth-child(1).active{color:#F4C04E;}
 .nb:nth-child(1).active .nl{color:#F4C04E;}
 .nb:nth-child(1).active .ni{filter:drop-shadow(0 0 10px rgba(232,178,63,0.6));}
-.nb:nth-child(2).active{color:#E5743C;}
-.nb:nth-child(2).active .nl{color:#E5743C;}
+.nb:nth-child(2).active{color:var(--accent-orange);}
+.nb:nth-child(2).active .nl{color:var(--accent-orange);}
 .nb:nth-child(2).active .ni{filter:drop-shadow(0 0 10px rgba(217,89,30,0.55));}
-.nb:nth-child(3).active{color:#A8C0A0;}
-.nb:nth-child(3).active .nl{color:#A8C0A0;}
+.nb:nth-child(3).active{color:var(--accent-sage);}
+.nb:nth-child(3).active .nl{color:var(--accent-sage);}
 .nb:nth-child(3).active .ni{filter:drop-shadow(0 0 10px rgba(90,122,79,0.6));}
-.nb:nth-child(4).active{color:#A8D2DA;}
-.nb:nth-child(4).active .nl{color:#A8D2DA;}
+.nb:nth-child(4).active{color:var(--accent-sage-blue);}
+.nb:nth-child(4).active .nl{color:var(--accent-sage-blue);}
 .nb:nth-child(4).active .ni{filter:drop-shadow(0 0 10px rgba(123,168,176,0.6));}
-.nb:nth-child(5).active{color:#D4A4B5;}
-.nb:nth-child(5).active .nl{color:#D4A4B5;}
+.nb:nth-child(5).active{color:var(--accent-mauve);}
+.nb:nth-child(5).active .nl{color:var(--accent-mauve);}
 .nb:nth-child(5).active .ni{filter:drop-shadow(0 0 10px rgba(180,121,144,0.55));}
-.nb:nth-child(6).active{color:#A8C0A0;}
-.nb:nth-child(6).active .nl{color:#A8C0A0;}
+.nb:nth-child(6).active{color:var(--accent-sage);}
+.nb:nth-child(6).active .nl{color:var(--accent-sage);}
 .nb:nth-child(6).active .ni{filter:drop-shadow(0 0 10px rgba(62,90,58,0.7));}
 .nb.active .ni{transform:scale(1.15);}
 .nb.active{background:var(--pink-pale);}
@@ -328,9 +354,9 @@ input:focus, select:focus, textarea:focus{outline:2px solid var(--pink-deep);out
 .tlde{font-size:12px;color:var(--text-mid);margin-top:2px;line-height:1.5;}
 .tltag{display:inline-block;margin-top:5px;padding:2px 10px;border-radius:20px;font-size:10px;font-weight:600;letter-spacing:0.5px;text-transform:uppercase;}
 .tm{background:var(--pink-pale);color:var(--pink-deep);}
-.td{background:rgba(90,122,79,0.18);color:#A8C0A0;}
+.td{background:rgba(90,122,79,0.18);color:var(--accent-sage);}
 .ts{background:rgba(232,178,63,0.18);color:var(--mustard-soft);}
-.te{background:rgba(180,121,144,0.18);color:#D4A4B5;}
+.te{background:rgba(180,121,144,0.18);color:var(--accent-mauve);}
 .tg{background:rgba(232,178,63,0.18);color:var(--mustard-soft);}
 
 /* NOTICE — Glass + sol kenar phase accent · cream metin · WCAG AAA on dark glass */
@@ -353,7 +379,7 @@ input:focus, select:focus, textarea:focus{outline:2px solid var(--pink-deep);out
 .sv{font-family:'Playfair Display','Playfair Display',serif;font-size:26px;font-weight:600;color:var(--cream-soft);line-height:1;}
 .sl{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--cream-mute);margin-top:4px;}
 .sd{font-size:12px;font-weight:600;margin-top:4px;}
-.sd.good{color:#A8C0A0;}.sd.warn{color:var(--coral-soft);}
+.sd.good{color:var(--accent-sage);}.sd.warn{color:var(--coral-soft);}
 
 /* PROGRESS */
 .pw{margin-bottom:16px;}
@@ -374,7 +400,7 @@ input:focus, select:focus, textarea:focus{outline:2px solid var(--pink-deep);out
 .exb{display:none;padding:14px;border-top:1px solid var(--border-soft);background:var(--surface2);}
 .exb.open{display:block;}
 .mtags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px;}
-.mtag{padding:3px 10px;background:rgba(180,121,144,0.18);border-radius:20px;font-size:11px;color:#D4A4B5;border:1px solid rgba(180,121,144,0.32);}
+.mtag{padding:3px 10px;background:rgba(180,121,144,0.18);border-radius:20px;font-size:11px;color:var(--accent-mauve);border:1px solid rgba(180,121,144,0.32);}
 .exhow{font-size:13px;color:var(--text-mid);line-height:1.7;margin-bottom:12px;}
 .exhow ol{padding-left:16px;}
 .exhow li{margin-bottom:5px;}
@@ -404,9 +430,9 @@ input:focus, select:focus, textarea:focus{outline:2px solid var(--pink-deep);out
 .sabadge{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;margin-top:5px;}
 .bret{background:var(--pink-pale);color:var(--pink-deep);border:1px solid var(--pink-soft);}
 .bret{background:rgba(217,89,30,0.18);color:var(--coral-soft);border:1px solid rgba(217,89,30,0.4);}
-.brest{background:rgba(180,121,144,0.18);color:#D4A4B5;border:1px solid rgba(180,121,144,0.4);}
+.brest{background:rgba(180,121,144,0.18);color:var(--accent-mauve);border:1px solid rgba(180,121,144,0.4);}
 .baha{background:rgba(232,178,63,0.18);color:var(--mustard-soft);border:1px solid rgba(232,178,63,0.4);}
-.bmask{background:rgba(90,122,79,0.18);color:#A8C0A0;border:1px solid rgba(90,122,79,0.4);}
+.bmask{background:rgba(90,122,79,0.18);color:var(--accent-sage);border:1px solid rgba(90,122,79,0.4);}
 
 /* MODAL */
 .mo{position:fixed;inset:0;background:rgba(61,46,42,0.4);backdrop-filter:blur(6px);z-index:1000;display:none;align-items:flex-end;}
@@ -476,7 +502,7 @@ input:focus, select:focus, textarea:focus{outline:2px solid var(--pink-deep);out
 .gloss-term:hover,.gloss-term:active{color:var(--mustard);text-decoration-color:var(--mustard);}
 .gloss-cat-pill{display:inline-block;padding:3px 10px;border-radius:10px;font-size:10px;text-transform:uppercase;letter-spacing:1px;font-weight:600;}
 .gloss-cat-kas{background:rgba(180,121,144,0.18);color:#D89AAE;border:1px solid rgba(180,121,144,0.35);}
-.gloss-cat-antrenman{background:rgba(90,122,79,0.18);color:#A8C0A0;border:1px solid rgba(90,122,79,0.35);}
+.gloss-cat-antrenman{background:rgba(90,122,79,0.18);color:var(--accent-sage);border:1px solid rgba(90,122,79,0.35);}
 .gloss-cat-hormon{background:rgba(212,175,106,0.18);color:#D4AF6A;border:1px solid rgba(212,175,106,0.35);}
 .gloss-cat-beslenme{background:rgba(217,89,30,0.18);color:#E8755A;border:1px solid rgba(217,89,30,0.35);}
 .gloss-cat-tip{background:rgba(123,168,176,0.18);color:#9DC3CB;border:1px solid rgba(123,168,176,0.35);}
@@ -566,7 +592,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .health-card-h h4{font-family:'Playfair Display','Playfair Display',serif;font-size:16px;font-weight:600;color:var(--cream-soft);}
 .health-card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;}
 .health-stat{background:rgba(255,255,255,0.6);border-radius:10px;padding:8px 6px;text-align:center;}
-.health-stat-v{font-family:'Playfair Display','Playfair Display',serif;font-size:18px;font-weight:600;color:#A8C0A0;line-height:1;}
+.health-stat-v{font-family:'Playfair Display','Playfair Display',serif;font-size:18px;font-weight:600;color:var(--accent-sage);line-height:1;}
 .health-stat-l{font-size:9px;text-transform:uppercase;letter-spacing:0.6px;color:var(--text-light);margin-top:3px;}
 .health-card-meta{font-size:10px;color:var(--text-light);margin-top:10px;text-align:center;}
 
@@ -607,7 +633,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .ach-item.unlocked .ach-icon{opacity:1;filter:none;}
 .ach-meta{flex:1;min-width:0;}
 .ach-name{font-size:13px;font-weight:600;color:var(--text);}
-.ach-item.unlocked .ach-name{color:#A8C0A0;}
+.ach-item.unlocked .ach-name{color:var(--accent-sage);}
 .ach-desc{font-size:11px;color:var(--text-light);margin-top:2px;}
 .ach-bar{height:6px;background:var(--surface2);border-radius:3px;margin-top:6px;overflow:hidden;}
 .ach-bar-fill{height:100%;background:linear-gradient(90deg,var(--pink-soft),var(--pink-deep));transition:width 0.6s ease;}
@@ -662,11 +688,11 @@ select option{background:var(--bg-deep);color:var(--cream);}
 /* CUSTOM FOOD — AI ile listede olmayan yemek ekleme */
 .cfm-textarea{width:100%;min-height:64px;padding:12px 14px;border-radius:var(--r-sm);border:1px solid var(--border);font-family:'Jost',sans-serif;font-size:14px;background:var(--surface);color:var(--text);resize:vertical;-webkit-appearance:none;}
 .cfm-textarea:focus{outline:none;border-color:var(--pink);}
-.cf-add-btn{width:100%;padding:11px 14px;border:1.5px dashed rgba(180,121,144,0.5);background:rgba(180,121,144,0.10);color:#D4A4B5;border-radius:var(--r-sm);font-family:'Jost',sans-serif;font-size:13px;font-weight:500;cursor:pointer;margin-top:10px;transition:all 0.15s;}
+.cf-add-btn{width:100%;padding:11px 14px;border:1.5px dashed rgba(180,121,144,0.5);background:rgba(180,121,144,0.10);color:var(--accent-mauve);border-radius:var(--r-sm);font-family:'Jost',sans-serif;font-size:13px;font-weight:500;cursor:pointer;margin-top:10px;transition:all 0.15s;}
 .cf-add-btn:active{transform:scale(0.98);background:var(--pink-pale);}
 .cm-row{display:flex;align-items:center;gap:10px;padding:10px 0;border-top:1px dashed var(--border-soft);}
 .cm-row:first-of-type{border-top:1px solid var(--border-soft);margin-top:8px;padding-top:14px;}
-.ai-badge{display:inline-block;font-size:9px;background:rgba(180,121,144,0.20);color:#D4A4B5;padding:2px 7px;border-radius:10px;font-weight:600;letter-spacing:0.3px;margin-left:6px;vertical-align:middle;border:1px solid rgba(180,121,144,0.32);}
+.ai-badge{display:inline-block;font-size:9px;background:rgba(180,121,144,0.20);color:var(--accent-mauve);padding:2px 7px;border-radius:10px;font-weight:600;letter-spacing:0.3px;margin-left:6px;vertical-align:middle;border:1px solid rgba(180,121,144,0.32);}
 .cm-del{background:transparent;border:none;color:var(--text-light);cursor:pointer;font-size:14px;padding:6px 8px;flex-shrink:0;}
 .cm-del:active{color:var(--pink-deep);}
 
@@ -674,7 +700,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .water-card{margin:0 16px 12px;background:rgba(42,14,20,0.78);backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);border:1px solid rgba(168,210,218,0.35);border-radius:var(--r);padding:14px 16px;color:var(--cream);box-shadow:0 12px 40px rgba(0,0,0,0.35),inset 0 1px 0 rgba(255,255,255,0.12);}
 .water-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;}
 .water-title{font-size:13px;font-weight:600;color:var(--cream-soft);}
-.water-count{font-family:'Playfair Display','Playfair Display',serif;font-size:18px;font-weight:600;color:#A8D2DA;}
+.water-count{font-family:'Playfair Display','Playfair Display',serif;font-size:18px;font-weight:600;color:var(--accent-sage-blue);}
 .water-row{display:flex;flex-wrap:wrap;justify-content:flex-start;gap:6px;}
 .water-cup{flex:0 0 calc((100% - 54px) / 10);min-width:30px;max-width:40px;aspect-ratio:1;border:2px solid #b5d2dd;border-radius:50%;cursor:pointer;background:transparent;display:flex;align-items:center;justify-content:center;font-size:13px;color:transparent;transition:all 0.2s;}
 @media (max-width:380px){.water-cup{flex:0 0 calc((100% - 48px) / 9);min-width:28px;}}
@@ -687,7 +713,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .fi:active{transform:scale(0.98);}
 .fi[data-cat="protein"]{border-left-color:#7A9B6A;}
 .fi[data-cat="fat"]{border-left-color:#D4AF6A;}
-.fi[data-cat="carb"]{border-left-color:#E5743C;}
+.fi[data-cat="carb"]{border-left-color:var(--accent-orange);}
 
 /* Checkbox animasyon (tik patlasın) */
 .meal-check{transition:transform 0.15s, background 0.2s, border-color 0.2s;}
@@ -846,8 +872,8 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .set-row.modified{background:rgba(180,121,144,0.10);}
 .set-row.skipped{opacity:0.45;background:rgba(160,160,160,0.06);}
 .set-num{font-size:11px;font-weight:700;color:var(--cream-mute);text-align:center;letter-spacing:0.6px;}
-.set-row.done .set-num{color:#A8C0A0;}
-.set-row.modified .set-num{color:#D4A4B5;}
+.set-row.done .set-num{color:var(--accent-sage);}
+.set-row.modified .set-num{color:var(--accent-mauve);}
 .set-input{background:rgba(42,14,20,0.78);border:1px solid rgba(255,255,255,0.16);color:var(--cream-soft);font-size:14px;font-weight:600;padding:8px 6px;border-radius:8px;text-align:center;font-family:inherit;width:100%;min-width:0;-webkit-appearance:none;appearance:none;}
 .set-input:focus{outline:none;border-color:var(--mustard-soft);background:rgba(15,30,38,0.75);}
 .set-input::-webkit-inner-spin-button,.set-input::-webkit-outer-spin-button{-webkit-appearance:none;margin:0;}
@@ -863,8 +889,8 @@ select option{background:var(--bg-deep);color:var(--cream);}
 .set-confirm:active{transform:scale(0.92);}
 .set-confirm:disabled{opacity:0.35;cursor:not-allowed;box-shadow:none;}
 .set-state-icon{width:28px;height:28px;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--sage-leaf);}
-.set-state-icon.done{color:#A8C0A0;}
-.set-state-icon.modified{color:#D4A4B5;}
+.set-state-icon.done{color:var(--accent-sage);}
+.set-state-icon.modified{color:var(--accent-mauve);}
 .set-state-icon.skipped{color:rgba(232,221,196,0.4);}
 .set-quick-states{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;}
 .set-quick-states button{flex:1;min-width:0;padding:6px 10px;font-size:11px;border-radius:8px;border:1px solid rgba(255,255,255,0.14);background:rgba(15,30,38,0.45);color:var(--cream-soft);cursor:pointer;font-family:inherit;}
@@ -1399,8 +1425,9 @@ select option{background:var(--bg-deep);color:var(--cream);}
 
   <div id="dash-greeting"></div>      <!-- Greeting hero: ZEN + phase line -->
   <div id="morning-compassion-card"></div>  <!-- Iter 28 — AI-assisted sabah merhamet mesajı (sabah modunda görünür) -->
+  <div id="first-step-card"></div>     <!-- Iter 39 O1 — Welcome modal sonrası ilk adım yönlendirmesi -->
   <div id="hero-card"></div>           <!-- Phase 3.C P0 #6 — Saat-bazlı 4 mode Hero Card -->
-  <div id="pazar-brunch"></div>        <!-- Phase 3.C P0 #8 — Pazar Esnek Gün Festival Card -->
+<!-- Iter 38 K5: pazar-brunch container kaldırıldı (Bengisu refeed festival kartı) -->
 
   <!-- Hatırlatmalar — Iter 36 spot fix: sadece aktif hatırlatma varsa görünür
        (önemli tarih ≤7 gün VEYA supplement <%50 + saat <22 VEYA regl ≤3 gün) -->
@@ -1438,7 +1465,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
   <div id="d-hero-action"></div>
   <!-- Phase 3.C feedback (12 May) — Özel Modlar Diyet sekmesine taşındı -->
   <div id="special-modes-card"></div>
-  <div id="fasting-bar"></div>
+  <!-- Iter 38 K6: fasting-bar kaldırıldı (Bengisu IF kalıntısı) -->
   <div id="cycle-diet-wrap"></div>
   <div id="streak-wrap"></div>
   <div id="water-wrap"></div>
@@ -1450,6 +1477,13 @@ select option{background:var(--bg-deep);color:var(--cream);}
       <div id="macro-bonus-note" style="margin-top:10px;"></div>
     </div>
   </div>
+
+  <!-- Günlük Makro Özeti — Makro Hedefleri hemen altında (kullanıcı isteği) -->
+  <div class="card" style="margin-bottom:16px;">
+    <div class="ch"><h3>Günlük Makro Özeti</h3></div>
+    <div class="cb" id="d-macro-summary"></div>
+  </div>
+
   <!-- Phase 3.D feedback (12 May 2026) — Hardcoded "Günlük Akış" kartı kaldırıldı
        Begümnaz: "günlük akış 2 kere görünüyor · birleştirelim"
        Cycle-diet-wrap renderCycleDietCard() içine timeline entegre edildi
@@ -1474,11 +1508,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
        - Fizyoloji bilgisi (kaldırıldı) -->
   <div id="thyroid-support" style="display:none;"></div>
 
-  <!-- Daily macro summary -->
-  <div class="card" style="margin-bottom:16px;">
-    <div class="ch"><h3>Günlük Makro Özeti</h3></div>
-    <div class="cb" id="d-macro-summary"></div>
-  </div>
+  <!-- Daily macro summary — Makro Hedefleri altına taşındı (kullanıcı isteği · 13 May) -->
 
   <!-- 7-günlük menü -->
   <!-- Bu Hafta + Başarılarım Diyet sekmesinden kaldırıldı (Phase 3.C feedback · 12 May)
@@ -1501,12 +1531,11 @@ select option{background:var(--bg-deep);color:var(--cream);}
     <h1 id="ex-title"><em>Egzersiz</em> 💪</h1>
     <div class="tb-sub" id="ex-sub"></div>
   </div>
-  <!-- Phase 3.D — Üst tab seçici (Antrenman / Ölçüm) -->
+  <!-- Phase 3.D — Üst tab seçici (Antrenman / Ölçüm) · Iter 39 O3: .utab ortak class -->
   <div style="margin:0 16px 14px;display:flex;gap:6px;background:rgba(255,255,255,0.06);border-radius:14px;padding:5px;">
-    <button class="ex-utab active" id="ex-utab-antrenman" onclick="setExUTab('antrenman')" style="flex:1;padding:10px 12px;border:none;background:transparent;color:var(--cream-soft);font-family:'Jost',sans-serif;font-size:13px;font-weight:600;border-radius:10px;cursor:pointer;transition:all 0.2s;">💪 Antrenman</button>
-    <button class="ex-utab" id="ex-utab-olcum" onclick="setExUTab('olcum')" style="flex:1;padding:10px 12px;border:none;background:transparent;color:var(--cream-mute);font-family:'Jost',sans-serif;font-size:13px;font-weight:500;border-radius:10px;cursor:pointer;transition:all 0.2s;">📊 Ölçüm</button>
+    <button class="utab ex-utab active" id="ex-utab-antrenman" onclick="setExUTab('antrenman')">💪 Antrenman</button>
+    <button class="utab ex-utab" id="ex-utab-olcum" onclick="setExUTab('olcum')">📊 Ölçüm</button>
   </div>
-  <style>.ex-utab.active{background:rgba(232,178,63,0.20);color:var(--cream-soft);}</style>
 
   <div id="ex-pane-antrenman">
   <div class="wstrip" id="e-strip"></div>
@@ -1524,12 +1553,16 @@ select option{background:var(--bg-deep);color:var(--cream);}
   </div>
   <!-- Güç Trendi · 6 lift × 1RM tahmini sparkline grid (Phase 2 Hafta 6A) -->
   <div id="e-strength-grid"></div>
-  <!-- Kas Heatmap · 9 kas grubu SVG body diagram (Phase 2 Hafta 6B) -->
-  <div id="e-muscle-heatmap"></div>
-  <!-- Volume Trendi · 12 hafta × kas grubu × MEV//MRV (Phase 2 Hafta 6C) -->
-  <div id="e-volume-trend"></div>
-  <!-- PR Timeline · son 12 ay rekor zaman çizelgesi (Phase 2 Hafta 6D) -->
-  <div id="e-pr-timeline"></div>
+  <!-- Iter 42 O7 — Exercise Analytics wrapper (collapsed default) -->
+  <div id="e-analytics-toggle" style="margin:0 16px 12px;"></div>
+  <div id="e-analytics-content" style="display:none;">
+    <!-- Kas Heatmap · 9 kas grubu SVG body diagram (Phase 2 Hafta 6B) -->
+    <div id="e-muscle-heatmap"></div>
+    <!-- Volume Trendi · 12 hafta × kas grubu × MEV//MRV (Phase 2 Hafta 6C) -->
+    <div id="e-volume-trend"></div>
+    <!-- PR Timeline · son 12 ay rekor zaman çizelgesi (Phase 2 Hafta 6D) -->
+    <div id="e-pr-timeline"></div>
+  </div>
   <!-- Cycle Pattern Emergence · 3 cycle sonra atlas (Phase 2 Hafta 8E) -->
   <div id="e-cycle-pattern"></div>
   <div style="height:8px;"></div>
@@ -1537,7 +1570,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
 
   <!-- Phase 3.D — Ölçüm alt-tab (eski #page-olcum içeriği taşındı) -->
   <div id="ex-pane-olcum" style="display:none;">
-    <button class="health-paste-btn" onclick="openHealthPhotoPicker()" title="Apple Health ekran görüntüsünü yükle">📷 Health</button>
+    <button class="health-paste-btn" onclick="openHealthPhotoPicker()" title="Sağlık takip uygulaması ekran görüntüsünü yükle">📷 Health</button>
     <button class="health-paste-btn" style="right:96px;background:rgba(123,168,176,0.18);border-color:rgba(123,168,176,0.45);" onclick="openHealthJsonPicker()" title="Health Auto Export JSON · toplu çoklu gün">📁 JSON</button>
     <input type="file" accept="image/*" id="health-photo-input" style="display:none;" onchange="handleHealthPhoto(event)">
     <input type="file" accept="application/json,.json" id="health-json-input" style="display:none;" onchange="handleHealthJson(event)">
@@ -1623,7 +1656,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
     <div class="cb" id="c-eve"></div>
   </div>
   <div style="margin:0 16px 12px;">
-    <div class="notice ng"><div class="nicon">👁️</div><div><strong>Her Akşam Son Adım:</strong><br>COSRX Advanced Snail Peptide Göz Kremi</div></div>
+    <div class="notice ng"><div class="nicon">👁️</div><div><strong><span data-i18n-tr="Her Akşam Son Adım:" data-i18n-en="Every Evening Final Step:">Her Akşam Son Adım:</span></strong><br><span data-i18n-tr="ISANA Peptid Augencreme — peptid + ince çizgi (akşam göz)" data-i18n-en="ISANA Peptid Augencreme — peptide + fine line (evening eye)">ISANA Peptid Augencreme — peptid + ince çizgi (akşam göz)</span></div></div>
   </div>
   <div id="c-brush" style="margin:0 16px 12px;"></div>
   <div class="slbl">🛍 Ürün Listesi</div>
@@ -1662,36 +1695,45 @@ select option{background:var(--bg-deep);color:var(--cream);}
   <div class="card" id="cy-log-card" style="display:none;">
     <div class="cb">
       <div id="cy-log-phase-hint"></div>
-      <div class="cy-fld">
+      <!-- Iter 42 O6 — Daily Log mod seçici (Quick / Full / Expert) -->
+      <div id="cy-log-mode-bar" style="display:flex;gap:6px;background:rgba(255,255,255,0.06);border-radius:10px;padding:4px;margin-bottom:12px;font-size:11px;"></div>
+      <div class="cy-fld" id="cy-flare-fld" style="margin-bottom:14px;"></div>
+      <div class="cy-fld" data-cy-mode="quick,full,expert">
         <div class="cy-fld-l">Akış Şiddeti</div>
         <div class="flow-row" id="cy-flow"></div>
       </div>
-      <div class="cy-fld">
+      <div class="cy-fld" data-cy-mode="full,expert">
         <div class="cy-fld-l">Semptomlar</div>
         <div class="symp-row" id="cy-symps"></div>
       </div>
-      <div class="cy-fld">
+      <div class="cy-fld" data-cy-mode="quick,full,expert">
         <div class="cy-fld-l">Ruh Hali</div>
         <div class="mood-row" id="cy-mood"></div>
       </div>
-      <div class="cy-fld">
+      <div class="cy-fld" data-cy-mode="quick,full,expert">
         <div class="cy-fld-l">Enerji (1–5)</div>
         <div class="scale-row" id="cy-energy"></div>
       </div>
-      <div class="cy-fld">
+      <div class="cy-fld" data-cy-mode="full,expert">
         <div class="cy-fld-l">Uyku Kalitesi (1–5)</div>
         <div class="scale-row" id="cy-sleep"></div>
         <div id="cy-sleep-note" style="font-size:11px;color:var(--text-light);margin-top:6px;"></div>
       </div>
-      <div class="cy-fld">
+      <!-- Iter 42 M1 — Ağrı şiddeti 1-10 scale (Expert mod) -->
+      <div class="cy-fld" data-cy-mode="expert">
+        <div class="cy-fld-l">🔥 Ağrı Şiddeti (1–10)</div>
+        <div class="scale-row" id="cy-pain" style="display:grid;grid-template-columns:repeat(10,1fr);gap:4px;"></div>
+        <div style="font-size:10.5px;color:var(--text-light);margin-top:6px;">1 = yok · 4 = orta · 7 = belirgin · 10 = dayanılmaz · endo flare için</div>
+      </div>
+      <div class="cy-fld" data-cy-mode="expert">
         <div class="cy-fld-l">🫀 Bedenin Sana Söylediği</div>
         <textarea class="cy-note" id="cy-soma" placeholder="Nerede sıkılık/ağrı/sıcaklık hissediyorsun? (örn: üst karın gergin, omuz başı sızıyor, göğüs hassas)" style="min-height:50px;"></textarea>
       </div>
-      <div class="cy-fld">
+      <div class="cy-fld" data-cy-mode="expert">
         <div class="cy-fld-l">🌙 Rüya / İçsel Sezgi</div>
         <textarea class="cy-note" id="cy-dream" placeholder="Bu gece bir rüya, bir his veya bir iç ses geldi mi? (opsiyonel · luteal'de özellikle değerli)" style="min-height:50px;"></textarea>
       </div>
-      <div class="cy-fld" style="margin-bottom:0;">
+      <div class="cy-fld" data-cy-mode="full,expert" style="margin-bottom:0;">
         <div class="cy-fld-l">📝 Genel Notlar</div>
         <textarea class="cy-note" id="cy-note" placeholder="Bugün nasıl hissediyorsun?"></textarea>
       </div>
@@ -1719,16 +1761,11 @@ select option{background:var(--bg-deep);color:var(--cream);}
        Begümnaz: "regl sekmesi bu şekilde çok kalabalık ve gereksiz şeyler kalmış" -->
 
   <!-- Iter 31 — Achievements buradan Dashboard topbar'a (🏆 buton) taşındı; container kaldırıldı -->
-
-  <!-- Phase 3.D · 12 May 2026 — Aşağıdaki 3 kart Medical Records sekmesine taşındı -->
-  <div id="medical-tab-link-card" style="margin:16px 16px 0;padding:14px;background:rgba(180,121,144,0.10);border:1px solid rgba(180,121,144,0.30);border-radius:14px;text-align:center;cursor:pointer;" onclick="showP('medical',document.querySelectorAll('.nb')[5])">
-    <div style="font-size:13px;color:var(--cream-soft);">🩺 <strong>Sağlık Kayıtları</strong> · Medical Records sekmesinde</div>
-    <div style="font-size:11px;color:var(--cream-mute);margin-top:4px;">İlaçlar · Lipid takibi · Kan testi AI · Aile öyküsü · Doktor soruları</div>
-  </div>
+  <!-- Iter 41 M13: Medical link kartı kaldırıldı (Medical sekme nav'da zaten var, tekrar gereksiz) -->
 
   <!-- Ayarlar link kartı (Phase 3.D · ⚙️ butonu Bugün dashboard'a taşındı) -->
   <div style="margin:12px 16px;padding:12px;background:rgba(255,255,255,0.06);border:1px solid var(--glass-border);border-radius:14px;text-align:center;cursor:pointer;font-size:13px;color:var(--cream-soft);" onclick="openSettingsModal()">
-    ⚙️ <strong>Ayarlar</strong> · döngü varsayılan · bilim modu · profiller · yedekleme · API proxy
+    ⚙️ <strong>Ayarlar</strong> · döngü varsayılan · profiller · yedekleme · API proxy
   </div>
 
   <div style="height:8px;"></div>
@@ -1777,13 +1814,13 @@ select option{background:var(--bg-deep);color:var(--cream);}
 
   <!-- Üst tab seçici -->
   <div style="margin:0 16px 14px;display:flex;gap:5px;background:rgba(255,255,255,0.06);border-radius:14px;padding:5px;overflow-x:auto;-webkit-overflow-scrolling:touch;">
-    <button class="med-utab active" id="med-utab-drugs" onclick="setMedTab('drugs')" style="flex-shrink:0;padding:9px 12px;border:none;background:transparent;color:var(--cream-soft);font-family:'Jost',sans-serif;font-size:12px;font-weight:600;border-radius:10px;cursor:pointer;transition:all 0.2s;">💊 Drugs</button>
-    <button class="med-utab" id="med-utab-lipid" onclick="setMedTab('lipid')" style="flex-shrink:0;padding:9px 12px;border:none;background:transparent;color:var(--cream-mute);font-family:'Jost',sans-serif;font-size:12px;font-weight:500;border-radius:10px;cursor:pointer;transition:all 0.2s;">🩸 Lipid</button>
-    <button class="med-utab" id="med-utab-labs" onclick="setMedTab('labs')" style="flex-shrink:0;padding:9px 12px;border:none;background:transparent;color:var(--cream-mute);font-family:'Jost',sans-serif;font-size:12px;font-weight:500;border-radius:10px;cursor:pointer;transition:all 0.2s;">🧪 Kan Testi</button>
-    <button class="med-utab" id="med-utab-family" onclick="setMedTab('family')" style="flex-shrink:0;padding:9px 12px;border:none;background:transparent;color:var(--cream-mute);font-family:'Jost',sans-serif;font-size:12px;font-weight:500;border-radius:10px;cursor:pointer;transition:all 0.2s;">🧬 Aile</button>
-    <button class="med-utab" id="med-utab-questions" onclick="setMedTab('questions')" style="flex-shrink:0;padding:9px 12px;border:none;background:transparent;color:var(--cream-mute);font-family:'Jost',sans-serif;font-size:12px;font-weight:500;border-radius:10px;cursor:pointer;transition:all 0.2s;">❓ Doktor</button>
+    <!-- Iter 39 O3: .utab ortak class -->
+    <button class="utab med-utab active" id="med-utab-drugs" onclick="setMedTab('drugs')">💊 Drugs</button>
+    <button class="utab med-utab" id="med-utab-lipid" onclick="setMedTab('lipid')">🩸 Lipid</button>
+    <button class="utab med-utab" id="med-utab-labs" onclick="setMedTab('labs')">🧪 Kan Testi</button>
+    <button class="utab med-utab" id="med-utab-family" onclick="setMedTab('family')">🧬 Aile</button>
+    <button class="utab med-utab" id="med-utab-questions" onclick="setMedTab('questions')">❓ Doktor</button>
   </div>
-  <style>.med-utab.active{background:rgba(180,121,144,0.22);color:var(--cream-soft);}</style>
 
   <!-- Pane: Drugs -->
   <div id="med-pane-drugs">
@@ -1934,7 +1971,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
     <!-- Iter 31 — AI parse upload: önceki uygulamadan veri toplu yükleme -->
     <div style="margin:12px 0 18px;padding:14px;border-radius:12px;background:rgba(229,168,181,0.10);border:1px solid rgba(229,168,181,0.28);">
       <div style="font-size:12px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px;">📷 Topluca Yükle (AI parse)</div>
-      <div style="font-size:11.5px;color:var(--cream-mute);line-height:1.55;margin-bottom:10px;">Daha önce kullandığın regl uygulamasından (Flo, Clue, Apple Health, Period Tracker vb.) <strong>ekran görüntüsü veya PDF</strong> yükle. Claude tarihleri otomatik okur, hepsini ekler.</div>
+      <div style="font-size:11.5px;color:var(--cream-mute);line-height:1.55;margin-bottom:10px;">Daha önce kullandığın regl uygulamasından (Flo, Clue, Period Tracker veya benzeri) <strong>ekran görüntüsü veya PDF</strong> yükle. Claude tarihleri otomatik okur, hepsini ekler.</div>
       <label style="display:block;padding:12px;border:2px dashed rgba(229,168,181,0.42);border-radius:10px;text-align:center;cursor:pointer;background:rgba(110,26,40,0.20);">
         <input type="file" accept="image/*,application/pdf" multiple style="display:none;" onchange="handlePeriodHistoryUpload(this)">
         <div style="font-size:13px;color:var(--cream);font-weight:600;">📤 Görsel / PDF Yükle</div>
@@ -1975,11 +2012,11 @@ select option{background:var(--bg-deep);color:var(--cream);}
   </div>
 </div>
 
-<!-- HEALTH PHOTO PREVIEW MODAL — Apple Health screenshot + AI parse -->
+<!-- HEALTH PHOTO PREVIEW MODAL — Sağlık takip ekran görüntüsü + AI parse -->
 <div class="mo" id="health-photo-modal">
   <div class="modal">
     <div class="mhandle"></div>
-    <h3>🍏 Apple Health</h3>
+    <h3>🍏 Sağlık Verisi</h3>
     <div class="msub" id="hpm-status">Ekran görüntüsünü oku ve kontrol et</div>
     <div id="hpm-preview-img" style="margin:10px 0;text-align:center;"></div>
     <div id="hpm-loading" style="display:none;text-align:center;padding:20px;color:var(--text-mid);font-size:13px;">⏳ Claude okuyor…</div>
@@ -2325,7 +2362,7 @@ const I18N = {
     alert_no_open_period:'Açık bir regl kaydı yok.',
     alert_invalid_dates:'Bitiş tarihi başlangıçtan önce olamaz.',
     alert_start_required:'Başlangıç tarihi zorunlu.',
-    sleep_apple_auto:'Apple Health\'ten otomatik · değiştirmek için tıkla',
+    sleep_apple_auto:'Yüklediğin sağlık verisinden otomatik · değiştirmek için tıkla',
     sleep_unit:'uyku',
     bodyconv_morning_q:'Bugün bedeninle ne istersin?',
     bodyconv_evening_q:'gerçekleşti mi?',
@@ -2370,7 +2407,7 @@ const I18N = {
     // Iter 34 — Medical sekmesi
     med_supplements:'Supplementler', med_labs:'Kan Testleri', med_doctor_q:'Doktor Soruları',
     med_drugs:'İlaçlar', med_lipid:'Lipid', med_family:'Aile Geçmişi',
-    med_blood_panel:'Kan Paneli', med_apple_health:'Apple Health Verisi',
+    med_blood_panel:'Kan Paneli', med_apple_health:'Sağlık Verisi',
     med_health_records:'Sağlık Kayıtları',
     // Iter 34 — Settings ek
     settings_title:'⚙️ Ayarlar',
@@ -2493,7 +2530,7 @@ const I18N = {
     alert_no_open_period:'No open period record.',
     alert_invalid_dates:'End date cannot be before start date.',
     alert_start_required:'Start date is required.',
-    sleep_apple_auto:'Auto from Apple Health · tap to change',
+    sleep_apple_auto:'Auto from uploaded health data · tap to change',
     sleep_unit:'sleep',
     bodyconv_morning_q:'What does your body want today?',
     bodyconv_evening_q:'did it come true?',
@@ -2538,7 +2575,7 @@ const I18N = {
     // Iter 34 — Medical tab
     med_supplements:'Supplements', med_labs:'Blood Tests', med_doctor_q:'Doctor Questions',
     med_drugs:'Medications', med_lipid:'Lipid', med_family:'Family History',
-    med_blood_panel:'Blood Panel', med_apple_health:'Apple Health Data',
+    med_blood_panel:'Blood Panel', med_apple_health:'Health Data',
     med_health_records:'Health Records',
     // Iter 34 — Settings
     settings_title:'⚙️ Settings',
@@ -2750,6 +2787,21 @@ function getAvgPeriodDur(){
   if(!ps.length)return getCycleSettings().defaultPeriodDuration;
   return Math.round(median(ps.map(p=>1+dayDiff(fromYmd(p.end),fromYmd(p.start)))));
 }
+// Iter 43 M5 — Cycle Length Variability (CV% = std dev / mean × 100)
+// Low CV (<5%) → predictions çok güvenilir · Medium (5-10%) → makul · High (>10%) → düzensiz
+function getCycleVariability(){
+  const ps=getPeriods();
+  if(ps.length<3)return null; // 2+ cycle lazım anlamlı CV için
+  const lens=[];
+  for(let i=1;i<ps.length;i++)lens.push(dayDiff(fromYmd(ps[i].start),fromYmd(ps[i-1].start)));
+  if(lens.length<2)return null;
+  const recent=lens.slice(-6);
+  const mean=recent.reduce((a,b)=>a+b,0)/recent.length;
+  const variance=recent.reduce((a,b)=>a+(b-mean)*(b-mean),0)/recent.length;
+  const std=Math.sqrt(variance);
+  const cv=(std/mean)*100;
+  return {mean:Math.round(mean), std:Math.round(std), cv:Math.round(cv*10)/10, samples:recent.length};
+}
 
 // ci() — returns null if no period data logged yet
 // Phase backend string'leri korunuyor (ZEN array, PHASE_DIET, switch case'lerle bağ var)
@@ -2761,9 +2813,12 @@ function ci(d=new Date()){
   const cyc=getAvgCycleLen(),dur=getAvgPeriodDur();
   const days=dayDiff(d,lastStart);
   const day=((days%cyc)+cyc)%cyc+1;
+  // Dinamik phase boundary — luteal phase ~14 gün stabil (12-16), ovulasyon cyc-14 günü
+  // 28 günlük → ovuDay 14 (mevcut), 32 günlük → ovuDay 18 (doğru), 24 günlük → ovuDay 10
+  const ovuDay=Math.max(dur+2,cyc-14);
   if(day<=dur)return{day,phase:'Menstruation',label:'Regl · Kış',archetype:'Bilge Kadın',emoji:'🔴',cls:'np'};
-  if(day<=13)return{day,phase:'Follicular Phase',label:'Folliküler · İlkbahar',archetype:'Genç Kız',emoji:'🌱',cls:'ns'};
-  if(day<=16)return{day,phase:'Ovulation',label:'Ovulasyon · Yaz',archetype:'Anne',emoji:'🌸',cls:'ng'};
+  if(day<=ovuDay-2)return{day,phase:'Follicular Phase',label:'Folliküler · İlkbahar',archetype:'Genç Kız',emoji:'🌱',cls:'ns'};
+  if(day<=ovuDay+1)return{day,phase:'Ovulation',label:'Ovulasyon · Yaz',archetype:'Anne',emoji:'🌸',cls:'ng'};
   return{day,phase:'Luteal Phase',label:'Luteal · Sonbahar',archetype:'Cadı (Bilge)',emoji:'🌙',cls:'nm'};
 }
 
@@ -3036,6 +3091,54 @@ const GIFS={
 // Sabit GIF URL'leri - her zaman çalışır
 // GIF_MAP removed - using YouTube instead
 
+// Iter 41 O4: Pelvik taban 4 haftalık rotasyon — her hafta farklı tema/video (PELVIK-TABAN-VIDEOLARI.md)
+// pt1 (Sal · Aktif) ve pt2 (Paz · Restoratif) için ayrı arama terimleri
+const PELVIK_ROTATION = [
+  // Hafta 1 — Temel / Farkındalık
+  {
+    week:1, theme_tr:'Temel · Nefes + farkındalık', theme_en:'Foundation · breath + awareness',
+    pt1_tr:'Beginner pelvik taban + nefes farkındalığı', pt1_search:'beginner pelvic floor pilates breath 45 min',
+    pt2_tr:'Gentle pelvik taban + relaxation', pt2_search:'gentle pelvic floor restorative yoga 45 min'
+  },
+  // Hafta 2 — Hip entegrasyon
+  {
+    week:2, theme_tr:'Hip entegrasyon', theme_en:'Hip integration',
+    pt1_tr:'Pelvik taban + hip mobility', pt1_search:'pelvic floor pilates hip mobility 45 min',
+    pt2_tr:'Pelvik taban + glute aktivasyon (yumuşak)', pt2_search:'pelvic floor glute activation restorative 45 min'
+  },
+  // Hafta 3 — Fonksiyonel kuvvet
+  {
+    week:3, theme_tr:'Fonksiyonel kuvvet', theme_en:'Functional strength',
+    pt1_tr:'Fonksiyonel pelvik taban + squat/bridge', pt1_search:'functional pelvic floor pilates squat bridge 45 min',
+    pt2_tr:'Pelvik taban + ayakta çalışma (hafif)', pt2_search:'standing pelvic floor pilates restorative 45 min'
+  },
+  // Hafta 4 — Yumuşak + restoratif
+  {
+    week:4, theme_tr:'Yumuşak · restoratif', theme_en:'Soft · restorative',
+    pt1_tr:'Restoratif pelvik taban + yoga akışı', pt1_search:'restorative pelvic floor yoga flow 45 min',
+    pt2_tr:'Stretch + nefes + pelvic release', pt2_search:'pelvic release stretch breath restorative 45 min'
+  }
+];
+function getPelvikWeekIndex(date){
+  // ISO week number % 4 → rotasyon haftası 0-3 (kullanıcıya 1-4 göster)
+  const d=date||new Date();
+  const yearStart=new Date(d.getFullYear(),0,1);
+  const weekNum=Math.floor((d - yearStart)/(1000*60*60*24*7));
+  return weekNum%4;
+}
+function getPelvikInfo(exId, date){
+  const idx=getPelvikWeekIndex(date);
+  const rot=PELVIK_ROTATION[idx];
+  const en=getLang()==='en';
+  if(exId==='pt1'){
+    return {weekLabel:rot.week, theme:en?rot.theme_en:rot.theme_tr, video:en?rot.pt1_tr:rot.pt1_tr, search:rot.pt1_search};
+  }
+  if(exId==='pt2'){
+    return {weekLabel:rot.week, theme:en?rot.theme_en:rot.theme_tr, video:en?rot.pt2_tr:rot.pt2_tr, search:rot.pt2_search};
+  }
+  return null;
+}
+
 const YT_MAP = {
   'sq':    'U3HlEF_E9fo',  // Smith Machine Squat - Athlean-X
   'lp':    'IZxyjW7MPJQ',  // Leg Press - ScottHermanFitness
@@ -3304,8 +3407,8 @@ function setExUTab(tab){
   const isOlcum=tab==='olcum';
   if(ant)ant.style.display=isOlcum?'none':'block';
   if(olc)olc.style.display=isOlcum?'block':'none';
-  if(tA){tA.classList.toggle('active',!isOlcum);tA.style.color=isOlcum?'var(--cream-mute)':'var(--cream-soft)';}
-  if(tO){tO.classList.toggle('active',isOlcum);tO.style.color=isOlcum?'var(--cream-soft)':'var(--cream-mute)';}
+  if(tA)tA.classList.toggle('active',!isOlcum);
+  if(tO)tO.classList.toggle('active',isOlcum);
   if(isOlcum && typeof renderMeas==='function')renderMeas();
   // Topbar label/title senkronu (Antrenman ↔ Ölçüm)
   const lbl=document.getElementById('ex-tb-label');
@@ -3315,23 +3418,40 @@ function setExUTab(tab){
 }
 
 // Phase 3.D · Medical üst tab seçici
+// Iter 42 O8 — Medical dinamik tab: boş tabları gizle
+function getMedTabAvailability(){
+  let lipidHasData=false, labsHasData=false, familyHasData=false;
+  try{lipidHasData=(JSON.parse(localStorage.getItem('lipid_log')||'[]')).length>0;}catch(e){}
+  try{labsHasData=(JSON.parse(localStorage.getItem('lab_results')||'[]')).length>0;}catch(e){}
+  try{familyHasData=(JSON.parse(localStorage.getItem('family_history')||'[]')).length>0;}catch(e){}
+  return {drugs:true, lipid:lipidHasData, labs:labsHasData, family:familyHasData, questions:true};
+}
+function refreshMedTabVisibility(){
+  const av=getMedTabAvailability();
+  Object.entries(av).forEach(([t,visible])=>{
+    const btn=document.getElementById('med-utab-'+t);
+    if(btn)btn.style.display=visible?'':'none';
+  });
+}
+
 function setMedTab(tab){
+  refreshMedTabVisibility();
+  const av=getMedTabAvailability();
+  // Boş bir tab'a tıklanmışsa drugs'a yönlendir
+  if(!av[tab])tab='drugs';
   const tabs=['drugs','lipid','labs','family','questions'];
   tabs.forEach(t=>{
     const pane=document.getElementById('med-pane-'+t);
     const btn=document.getElementById('med-utab-'+t);
     if(pane)pane.style.display=t===tab?'block':'none';
-    if(btn){
-      btn.classList.toggle('active',t===tab);
-      btn.style.color=t===tab?'var(--cream-soft)':'var(--cream-mute)';
-      btn.style.fontWeight=t===tab?'600':'500';
-    }
+    if(btn)btn.classList.toggle('active',t===tab);
   });
   renderMedical();
 }
 
 // Phase 3.D · Medical sekme render — tüm 5 alt-tab içeriğini çağırır
 function renderMedical(){
+  if(typeof refreshMedTabVisibility==='function')refreshMedTabVisibility();
   if(typeof renderSupplementsInventory==='function')renderSupplementsInventory();
   if(typeof renderLipidTrackingCard==='function')renderLipidTrackingCard();
   if(typeof renderFamilyHistoryCard==='function')renderFamilyHistoryCard();
@@ -3506,16 +3626,16 @@ function renderHealthCardForSelDay(){
     const today=new Date();today.setHours(0,0,0,0);
     const selD=new Date(S.selD);selD.setHours(0,0,0,0);
     if(selD.getTime()===today.getTime()){
-      sel.insertAdjacentHTML('beforeend',`<div class="slbl">🍏 Apple Health</div>
+      sel.insertAdjacentHTML('beforeend',`<div class="slbl">🍏 Sağlık Verisi</div>
         <div class="card"><div class="cb">
-          <div style="font-size:13px;color:var(--text-mid);text-align:center;line-height:1.6;">Bugün için Apple Health verisi yok.<br>Ölçüm sekmesindeki <strong>📷 Health</strong> butonuna dokun.</div>
+          <div style="font-size:13px;color:var(--text-mid);text-align:center;line-height:1.6;">Bugün için sağlık verisi yok.<br>Ölçüm sekmesindeki <strong>📷 Health</strong> butonuna dokun.</div>
         </div></div>`);
     }
     return;
   }
   const importedAt=new Date(data.imported_at);
   const importStr=importedAt.toLocaleString('tr-TR',{hour:'2-digit',minute:'2-digit',day:'2-digit',month:'short'});
-  sel.insertAdjacentHTML('beforeend',`<div class="slbl">🍏 Apple Health</div>
+  sel.insertAdjacentHTML('beforeend',`<div class="slbl">🍏 Sağlık Verisi</div>
     <div class="health-card">
       <div class="health-card-h">
         <h4>Bugünkü Aktivite</h4>
@@ -3636,10 +3756,10 @@ function renderDashboard(){
   }
   // Phase 3.C P0 #6 — Sabah Hero Card (saat-bazlı 4 mode)
   renderMorningCompassion();
+  if(typeof renderFirstStepCard==='function')renderFirstStepCard();
   if(typeof updateRemindersVisibility==='function')updateRemindersVisibility();
   renderHeroCard();
-  // Phase 3.C P0 #8 — Pazar Esnek Gün Festival Card (sadece Pazar 09:00-13:00)
-  renderPazarBrunch();
+  // Iter 38 K5: renderPazarBrunch() çağrısı kaldırıldı (Bengisu kalıntısı)
   // Phase 3.C feedback (12 May 2. round) — Hatırlatmalar dashboard butonu
   if(typeof renderNotificationSettings==='function')renderNotificationSettings();
   // Wedding Mirror countdown (Phase 2 Hafta 8D) — event date varsa ≤60 gün kala görünür
@@ -4376,8 +4496,40 @@ function getCustomTheme(){try{return JSON.parse(localStorage.getItem('custom_the
 function saveCustomTheme(t){localStorage.setItem('custom_theme',JSON.stringify(t));}
 function clearCustomTheme(){localStorage.removeItem('custom_theme');}
 
+// Iter 40 M8: WCAG kontrast hesaplama (relative luminance + contrast ratio)
+function _hexToLuminance(hex){
+  if(!hex||typeof hex!=='string')return 0;
+  const h=hex.replace('#','');
+  if(h.length!==6)return 0;
+  const r=parseInt(h.substr(0,2),16)/255;
+  const g=parseInt(h.substr(2,2),16)/255;
+  const b=parseInt(h.substr(4,2),16)/255;
+  const lin=c=>c<=0.03928?c/12.92:Math.pow((c+0.055)/1.055,2.4);
+  return 0.2126*lin(r)+0.7152*lin(g)+0.0722*lin(b);
+}
+function _contrastRatio(hex1,hex2){
+  const l1=_hexToLuminance(hex1), l2=_hexToLuminance(hex2);
+  const lighter=Math.max(l1,l2), darker=Math.min(l1,l2);
+  return (lighter+0.05)/(darker+0.05);
+}
+
 function applyThemeColors(colors){
   const root=document.documentElement;
+  // Iter 40 M8: WCAG AA kontrast doğrulama (cream ↔ bg-deep ≥ 4.5:1)
+  // Yetersiz olursa uyarı + cream'i parlatma fallback
+  if(colors.cream&&colors['bg-deep']){
+    const ratio=_contrastRatio(colors.cream,colors['bg-deep']);
+    if(ratio<4.5){
+      console.warn(`[Theme] WCAG AA contrast fail: cream vs bg-deep = ${ratio.toFixed(2)}:1 (need 4.5+)`);
+      // Cream'i otomatik parlatma fallback (krem tonunda kalır ama kontrast >4.5)
+      const bgLum=_hexToLuminance(colors['bg-deep']);
+      colors.cream=bgLum<0.18?'#FFF8F0':'#FFFFFF';
+      if(typeof showToast==='function'){
+        const en=(typeof getLang==='function'&&getLang()==='en');
+        showToast(en?'⚠️ Low contrast adjusted (cream auto-brightened)':'⚠️ Düşük kontrast otomatik düzeltildi (cream parlatıldı)','warn');
+      }
+    }
+  }
   Object.entries(colors).forEach(([k,v])=>{
     if(THEME_VAR_KEYS.includes(k))root.style.setProperty('--'+k,v);
   });
@@ -4411,12 +4563,14 @@ async function handleThemeImageUpload(input){
     }
     const prompt=`Bu görselden Begümnaz'ın bütüncül sağlık PWA'sına uygun bir renk paleti çıkar. 6 ana renk lazım:
 
-1. bg-deep: Ana arka plan rengi (sıcak, koyu, sıkıştırıcı değil). Hex.
+1. bg-deep: Ana arka plan rengi (sıcak, koyu, sıkıştırıcı değil). MUTLAKA KOYU bir renk olmalı (luminance < 0.30). Hex.
 2. bg-pink: Vurgu/gradient stop (yumuşak, kadınsı, daha açık). Hex.
-3. cream: Metin rengi (açık, okunabilir, krem/beyaz tonu, koyu zeminle yüksek kontrast). Hex.
+3. cream: Metin rengi (açık, okunabilir, krem/beyaz tonu). MUTLAKA AÇIK bir renk olmalı (luminance > 0.80). Hex.
 4. gold: Başlık/vurgu rengi (sıcak, parlak, gold/honey/amber tonu). Hex.
 5. coral: İkincil vurgu (canlı ama nazik, coral/peach/rose). Hex.
 6. sage: Yardımcı doğal ton (sage/mauve/olive, ifade nötr). Hex.
+
+⚠️ KRİTİK WCAG AA gereksinim: cream ile bg-deep arası KONTRAST EN AZ 4.5:1 olmalı (metin okunabilir kalmalı). Eğer görsel uçuk pastel ise bg-deep'i koyulaştır, cream'i açıklaştır. Eğer görsel çok karanlık ise cream'i parlak tut.
 
 Pembe-bordo-cream-gold ana paletinden çok uzaklaşma — görselin tonunu yansıtmakla beraber sıcak, kadınsı, sağlık temalı kalsın.
 
@@ -4442,13 +4596,20 @@ Sadece geçerli JSON dön, başka açıklama yok:
       // Önizleme + uygula butonu göster
       window._pendingTheme=parsed;
       if(previewEl){
+        const en=getLang()==='en';
         const swatches=THEME_VAR_KEYS.map(k=>`<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><div style="width:32px;height:32px;border-radius:8px;background:${parsed.colors[k]||THEME_DEFAULTS[k]};border:1px solid rgba(255,255,255,0.18);flex-shrink:0;"></div><div><div style="font-size:11px;font-weight:600;color:var(--cream);">${k}</div><div style="font-size:10px;color:var(--cream-mute);font-family:monospace;">${parsed.colors[k]||THEME_DEFAULTS[k]}</div></div></div>`).join('');
         previewEl.innerHTML=`
-          <div style="font-size:11px;color:var(--gold);font-weight:700;margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;">✨ ${parsed.name||'Yeni Tema'}</div>
+          <div style="display:flex;gap:12px;align-items:center;margin-bottom:12px;">
+            <img src="${dataUrl}" alt="upload" style="width:64px;height:64px;object-fit:cover;border-radius:10px;border:2px solid var(--gold);flex-shrink:0;">
+            <div style="flex:1;">
+              <div style="font-size:10.5px;color:var(--cream-mute);text-transform:uppercase;letter-spacing:1px;">${en?'Source':'Kaynak'}</div>
+              <div style="font-size:14px;font-weight:700;color:var(--gold);margin-top:2px;">✨ ${parsed.name||(en?'New Theme':'Yeni Tema')}</div>
+            </div>
+          </div>
           <div style="margin-bottom:14px;">${swatches}</div>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-            <button class="btn bp" onclick="applyPendingTheme()">✓ Uygula</button>
-            <button class="btn bsoft" onclick="cancelPendingTheme()">İptal</button>
+            <button class="btn bp" onclick="applyPendingTheme()">${en?'✓ Apply':'✓ Uygula'}</button>
+            <button class="btn bsoft" onclick="cancelPendingTheme()">${en?'Cancel':'İptal'}</button>
           </div>`;
       }
     }catch(e){
@@ -4461,10 +4622,11 @@ Sadece geçerli JSON dön, başka açıklama yok:
 
 function applyPendingTheme(){
   const t=window._pendingTheme;
-  if(!t||!t.colors){showToast('⚠️ Önce görsel yükle','warn');return;}
+  const en=getLang()==='en';
+  if(!t||!t.colors){showToast(en?'⚠️ Upload an image first':'⚠️ Önce görsel yükle','warn');return;}
   applyThemeColors(t.colors);
   saveCustomTheme(t);
-  showToast('🎨 Tema uygulandı: '+(t.name||'Özel'),'pr');
+  showToast((en?'🎨 Theme applied: ':'🎨 Tema uygulandı: ')+(t.name||(en?'Custom':'Özel')),'pr');
   window._pendingTheme=null;
   renderThemeCard();
 }
@@ -4477,15 +4639,26 @@ function cancelPendingTheme(){
 function renderThemeCard(){
   const el=document.getElementById('theme-card');
   if(!el)return;
+  // Iter 39 O9: bilingual
+  const en=getLang()==='en';
   const current=getCustomTheme();
-  const currentInfo=current?`<div style="margin-bottom:10px;padding:8px 10px;background:rgba(212,175,106,0.10);border-left:3px solid var(--gold);border-radius:6px;font-size:11.5px;color:var(--cream-soft);"><strong>Aktif tema:</strong> ${current.name||'Özel'} · <button onclick="revertToDefaultTheme()" style="background:none;border:none;color:var(--coral);text-decoration:underline;cursor:pointer;font-size:11px;padding:0;">varsayılana dön</button></div>`:'<div style="margin-bottom:10px;font-size:11.5px;color:var(--cream-mute);">Aktif tema: <strong>Varsayılan</strong> (cheetah pembe-bordo)</div>';
+  const activeLbl=en?'Active theme:':'Aktif tema:';
+  const revertLbl=en?'revert to default':'varsayılana dön';
+  const customWord=en?'Custom':'Özel';
+  const defaultWord=en?'Default':'Varsayılan';
+  const defaultDesc=en?'(cheetah pink-burgundy)':'(cheetah pembe-bordo)';
+  const helperTag=en?'🪞 This card':'🪞 Bu kart';
+  const helperBody=en?'<strong>Upload</strong> an image you love (cheetah, landscape, flower, favorite colors) — Claude analyzes the tone and suggests a custom theme. Approve to recolor the whole app. Revert to default anytime.':'Beğendiğin bir görseli (cheetah, manzara, çiçek, sevdiğin renkler) <strong>yükle</strong> — Claude görselin tonunu analiz edip sana özel bir tema önerir. Onayla, tüm program o renklere bürünür. İstediğin zaman varsayılana dönebilirsin.';
+  const uploadTitle=en?'📷 Upload Image':'📷 Görsel Yükle';
+  const uploadHint=en?'JPG/PNG · max 5 MB · cheetah/landscape/flower/favorite colors':'JPG/PNG · max 5 MB · cheetah/manzara/çiçek/sevdiğin renkler';
+  const currentInfo=current?`<div style="margin-bottom:10px;padding:8px 10px;background:rgba(212,175,106,0.10);border-left:3px solid var(--gold);border-radius:6px;font-size:11.5px;color:var(--cream-soft);"><strong>${activeLbl}</strong> ${current.name||customWord} · <button onclick="revertToDefaultTheme()" style="background:none;border:none;color:var(--coral);text-decoration:underline;cursor:pointer;font-size:11px;padding:0;">${revertLbl}</button></div>`:`<div style="margin-bottom:10px;font-size:11.5px;color:var(--cream-mute);">${activeLbl} <strong>${defaultWord}</strong> ${defaultDesc}</div>`;
   el.innerHTML=`<div style="padding:14px 14px 12px;border-radius:12px;background:rgba(229,168,181,0.08);border:1px solid rgba(229,168,181,0.20);">
-    <div class="card-plain" style="margin-bottom:10px;"><span class="card-plain-tag">🪞 Bu kart</span>Beğendiğin bir görseli (cheetah, manzara, çiçek, sevdiğin renkler) <strong>yükle</strong> — Claude görselin tonunu analiz edip sana özel bir tema önerir. Onayla, tüm program o renklere bürünür. İstediğin zaman varsayılana dönebilirsin.</div>
+    <div class="card-plain" style="margin-bottom:10px;"><span class="card-plain-tag">${helperTag}</span>${helperBody}</div>
     ${currentInfo}
     <label style="display:block;padding:14px;border:2px dashed rgba(229,168,181,0.42);border-radius:10px;text-align:center;cursor:pointer;background:rgba(110,26,40,0.18);">
       <input type="file" accept="image/*" style="display:none;" onchange="handleThemeImageUpload(this)">
-      <div style="font-size:14px;color:var(--cream);font-weight:600;margin-bottom:4px;">📷 Görsel Yükle</div>
-      <div style="font-size:10.5px;color:var(--cream-mute);">JPG/PNG · max 5 MB · cheetah/manzara/çiçek/sevdiğin renkler</div>
+      <div style="font-size:14px;color:var(--cream);font-weight:600;margin-bottom:4px;">${uploadTitle}</div>
+      <div style="font-size:10.5px;color:var(--cream-mute);">${uploadHint}</div>
     </label>
     <div id="theme-preview" style="margin-top:14px;"></div>
   </div>`;
@@ -4695,55 +4868,8 @@ function renderHeroCard(){
 }
 
 // ══════════════════════════════════════════
-// PHASE 3.C P0 #8 — PAZAR BRUNCH FESTIVAL CARD
-// Sadece Pazar 09:00-13:00 arası görünür · "Hak ettin · iyi eğlenceler" tonu
-// ══════════════════════════════════════════
-function renderPazarBrunch(){
-  const el=document.getElementById('pazar-brunch');
-  if(!el)return;
-  if(document.body.dataset.page!=='takvim'){el.innerHTML='';return;}
-  const now=new Date();
-  const dow=now.getDay();
-  const h=now.getHours();
-  if(dow!==0 || h<9 || h>=13){el.innerHTML='';return;}
-
-  // Pazar brunch menü rotasyonu (haftadan haftaya değişir)
-  const weekIdx=Math.floor(now.getTime()/(1000*60*60*24*7))%4;
-  const menus=[
-    {emoji:'🇹🇷',name:'Türk Klasik',items:'Türk omleti + sucuk + zeytin + peynir + 1 dilim ekmek + bal + meyve + sütlü kahve',kcal:'~2300'},
-    {emoji:'🇮🇹',name:'Akdeniz',items:'Frittata + bruschetta + kuzu sucuk + Mozzarella + espresso',kcal:'~2200'},
-    {emoji:'🥩',name:'Steakhouse',items:'Ribeye + patates + 2 yumurta + bacon + avokado',kcal:'~2400'},
-    {emoji:'🐟',name:'Balık Brunch',items:'Levrek + sahanda yumurta + ahtapot salata + ekmek',kcal:'~2100'}
-  ];
-  const today=menus[weekIdx];
-
-  el.innerHTML=`<div class="card" style="margin:0 16px 16px;background:linear-gradient(135deg,rgba(217,89,30,0.25),rgba(232,178,63,0.18));border:1px solid rgba(232,178,63,0.40);box-shadow:0 12px 40px rgba(217,89,30,0.20);">
-    <div class="cb">
-      <div style="text-align:center;margin-bottom:12px;">
-        <div style="font-size:42px;line-height:1;margin-bottom:6px;">🎉</div>
-        <div style="font-family:'Playfair Display','Playfair Display',serif;font-size:30px;font-weight:400;color:var(--coral-soft);">Pazar Esnek Gün'ı</div>
-        <div style="font-size:13px;color:var(--cream);margin-top:4px;font-style:italic;">İyi eğlenceler · hak ettin ✨</div>
-      </div>
-      <div style="background:rgba(255,255,255,0.06);border-radius:10px;padding:12px;margin-bottom:10px;">
-        <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--mustard-soft);margin-bottom:6px;">Bu Haftanın Önerisi</div>
-        <div style="font-size:14px;font-weight:600;color:var(--cream-soft);">${today.emoji} ${today.name}</div>
-        <div style="font-size:12px;color:var(--cream);margin-top:6px;line-height:1.5;">${today.items}</div>
-        <div style="font-size:11px;color:var(--mustard-soft);margin-top:6px;">${today.kcal} kcal · refeed günü</div>
-      </div>
-      <div style="background:rgba(255,255,255,0.04);border-radius:10px;padding:10px 12px;font-size:11px;color:var(--cream-mute);line-height:1.6;">
-        <b style="color:var(--coral-soft);">🌸 Yapısal kurallar:</b><br>
-        • Tek büyük öğün + max 1 ara öğün<br>
-        • 10:00-19:00 zaman penceresi<br>
-        • Protein hedefi 130g+ tutar<br>
-        • Alkol max 1-2 birim<br>
-        • Pazartesi reset NORMAL · telafi YOK
-      </div>
-      <div style="margin-top:10px;padding:10px;background:rgba(180,121,144,0.12);border-left:3px solid var(--mauve-evening);border-radius:6px;font-size:11px;color:var(--cream);font-style:italic;line-height:1.6;">
-        💚 "Pazar brunch'ım bir araç, ihlal değil. Yarın normal başla. Telafi YOK."
-      </div>
-    </div>
-  </div>`;
-}
+// Iter 38 K5: renderPazarBrunch() Bengisu refeed festival kartı tamamen kaldırıldı.
+// Begümnaz protokolü "telafi yok" + anti-kompulsif felsefe — Pazar özel günü mantığı uymuyor.
 
 function renderWeddingMirror(){
   const el=document.getElementById('wedding-mirror');
@@ -4764,8 +4890,8 @@ function renderWeddingMirror(){
   const autoSoftHide=shouldSoftHideCountdown();
   const manualReframe=getWeddingReframeManual();
   const reframeMode=autoSoftHide||manualReframe;
-  // <14 gün suspend notice
-  const suspendNotice=days<=14?`<div class="wm-suspend-notice">⚖️ <em>Kg hedefi geçici askıya alındı.</em> Düğün haftası sıvı dalgalanması %1-2 (sodyum + kortizol + uyku). Tartı bilgisi şu hafta yorumlanamaz — bedeninle ilişkide kal, sayıyla değil.</div>`:'';
+  // <14 gün suspend notice · Iter 43 M11: Begümnaz protokolü kilo-merkezli değil, dil yumuşatıldı
+  const suspendNotice=days<=14?`<div class="wm-suspend-notice">⚖️ <em>Bu hafta tartıya bakma.</em> Önemli tarih öncesi sıvı dalgalanması %1-2 (sodyum + kortizol + uyku) doğal. Bedeninle ilişkide kal, sayıyla değil — endo flare, cilt iyileşmesi, uyku, ruh hali ön planda.</div>`:'';
   // Soft-hide bilgilendirme
   let softNotice='';
   if(autoSoftHide){
@@ -4827,17 +4953,18 @@ function getMorningType(date) {
 // Her alternatif: {n: isim, i: emoji, p: protein, f: fat, k: kalori, note: not}
 const ALTS = {
   // 1. ÖĞÜN ANA — Kahvaltı (acıkınca): yumurta + pişmiş salata + çiğ kuruyemiş varyasyonları
+  // Iter 38 K7: Dana + tavuk yasak (Begümnaz protokolü). Kuzu/koyun/hindi izinli.
   yumurta_lor: [
-    {n:'200g dana kıyma + 3 yumurta (tereyağı)',i:'🥩',p:55,f:50,c:0,k:710,note:'Klasik mizaç 1. öğün'},
-    {n:'250g dana kıyma + 3 yumurta',i:'🥩',p:60,f:55,c:0,k:780,note:'Yüksek protein gün'},
+    {n:'200g kuzu kıyma + 3 yumurta (tereyağı)',i:'🍖',p:55,f:50,c:0,k:710,note:'Klasik mizaç 1. öğün'},
+    {n:'250g kuzu kıyma + 3 yumurta',i:'🍖',p:60,f:55,c:0,k:780,note:'Yüksek protein gün'},
     {n:'3 yumurta (ghee) + 100g pastırma',i:'🍳',p:48,f:55,c:0,k:680,note:'Yumurta ağırlıklı'},
     {n:'4 yumurta sahanda + 80g pastırma',i:'🍳',p:46,f:50,c:0,k:650,note:'Hafif gün'},
-    {n:'180g dana kıyma + 4 yumurta',i:'🥩',p:60,f:48,c:0,k:700,note:'Dengeli'},
-    {n:'200g kuzu kıyma + 3 yumurta',i:'🍖',p:55,f:60,c:0,k:780,note:'Kuzu varyasyonu'},
+    {n:'180g hindi kıyma + 4 yumurta',i:'🦃',p:60,f:42,c:0,k:680,note:'Düşük yağ + dengeli'},
+    {n:'200g koyun kıyma + 3 yumurta',i:'🍖',p:55,f:58,c:0,k:770,note:'Koyun varyasyonu'},
     {n:'3 yumurta + 80g pastırma + kaymak',i:'🍳',p:42,f:55,c:1,k:660,note:'Çiğ yağ ağırlıklı'},
-    {n:'200g dana antrikot dilimleri + 2 yumurta',i:'🥩',p:54,f:42,c:0,k:620,note:'Steak-style'},
-    {n:'250g dana ciğer (kavurma) + 2 yumurta',i:'🫀',p:60,f:30,c:0,k:540,note:'🔴 Regl günü · demir + B12'},
-    {n:'300g dana kıyma + 4 yumurta (Pazar brunch)',i:'🍖',p:78,f:72,c:0,k:1010,note:'Tek öğün gibi büyük'},
+    {n:'200g kuzu pirzola dilimleri + 2 yumurta',i:'🍖',p:54,f:46,c:0,k:640,note:'Steak-style'},
+    {n:'250g kuzu ciğer (kavurma) + 2 yumurta',i:'🫀',p:58,f:32,c:0,k:550,note:'🔴 Regl günü · demir + B12'},
+    {n:'200g hindi fileto (ghee) + 3 yumurta',i:'🦃',p:65,f:32,c:0,k:610,note:'Düşük yağ alternatif'},
   ],
   // 1. ÖĞÜN YAN — avokado + yeşillik / kaymak / tereyağı varyasyonları (süt yok)
   avokado_yesillik: [
@@ -4852,21 +4979,22 @@ const ALTS = {
     {n:'Bol yeşillik + 1 yk zeytinyağ (avokadosuz)',i:'🥗',p:3,f:14,k:140,note:'Yağ ihtiyacı azsa'},
   ],
   // 2. ÖĞÜN ANA — Öğle (12-13): salçasız sebze çorbası + sebze yemeği + et 3x/hafta
+  // Iter 38 K7: Dana + tavuk yasak. Kuzu/koyun/hindi/balık izinli (Begümnaz protokolü).
   et_dinner: [
-    {n:'300g Dana Antrikot (ghee)',i:'🥩',p:58,f:36,k:560,note:'Akşamın klasiği'},
+    {n:'300g Kuzu Antrikot (ghee)',i:'🍖',p:58,f:40,k:580,note:'Öğlenin klasiği'},
     {n:'350g Kuzu But (ızgara)',i:'🍖',p:62,f:38,k:590,note:'Büyük porsiyon'},
-    {n:'250g Bonfile (tereyağı)',i:'🥩',p:48,f:24,k:420,note:'Yağsız protein'},
+    {n:'250g Hindi Fileto (tereyağı)',i:'🦃',p:55,f:18,k:410,note:'Yağsız protein'},
     {n:'300g Kuzu Pirzola',i:'🍖',p:50,f:44,k:600,note:'Yağı kemikten'},
-    {n:'250g Dana İncik (yavaş pişmiş)',i:'🥩',p:46,f:30,k:460,note:'Kollajen'},
-    {n:'300g Tavuk But (kabuklu, fırın)',i:'🍗',p:54,f:30,k:490,note:'Derisiyle pişir'},
+    {n:'250g Kuzu İncik (yavaş pişmiş)',i:'🍖',p:46,f:34,k:480,note:'Kollajen'},
+    {n:'300g Hindi But (kabuklu, fırın)',i:'🦃',p:54,f:30,k:490,note:'Derisiyle pişir'},
     {n:'250g Somon (tereyağı + dereotu)',i:'🐟',p:48,f:32,k:490,note:'Omega-3'},
     {n:'300g Hindi Kavurma (ghee)',i:'🦃',p:56,f:26,k:470,note:'Düşük yağ seçenek'},
-    {n:'200g Dana Ciğer (soğan + ghee)',i:'🫀',p:44,f:20,k:370,note:'Demir kaynağı'},
+    {n:'200g Kuzu Ciğer (soğan + ghee)',i:'🫀',p:42,f:22,k:380,note:'Demir kaynağı · regl günü'},
     {n:'350g Yavaş Kuzu',i:'🍖',p:60,f:38,k:580,note:'Slow-cooked'},
     {n:'250g Levrek/Çipura (tuzlu fırın)',i:'🐟',p:42,f:14,k:300,note:'Hafif balık'},
     {n:'300g Hamsi/Sardalya (ızgara)',i:'🐟',p:52,f:22,k:410,note:'Kılçığıyla'},
-    {n:'250g Antrikot + 50g kavurma',i:'🥩',p:55,f:40,k:560,note:'Karışık et'},
-    {n:'300g Köfte (ghee, baharatsız)',i:'🥩',p:48,f:35,k:520,note:'Soğan + maydanoz iç'},
+    {n:'250g Kuzu Antrikot + 50g kuzu kavurma',i:'🍖',p:55,f:42,k:580,note:'Karışık et'},
+    {n:'300g Kuzu Köfte (ghee, baharatsız)',i:'🍖',p:48,f:38,k:540,note:'Soğan + maydanoz iç'},
   ],
   // 2. ÖĞÜN YAN (post-workout) — yeşillik VEYA karb pencere (15-20g karb opsiyonel)
   salata_aksam: [
@@ -5543,7 +5671,7 @@ function handleHealthJson(event){
         return;
       }
       const days=Object.keys(result);
-      const conf=confirm(`${days.length} günlük Apple Health verisi bulundu (${days[0]} → ${days[days.length-1]}). Mevcut günlük kayıtların üzerine yazılacak. Devam edilsin mi?`);
+      const conf=confirm(`${days.length} günlük sağlık verisi bulundu (${days[0]} → ${days[days.length-1]}). Mevcut günlük kayıtların üzerine yazılacak. Devam edilsin mi?`);
       if(!conf)return;
       let imported=0;
       days.forEach(dk=>{
@@ -5555,7 +5683,7 @@ function handleHealthJson(event){
         localStorage.setItem('health_log',JSON.stringify(all));
         imported++;
       });
-      showToast(`✓ ${imported} gün Apple Health verisi içe aktarıldı`,'pr');
+      showToast(`✓ ${imported} gün sağlık verisi içe aktarıldı`,'pr');
       if(typeof renderSelDay==='function')renderSelDay();
       if(typeof renderEx==='function' && document.getElementById('page-egzersiz').classList.contains('active'))renderEx();
     }catch(err){
@@ -5646,7 +5774,7 @@ async function analyzeHealthPhoto(base64,mediaType){
   }
   let mt=mediaType;
   if(!['image/jpeg','image/png','image/webp','image/gif'].includes(mt))mt='image/jpeg';
-  const promptText=`Bu bir Apple Health ekran görüntüsü. Sadece ekranda açıkça görünen değerleri JSON olarak döndür (görünmeyen değer için null kullan):
+  const promptText=`Bu bir sağlık takip uygulaması (Apple Health, Samsung Health, Google Fit veya benzeri) ekran görüntüsü. Sadece ekranda açıkça görünen değerleri JSON olarak döndür (görünmeyen değer için null kullan):
 {"steps": <sayı>, "active_kcal": <sayı>, "exercise_min": <sayı>, "stand_hr": <sayı>, "sleep_min": <toplam dakika>, "hr_avg": <sayı>, "hr_rest": <sayı>}
 
 Kurallar:
@@ -5743,7 +5871,7 @@ function saveHealthPhotoData(){
   }
   saveHealthDay(dateStr,cleaned);
   closeM('health-photo-modal');
-  showHealthMsg(`<strong>${dateStr}</strong> Apple Health verisi kaydedildi 🍏 — ${cleaned.steps} adım · ${cleaned.active_kcal} kcal · ${cleaned.exercise_min} dk egzersiz`,'ns');
+  showHealthMsg(`<strong>${dateStr}</strong> Sağlık verisi kaydedildi 🍏 — ${cleaned.steps} adım · ${cleaned.active_kcal} kcal · ${cleaned.exercise_min} dk egzersiz`,'ns');
   if(typeof renderSelDay==='function')renderSelDay();
   if(typeof renderCyDailyLog==='function' && document.getElementById('page-cycle').classList.contains('active'))renderCyDailyLog();
   if(typeof renderExDay==='function' && document.getElementById('page-egzersiz').classList.contains('active'))renderExDay();
@@ -5883,7 +6011,7 @@ function renderStreakBadge(){
   // BURNOUT DETECTION — Last 5 days mostly low → caring intervention (dismissible · Phase 3.C feedback)
   const burnoutDismissed=localStorage.getItem('burnout_alert_dismissed_'+new Date().toISOString().slice(0,10))==='1';
   if(burnout && !burnoutDismissed){
-    wrap.innerHTML=`<div class="streak-card cool" style="border-color:#d4a574;background:linear-gradient(135deg,var(--gold-soft),#fdf3e0);position:relative;"><span class="streak-flame">🩹</span><div><strong style="color:#7a5a20;">Dur biraz, sende bir şeyler oluyor.</strong><br><span style="font-size:12px;color:var(--text-mid);">Son 5 günün çoğunda hedefin altındaydın. Hasta? Yorgun? Yoğun regl? Seyahat?<br>👉 Yarın için 3-günlük mini-reset (sadece kahvaltı + su yeter) — kendine yumuşak ol, app sizi kovalamayacak.</span></div><button onclick="localStorage.setItem('burnout_alert_dismissed_'+new Date().toISOString().slice(0,10),'1');renderStreakBadge();" style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.10);border:none;border-radius:50%;width:24px;height:24px;font-size:14px;cursor:pointer;color:#7a5a20;" aria-label="Kapat">✕</button></div>`;
+    wrap.innerHTML=`<div class="streak-card cool" style="border-color:#d4a574;background:linear-gradient(135deg,var(--gold-soft),#fdf3e0);position:relative;"><span class="streak-flame">🩹</span><div><strong style="color:var(--gold-honey);">Dur biraz, sende bir şeyler oluyor.</strong><br><span style="font-size:12px;color:var(--text-mid);">Son 5 günün çoğunda hedefin altındaydın. Hasta? Yorgun? Yoğun regl? Seyahat?<br>👉 Yarın için 3-günlük mini-reset (sadece kahvaltı + su yeter) — kendine yumuşak ol, app sizi kovalamayacak.</span></div><button onclick="localStorage.setItem('burnout_alert_dismissed_'+new Date().toISOString().slice(0,10),'1');renderStreakBadge();" style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.10);border:none;border-radius:50%;width:24px;height:24px;font-size:14px;cursor:pointer;color:var(--gold-honey);" aria-label="Kapat">✕</button></div>`;
     return;
   }
 
@@ -6020,52 +6148,11 @@ function renderCycleDietCard(d){
   </div>`;
 }
 
-// ─── FASTING WINDOW COUNTDOWN (toggle'lı — kullanıcı gizleyebilir) ───
-let _fastingTimer=null;
-function isFastingHidden(){return localStorage.getItem('fasting_hidden')==='1';}
-function toggleFastingHidden(){
-  localStorage.setItem('fasting_hidden',isFastingHidden()?'0':'1');
-  renderFastingCountdown();
-}
-function renderFastingCountdown(){
-  const el=document.getElementById('fasting-bar');
-  if(!el)return;
-  // Gizliyse sadece küçük "göster" linki
-  if(isFastingHidden()){
-    el.innerHTML=`<div style="margin:0 16px 12px;text-align:right;"><button class="btn bghost" style="padding:4px 12px;font-size:11px;border-radius:20px;color:var(--text-light);" onclick="toggleFastingHidden()">⏱ Açlık sayacını göster</button></div>`;
-    return;
-  }
-  const now=new Date();
-  const minNow=now.getHours()*60+now.getMinutes();
-  const eatStart=10*60, eatEnd=19*60;
-  let icon, label, bg, fg;
-  if(minNow<eatStart){
-    const diff=eatStart-minNow;
-    icon='🟢';
-    label=`Yeme penceresi 10:00'a ${Math.floor(diff/60)}s ${diff%60}dk`;
-    bg='var(--mauve-soft)';fg='#4a6e47';
-  } else if(minNow<eatEnd){
-    const diff=eatEnd-minNow;
-    icon='🍽';
-    label=`Yeme penceresi açık · 19:00'a ${Math.floor(diff/60)}s ${diff%60}dk`;
-    bg='var(--gold-soft)';fg='#7a5a20';
-  } else {
-    const diff=(24*60)-minNow+eatStart;
-    icon='🌙';
-    label=`Açlık · yarın 10:00'a ${Math.floor(diff/60)}s ${diff%60}dk`;
-    bg='var(--mauve-soft)';fg='#6a4a60';
-  }
-  el.innerHTML=`<div style="margin:0 16px 12px;background:${bg};border:1px solid var(--border);border-radius:var(--r);padding:11px 14px;display:flex;align-items:center;gap:10px;font-size:13px;"><span style="font-size:20px;line-height:1;flex-shrink:0;">${icon}</span><span style="flex:1;font-weight:500;color:${fg};">${label}</span><button onclick="toggleFastingHidden()" title="Gizle" style="background:transparent;border:none;color:${fg};opacity:0.6;cursor:pointer;font-size:13px;padding:4px 6px;flex-shrink:0;">✕</button></div>`;
-}
-function startFastingTimer(){
-  if(_fastingTimer)clearInterval(_fastingTimer);
-  renderFastingCountdown();
-  if(!isFastingHidden())_fastingTimer=setInterval(renderFastingCountdown,60000);
-}
-function stopFastingTimer(){
-  if(_fastingTimer){clearInterval(_fastingTimer);_fastingTimer=null;}
-  const el=document.getElementById('fasting-bar');if(el)el.innerHTML='';
-}
+// Iter 38 K6: IF (Intermittent Fasting) 10:00-19:00 penceresi tamamen kaldırıldı.
+// Bengisu protokolü kalıntısı — Begümnaz "kahvaltı acıkma sinyaline göre" protokolü ile çelişir.
+// Stub fonksiyonlar: legacy çağrılar hata vermesin (renderDiet startFastingTimer çağırıyor)
+function startFastingTimer(){}
+function stopFastingTimer(){}
 
 // ─── WATER TRACKING ───
 function getWaterLog(){return JSON.parse(localStorage.getItem('water_log')||'{}');}
@@ -6352,9 +6439,9 @@ function renderDietDay(){
         <div style="font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:var(--mustard-soft);margin-bottom:8px;font-weight:600;">${phaseEmoji} Bugün · ${phaseLabel}${protectedReason?' · '+protectedReason:''}</div>
         <div style="font-size:15px;font-weight:600;color:var(--cream-soft);margin-bottom:12px;">Bugünün 3 minimum eylemi:</div>
         <div style="display:flex;flex-direction:column;gap:8px;font-size:13px;color:var(--cream);">
-          <div style="display:flex;align-items:center;gap:10px;">${m1Done?'<span style="color:#A8C0A0;font-weight:700;">✓</span>':'<span style="color:var(--mustard-soft);">·</span>'} <span style="${m1Done?'opacity:0.55;text-decoration:line-through;text-decoration-color:var(--cream-faint);':''}">1. öğün — kahvaltı (acıkınca)</span></div>
-          <div style="display:flex;align-items:center;gap:10px;">${m2Done?'<span style="color:#A8C0A0;font-weight:700;">✓</span>':'<span style="color:var(--mustard-soft);">·</span>'} <span style="${m2Done?'opacity:0.55;text-decoration:line-through;text-decoration-color:var(--cream-faint);':''}">2. öğün — öğle (12-13)</span></div>
-          <div style="display:flex;align-items:center;gap:10px;">${wDone?'<span style="color:#A8C0A0;font-weight:700;">✓</span>':'<span style="color:var(--mustard-soft);">·</span>'} <span style="${wDone?'opacity:0.55;text-decoration:line-through;text-decoration-color:var(--cream-faint);':''}">${wTarget} bardak su</span></div>
+          <div style="display:flex;align-items:center;gap:10px;">${m1Done?'<span style="color:var(--accent-sage);font-weight:700;">✓</span>':'<span style="color:var(--mustard-soft);">·</span>'} <span style="${m1Done?'opacity:0.55;text-decoration:line-through;text-decoration-color:var(--cream-faint);':''}">1. öğün — kahvaltı (acıkınca)</span></div>
+          <div style="display:flex;align-items:center;gap:10px;">${m2Done?'<span style="color:var(--accent-sage);font-weight:700;">✓</span>':'<span style="color:var(--mustard-soft);">·</span>'} <span style="${m2Done?'opacity:0.55;text-decoration:line-through;text-decoration-color:var(--cream-faint);':''}">2. öğün — öğle (12-13)</span></div>
+          <div style="display:flex;align-items:center;gap:10px;">${wDone?'<span style="color:var(--accent-sage);font-weight:700;">✓</span>':'<span style="color:var(--mustard-soft);">·</span>'} <span style="${wDone?'opacity:0.55;text-decoration:line-through;text-decoration-color:var(--cream-faint);':''}">${wTarget} bardak su</span></div>
         </div>
         <div style="margin-top:14px;display:flex;gap:6px;flex-wrap:wrap;">
           <button class="btn bsm bghost" onclick="toggleProtectDay('🤒 Hasta')" style="${protectedReason==='🤒 Hasta'?'background:rgba(232,178,63,0.22);border-color:var(--mustard);color:var(--mustard-soft);':''}">🤒 Hasta</button>
@@ -7241,7 +7328,13 @@ const BACKUP_KEYS=[
   'hypotheses','wedding_mirror_mode','wedding_mirror_seen60','wedding_reframe_manual',
   'wedding_moments','notification_settings','plate_mode','active_profile',
   // Phase 3.C P0+P1+P2 yeni anahtarlar
-  'lipid_log','lipid_seeded_v1','active_modes','gut_log','lab_results'
+  'lipid_log','lipid_seeded_v1','active_modes','gut_log','lab_results',
+  // Iter 41 M12 — cilt ürün stok toggle
+  'owned_products',
+  // Iter 42 O6 + O7 — daily log mod + exercise analytics expanded
+  'log_mode','analytics_expanded',
+  // Iter 43 M7 — glossary EN AI çeviri cache
+  'glossary_en_cache'
 ];
 
 function exportAllData(){
@@ -7402,30 +7495,17 @@ function openRestoranScenarios(){
 }
 
 // ══════════════════════════════════════════════════════════════════
-// PHASE 3.C P1 #6 — 7 YENİ ACHIEVEMENT (mevcut 6'ya ek)
-// ══════════════════════════════════════════════════════════════════
-const ACHIEVEMENTS_V2 = [
-  {id:'pazar_hak_ettin', emoji:'🎉', name:'Pazar Hak Ettin', desc:'4 hafta arka arkaya Pazar brunch yapıldı (anti-kompulsif kabul)', check:()=>4},
-  {id:'t3_dostu', emoji:'🦋', name:'T3 Dostu', desc:'30 gün arka arkaya Time Magnezyum alındı', check:()=>0},
-  {id:'lipid_dusurucu', emoji:'❤️', name:'Lipid Düşürücü', desc:' + zeytinyağ shot 21 gün arka arkaya', check:()=>0},
-  {id:'esneklik_kabulu', emoji:'🌿', name:'Esneklik Kabulü', desc:'Yasaklı liste yumuşatıldı — kompulsif risk azaldı', check:()=>1},
-  {id:'mg_kramp_cozucu', emoji:'💊', name:'Mg Kramp Çözücü', desc:'NBT İlaç bisglycinate ile semptom geçti ✓', check:()=>1},
-  {id:'hakan_paket', emoji:'🩺', name:'Doktor Hazırlık', desc:'Doktor randevu hazırlığı hazırlandı', check:()=>1},
-  {id:'5_metrik', emoji:'📊', name:'5 Metrik Bilgesi', desc:'Sadece kg değil 5 metrik takip ediliyor', check:()=>1}
-];
-
-// ══════════════════════════════════════════════════════════════════
 // PHASE 3.C P1 #10 + P2 #2 — Cycle-aware diet card + Anne yemekleri Türk adapte
 // ══════════════════════════════════════════════════════════════════
 const CYCLE_FOOD_RECS = {
   'Follicular Phase':{emoji:'🌱',accent:'sage',foods:['Biftek + roka','Somon + EVOO','Tavuk göğsü + semizotu','Kahvaltıda yumurta + feta'],note:'İnsülin sensitivity yüksek · performans modu · karb pencere geniş'},
   'Ovulation':{emoji:'🌸',accent:'coral',foods:['Somon/levrek (Omega-3 ↑)','Bol yeşillik · roka/semizotu','Pre-WO kollajen 15g + C vit 50mg (ligament desteği)','Avocado yarım daily'],note:'⚠️ Ligament riski +30-50% (Hewett 2007) · kollajen + C vit kritik'},
   'Luteal Phase':{emoji:'🌙',accent:'mauve',foods:['Kuzu pirzola (yağ ↑)','Tryptophan: yumurta + hindi','Tatlı krizi: 1 yk bal post-WO','Mg + B6 vurgu'],note:'Geç luteal +150 kcal · BMR +%8-12 · Mg 3 cap (360mg)'},
-  'Menstruation':{emoji:'🔴',accent:'pink-deep',foods:['Ciğer/dana (demir + B12 ↑)','🍋 limon emilim 3-4x','Isıtıcı çay (kafeinsiz)','Su 3L+ + Mg 4 cap (480mg)'],note:'Day 1-2: kramp koruma · Mg 480mg · demir günü'}
+  'Menstruation':{emoji:'🔴',accent:'pink-deep',foods:['Kuzu ciğer (demir + B12 ↑)','🍋 limon emilim 3-4x','Isıtıcı çay (kafeinsiz)','Su 3L+ + Mg 4 cap (480mg)'],note:'Day 1-2: kramp koruma · Mg 480mg · demir günü'}
 };
 const ANNE_TURK_RECIPES = [
   {n:'Kuzu Tandır (Mizaç)',desc:'Anne tarifi: tereyağ-zeytinyağ marin · 200g · biraz roka yan'},
-  {n:'Köfte (yağsız → tereyağ ekle)',desc:'200g dana kıyma + yumurta + soğan + tuz · pişirmede tereyağ'},
+  {n:'Kuzu Köfte (yağsız → tereyağ ekle)',desc:'200g kuzu kıyma + yumurta + soğan + tuz · pişirmede tereyağ'},
   {n:'Kuzu Pirzola',desc:'Mükemmel uygun · sumak + pul biber · yan semizotu'},
   {n:'İç Pilav (pilavsız)',desc:'200g et + ciğer + yağ · pilav yerine roka'},
   {n:'Etli Sebze (sebzesiz)',desc:'Sade et + yağ ayrı · zeytinyağ üstüne'},
@@ -7435,10 +7515,11 @@ const ANNE_TURK_RECIPES = [
 
 // ══════════════════════════════════════════════════════════════════
 // PHASE 3.C P2 #4 — Batch Cook + Freezer planlayıcı
+// Iter 38 K7: Dana → kuzu (Begümnaz protokolü)
 // ══════════════════════════════════════════════════════════════════
 const BATCH_COOK_PLAN = {
   pazar2hour:[
-    '2 kg dana gulaş → 4 öğün freeze',
+    '2 kg kuzu gulaş → 4 öğün freeze',
     '1 kg kuzu kıyma köfte (Türk versiyon) → 6 freeze',
     '1 kg hindi göğüs sote → 3 öğün',
     '12 yumurta haşla → kahvaltı stoğu',
@@ -7638,7 +7719,18 @@ const SUPPLEMENT_ALARMS = [
 function renderSupplementsInventory(){
   const el=document.getElementById('supplements-inventory');
   if(!el)return;
-  const cats={tedavi:'🩺 Reçeteli Tedavi',tiroid:'🦋 Tiroid',metilasyon:'🧬 Metilasyon',kardiyovasküler:'❤️ Kardiyovasküler',mineral:'⚗️ Mineral',elektrolit:'⚡ Elektrolit',performans:'💪 Performans','cilt-eklem':'✨ Cilt + Eklem'};
+  const en=getLang()==='en';
+  const cats=en?{
+    'gut':'🫀 Gut + Prebiotic','probiyotik':'🌱 Probiotic','oral-hijyen':'🪥 Oral Hygiene','sindirim':'🍋 Stomach + Digestion',
+    'tiroid':'🦋 Thyroid','vitamin':'☀️ Vitamin','multivit':'🌈 Multivitamin','mineral':'⚗️ Mineral',
+    'antiinflamatuvar':'🔥 Anti-Inflammatory','antioksidan':'🛡️ Antioxidant','antioksidan-karaciğer':'🫁 Liver + Antioxidant','karaciğer':'🫁 Liver',
+    'enerji':'⚡ Energy','enerji-spor':'🏋️ Energy + Sport','emosyonel':'💛 Emotional Balance'
+  }:{
+    'gut':'🫀 Bağırsak + Prebiyotik','probiyotik':'🌱 Probiyotik','oral-hijyen':'🪥 Ağız Hijyeni','sindirim':'🍋 Mide + Sindirim',
+    'tiroid':'🦋 Tiroid','vitamin':'☀️ Vitamin','multivit':'🌈 Multivitamin','mineral':'⚗️ Mineral',
+    'antiinflamatuvar':'🔥 Anti-İnflamatuvar','antioksidan':'🛡️ Antioksidan','antioksidan-karaciğer':'🫁 Karaciğer + Antioksidan','karaciğer':'🫁 Karaciğer',
+    'enerji':'⚡ Enerji','enerji-spor':'🏋️ Enerji + Spor','emosyonel':'💛 Emosyonel Denge'
+  };
   const groups={};
   SUPPLEMENTS_INVENTORY.forEach(s=>{(groups[s.cat]=groups[s.cat]||[]).push(s);});
   const alarmsHtml=SUPPLEMENT_ALARMS.map(a=>{
@@ -7772,20 +7864,30 @@ function addLipidEntry(){
 function renderBackupExport(){
   const el=document.getElementById('backup-export');
   if(!el)return;
+  // Iter 39 O9: bilingual
+  const en=getLang()==='en';
   const s=getBackupSummary();
+  const title=en?'💾 Backup':'💾 Yedekleme';
+  const helperTag=en?'🪞 This card':'🪞 Bu kart';
+  const helperBody=en?'Export all your data (cycle log, set log, measurements, settings) as a <strong>single JSON file</strong> or restore it. Use when <em>switching devices</em> or after clearing browser cookies. Anthropic API key is excluded for security.':'Tüm verilerini (cycle log, set log, ölçümler, ayarlar) <strong>tek JSON dosyaya</strong> indir veya geri yükle. <em>Cihaz değiştirirken</em> veya tarayıcı çerezlerini sildiğinde kullan. Anthropic API key güvenlik nedeniyle yedeklenmez.';
+  const exportBtn=en?'📥 Download':'📥 İndir';
+  const importBtn=en?'📤 Restore':'📤 Geri Yükle';
+  const fieldsWord=en?'fields':'alan';
+  const fromJson=en?'from JSON file':'JSON dosyasından';
+  const lastUpdate=en?'Last update: today':'Son güncelleme: bugün';
   el.innerHTML=`<div class="bx-card">
-    <div class="bx-title">💾 Yedekleme</div>
-    <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span>Tüm verilerini (cycle log, set log, ölçümler, ayarlar) <strong>tek JSON dosyaya</strong> indir veya geri yükle. <em>Cihaz değiştirirken</em> veya tarayıcı çerezlerini sildiğinde kullan. Anthropic API key güvenlik nedeniyle yedeklenmez.</div>
+    <div class="bx-title">${title}</div>
+    <div class="card-plain"><span class="card-plain-tag">${helperTag}</span>${helperBody}</div>
     <div class="bx-row">
       <button class="bx-btn bx-btn-export" onclick="exportAllData()">
-        📥 İndir<br><span style="font-size:10px;font-weight:400;opacity:0.7;">${s.filledKeys}/${s.totalKeys} alan · ~${s.sizeKB} KB</span>
+        ${exportBtn}<br><span style="font-size:10px;font-weight:400;opacity:0.7;">${s.filledKeys}/${s.totalKeys} ${fieldsWord} · ~${s.sizeKB} KB</span>
       </button>
       <button class="bx-btn bx-btn-import" onclick="triggerImportData()">
-        📤 Geri Yükle<br><span style="font-size:10px;font-weight:400;opacity:0.7;">JSON dosyasından</span>
+        ${importBtn}<br><span style="font-size:10px;font-weight:400;opacity:0.7;">${fromJson}</span>
       </button>
     </div>
     <input type="file" id="bx-file-input" accept="application/json" style="display:none;" onchange="handleImportFile(event)">
-    <div class="bx-meta">Son güncelleme: bugün</div>
+    <div class="bx-meta">${lastUpdate}</div>
   </div>`;
 }
 
@@ -7906,28 +8008,39 @@ async function testApiProxy(){
 function renderApiProxyCard(){
   const el=document.getElementById('api-proxy-card');
   if(!el)return;
+  // Iter 39 O9: bilingual
+  const en=getLang()==='en';
   const url=getApiProxyUrl();
   const token=getApiProxyToken();
-  const status=url?'<span style="color:var(--sage-leaf);">✓ aktif</span>':'<span style="color:var(--cream-mute);">— direct mode</span>';
+  const activeWord=en?'active':'aktif';
+  const directWord=en?'direct mode':'direct mode';
+  const status=url?`<span style="color:var(--sage-leaf);">✓ ${activeWord}</span>`:`<span style="color:var(--cream-mute);">— ${directWord}</span>`;
+  const helperTag=en?'🪞 This card':'🪞 Bu kart';
+  const helperBody=en?'Move the Anthropic API key to <strong>server-side</strong> (Cloudflare Worker). Eliminates key-leak risk + adds rate limit + origin restriction. Setup guide: <em>DEPLOY-API-PROXY.md</em> (in repo). Leave empty for direct mode (current behavior).':'Anthropic API key\'i <strong>sunucu tarafına</strong> taşı (Cloudflare Worker). Key sızma riskini ortadan kaldırır + rate limit + origin kısıtlama. Kurulum rehberi: <em>DEPLOY-API-PROXY.md</em> (repo\'da). Boş bırakırsan direct mode (mevcut davranış).';
+  const urlLbl=en?'Proxy URL (optional)':'Proxy URL (opsiyonel)';
+  const tokenLbl=en?'Auth Token (optional)':'Auth Token (opsiyonel)';
+  const tokenPlace=en?"If you set AUTH_TOKEN on the Worker":"Worker'da AUTH_TOKEN tanımladıysan";
+  const saveBtn=en?'💾 Save':'💾 Kaydet';
+  const testBtn=en?'🧪 Test':'🧪 Test Et';
   el.innerHTML=`<div class="bx-card" style="border-color:rgba(123,168,176,0.30);">
     <div class="bx-title">🛡️ API Proxy <span style="font-size:11px;font-weight:400;margin-left:6px;">${status}</span></div>
-    <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span>Anthropic API key'i <strong>sunucu tarafına</strong> taşı (Cloudflare Worker). Key sızma riskini ortadan kaldırır + rate limit + origin kısıtlama. Kurulum rehberi: <em>DEPLOY-API-PROXY.md</em> (repo'da). Boş bırakırsan direct mode (mevcut davranış).</div>
+    <div class="card-plain"><span class="card-plain-tag">${helperTag}</span>${helperBody}</div>
     <div style="display:flex;flex-direction:column;gap:8px;">
       <div>
-        <label style="font-size:11px;color:var(--cream-mute);font-weight:600;display:block;margin-bottom:3px;">Proxy URL (opsiyonel)</label>
+        <label style="font-size:11px;color:var(--cream-mute);font-weight:600;display:block;margin-bottom:3px;">${urlLbl}</label>
         <input type="url" id="apx-url" placeholder="https://begumnaz-api-proxy.workers.dev"
                value="${url.replace(/"/g,'&quot;')}"
                style="width:100%;padding:8px 10px;border-radius:8px;background:rgba(232,221,196,0.06);border:1px solid var(--glass-border);color:var(--cream);font-family:inherit;font-size:12px;">
       </div>
       <div>
-        <label style="font-size:11px;color:var(--cream-mute);font-weight:600;display:block;margin-bottom:3px;">Auth Token (opsiyonel)</label>
-        <input type="password" id="apx-token" placeholder="Worker'da AUTH_TOKEN tanımladıysan"
+        <label style="font-size:11px;color:var(--cream-mute);font-weight:600;display:block;margin-bottom:3px;">${tokenLbl}</label>
+        <input type="password" id="apx-token" placeholder="${tokenPlace}"
                value="${token.replace(/"/g,'&quot;')}"
                style="width:100%;padding:8px 10px;border-radius:8px;background:rgba(232,221,196,0.06);border:1px solid var(--glass-border);color:var(--cream);font-family:inherit;font-size:12px;">
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px;">
-        <button class="bx-btn" onclick="saveApiProxySettings()">💾 Kaydet</button>
-        <button class="bx-btn bx-btn-export" onclick="testApiProxy()">🧪 Test Et</button>
+        <button class="bx-btn" onclick="saveApiProxySettings()">${saveBtn}</button>
+        <button class="bx-btn bx-btn-export" onclick="testApiProxy()">${testBtn}</button>
       </div>
     </div>
   </div>`;
@@ -8021,50 +8134,63 @@ function addNewProfile(){
 }
 
 function deleteProfile(id){
+  // Iter 39 O9+O12: bilingual messages + confirm dialog
+  const en=getLang()==='en';
   if(id===getActiveProfileId()){
-    showToast('Aktif profili silemezsin · önce başka profile geç','warn');
+    showToast(en?'Cannot delete the active profile · switch first':'Aktif profili silemezsin · önce başka profile geç','warn');
     return;
   }
   if(id===PROFILE_DEFAULT_ID){
-    showToast('Ana profili (Begümnaz) silemezsin','warn');
+    showToast(en?'Cannot delete the main profile (Begümnaz)':'Ana profili (Begümnaz) silemezsin','warn');
     return;
   }
   const list=getProfileList();
   const p=list.find(x=>x.id===id);
   if(!p)return;
-  if(!confirm(`"${p.emoji} ${p.name}" profili ve tüm verisi kalıcı silinsin mi?\nGeri alınamaz.`))return;
+  const confirmMsg=en
+    ? `Permanently delete profile "${p.emoji} ${p.name}" and all its data?\nThis cannot be undone.`
+    : `"${p.emoji} ${p.name}" profili ve tüm verisi kalıcı silinsin mi?\nGeri alınamaz.`;
+  if(!confirm(confirmMsg))return;
   // Arşivdeki verisini sil
   BACKUP_KEYS.forEach(k=>localStorage.removeItem(`_archive_${id}_${k}`));
   // Listeden çıkar
   saveProfileList(list.filter(x=>x.id!==id));
-  showToast(`✗ ${p.emoji} ${p.name} silindi`,'pr');
+  showToast(`✗ ${p.emoji} ${p.name} ${en?'deleted':'silindi'}`,'pr');
   renderProfileCard();
 }
 
 function renderProfileCard(){
   const el=document.getElementById('profile-card');
   if(!el)return;
+  // Iter 39 O9: bilingual
+  const en=getLang()==='en';
   const list=getProfileList();
   const active=getActiveProfileId();
+  const activeBadge=en?'active':'aktif';
+  const switchLbl=en?'🔄 Switch':'🔄 Geç';
   const items=list.map(p=>{
     const isActive=p.id===active;
     return `<div class="prof-row${isActive?' active':''}">
       <div class="prof-info">
         <span class="prof-emoji">${p.emoji}</span>
         <span class="prof-name">${p.name}</span>
-        ${isActive?'<span class="prof-badge">aktif</span>':''}
+        ${isActive?`<span class="prof-badge">${activeBadge}</span>`:''}
       </div>
       <div class="prof-actions">
-        ${isActive?'':`<button class="prof-btn" onclick="switchToProfile('${p.id}')">🔄 Geç</button>`}
+        ${isActive?'':`<button class="prof-btn" onclick="switchToProfile('${p.id}')">${switchLbl}</button>`}
         ${(!isActive&&p.id!==PROFILE_DEFAULT_ID)?`<button class="prof-btn prof-btn-del" onclick="deleteProfile('${p.id}')">🗑</button>`:''}
       </div>
     </div>`;
   }).join('');
+  const title=en?'👤 Profiles':'👤 Profiller';
+  const helperTag=en?'🪞 This card':'🪞 Bu kart';
+  const helperBody=en?'<strong>Multi-user</strong> — keep data for Begümnaz, sister, mother separately. Switching auto-backups current data and loads the target profile. Anthropic API key + proxy settings <strong>shared across all profiles</strong>.':'<strong>Çoklu kullanıcı</strong> — Begümnaz, kız kardeş, anne gibi farklı kişilerin verilerini ayrı tut. Profil değiştirince mevcut verin <em>otomatik yedeklenir</em>, hedef profilin verisi yüklenir. Anthropic API key + proxy ayarı <strong>tüm profillerde ortak</strong>.';
+  const addBtn=en?'+ Add New Profile':'+ Yeni Profil Ekle';
   el.innerHTML=`<div class="bx-card" style="border-color:rgba(180,121,144,0.30);">
-    <div class="bx-title">👤 Profiller</div>
-    <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span><strong>Çoklu kullanıcı</strong> — Begümnaz, kız kardeş, anne gibi farklı kişilerin verilerini ayrı tut. Profil değiştirince mevcut verin <em>otomatik yedeklenir</em>, hedef profilin verisi yüklenir. Anthropic API key + proxy ayarı <strong>tüm profillerde ortak</strong>.</div>
+    <div class="bx-title">${title}</div>
+    <div class="card-plain"><span class="card-plain-tag">${helperTag}</span>${helperBody}</div>
     <div class="prof-list">${items}</div>
-    <button class="bx-btn" style="width:100%;margin-top:8px;" onclick="addNewProfile()">+ Yeni Profil Ekle</button>
+    <button class="bx-btn" style="width:100%;margin-top:8px;" onclick="addNewProfile()">${addBtn}</button>
   </div>`;
 }
 
@@ -8161,6 +8287,31 @@ function getGloss(term){
   return GLOSSARY[k]||null;
 }
 
+// Iter 43 M7 — Glossary EN cache + on-demand AI çeviri
+function getGlossEnCache(){try{return JSON.parse(localStorage.getItem('glossary_en_cache')||'{}');}catch(e){return {};}}
+function setGlossEnCache(term, en){const c=getGlossEnCache();c[term]=en;localStorage.setItem('glossary_en_cache',JSON.stringify(c));}
+
+async function _translateGlossEn(term, def){
+  // Cache kontrol
+  const cache=getGlossEnCache();
+  if(cache[term])return cache[term];
+  try{
+    const res=await callAnthropic({
+      model:'claude-haiku-4-5-20251001',
+      max_tokens:300,
+      messages:[{role:'user',content:`Translate this Turkish medical/exercise glossary definition to clear English. Keep international terms (RPE, MEV, mTOR, Endometriosis, etc.) as-is. Return ONLY the English translation, no preamble.\n\nTerm: ${term}\nTurkish: ${def}`}]
+    });
+    if(!res.ok)return null;
+    const data=await res.json();
+    const en=(data.content?.[0]?.text||'').trim();
+    if(en && en.length>5){
+      setGlossEnCache(term, en);
+      return en;
+    }
+  }catch(e){console.warn('Gloss translate error:',e);}
+  return null;
+}
+
 function toggleGlossary(term){
   const g=getGloss(term);
   if(!g)return;
@@ -8174,8 +8325,27 @@ function toggleGlossary(term){
   titleEl.textContent=term;
   catEl.textContent=g.cat;
   catEl.className='gloss-cat-pill gloss-cat-'+g.cat;
-  defEl.textContent=g.def;
-  refEl.textContent=g.ref?'Kaynak: '+g.ref:'';
+  const en=getLang()==='en';
+  if(en){
+    // Cache varsa direkt göster, yoksa TR göster + arkaplanda çevir
+    const cached=getGlossEnCache()[term];
+    if(cached){
+      defEl.textContent=cached;
+      refEl.innerHTML=(g.ref?'Source: '+g.ref+' · ':'')+'<em style="opacity:0.6;">AI translation</em>';
+    } else {
+      defEl.textContent=g.def;
+      refEl.innerHTML=(g.ref?'Source: '+g.ref+' · ':'')+'<em style="opacity:0.6;">🌐 Translating to English…</em>';
+      _translateGlossEn(term, g.def).then(enText=>{
+        if(enText && document.getElementById('glossary-modal').classList.contains('open') && titleEl.textContent===term){
+          defEl.textContent=enText;
+          refEl.innerHTML=(g.ref?'Source: '+g.ref+' · ':'')+'<em style="opacity:0.6;">AI translation · cached</em>';
+        }
+      });
+    }
+  } else {
+    defEl.textContent=g.def;
+    refEl.textContent=g.ref?'Kaynak: '+g.ref:'';
+  }
   l3Wrap.style.display='none';
   document.getElementById('glossary-modal').classList.add('open');
 }
@@ -8811,7 +8981,35 @@ function showToast(msg,kind){
 }
 
 // WORKOUT
-function renderEx(){renderStrip('e-strip',S.eD,d=>{S.eD=d;renderExDay();});renderExDay();renderWeekSum();renderStrengthGrid();renderMuscleHeatmap();renderVolumeTrend();renderPRTimeline();renderCyclePatternEmergence();}
+// Iter 42 O7 — Exercise Analytics state + threshold helpers
+function getAnalyticsExpanded(){return localStorage.getItem('analytics_expanded')==='1';}
+function setAnalyticsExpanded(v){localStorage.setItem('analytics_expanded',v?'1':'0');renderAnalyticsToggle();}
+function toggleAnalytics(){setAnalyticsExpanded(!getAnalyticsExpanded());}
+function getWorkoutLogCount(){const log=S.workoutLog||{};return Object.keys(log).length;}
+function renderAnalyticsToggle(){
+  const bar=document.getElementById('e-analytics-toggle');
+  const content=document.getElementById('e-analytics-content');
+  if(!bar||!content)return;
+  const en=getLang()==='en';
+  const count=getWorkoutLogCount();
+  const minCount=8;
+  const expanded=getAnalyticsExpanded();
+  const dataReady=count>=minCount;
+  const label=en?'📊 Analytics':'📊 Analitik';
+  const subDataReady=en?`${count} workouts logged · tap to ${expanded?'collapse':'expand'}`:`${count} antrenman kaydı · ${expanded?'gizle':'göster'}`;
+  const subThreshold=en?`Auto-unlocks at ${minCount} workouts · currently ${count}/${minCount}`:`${minCount} antrenmanda otomatik açılır · şu an ${count}/${minCount}`;
+  const arrow=expanded?'▾':'▸';
+  bar.innerHTML=`<button onclick="toggleAnalytics()" style="width:100%;padding:11px 14px;border:1px solid var(--glass-border);background:rgba(255,255,255,0.04);border-radius:12px;color:var(--cream);font-family:inherit;font-size:13px;cursor:pointer;text-align:left;display:flex;align-items:center;justify-content:space-between;gap:10px;">
+    <div style="flex:1;">
+      <div style="font-weight:600;">${label} <span style="opacity:0.6;font-weight:400;">${arrow}</span></div>
+      <div style="font-size:11px;color:var(--text-light);margin-top:2px;">${dataReady?subDataReady:subThreshold}</div>
+    </div>
+  </button>`;
+  content.style.display=expanded?'block':'none';
+  if(expanded){renderMuscleHeatmap();renderVolumeTrend();renderPRTimeline();}
+}
+
+function renderEx(){renderStrip('e-strip',S.eD,d=>{S.eD=d;renderExDay();});renderExDay();renderWeekSum();renderStrengthGrid();renderAnalyticsToggle();renderCyclePatternEmergence();}
 function renderExDay(){
   const d=S.eD,dow=d.getDay(),sp=SP[dow],exs=EX[dow],dk=d.toDateString();
   const c=ci(d);
@@ -8935,6 +9133,19 @@ function renderExDay(){
       ?`<div class="set-summary"><span>Tahmini 1RM: <strong>${entry.oneRMEstimate} kg</strong></span>${sparkline?`<span class="ex-sparkline-wrap" title="Son seanslar 1RM trendi">${sparkline}</span>`:''}${entry.isPR?'<span class="pr-badge">🏆 PR</span>':''}</div>`
       :(sparkline?`<div class="set-summary"><span style="color:var(--cream-mute);font-size:11px;">Trend</span><span class="ex-sparkline-wrap">${sparkline}</span></div>`:'');
     const div=document.createElement('div');div.className='exi';
+    // Iter 41 O4: Pelvik taban pt1/pt2 için 4 haftalık rotasyon — tema + video link enjekte
+    let pelvikRotChip='', pelvikVideoLink='';
+    if(ex.id==='pt1'||ex.id==='pt2'){
+      const info=getPelvikInfo(ex.id, S.eD?new Date(S.eD):new Date());
+      if(info){
+        const en=getLang()==='en';
+        pelvikRotChip=`<div style="margin:8px 0 4px;padding:8px 10px;background:linear-gradient(135deg,rgba(180,121,144,0.18),rgba(212,164,181,0.14));border-left:3px solid var(--accent-mauve);border-radius:6px;font-size:11.5px;color:var(--text);">
+          <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--accent-mauve);margin-bottom:3px;">🔄 ${en?'Rotation Week':'Rotasyon Haftası'} ${info.weekLabel}/4 · ${info.theme}</div>
+          <div style="font-size:11.5px;font-weight:500;">${info.video}</div>
+        </div>`;
+        pelvikVideoLink=`<a href="https://www.youtube.com/results?search_query=${encodeURIComponent(info.search)}" target="_blank" class="btn bsage bsm" style="margin-top:4px;">▶ ${en?'This week\'s video':'Bu haftanın videosu'}</a>`;
+      }
+    }
     const howShort = ex.h.length > 80 ? ex.h.substring(0,80)+'...' : ex.h;
     // Ovulasyon haftası substitusyon chip (Phase 2 Hafta 3C)
     let cycleSubChip='';
@@ -8949,7 +9160,7 @@ function renderExDay(){
     }
     // Bilim Modu kaldırıldı (Iter 20) — eduChip + eduPanel görünmez
     const eduChip='', eduPanel='';
-    div.innerHTML=`<div class="exh" onclick="toggleEx(this)"><div class="exc ${headerCls}" style="display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">${headerState}</div><div class="exn ${doneSets===totalSets?'done':''}">${ex.c?'🎯 ':''}${ex.n}</div><div class="exs">${ex.s}</div></div><div class="exb"><div class="mtags">${ex.m.map(m=>`<span class="mtag">${m}</span>`).join('')}${ex.c?'<span class="mtag" style="background:var(--pink-pale);color:var(--pink-deep);">Core</span>':''}</div><div class="exhow" style="font-size:13px;color:var(--text-mid);line-height:1.6;">${howShort}</div><div class="exacts"><button class="btn bsoft bsm gif-btn" data-id="${ex.id}" data-name="${ex.n}" data-muscles="${ex.m.join(',')}" data-how="${encodeURIComponent(ex.h)}">🎬 Nasıl Yapılır</button><button class="btn bghost bsm" onclick="openSwap(${i},${dow},'${dk}')">🔄 Değiştir</button>${eduChip}${cycleSubChip}</div>${eduPanel}<div class="set-log">${prevHint}${setRows}<div class="set-quick-states"><button class="modify" onclick="openSetSheet('modify','${dk}','${ex.id}')">⚡ Değiştirdim</button><button class="skip" onclick="openSetSheet('skip','${dk}','${ex.id}')">🛌 Atladım</button></div>${summary}</div></div>`;
+    div.innerHTML=`<div class="exh" onclick="toggleEx(this)"><div class="exc ${headerCls}" style="display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">${headerState}</div><div class="exn ${doneSets===totalSets?'done':''}">${ex.c?'🎯 ':''}${ex.n}</div><div class="exs">${ex.s}</div></div><div class="exb"><div class="mtags">${ex.m.map(m=>`<span class="mtag">${m}</span>`).join('')}${ex.c?'<span class="mtag" style="background:var(--pink-pale);color:var(--pink-deep);">Core</span>':''}</div>${pelvikRotChip}<div class="exhow" style="font-size:13px;color:var(--text-mid);line-height:1.6;">${howShort}</div><div class="exacts"><button class="btn bsoft bsm gif-btn" data-id="${ex.id}" data-name="${ex.n}" data-muscles="${ex.m.join(',')}" data-how="${encodeURIComponent(ex.h)}">🎬 Nasıl Yapılır</button><button class="btn bghost bsm" onclick="openSwap(${i},${dow},'${dk}')">🔄 Değiştir</button>${eduChip}${cycleSubChip}${pelvikVideoLink}</div>${eduPanel}<div class="set-log">${prevHint}${setRows}<div class="set-quick-states"><button class="modify" onclick="openSetSheet('modify','${dk}','${ex.id}')">⚡ Değiştirdim</button><button class="skip" onclick="openSetSheet('skip','${dk}','${ex.id}')">🛌 Atladım</button></div>${summary}</div></div>`;
     // GIF butonuna event listener ekle
     const gifBtn = div.querySelector('.gif-btn');
     if(gifBtn) gifBtn.addEventListener('click', function(e){
@@ -9706,16 +9917,30 @@ function renderSkinDay(){
   eh+=`<div class="sstep" style="background:var(--pink-pale);border-radius:10px;padding:10px;margin-top:6px;"><div class="snum" style="background:var(--pink-soft);">★</div><div><div class="sprod" style="color:var(--pink-deep);">${ea.e} ${ea.l}</div><div class="sprod">${ea.p}</div><div class="snote">${ea.no}</div>${sd===4?'<div class="snote" style="color:var(--pink-deep);font-weight:600;">⏱ 10 min wait!</div>':''}</div></div>`;
   if(!ea.p.includes('Retinol')&&!ea.p.includes('Mask'))eh+=`<div class="sstep"><div class="snum">${SEB.length+2}</div><div><div class="sprod">Medicube Collagen Jelly Cream</div></div></div>`;
   document.getElementById('c-eve').innerHTML=eh;
-  document.getElementById('c-brush').innerHTML=[1,3,5].includes(d.getDay())?`<div class="notice ng"><div class="nicon">🫧</div><div><strong>Silicone Brush Day:</strong> Use during morning cleanse.</div></div>`:'';
+  // Silicone Brush kaldırıldı — Bengisu protokolü, Begümnaz post-isotretinoin hassas ciltte sürtünme önerilmez
+  const cBrush=document.getElementById('c-brush');if(cBrush)cBrush.innerHTML='';
 }
+// Iter 41 M12: Cilt ürün stok takip sistemi
+function getOwnedProducts(){try{return JSON.parse(localStorage.getItem('owned_products')||'{}');}catch(e){return {};}}
+function isProductOwned(key){return !!getOwnedProducts()[key];}
+function toggleProductOwned(key){
+  const own=getOwnedProducts();
+  own[key]=!own[key];
+  localStorage.setItem('owned_products',JSON.stringify(own));
+  renderProds();
+}
+// Slug helper — ürün adından stable key üret
+function _productKey(name){return name.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'').substring(0,40);}
+
 function renderProds(){
   // Begümnaz ürün envanteri — skin-ultimate/URUN-LISTESI.md'ye göre (Iter 21)
   // Phase-aware vurgu: regl=bariyer/hidrasyon, ovulasyon=Vit C, luteal=Madescar+sebum, folliküler=tret/aktif
   const c=ci(S.cD), per=inP(S.cD);
+  const en=getLang()==='en';
   const emphasis = per ? ['ISANA Hyaluron + Panthenol Serum','Madescar (Centella)']
-    : c?.phase==='Ovulation' ? ['ISANA Vit C 10% Serum','Niacinamide 10% serum (Alınacak)']
+    : c?.phase==='Ovulation' ? ['ISANA Vit C 10% Serum','Niacinamide 10% serum']
     : c?.phase==='Luteal Phase' ? ['Garnier BHA + Niacinamide SPF 50','Madescar (Centella)']
-    : c?.phase==='Follicular Phase' ? ['Acnelyse 0.025% (tretinoin)','Azelaic acid 10% (Alınacak)']
+    : c?.phase==='Follicular Phase' ? ['Acnelyse 0.025% (tretinoin)','Azelaic acid 10%']
     : [];
   const phaseLabel = per ? t('skin_phase_regl')
     : c?.phase==='Ovulation' ? t('skin_phase_ov')
@@ -9724,8 +9949,7 @@ function renderProds(){
     : '';
   const phaseBanner = phaseLabel ? `<div style="margin-bottom:12px;padding:10px 12px;background:linear-gradient(135deg,var(--pink-pale),var(--gold-soft));border-radius:10px;font-size:12px;color:var(--text);font-weight:600;">${phaseLabel}</div>` : '';
   const isHighlighted = name => emphasis.some(e=>name.includes(e.split(' (')[0].trim()));
-  // TR pazar — Eczane (CeraVe/Bioderma/LRP), Trendyol (TO/COSRX), Rossmann (ISANA), Watson's/Gratis
-  // Status: ✅ kullan · ⚠️ dikkat · 🛒 alınacak · ❌ bırak
+  // Status: ✅ kullan · ⚠️ dikkat · 🛒 alınacak (Iter 41 M12: checkbox ile ✅'e dönüşür) · ❌ bırak
   const groups=[
     {c:'Temizleyici',i:[
       {n:'✅ Garnier Vit C Cleanser (sabah hafif yıkama)',shop:'Rossmann · ~80 TL · ⚠️ batıyorsa bırak'},
@@ -9734,7 +9958,7 @@ function renderProds(){
     {c:'Serum (Sabah)',i:[
       {n:'✅ ISANA Vit C 10% Serum (sabah, hf 3-4 alternatif gün)',shop:'Rossmann · ~70 TL'},
       {n:'✅ ISANA Hyaluron + Panthenol Serum (her sabah + akşam)',shop:'Rossmann · ~60 TL'},
-      {n:'🛒 Niacinamide 10% serum — TO + Zinc / COSRX 15% / Naacare',shop:'Trendyol/Watson\'s · 200-350 TL'},
+      {n:'🛒 Niacinamide 10% serum — TO + Zinc / COSRX 15% / Naacare',shop:"Trendyol/Watson's · 200-350 TL"},
     ]},
     {c:'Aktif (Akşam)',i:[
       {n:'✅ Acnelyse 0.025% (tretinoin) — Sal + Paz, sandwich tekniği',shop:'Reçeteli · Eczane'},
@@ -9743,10 +9967,10 @@ function renderProds(){
     ]},
     {c:'Nemlendirici / Bariyer',i:[
       {n:'✅ Madescar (Centella) — gece nemlendirici + spot bariyer (tret üstüne mecbur)',shop:'Eczane · ~150 TL'},
-      {n:'✅ Garnier Hyaluron Fresh (sabah/akşam light nem)',shop:'Rossmann/Watson\'s · ~90 TL'},
+      {n:'✅ Garnier Hyaluron Fresh (sabah/akşam light nem)',shop:"Rossmann/Watson's · ~90 TL"},
     ]},
     {c:'SPF (Mecbur)',i:[
-      {n:'✅ Garnier BHA + Niacinamide SPF 50 (her sabah son adım)',shop:'Rossmann/Watson\'s · ~150 TL'},
+      {n:'✅ Garnier BHA + Niacinamide SPF 50 (her sabah son adım)',shop:"Rossmann/Watson's · ~150 TL"},
       {n:'✅ The Purest Solutions BB Cream (SPF üstüne istendiğinde)',shop:'Eczane/Trendyol · ~120 TL'},
     ]},
     {c:'Göz Kremi',i:[
@@ -9757,8 +9981,37 @@ function renderProds(){
       {n:'❌ ISANA Micellar Su — cilt yakıyor, uygun değil',shop:''},
     ]}
   ];
-  const shoppingBadge = `<div style="margin-top:14px;padding:10px 12px;background:rgba(140,90,26,0.12);border-left:3px solid var(--gold);border-radius:6px;font-size:11px;color:var(--text);"><strong>🛒 Eklenecek 3 ürün</strong> (~700-1200 TL): yumuşak temizleyici, niacinamide 10%, azelaic acid 10%. 8 haftalık ekleme sırası: hf 1-2 bariyer kur, hf 3 niacinamide, hf 4 azelaic, hf 5 Vit C alternatif. Detay: <em>skin-ultimate/URUN-LISTESI.md</em></div>`;
-  document.getElementById('c-prods').innerHTML=phaseBanner+groups.map(x=>`<div style="margin-bottom:14px;"><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-light);margin-bottom:8px;">${x.c}</div>${x.i.map(i=>{const hi=isHighlighted(i.n);return `<div style="font-size:13px;padding:6px 8px;border-bottom:1px dashed var(--border-soft);${hi?'background:rgba(232,180,184,0.18);border-radius:6px;font-weight:600;':''}">${hi?'⭐ ':''}${i.n}${i.shop?`<div style="font-size:10px;color:var(--text-light);margin-top:2px;font-weight:400;">${i.shop}</div>`:''}</div>`;}).join('')}</div>`).join('')+shoppingBadge;
+
+  // Iter 41 M12: Şu an "🛒 alınacak" durumda kalan ürünleri say (owned ise sayma)
+  const allShoppingItems = groups.flatMap(g=>g.i).filter(i=>i.n.startsWith('🛒'));
+  const stillToBuy = allShoppingItems.filter(i=>!isProductOwned(_productKey(i.n)));
+
+  // Tüm alınacaklar alındıysa shopping badge tamamen gizli
+  let shoppingBadge = '';
+  if(stillToBuy.length>0){
+    const count=stillToBuy.length;
+    const txt=en
+      ?`<strong>🛒 ${count} product${count>1?'s':''} to buy</strong> (~${count===3?'700-1200':count===2?'500-900':'250-450'} TL): ${stillToBuy.map(i=>i.n.replace('🛒 ','').split(' — ')[0]).join(', ')}. 8-week sequence: weeks 1-2 barrier repair, week 3 niacinamide, week 4 azelaic, week 5 Vit C alternate. Detail: <em>skin-ultimate/URUN-LISTESI.md</em>`
+      :`<strong>🛒 Alınacak ${count} ürün</strong> (~${count===3?'700-1200':count===2?'500-900':'250-450'} TL): ${stillToBuy.map(i=>i.n.replace('🛒 ','').split(' — ')[0]).join(', ')}. 8 haftalık ekleme sırası: hf 1-2 bariyer kur, hf 3 niacinamide, hf 4 azelaic, hf 5 Vit C alternatif. Detay: <em>skin-ultimate/URUN-LISTESI.md</em>`;
+    shoppingBadge=`<div style="margin-top:14px;padding:10px 12px;background:rgba(140,90,26,0.12);border-left:3px solid var(--gold);border-radius:6px;font-size:11px;color:var(--text);">${txt}</div>`;
+  } else if(allShoppingItems.length>0){
+    shoppingBadge=`<div style="margin-top:14px;padding:10px 12px;background:rgba(168,192,160,0.15);border-left:3px solid var(--accent-sage);border-radius:6px;font-size:11.5px;color:var(--text);"><strong>✓ ${en?'All shopping complete':'Tüm alışveriş tamam'}</strong> · ${en?'rutin tam':'rutin tam'} 🌱</div>`;
+  }
+
+  const ownedLbl=en?'I have it':'Aldım';
+  const ownedDoneLbl=en?'Already have it ✓':'Sahibim ✓';
+
+  document.getElementById('c-prods').innerHTML=phaseBanner+groups.map(x=>`<div style="margin-bottom:14px;"><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-light);margin-bottom:8px;">${x.c}</div>${x.i.map(i=>{
+    const hi=isHighlighted(i.n);
+    const isShoppingItem=i.n.startsWith('🛒');
+    const key=_productKey(i.n);
+    const owned=isShoppingItem && isProductOwned(key);
+    // Owned ise prefix 🛒 → ✅ ve renk yeşilimsi (sage)
+    const displayName=owned?i.n.replace('🛒','✅'):i.n;
+    const ownedBg=owned?'background:rgba(168,192,160,0.18);border-left:3px solid var(--accent-sage);padding-left:8px;':'';
+    const toggleBtn=isShoppingItem?`<button onclick="toggleProductOwned('${key}')" style="background:transparent;border:1px solid ${owned?'var(--accent-sage)':'var(--gold)'};color:${owned?'var(--accent-sage)':'var(--gold)'};font-size:10px;font-weight:600;padding:3px 9px;border-radius:14px;cursor:pointer;margin-left:8px;white-space:nowrap;flex-shrink:0;">${owned?ownedDoneLbl:'+ '+ownedLbl}</button>`:'';
+    return `<div style="font-size:13px;padding:6px 8px;border-bottom:1px dashed var(--border-soft);${hi?'background:rgba(232,180,184,0.18);border-radius:6px;font-weight:600;':''}${ownedBg}"><div style="display:flex;justify-content:space-between;align-items:flex-start;gap:6px;">${hi?'⭐ ':''}<span style="flex:1;">${displayName}</span>${toggleBtn}</div>${i.shop?`<div style="font-size:10px;color:var(--text-light);margin-top:2px;font-weight:400;">${i.shop}</div>`:''}</div>`;
+  }).join('')}</div>`).join('')+shoppingBadge;
 }
 
 // METRICS
@@ -9823,7 +10076,7 @@ function renderMeas(){
     const reached=milestones.filter(m=>parseFloat(lostKg)>=m.kg);
     if(reached.length>0){
       const latest=reached[reached.length-1];
-      milestoneEl.innerHTML=`<div style="margin-bottom:14px;padding:14px 16px;border-radius:14px;background:linear-gradient(135deg,#fdf3e0,var(--gold-soft));border:1px solid var(--gold);text-align:center;"><div style="font-size:24px;margin-bottom:4px;">${latest.emoji}</div><div style="font-size:13px;font-weight:600;color:#7a5a20;">${latest.label}</div><div style="font-size:11px;color:var(--text-mid);margin-top:4px;">Bu yolculuğu sen yapıyorsun. Bedenin sana güveniyor 💕</div></div>`;
+      milestoneEl.innerHTML=`<div style="margin-bottom:14px;padding:14px 16px;border-radius:14px;background:linear-gradient(135deg,#fdf3e0,var(--gold-soft));border:1px solid var(--gold);text-align:center;"><div style="font-size:24px;margin-bottom:4px;">${latest.emoji}</div><div style="font-size:13px;font-weight:600;color:var(--gold-honey);">${latest.label}</div><div style="font-size:11px;color:var(--text-mid);margin-top:4px;">Bu yolculuğu sen yapıyorsun. Bedenin sana güveniyor 💕</div></div>`;
     } else {
       milestoneEl.innerHTML='';
     }
@@ -9945,8 +10198,11 @@ const MOOD_OPTS=[
 function optLabel(o){return getLang()==='en'?(o.lEn||o.l):o.l;}
 
 function getDayLog(dy){
-  return Object.assign({flow:null,symptoms:[],mood:null,energy:null,sleep:null,note:''},(getCycleLogs()[dy]||{}));
+  return Object.assign({flow:null,symptoms:[],mood:null,energy:null,sleep:null,note:'',flare:false,pain:null},(getCycleLogs()[dy]||{}));
 }
+// Iter 42 O6 — Cycle Daily Log mod (quick / full / expert), default full
+function getLogMode(){return localStorage.getItem('log_mode')||'full';}
+function setLogMode(m){localStorage.setItem('log_mode',m);renderCyDailyLog();}
 function setDayLog(dy,patch){
   const all=getCycleLogs();
   all[dy]=Object.assign(getDayLog(dy),patch);
@@ -10002,6 +10258,19 @@ function renderCyHero(){
   const nextStart=new Date(lastStart.getTime()+cyc*86400000);
   const daysToNext=Math.max(0,dayDiff(nextStart,new Date()));
   const zen=getZen(c.phase);
+  // Iter 42 M2 — Açık regl 30+ gün warning (unutulmuş bitiş)
+  const lastOpen=ps.length && !ps[ps.length-1].end ? ps[ps.length-1] : null;
+  let openWarn='';
+  if(lastOpen){
+    const daysOpen=Math.floor((new Date()-fromYmd(lastOpen.start))/86400000)+1;
+    if(daysOpen>=30){
+      const en=getLang()==='en';
+      const msg=en
+        ?`<strong>⚠️ Open period ${daysOpen} days</strong> — did you forget to log the end date? Tap "Period ended today" to close it.`
+        :`<strong>⚠️ Açık regl ${daysOpen} gündür</strong> — bitiş tarihini eklemeyi unuttun mu? "Bugün regl bitti" butonuna tıkla.`;
+      openWarn=`<div onclick="actPeriodEnd()" style="margin:10px 12px 0;padding:10px 12px;background:linear-gradient(135deg,rgba(217,89,30,0.22),rgba(232,178,63,0.14));border-left:3px solid #D9591E;border-radius:8px;font-size:12px;color:var(--cream);cursor:pointer;line-height:1.5;">${msg}</div>`;
+    }
+  }
   document.getElementById('cy-topsub').textContent=`${c.label} · Gün ${c.day} / ~${cyc}`;
   wrap.innerHTML=`<div class="cy-hero">
     <div class="cy-hero-emoji">${c.emoji}</div>
@@ -10012,6 +10281,7 @@ function renderCyHero(){
       <span class="cy-hero-pill">⏳ Sıradaki regl: ${daysToNext} gün</span>
       <span class="cy-hero-pill">📊 ${ps.length} regl kaydı</span>
     </div>
+    ${openWarn}
     <div class="cy-quote">"${zen}"</div>
   </div>`;
 }
@@ -10054,6 +10324,43 @@ function renderCyDailyLog(){
   const health=getHealthForDay(new Date());
   const sleepAuto=health?sleepMinToScale(health.sleep_min):null;
   const sleepShown = log.sleep ?? sleepAuto;
+  // Iter 42 O6 — Mod seçici (Quick / Full / Expert)
+  const modeBar=document.getElementById('cy-log-mode-bar');
+  if(modeBar){
+    const en=getLang()==='en';
+    const cur=getLogMode();
+    const opts=[
+      {k:'quick', l:en?'⚡ Quick (4)':'⚡ Hızlı (4)'},
+      {k:'full',  l:en?'📋 Full (7)':'📋 Tam (7)'},
+      {k:'expert',l:en?'🔬 Expert (10)':'🔬 Uzman (10)'}
+    ];
+    modeBar.innerHTML=opts.map(o=>`<button onclick="setLogMode('${o.k}')" style="flex:1;padding:7px 4px;border:none;border-radius:7px;font-family:inherit;font-size:11px;font-weight:${cur===o.k?'700':'500'};background:${cur===o.k?'rgba(232,178,63,0.22)':'transparent'};color:${cur===o.k?'var(--cream-soft)':'var(--cream-mute)'};cursor:pointer;transition:all 0.15s;">${o.l}</button>`).join('');
+  }
+  // Mod-bazlı field show/hide (data-cy-mode attribute)
+  const mode=getLogMode();
+  document.querySelectorAll('#cy-log-card [data-cy-mode]').forEach(el=>{
+    const allowed=(el.dataset.cyMode||'').split(',').map(s=>s.trim());
+    el.style.display=allowed.includes(mode)?'':'none';
+  });
+  // Endo Flare toggle — Begümnaz endometriozis günü işaretleme (AI/diet/exercise modifiye eder)
+  const flareEl=document.getElementById('cy-flare-fld');
+  if(flareEl){
+    const en=getLang()==='en';
+    const flareLbl=en?'🔥 Endo Flare Today':'🔥 Endo Flare Bugün';
+    const flareHint=en?'Mark if endometriosis pain/inflammation is active. AI, diet macros and exercise intensity adjust accordingly.':'Endometriozis ağrı/inflamasyon aktifse işaretle. AI, diyet makroları ve egzersiz şiddeti buna göre ayarlanır.';
+    const onTxt=en?'Active':'Aktif';
+    const offTxt=en?'Inactive':'Pasif';
+    flareEl.innerHTML=`
+      <div style="background:${log.flare?'linear-gradient(135deg,rgba(217,89,30,0.18),rgba(232,178,63,0.12))':'rgba(255,255,255,0.04)'};border-left:3px solid ${log.flare?'#D9591E':'rgba(255,255,255,0.18)'};border-radius:10px;padding:12px 14px;cursor:pointer;transition:all 0.2s;" onclick="toggleFlare()">
+        <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;">
+          <div style="flex:1;">
+            <div style="font-size:14px;font-weight:600;color:var(--text);">${flareLbl}</div>
+            <div style="font-size:11px;color:var(--text-light);margin-top:3px;line-height:1.45;">${flareHint}</div>
+          </div>
+          <div style="font-size:12px;font-weight:700;padding:6px 12px;border-radius:14px;background:${log.flare?'#D9591E':'rgba(255,255,255,0.08)'};color:${log.flare?'#fff':'var(--text-light)'};white-space:nowrap;">${log.flare?'🔥 '+onTxt:offTxt}</div>
+        </div>
+      </div>`;
+  }
   // Flow
   document.getElementById('cy-flow').innerHTML=FLOW_OPTS.map(o=>`
     <div class="flow-chip ${log.flow===o.id?'active':''}" onclick="setFlow('${o.id}')">
@@ -10072,6 +10379,16 @@ function renderCyDailyLog(){
   // Energy
   document.getElementById('cy-energy').innerHTML=[1,2,3,4,5].map(n=>`
     <div class="scale-btn ${log.energy===n?'active':''}" onclick="setEnergy(${n})">${n}</div>`).join('');
+  // Iter 42 M1 — Ağrı şiddeti 1-10 (Expert mod)
+  const painEl=document.getElementById('cy-pain');
+  if(painEl){
+    painEl.innerHTML=[1,2,3,4,5,6,7,8,9,10].map(n=>{
+      const active=log.pain===n;
+      // Renk geçişi: 1-3 sage, 4-6 gold, 7-10 coral
+      const col=n<=3?'var(--accent-sage)':n<=6?'var(--gold)':'var(--coral)';
+      return `<div class="scale-btn ${active?'active':''}" onclick="setPain(${n})" style="font-size:12px;padding:8px 0;min-height:36px;${active?`background:${col};border-color:${col};color:#fff;font-weight:700;`:''}">${n}</div>`;
+    }).join('');
+  }
   // Sleep — Apple Health varsa otomatik öner, kullanıcı override edebilir
   document.getElementById('cy-sleep').innerHTML=[1,2,3,4,5].map(n=>{
     const isManual=log.sleep===n;
@@ -10088,7 +10405,7 @@ function renderCyDailyLog(){
       const autoLabel=en?'auto':'otomatik';
       const hUnit=en?'h':'s';
       const mUnit=en?'min':'dk';
-      sleepNoteEl.innerHTML=`🍏 Apple Health: <strong>${h}${hUnit} ${m}${mUnit}</strong> ${t('sleep_unit')} → ${autoLabel} <strong>${sleepAuto}</strong>${youSaid}`;
+      sleepNoteEl.innerHTML=`🍏 ${en?'Health data':'Sağlık verisi'}: <strong>${h}${hUnit} ${m}${mUnit}</strong> ${t('sleep_unit')} → ${autoLabel} <strong>${sleepAuto}</strong>${youSaid}`;
     } else {
       sleepNoteEl.innerHTML='';
     }
@@ -10103,11 +10420,14 @@ function renderCyDailyLog(){
   if(dreamEl){dreamEl.value=log.dream||'';dreamEl.oninput=()=>{setDayLog(dy,{dream:dreamEl.value});};}
 }
 
+function toggleFlare(){const dy=ymd(new Date());const cur=getDayLog(dy);setDayLog(dy,{flare:!cur.flare});renderCyDailyLog();if(typeof renderDashboard==='function')renderDashboard();}
 function setFlow(v){const dy=ymd(new Date());const cur=getDayLog(dy);setDayLog(dy,{flow:cur.flow===v?null:v});renderCyDailyLog();}
 function toggleSymp(v){const dy=ymd(new Date());const cur=getDayLog(dy);const s=new Set(cur.symptoms);s.has(v)?s.delete(v):s.add(v);setDayLog(dy,{symptoms:[...s]});renderCyDailyLog();}
 function setMood(v){const dy=ymd(new Date());const cur=getDayLog(dy);setDayLog(dy,{mood:cur.mood===v?null:v});renderCyDailyLog();}
 function setEnergy(n){const dy=ymd(new Date());const cur=getDayLog(dy);setDayLog(dy,{energy:cur.energy===n?null:n});renderCyDailyLog();}
 function setSleep(n){const dy=ymd(new Date());const cur=getDayLog(dy);setDayLog(dy,{sleep:cur.sleep===n?null:n});renderCyDailyLog();}
+// Iter 42 M1 — Pain severity 1-10 setter
+function setPain(n){const dy=ymd(new Date());const cur=getDayLog(dy);setDayLog(dy,{pain:cur.pain===n?null:n});renderCyDailyLog();}
 
 function renderCyPredictions(){
   const ps=getPeriods();
@@ -10149,8 +10469,19 @@ function renderCyPredictions(){
     <div class="cy-pred"><div class="cy-pred-l">${t('cycle_pred_fertile_window')}</div><div class="cy-pred-v">${fmt(fertileStart)} – ${fmt(fertileEnd)}</div></div>
     <div class="cy-pred"><div class="cy-pred-l">${t('cycle_pred_pms_window')}</div><div class="cy-pred-v">${fmt(pmsStart)} – ${fmt(pmsEnd)}</div></div>
   `;
+  // Iter 43 M5 — Cycle length variability (CV%) disclaimer · 3+ kayıt sonrası anlamlı
+  const v=getCycleVariability();
+  let cvNote='';
+  if(v){
+    const tier=v.cv<5?{lvl:'low',emoji:'🟢',tr:'Çok düzenli',en:'Very regular'}
+              :v.cv<10?{lvl:'med',emoji:'🟡',tr:'Makul varyasyon',en:'Reasonable variation'}
+              :{lvl:'high',emoji:'🟠',tr:'Düzensiz · tahminlerde geniş aralık',en:'Irregular · wide prediction range'};
+    cvNote=en
+      ?` · ${tier.emoji} ${tier.en} (CV ${v.cv}% · ${v.mean}±${v.std}d, ${v.samples} cycles)`
+      :` · ${tier.emoji} ${tier.tr} (CV ${v.cv}% · ${v.mean}±${v.std} gün, ${v.samples} cycle)`;
+  }
   const conf=ps.length<2?t('cycle_pred_single_log'):ps.length<3?`${ps.length} ${t('cycle_pred_2_logs')}`:`${Math.min(ps.length,6)} ${t('cycle_pred_median')}`;
-  document.getElementById('cy-pred-disclaimer').textContent=conf;
+  document.getElementById('cy-pred-disclaimer').textContent=conf+cvNote;
 }
 
 function toggleCyHist(){
@@ -10371,7 +10702,7 @@ async function handlePeriodHistoryUpload(input){
       const contentBlock=isPdf
         ?{type:'document',source:{type:'base64',media_type:'application/pdf',data:base64}}
         :{type:'image',source:{type:'base64',media_type:mediaType,data:base64}};
-      const prompt=`Bu görsel/PDF'de bir regl (menstrüel period) takip uygulamasından alınmış veri var (Flo, Clue, Apple Health, Period Tracker veya benzeri). Tüm regl başlangıç tarihlerini ve mümkünse bitiş tarihlerini çıkar.
+      const prompt=`Bu görsel/PDF'de bir regl (menstrüel period) takip uygulamasından alınmış veri var (Flo, Clue, Period Tracker veya benzeri). Tüm regl başlangıç tarihlerini ve mümkünse bitiş tarihlerini çıkar.
 
 Çıktıyı SADECE geçerli JSON olarak ver, başka açıklama yok:
 {
@@ -10590,8 +10921,66 @@ function showOnboarding(){
 }
 function dismissOnboarding(){
   localStorage.setItem('onboarded_seen','1');
+  // Iter 39 O1: First-step CTA aktif et — onboarding sonrası kullanıcı yönlendirilir
+  if(localStorage.getItem('first_step_state')!=='done')localStorage.setItem('first_step_state','active');
   const m=document.getElementById('onboarding-modal');
   if(m)m.remove();
+  if(typeof renderFirstStepCard==='function')renderFirstStepCard();
+}
+
+// Iter 39 O1: Welcome modal sonrası "İlk Adım" yönlendirmesi
+// Periods yoksa → Cycle ekle CTA · meas yoksa → Smart Measurement CTA · ikisi varsa → otomatik dismiss
+function renderFirstStepCard(){
+  const el=document.getElementById('first-step-card');
+  if(!el)return;
+  const state=localStorage.getItem('first_step_state');
+  // Onboarding görülmediyse veya kullanıcı dismiss ettiyse gizle
+  if(state!=='active'||localStorage.getItem('onboarded_seen')!=='1'){el.innerHTML='';return;}
+  const ps=JSON.parse(localStorage.getItem('periods')||'[]');
+  const meas=JSON.parse(localStorage.getItem('meas')||'[]');
+  const en=getLang()==='en';
+  // Sırasıyla ilerleyen 2 adım
+  let stepNum, emoji, title, desc, btnLabel, btnAction;
+  if(!ps.length){
+    stepNum=1; emoji='📅';
+    title=en?'Step 1: Add your first period':'1. Adım: İlk regl tarihini ekle';
+    desc=en?'Cycle predictions, phase-aware diet/exercise/skin protocols activate once you log at least one period. You can upload screenshots from Flo, Clue, Period Tracker or any cycle-tracking app for bulk import.':'Cycle tahminleri, phase-aware diet/exercise/cilt protokolleri en az 1 regl kaydı eklediğinde aktif olur. Flo, Clue, Period Tracker veya herhangi bir regl uygulamasından ekran görüntüsü yükleyerek de toplu ekleyebilirsin.';
+    btnLabel=en?'📅 Go to Cycle':'📅 Cycle sekmesine git';
+    btnAction=`switchPage('cycle');openLogPast();`;
+  } else if(!meas.length){
+    stepNum=2; emoji='📷';
+    title=en?'Step 2: Add your first measurement':'2. Adım: İlk ölçümünü ekle';
+    desc=en?'Take a photo of your smart scale (any pharmacy bioimpedance scale) — Claude reads the values automatically. Weight + body fat % + muscle kg form your baseline for trend tracking.':'Akıllı tartının fotoğrafını çek (eczane bioimpedance tartı) — Claude değerleri otomatik okur. Kilo + yağ % + kas kg ölçüm trendinin başlangıcı olur.';
+    btnLabel=en?'📊 Go to Measurement':'📊 Ölçüm sekmesine git';
+    btnAction=`switchPage('medical');setMedTab('labs');`;
+  } else {
+    localStorage.setItem('first_step_state','done');
+    el.innerHTML='';
+    return;
+  }
+  const dismissTxt=en?'Dismiss':'Kapat';
+  const progressDots=`<span style="opacity:${stepNum===1?1:0.4};">●</span> <span style="opacity:${stepNum===2?1:0.4};">●</span>`;
+  el.innerHTML=`<div class="card" style="margin:0 16px 14px;background:linear-gradient(135deg,rgba(212,175,106,0.18),rgba(229,168,181,0.14));border:1px solid rgba(212,175,106,0.40);box-shadow:0 8px 24px rgba(212,175,106,0.10);">
+    <div class="cb">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:8px;">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <div style="font-size:28px;line-height:1;">${emoji}</div>
+          <div>
+            <div style="font-size:10.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);">${en?'Quick Start':'Hızlı Başlangıç'} · ${progressDots}</div>
+            <div style="font-size:15px;font-weight:600;color:var(--cream);margin-top:2px;">${title}</div>
+          </div>
+        </div>
+        <button onclick="dismissFirstStep()" aria-label="${dismissTxt}" style="background:transparent;border:none;color:var(--cream-mute);font-size:18px;cursor:pointer;padding:4px 6px;flex-shrink:0;">×</button>
+      </div>
+      <div style="font-size:12.5px;color:var(--cream-mute);line-height:1.55;margin-bottom:12px;">${desc}</div>
+      <button class="btn bp bfull" onclick="${btnAction}">${btnLabel}</button>
+    </div>
+  </div>`;
+}
+function dismissFirstStep(){
+  localStorage.setItem('first_step_state','done');
+  const el=document.getElementById('first-step-card');
+  if(el)el.innerHTML='';
 }
 
 // Phase 3.B-A — Service Worker register (PWA install + offline cache + future push)
