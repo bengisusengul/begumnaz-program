@@ -1738,32 +1738,32 @@ select option{background:var(--bg-deep);color:var(--cream);}
 <div class="mo" id="settings-modal">
   <div class="modal" style="max-width:500px;max-height:90vh;overflow-y:auto;">
     <div class="mhandle"></div>
-    <h3 style="font-family:'Playfair Display','Playfair Display',serif;font-size:26px;margin-bottom:14px;">⚙️ Ayarlar</h3>
+    <h3 style="font-family:'Playfair Display','Playfair Display',serif;font-size:26px;margin-bottom:14px;" data-i18n="settings_title">⚙️ Ayarlar</h3>
 
-    <div class="slbl" style="padding:0;margin:0 0 8px;">🌸 Döngü Varsayılanları</div>
+    <div class="slbl" style="padding:0;margin:0 0 8px;" data-i18n="settings_cycle_def">🌸 Döngü Varsayılanları</div>
     <div class="card" style="margin:0 0 14px;">
       <div class="cb">
-        <div class="fr"><label>Varsayılan Döngü Uzunluğu (gün)</label><input type="number" id="cy-set-len" min="20" max="40" step="1"></div>
-        <div class="fr"><label>Varsayılan Regl Süresi (gün)</label><input type="number" id="cy-set-dur" min="2" max="10" step="1"></div>
-        <div class="fr"><label>💕 Önemli Tarih (opsiyonel)</label><input type="date" id="cy-set-event-date"></div>
-        <div class="fr"><label>Önemli Tarih Etiketi</label><input type="text" id="cy-set-event-label" placeholder="Örn: Hedef tarihü 💍" maxlength="40"></div>
-        <button class="btn bsoft bfull" onclick="saveCycleSettings()">💾 Kaydet</button>
+        <div class="fr"><label data-i18n="settings_cycle_len">Varsayılan Döngü Uzunluğu (gün)</label><input type="number" id="cy-set-len" min="20" max="40" step="1"></div>
+        <div class="fr"><label data-i18n="settings_period_dur">Varsayılan Regl Süresi (gün)</label><input type="number" id="cy-set-dur" min="2" max="10" step="1"></div>
+        <div class="fr"><label data-i18n="settings_event_date">💕 Önemli Tarih (opsiyonel)</label><input type="date" id="cy-set-event-date"></div>
+        <div class="fr"><label data-i18n="settings_event_label">Önemli Tarih Etiketi</label><input type="text" id="cy-set-event-label" placeholder="Örn: Hedef tarihü 💍" maxlength="40"></div>
+        <button class="btn bsoft bfull" onclick="saveCycleSettings()">💾 <span data-i18n="log_save">Kaydet</span></button>
       </div>
     </div>
 
-    <div class="slbl" style="padding:0;margin:0 0 8px;">🎨 Tema</div>
+    <div class="slbl" style="padding:0;margin:0 0 8px;" data-i18n="settings_theme">🎨 Tema</div>
     <div id="theme-card"></div>
 
-    <div class="slbl" style="padding:0;margin:14px 0 8px;">👤 Profiller</div>
+    <div class="slbl" style="padding:0;margin:14px 0 8px;" data-i18n="settings_profile">👤 Profiller</div>
     <div id="profile-card"></div>
 
-    <div class="slbl" style="padding:0;margin:14px 0 8px;">💾 Yedekleme</div>
+    <div class="slbl" style="padding:0;margin:14px 0 8px;" data-i18n="settings_backup">💾 Yedekleme</div>
     <div id="backup-export"></div>
 
     <div class="slbl" style="padding:0;margin:14px 0 8px;">🔌 API Proxy</div>
     <div id="api-proxy-card"></div>
 
-    <button class="btn bp bfull" style="margin-top:14px;" onclick="closeM('settings-modal')">Kapat</button>
+    <button class="btn bp bfull" style="margin-top:14px;" onclick="closeM('settings-modal')" data-i18n="settings_close">Kapat</button>
   </div>
 </div>
 
@@ -2343,6 +2343,42 @@ const I18N = {
     log_flow_intensity:'AKIŞ ŞİDDETİ',
     log_save:'Kaydet',
     log_cancel:'İptal',
+    // Iter 34 — Diet sekmesi
+    diet_breakfast:'Kahvaltı', diet_lunch:'Öğle Yemeği', diet_snack:'Ara Öğün', diet_dinner:'Akşam Yemeği',
+    diet_macro_remaining:'Kalan Makro', diet_water:'Su', diet_water_cup:'bardak',
+    diet_custom_food_title:'Özel Yemek Ekle', diet_ai_estimate:'🤖 AI Tahmin', diet_recipe:'Tarif',
+    diet_kcal:'kcal', diet_protein:'Protein', diet_carb:'Karb', diet_fat:'Yağ', diet_fiber:'Lif',
+    diet_yasak:'Yasak Listesi', diet_izinli:'İzinli Liste', diet_meal_done:'Tamamlandı',
+    diet_swap_meal:'Yemeği Değiştir', diet_log_meal:'Yemeği Kaydet',
+    // Iter 34 — Exercise sekmesi
+    ex_set:'Set', ex_rep:'Tekrar', ex_kg:'kg', ex_rpe:'RPE',
+    ex_skip:'🛌 Atladım', ex_modify:'⚡ Değiştirdim', ex_complete:'Tamamla',
+    ex_swap:'🔄 Değiştir', ex_video:'🎬 Nasıl Yapılır',
+    ex_warmup:'🔥 Isınma', ex_cooldown:'🧘 Soğuma',
+    ex_rest_timer:'Dinlenme', ex_no_workout:'Antrenman yok',
+    ex_workout_log:'Antrenman Günlüğü', ex_done_label:'Bitti',
+    // Iter 34 — Skin sekmesi
+    skin_morning:'Sabah Rutini', skin_evening:'Akşam Rutini',
+    skin_today_active:'Bugünün Aktifi', skin_products:'Ürünlerim',
+    skin_status_use:'kullan', skin_status_caution:'dikkat', skin_status_buy:'alınacak', skin_status_stop:'bırak',
+    skin_cat_cleanser:'Temizleyici', skin_cat_serum:'Serum', skin_cat_active:'Aktif',
+    skin_cat_moist:'Nemlendirici', skin_cat_spf:'SPF', skin_cat_eye:'Göz Kremi',
+    skin_phase_regl:'🔴 Regl: bariyer + hidrasyon (hassas hafta, aktifleri atla)',
+    skin_phase_ov:'🌸 Ovulasyon: Vit C + niacinamide peak — parlaklık',
+    skin_phase_lut:'🌙 Luteal: SPF + Madescar + sebum kontrol',
+    skin_phase_fol:'🌱 Folliküler: tret + azelaic peak — aktif rutin penceresi',
+    // Iter 34 — Medical sekmesi
+    med_supplements:'Supplementler', med_labs:'Kan Testleri', med_doctor_q:'Doktor Soruları',
+    med_drugs:'İlaçlar', med_lipid:'Lipid', med_family:'Aile Geçmişi',
+    med_blood_panel:'Kan Paneli', med_apple_health:'Apple Health Verisi',
+    med_health_records:'Sağlık Kayıtları',
+    // Iter 34 — Settings ek
+    settings_title:'⚙️ Ayarlar',
+    settings_cycle_def:'🌸 Döngü Varsayılanları', settings_theme:'🎨 Tema',
+    settings_profile:'👤 Profiller', settings_backup:'💾 Yedekleme',
+    settings_close:'Kapat', settings_event_date:'💕 Önemli Tarih',
+    settings_event_label:'Önemli Tarih Etiketi', settings_cycle_len:'Varsayılan Döngü Uzunluğu (gün)',
+    settings_period_dur:'Varsayılan Regl Süresi (gün)',
   },
   en: {
     nav_today:'Today', nav_cycle:'Cycle', nav_diet:'Diet',
@@ -2475,6 +2511,42 @@ const I18N = {
     log_flow_intensity:'FLOW INTENSITY',
     log_save:'Save',
     log_cancel:'Cancel',
+    // Iter 34 — Diet tab
+    diet_breakfast:'Breakfast', diet_lunch:'Lunch', diet_snack:'Snack', diet_dinner:'Dinner',
+    diet_macro_remaining:'Remaining Macros', diet_water:'Water', diet_water_cup:'cup',
+    diet_custom_food_title:'Add Custom Food', diet_ai_estimate:'🤖 AI Estimate', diet_recipe:'Recipe',
+    diet_kcal:'kcal', diet_protein:'Protein', diet_carb:'Carbs', diet_fat:'Fat', diet_fiber:'Fiber',
+    diet_yasak:'Forbidden List', diet_izinli:'Allowed List', diet_meal_done:'Completed',
+    diet_swap_meal:'Swap Meal', diet_log_meal:'Log Meal',
+    // Iter 34 — Exercise tab
+    ex_set:'Set', ex_rep:'Rep', ex_kg:'kg', ex_rpe:'RPE',
+    ex_skip:'🛌 Skipped', ex_modify:'⚡ Modified', ex_complete:'Complete',
+    ex_swap:'🔄 Swap', ex_video:'🎬 How To',
+    ex_warmup:'🔥 Warm-up', ex_cooldown:'🧘 Cool-down',
+    ex_rest_timer:'Rest', ex_no_workout:'No workout',
+    ex_workout_log:'Workout Log', ex_done_label:'Done',
+    // Iter 34 — Skin tab
+    skin_morning:'Morning Routine', skin_evening:'Evening Routine',
+    skin_today_active:'Today\'s Active', skin_products:'My Products',
+    skin_status_use:'use', skin_status_caution:'caution', skin_status_buy:'to buy', skin_status_stop:'stop',
+    skin_cat_cleanser:'Cleanser', skin_cat_serum:'Serum', skin_cat_active:'Active',
+    skin_cat_moist:'Moisturizer', skin_cat_spf:'SPF', skin_cat_eye:'Eye Cream',
+    skin_phase_regl:'🔴 Period: barrier + hydration (sensitive week, skip actives)',
+    skin_phase_ov:'🌸 Ovulation: Vit C + niacinamide peak — radiance',
+    skin_phase_lut:'🌙 Luteal: SPF + Madescar + sebum control',
+    skin_phase_fol:'🌱 Follicular: tretinoin + azelaic peak — active routine window',
+    // Iter 34 — Medical tab
+    med_supplements:'Supplements', med_labs:'Blood Tests', med_doctor_q:'Doctor Questions',
+    med_drugs:'Medications', med_lipid:'Lipid', med_family:'Family History',
+    med_blood_panel:'Blood Panel', med_apple_health:'Apple Health Data',
+    med_health_records:'Health Records',
+    // Iter 34 — Settings
+    settings_title:'⚙️ Settings',
+    settings_cycle_def:'🌸 Cycle Defaults', settings_theme:'🎨 Theme',
+    settings_profile:'👤 Profiles', settings_backup:'💾 Backup',
+    settings_close:'Close', settings_event_date:'💕 Important Date',
+    settings_event_label:'Date Label', settings_cycle_len:'Default Cycle Length (days)',
+    settings_period_dur:'Default Period Duration (days)',
   }
 };
 function getLang(){return localStorage.getItem('lang')||'tr';}
@@ -9409,10 +9481,10 @@ function renderProds(){
     : c?.phase==='Luteal Phase' ? ['Garnier BHA + Niacinamide SPF 50','Madescar (Centella)']
     : c?.phase==='Follicular Phase' ? ['Acnelyse 0.025% (tretinoin)','Azelaic acid 10% (Alınacak)']
     : [];
-  const phaseLabel = per ? '🔴 Regl: bariyer + hidrasyon (hassas hafta, aktifleri atla)'
-    : c?.phase==='Ovulation' ? '🌸 Ovulasyon: Vit C + niacinamide peak — parlaklık'
-    : c?.phase==='Luteal Phase' ? '🌙 Luteal: SPF + Madescar + sebum kontrol'
-    : c?.phase==='Follicular Phase' ? '🌱 Folliküler: tret + azelaic peak — aktif rutin penceresi'
+  const phaseLabel = per ? t('skin_phase_regl')
+    : c?.phase==='Ovulation' ? t('skin_phase_ov')
+    : c?.phase==='Luteal Phase' ? t('skin_phase_lut')
+    : c?.phase==='Follicular Phase' ? t('skin_phase_fol')
     : '';
   const phaseBanner = phaseLabel ? `<div style="margin-bottom:12px;padding:10px 12px;background:linear-gradient(135deg,var(--pink-pale),var(--gold-soft));border-radius:10px;font-size:12px;color:var(--text);font-weight:600;">${phaseLabel}</div>` : '';
   const isHighlighted = name => emphasis.some(e=>name.includes(e.split(' (')[0].trim()));
