@@ -82,25 +82,25 @@ body{
   .slbl{font-size:11px;letter-spacing:1.4px;}
 }
 @media (max-width:430px){
-  /* Iter 50 B1 (Iter 52 fix: 380px → 430px breakpoint genişletildi — iPhone 12 Pro 390px de dahil)
-     Topbar 3 buton 42→36px, right 20/72/124 → 14/56/98 (toplam 134px viewport-uyumlu) */
+  /* Iter 50 B1 (Iter 58 update: chat sol üste taşındı, sağda 2 buton kalır)
+     Mobile @430px: ⚙️ right:14, 🏆 right:56, 💬 left:14 */
   .topbar button[onclick^="openSettingsModal"],
   .topbar button[onclick^="openAchievementsModal"],
   .topbar button[onclick^="openChat"]{width:36px !important;height:36px !important;font-size:18px !important;}
   .topbar button[onclick^="openSettingsModal"]{right:14px !important;}
   .topbar button[onclick^="openAchievementsModal"]{right:56px !important;}
-  .topbar button[onclick^="openChat"]{right:98px !important;}
-  /* Topbar h1 başlık + civciv emoji buton zonuna çarpmasın: padding-right reserve */
-  .topbar h1{padding-right:144px;font-size:32px;line-height:1.15;}
+  .topbar button[onclick^="openChat"]{left:14px !important;right:auto !important;}
+  /* Topbar h1: sağda 2 buton + 12px gap = ~106px reserve, solda chat butonu ~62px (yer az: top:14 left:14 36x36 = bottom 50px → h1 56px üstte, padding-left gerek değil) */
+  .topbar h1{padding-right:110px;font-size:32px;line-height:1.15;}
 }
 @media (max-width:360px){
   body{font-size:14px;}
   .card,.bx-card,.al-card,.micro-card{padding-left:12px;padding-right:12px;}
   .topbar{padding-left:12px;padding-right:12px;}
-  /* Iter 50 B1b: 360px daha agresif — 34px buton, right 12/50/88 */
+  /* Iter 50 B1b (Iter 58 update): 360px — ⚙️ right:12, 🏆 right:50, 💬 left:12 */
   .topbar button[onclick^="openSettingsModal"]{right:12px !important;width:34px !important;height:34px !important;font-size:17px !important;}
   .topbar button[onclick^="openAchievementsModal"]{right:50px !important;width:34px !important;height:34px !important;font-size:17px !important;}
-  .topbar button[onclick^="openChat"]{right:88px !important;width:34px !important;height:34px !important;font-size:17px !important;}
+  .topbar button[onclick^="openChat"]{left:12px !important;right:auto !important;width:34px !important;height:34px !important;font-size:17px !important;}
   h1{font-size:26px;}
   h2{font-size:19px;}
   h3{font-size:15px;}
@@ -245,6 +245,11 @@ body[data-page="diyet"] .wdn{color:var(--diyet-text-primary) !important;}     /*
 body[data-page="diyet"] .wdnum{color:var(--diyet-text-secondary) !important;} /* Tarih (11) — 6.2:1 AAA */
 body[data-page="diyet"] .wd.active .wdn,
 body[data-page="diyet"] .wd.active .wdnum{color:var(--cream-soft) !important;} /* Aktif gün (gold/coral capsule üzeri cream) */
+/* Iter 58 — Diyet topbar başlık + subtitle pembe-uyumlu kontrast (pastel pembe-bej üstüne orta wine) */
+body[data-page="diyet"] .topbar h1{color:var(--diyet-text-secondary) !important;text-shadow:0 1px 4px rgba(255,255,255,0.45) !important;}
+body[data-page="diyet"] .topbar h1 em{color:var(--diyet-text-secondary) !important;}
+body[data-page="diyet"] .topbar .tb-label{color:var(--diyet-text-tertiary) !important;text-shadow:0 1px 3px rgba(255,255,255,0.4) !important;}
+body[data-page="diyet"] .topbar .tb-sub{color:var(--diyet-text-tertiary) !important;text-shadow:0 1px 3px rgba(255,255,255,0.4) !important;}
 
 /* ──── CİLT SAYFASI · üst kısım açık pembe gradient → koyu metin kontrast (Iter 53) ──── */
 body[data-page="cilt"]{
@@ -268,9 +273,18 @@ body[data-page="cilt"] .card-plain-tag{color:var(--cilt-text-secondary) !importa
 body[data-page="cilt"] .notice{color:var(--cilt-text-primary) !important;}
 body[data-page="cilt"] .notice strong{color:var(--cilt-text-primary) !important;}
 body[data-page="cilt"] .notice em{color:var(--cilt-text-secondary) !important;}
-/* Sabah/Akşam rutini step başlığı */
-body[data-page="cilt"] .sprod{color:var(--cilt-text-primary) !important;}
-body[data-page="cilt"] .snote{color:var(--cilt-text-secondary) !important;}
+/* Sabah/Akşam rutini step başlığı — Iter 56 fix: koyu .card içinde cream kalsın, sadece açık .notice/.card-plain içinde koyu wine */
+body[data-page="cilt"] .notice .sprod{color:var(--cilt-text-primary) !important;}
+body[data-page="cilt"] .notice .snote{color:var(--cilt-text-secondary) !important;}
+body[data-page="cilt"] .card-plain .sprod{color:var(--cilt-text-primary) !important;}
+body[data-page="cilt"] .card-plain .snote{color:var(--cilt-text-secondary) !important;}
+/* .card (koyu wine arka plan) içindeki .sprod/.snote default cream/cream-soft (base CSS satır 552-553) okunabilir */
+/* Iter 57 — .snum (adım numarası) koyu wine .card üstünde WCAG AA: pink-deep #B8536B → 3.8:1 FAIL → cream-soft + pink-pale halka 13:1 ✓ */
+body[data-page="cilt"] .card .snum{background:rgba(229,168,181,0.32) !important;color:var(--cream-soft) !important;}
+/* Iter 59 — Akşam Rutini özel rejim step (pink-pale bg) içinde inline color YOK olan .sprod/.snote → koyu wine (cream üstüne pink-pale FAIL → 17:1 ✓ AAA) */
+/* :not([style*="color"]) inline color olan label ve "⏱ 10 min wait" gibi pink-deep elementleri korur */
+body[data-page="cilt"] .sstep[style*="pink-pale"] .sprod:not([style*="color"]){color:var(--cilt-text-primary) !important;}
+body[data-page="cilt"] .sstep[style*="pink-pale"] .snote:not([style*="color"]){color:var(--cilt-text-primary) !important;}
 
 /* backdrop-filter desteklemeyen tarayıcı için solid fallback */
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
@@ -285,8 +299,9 @@ body[data-page="cilt"] .snote{color:var(--cilt-text-secondary) !important;}
 .ex-utab.active{background:rgba(232,178,63,0.20);}
 .med-utab{font-size:12px;padding:9px 12px;flex:0 0 auto;}
 .med-utab.active{background:rgba(180,121,144,0.22);}
-/* Iter 54 B4 — Cilt sekmesi alt-tab (Yüz/Saç) */
-.skin-utab.active{background:rgba(245,197,210,0.32);}
+/* Iter 54 B4 — Cilt sekmesi alt-tab (Yüz/Saç) — Iter 57 koyu pink-deep aktif + inaktif görünür */
+.skin-utab.active{background:rgba(184,83,107,0.46);color:var(--cream-soft);}
+.skin-utab:not(.active){background:rgba(0,0,0,0.06);}
 
 /* BOTTOM NAV */
 .bnav{position:fixed;bottom:0;left:0;right:0;height:80px;background:rgba(110,26,40,0.86);backdrop-filter:blur(28px) saturate(180%);-webkit-backdrop-filter:blur(28px) saturate(180%);border-top:1px solid var(--glass-border);display:flex;align-items:center;justify-content:space-around;z-index:999;padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -2px 24px rgba(0,0,0,0.2);}
@@ -340,6 +355,38 @@ body[data-page="cilt"] .snote{color:var(--cilt-text-secondary) !important;}
 #page-cilt{--tab-accent:#F5C5D2;--tab-accent-deep:#DDA0AE;--tab-accent-glow:rgba(245,197,210,0.30);}     /* Açık Pembe */    /* Mauve Akşam */
 #page-olcum,#page-medical{--tab-accent:#DDA0AE;--tab-accent-deep:#832232;--tab-accent-glow:rgba(221,160,174,0.28);}     /* Şarap Pembe */      /* Mauve + su mavisi karışım — Medical */
 #page-chat{--tab-accent:#D4A4B5;--tab-accent-deep:#B8536B;--tab-accent-glow:rgba(212,164,181,0.28);}     /* Iter 47 — Mauve · samimi sohbet tonu */
+#page-routine{--tab-accent:#D4A4B5;--tab-accent-deep:#B8536B;--tab-accent-glow:rgba(212,164,181,0.28);}  /* Iter 60 — Mauve · günlük rutin */
+
+/* Iter 60 — Günlük Rutin CTA buton (Dashboard hero card altında) */
+.routine-cta-btn{display:flex;align-items:center;justify-content:center;gap:10px;margin:0 16px 14px;padding:16px 22px;width:calc(100% - 32px);background:linear-gradient(135deg,rgba(212,164,181,0.42),rgba(232,178,63,0.28));color:var(--cream-soft);border:1px solid rgba(212,164,181,0.40);border-radius:14px;font-family:'Jost',sans-serif;font-size:15px;font-weight:600;cursor:pointer;box-shadow:0 4px 16px rgba(184,83,107,0.30);transition:transform 0.2s, box-shadow 0.2s;letter-spacing:0.5px;}
+.routine-cta-btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(184,83,107,0.40);}
+.routine-cta-btn:active{transform:scale(0.98);}
+
+/* Iter 60 — #page-routine accordion sections */
+#page-routine #routine-progress-bar{margin:0 16px 14px;}
+.rt-section{margin:0 16px 12px;background:rgba(42,14,20,0.62);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-radius:14px;border:1px solid rgba(232,221,196,0.20);overflow:hidden;}
+.rt-section-header{width:100%;display:flex;align-items:center;gap:10px;padding:14px 16px;background:transparent;border:none;color:var(--cream-soft);cursor:pointer;font-family:'Jost',sans-serif;font-size:14px;}
+.rt-section-emoji{font-size:24px;}
+.rt-section-title{flex:1;text-align:left;font-weight:600;font-size:15px;}
+.rt-section-time{font-size:11px;color:var(--cream-mute);font-family:'Jost',monospace;}
+.rt-section-progress{font-size:12px;font-weight:600;color:var(--cream-soft);background:rgba(212,164,181,0.28);padding:3px 9px;border-radius:10px;min-width:42px;text-align:center;}
+.rt-section-chevron{transition:transform 0.2s;color:var(--cream-mute);font-size:14px;}
+.rt-section.rt-open .rt-section-chevron{transform:rotate(180deg);}
+.rt-section-body{display:none;padding:4px 0 12px;border-top:1px solid rgba(232,221,196,0.12);}
+.rt-section.rt-open .rt-section-body{display:block;}
+.rt-step{display:flex;gap:12px;align-items:flex-start;padding:11px 16px;cursor:pointer;border-bottom:1px dashed rgba(232,221,196,0.08);transition:opacity 0.2s;user-select:none;}
+.rt-step:last-child{border-bottom:none;}
+.rt-step:active{background:rgba(212,164,181,0.06);}
+.rt-step input[type="checkbox"]{margin-top:3px;width:18px;height:18px;accent-color:var(--pink-deep);flex-shrink:0;cursor:pointer;}
+.rt-step-content{flex:1;min-width:0;}
+.rt-step-head{display:flex;gap:8px;align-items:center;font-size:13.5px;font-weight:500;color:var(--cream);}
+.rt-step-time{font-family:'Jost',monospace;color:var(--mustard-soft);font-weight:600;font-size:12px;}
+.rt-step-icon{font-size:15px;}
+.rt-step-title{flex:1;line-height:1.35;}
+.rt-step-desc{font-size:11.5px;color:var(--cream-mute);margin-top:4px;line-height:1.5;}
+.rt-step.rt-done{opacity:0.45;}
+.rt-step.rt-done .rt-step-title{text-decoration:line-through;}
+.rt-step.rt-done .rt-step-desc{text-decoration:line-through;}
 
 /* Iter 49 — AI Agent chat layout (full-screen immersive · input area her zaman görünür) */
 #page-chat.active{position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;padding-bottom:0;background:linear-gradient(180deg,#6E1A28 0%,#832232 55%,#4A1018 100%);overflow:hidden;}
@@ -472,7 +519,7 @@ input:focus, select:focus, textarea:focus{outline:2px solid var(--pink-deep);out
 /* EXERCISE */
 .exi{border:1px solid var(--border);border-radius:var(--r-sm);margin-bottom:10px;overflow:hidden;}
 .exh{display:flex;align-items:center;gap:12px;padding:14px;background:var(--surface);cursor:pointer;}
-.exc{width:24px;height:24px;border-radius:7px;border:2px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
+.exc{min-width:32px;height:24px;padding:0 6px;border-radius:7px;border:2px solid var(--border);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all 0.2s;white-space:nowrap;font-variant-numeric:tabular-nums;line-height:1;}
 .exc.done{background:var(--sage);border-color:var(--sage);}
 .exc.done::after{content:'✓';color:white;font-size:13px;font-weight:700;}
 .exn{flex:1;font-size:14px;font-weight:500;color:var(--text);}
@@ -1559,20 +1606,22 @@ select option{background:var(--bg-deep);color:var(--cream);}
 <div id="page-takvim" class="page active">
   <div class="topbar" style="position:relative;">
     <div class="tb-label" id="dash-greeting-label">KİŞİSEL PROGRAM</div>
-    <h1 style="font-size:42px;letter-spacing:1.5px;"><em>Begümnaz</em> <span style="font-style:normal;display:inline-block;filter:drop-shadow(0 0 16px rgba(232,178,63,0.55));">🐥</span></h1>
+    <h1 style="font-size:42px;letter-spacing:1.5px;white-space:nowrap;"><em>Begümnaz</em> <span style="font-style:normal;display:inline-block;font-size:0.6em;vertical-align:0.15em;filter:drop-shadow(0 0 12px rgba(232,178,63,0.55));">🐥</span></h1>
     <div class="tb-sub" id="today-str" style="margin-top:8px;"></div>
     <!-- Phase 3.D · 12 May 2026 — ⚙️ Ayarlar butonu (modal açar) -->
     <button onclick="openSettingsModal()" aria-label="Ayarlar" style="position:absolute;top:56px;right:20px;width:42px;height:42px;border-radius:50%;background:rgba(42,14,20,0.78);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(232,221,196,0.20);color:var(--cream-soft);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,0.25);">⚙️</button>
     <!-- Iter 31 — 🏆 Başarılarım butonu (Settings butonu solunda) -->
     <button onclick="openAchievementsModal()" aria-label="Başarılarım" style="position:absolute;top:56px;right:72px;width:42px;height:42px;border-radius:50%;background:rgba(42,14,20,0.78);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(232,221,196,0.20);color:var(--cream-soft);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,0.25);">🏆</button>
-    <!-- Iter 47 — AI Agent chat buton (Dashboard topbar) -->
-    <button onclick="openChat()" aria-label="AI Agent Sohbet" style="position:absolute;top:56px;right:124px;width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,rgba(212,164,181,0.42),rgba(232,178,63,0.28));backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(212,164,181,0.40);color:var(--cream-soft);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(184,83,107,0.30);">💬</button>
+    <!-- Iter 47 — AI Agent chat buton (Iter 58 sol üste taşındı, ayrı bölge) -->
+    <button onclick="openChat()" aria-label="AI Agent Sohbet" style="position:absolute;top:14px;left:20px;width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,rgba(212,164,181,0.42),rgba(232,178,63,0.28));backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(212,164,181,0.40);color:var(--cream-soft);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(184,83,107,0.30);z-index:5;">💬</button>
   </div>
 
   <div id="dash-greeting"></div>      <!-- Greeting hero: ZEN + phase line -->
   <div id="morning-compassion-card"></div>  <!-- Iter 28 — AI-assisted sabah merhamet mesajı (sabah modunda görünür) -->
   <div id="first-step-card"></div>     <!-- Iter 39 O1 — Welcome modal sonrası ilk adım yönlendirmesi -->
   <div id="hero-card"></div>           <!-- Phase 3.C P0 #6 — Saat-bazlı 4 mode Hero Card -->
+  <!-- Iter 60 — Günlük Rutin CTA buton -->
+  <button onclick="openRoutine()" class="routine-cta-btn"><span style="font-size:22px;">📋</span> <span id="routine-cta-label">Bugünün Tam Rutini</span></button>
 <!-- Iter 38 K5: pazar-brunch container kaldırıldı (Bengisu refeed festival kartı) -->
 
   <!-- Hatırlatmalar — Iter 36 spot fix: sadece aktif hatırlatma varsa görünür
@@ -2031,6 +2080,22 @@ select option{background:var(--bg-deep);color:var(--cream);}
       onkeypress="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChatMessage();}"
       oninput="autosizeChatInput(this)"></textarea>
     <button onclick="sendChatMessage()" id="chat-send-btn" aria-label="Gönder">↑</button>
+  </div>
+</div>
+
+<!-- Iter 60 — GÜNLÜK RUTİN (Daily Checklist) -->
+<div id="page-routine" class="page" style="--tab-accent:#D4A4B5;--tab-accent-deep:#B8536B;">
+  <div class="topbar" style="position:relative;">
+    <button onclick="closeRoutine()" aria-label="Geri" style="position:absolute;top:14px;left:14px;width:42px;height:42px;border-radius:50%;background:rgba(42,14,20,0.78);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(232,221,196,0.20);color:var(--cream-soft);font-size:20px;cursor:pointer;z-index:5;">←</button>
+    <div class="tb-label" id="routine-tab-label">GÜNLÜK PROGRAM</div>
+    <h1 id="routine-page-title"><em>Bugünün Rutini</em> 📋</h1>
+    <div class="tb-sub" id="routine-tb-sub"></div>
+  </div>
+  <div id="routine-progress-bar"></div>
+  <div id="routine-sections">
+    <div id="routine-morning"></div>
+    <div id="routine-noon"></div>
+    <div id="routine-evening"></div>
   </div>
 </div>
 
@@ -2797,6 +2862,9 @@ function setLang(lang){
   safeCall('renderAnalyticsToggle');
   // Iter 55 — Saç bakımı dil senkron
   safeCall('renderHairDay');
+  // Iter 60 — Günlük Rutin (sayfa açıksa) + CTA buton label
+  safeCall('renderRoutine');
+  try{const ctaLbl=document.getElementById('routine-cta-label');if(ctaLbl)ctaLbl.textContent=(lang==='en'?"Today's Full Routine":'Bugünün Tam Rutini');}catch(e){}
   // Diet ek render fns (Iter 49: dil değişiminde burnout/cycle-diet/streak güncellensin)
   safeCall('renderCycleDietCard');
   safeCall('renderStreakBadge');
@@ -4040,13 +4108,15 @@ function renderDashboard(){
   const months=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
   document.getElementById('today-str').textContent=today.getDate()+' '+months[today.getMonth()]+' '+today.getFullYear();
   document.getElementById('dash-greeting-label').textContent=t('today_label')+' · '+getGreeting().toUpperCase();
+  // Iter 60 — Günlük Rutin CTA buton label dil senkron
+  try{const _ctaLbl=document.getElementById('routine-cta-label');if(_ctaLbl)_ctaLbl.textContent=(getLang()==='en'?"Today's Full Routine":'Bugünün Tam Rutini');}catch(e){}
 
   const greetEl=document.getElementById('dash-greeting');
   if(greetEl){
     const phaseLine=c?`${c.emoji} ${c.label} · ${t('cycle_day')} ${c.day} / ~${cyc} · ${c.archetype}`:'🌸 '+t('no_cycle_tracking');
     const zen=c?getZen(c.phase,today):t('default_zen');
     greetEl.innerHTML=`<div class="dash-greeting-card">
-      <div class="dash-greet-hi">${getGreeting()}, <em>Begümnaz</em> ✨</div>
+      <div class="dash-greet-hi"><em>Begümnaz</em> ✨</div>
       <div class="dash-greet-meta">${phaseLine}</div>
       <div class="dash-greet-zen">"${zen}"</div>
     </div>`;
@@ -5151,7 +5221,7 @@ function renderHeroCard(){
   // Pazar günü hero card görünmesin (Pazar Esnek Gün kartı görünecek)
   if(dow===0 && h>=9 && h<13){el.innerHTML='';return;}
 
-  const cycleLine=c?`<div style="font-size:11px;color:var(--cream-mute);margin-top:4px;">${c.emoji} ${c.label} · ${t('cycle_day')} ${c.day}${inP(now)?' · 🔴 '+t('period_day'):''}</div>`:'';
+  const cycleLine=c?`<div style="font-size:15px;color:var(--cream-soft);font-weight:500;line-height:1.35;">${c.emoji} ${c.label} · ${t('cycle_day')} ${c.day}${inP(now)?' · 🔴 '+t('period_day'):''}</div>`:`<div style="font-size:14px;color:var(--cream-mute);">${getLang()==='en'?'No cycle tracking':'Döngü takibi yok'}</div>`;
   const noActions=getLang()==='en'?'No active action right now · next day starting':'Şu an aktif aksiyon yok · sıradaki gün başlıyor';
   const actionsHtml=nextActions.length?nextActions.map(n=>`
     <div style="display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px dashed rgba(232,221,196,0.10);">
@@ -5162,9 +5232,9 @@ function renderHeroCard(){
 
   el.innerHTML=`<div class="card" style="margin:0 16px 16px;background:rgba(42,14,20,0.88);">
     <div class="cb">
-      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
         <span style="font-size:32px;">${emoji}</span>
-        <div style="flex:1;"><div style="font-family:'Playfair Display','Playfair Display',serif;font-size:24px;color:var(--cream-soft);">${greeting}</div>${cycleLine}</div>
+        <div style="flex:1;">${cycleLine}</div>
       </div>
       <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--mustard-soft);margin-bottom:6px;">${nextLabel}</div>
       ${actionsHtml}
@@ -7799,7 +7869,7 @@ const BACKUP_KEYS=[
   'hypotheses','wedding_mirror_mode','wedding_mirror_seen60','wedding_reframe_manual',
   'wedding_moments','notification_settings','plate_mode','active_profile',
   // Phase 3.C P0+P1+P2 yeni anahtarlar
-  'lipid_log','lipid_seeded_v1','active_modes','gut_log','lab_results',
+  'lipid_log','lipid_seeded_v2','active_modes','gut_log','lab_results',
   // Iter 41 M12 — cilt ürün stok toggle
   'owned_products',
   // Iter 42 O6 + O7 — daily log mod + exercise analytics expanded
@@ -8256,82 +8326,88 @@ function renderFamilyHistoryCard(){
   </div>`;
 }
 
-// PHASE 3.C P0 #9 — LİPİD TAKİBİ (LDL trend + FH)
+// LİPİD TAKİBİ — Total/LDL/HDL/TG genel sağlık referansı (mg/dL)
 function getLipidLog(){return JSON.parse(localStorage.getItem('lipid_log')||'[]');}
 function saveLipidEntry(d,total,ldl,hdl,tg,apoB){
   const log=getLipidLog();
-  log.push({date:d,total,ldl,hdl,tg,apoB:apoB||null,ts:Date.now()});
+  log.push({date:d,total,ldl,hdl,tg,apoB:apoB||null,units:'mg/dL',ts:Date.now()});
   log.sort((a,b)=>a.date.localeCompare(b.date));
   localStorage.setItem('lipid_log',JSON.stringify(log));
 }
 function renderLipidTrackingCard(){
   const el=document.getElementById('lipid-tracking-card');
   if(!el)return;
+  const en=(typeof getLang==='function'&&getLang()==='en');
   let log=getLipidLog();
-  // Begümnaz'ın bilinen geçmişi seed et (sadece ilk açılışta)
-  if(!localStorage.getItem('lipid_seeded_v1')){
-    if(!log.find(e=>e.date==='2025-12-09')) log.push({date:'2025-12-09',total:7.1,ldl:5.4,hdl:1.2,tg:1.2,apoB:null,ts:Date.now()});
-    if(!log.find(e=>e.date==='2026-04-15')) log.push({date:'2026-04-15',total:9.6,ldl:8.1,hdl:1.0,tg:1.0,apoB:null,ts:Date.now()});
+  // Iter 56 — Begümnaz 21.04.2026 gerçek kan testi (mg/dL). Eski Bengisu v1 seed cleanup + yeni v2 seed.
+  if(!localStorage.getItem('lipid_seeded_v2')){
+    // Eski Bengisu seed varsa temizle (mmol/L: 7.1/5.4 ve 9.6/8.1 değerleri)
+    log=log.filter(e=>!(e.date==='2025-12-09'||e.date==='2026-04-15'));
+    if(!log.find(e=>e.date==='2026-04-21')){
+      log.push({date:'2026-04-21',total:170,ldl:88,hdl:66,tg:82,apoB:null,units:'mg/dL',ts:Date.now()});
+    }
     log.sort((a,b)=>a.date.localeCompare(b.date));
     localStorage.setItem('lipid_log',JSON.stringify(log));
-    localStorage.setItem('lipid_seeded_v1','1');
+    localStorage.setItem('lipid_seeded_v2','1');
+    localStorage.removeItem('lipid_seeded_v1');
   }
   const last=log.length?log[log.length-1]:null;
   const prev=log.length>=2?log[log.length-2]:null;
   const tdate=last?new Date(last.date):null;
   const dayssince=tdate?Math.floor((Date.now()-tdate.getTime())/(1000*60*60*24)):null;
-  const nextTestDays=dayssince!==null?Math.max(0,42-dayssince):42;
-  const ldlDelta=(last&&prev)?(last.ldl-prev.ldl).toFixed(1):null;
+  const nextTestDays=dayssince!==null?Math.max(0,180-dayssince):180; // yıllık standart panel ~6 ay
+  const ldlDelta=(last&&prev)?(last.ldl-prev.ldl).toFixed(0):null;
   const ldlPct=(last&&prev)?Math.round(((last.ldl-prev.ldl)/prev.ldl)*100):null;
-  const ldlBadge=last?(last.ldl<3?'#7A8A6A':last.ldl<5?'#E8B23F':last.ldl<7?'#E5743C':'#D9591E'):'#888';
+  // mg/dL eşikleri (NCEP ATP III genel popülasyon): <100 ideal, <130 üstü, <160 sınır yüksek, ≥160 yüksek
+  const ldlBadge=last?(last.ldl<100?'#7A8A6A':last.ldl<130?'#E8B23F':last.ldl<160?'#E5743C':'#D9591E'):'#888';
   el.innerHTML=`<div class="card" style="margin-top:16px;">
-    <div class="ch"><h3>🩺 Lipid Takibi · FH Şüphesi</h3></div>
+    <div class="ch"><h3>${en?'🩺 Lipid Tracking':'🩺 Lipid Takibi'}</h3></div>
     <div class="cb">
-      <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span>Total kolesterol + LDL + HDL trendin · <strong>LDL hedef &lt;3 mmol/L (ESC/EAS 2019)</strong>, doktor takipnde &lt;1.8. Aile öyküsü (dayı + anne) nedeniyle dikkatli takip.</div>
+      <div class="card-plain"><span class="card-plain-tag">${en?'🪞 This card':'🪞 Bu kart'}</span>${en?'Total cholesterol + LDL + HDL + TG trend · <strong>Targets: Total &lt;200 / LDL &lt;130 / HDL ≥40 / TG &lt;150 mg/dL</strong> — general health reference. Annual standard blood panel follow-up.':'Total kolesterol + LDL + HDL + TG trendin · <strong>Hedef: Total &lt;200 / LDL &lt;130 / HDL ≥40 / TG &lt;150 mg/dL</strong> — genel sağlık referansı. Yıllık standart kan paneli ile takip.'}</div>
       ${last?`<div style="margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:8px;">
         <div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:10px;">
-          <div style="font-size:10px;color:var(--cream-mute);text-transform:uppercase;letter-spacing:1px;">Son LDL</div>
+          <div style="font-size:10px;color:var(--cream-mute);text-transform:uppercase;letter-spacing:1px;">${en?'Latest LDL':'Son LDL'}</div>
           <div style="font-family:'Playfair Display','Playfair Display',serif;font-size:28px;font-weight:600;color:${ldlBadge};">${last.ldl}</div>
-          <div style="font-size:10px;color:var(--cream-mute);">mmol/L · ${last.date}</div>
+          <div style="font-size:10px;color:var(--cream-mute);">mg/dL · ${last.date}</div>
         </div>
         <div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:10px;">
           <div style="font-size:10px;color:var(--cream-mute);text-transform:uppercase;letter-spacing:1px;">Total / HDL / TG</div>
           <div style="font-size:14px;color:var(--cream-soft);margin-top:6px;">${last.total} / ${last.hdl} / ${last.tg}</div>
-          <div style="font-size:10px;color:var(--cream-mute);margin-top:2px;">mmol/L</div>
+          <div style="font-size:10px;color:var(--cream-mute);margin-top:2px;">mg/dL</div>
         </div>
       </div>`:''}
       ${ldlPct!==null?`<div style="margin-top:10px;padding:10px 12px;background:rgba(217,89,30,0.10);border-radius:6px;font-size:12px;color:var(--coral-soft);">
-        ⚠️ LDL ${ldlPct>0?'+':''}${ldlPct}% (4 ayda) · ${ldlDelta>0?'+':''}${ldlDelta} mmol/L
+        ${en?'LDL change':'LDL değişim'}: ${ldlPct>0?'+':''}${ldlPct}% · ${ldlDelta>0?'+':''}${ldlDelta} mg/dL
+      </div>`:log.length===1?`<div style="margin-top:10px;padding:10px 12px;background:rgba(255,255,255,0.04);border-radius:6px;font-size:12px;color:var(--cream-mute);">
+        ${en?'Add 2+ tests to see trend':'Trend için 2+ test gerek'}
       </div>`:''}
       <div style="margin-top:14px;padding:12px;background:rgba(90,122,79,0.08);border-left:3px solid var(--sage-leaf);border-radius:6px;">
-        <div style="font-size:12px;font-weight:600;color:var(--cream-soft);">📅 Sıradaki Test</div>
-        <div style="font-size:13px;color:var(--cream);margin-top:4px;">${nextTestDays===0?'<b>Bugün test zamanı!</b>':`<b>${nextTestDays} gün sonra</b> · 6 hafta sonrası tekrar`}</div>
-        <div style="font-size:11px;color:var(--cream-mute);margin-top:4px;line-height:1.5;">İstenecek paneli: Total, LDL, HDL, TG, <b>ApoB, Lp(a), hsCRP</b> (FH için)</div>
-      </div>
-      <div style="margin-top:10px;padding:10px;background:rgba(232,178,63,0.08);border-radius:6px;font-size:11px;color:var(--cream-mute);line-height:1.5;">
-        <b style="color:var(--mustard-soft);">📚 Mizaç + LDL bağlamı:</b> Norwitz 2022 "Lean mass hyper-responder" görüşü — sağlıklı LMHR fenotipinde geçerli. Begümnaz için: aile FH + sT3 ölçülmemiş + tiroid sub-optimal şüphesi → klasik LDL-ASCVD nedensellik (Ference 2017 PMID 28444290) baskın.
+        <div style="font-size:12px;font-weight:600;color:var(--cream-soft);">${en?'📅 Next Test':'📅 Sıradaki Test'}</div>
+        <div style="font-size:13px;color:var(--cream);margin-top:4px;">${nextTestDays===0?(en?'<b>Test time today!</b>':'<b>Bugün test zamanı!</b>'):`<b>${nextTestDays} ${en?'days later':'gün sonra'}</b> · ${en?'~6-month follow-up':'~6 ay sonrası rutin'}`}</div>
+        <div style="font-size:11px;color:var(--cream-mute);margin-top:4px;line-height:1.5;">${en?'Standard panel: Total, LDL, HDL, TG (mg/dL). Optional: ApoB (general cardiovascular risk marker).':'Standart panel: Total, LDL, HDL, TG (mg/dL). Opsiyonel: ApoB (kalp damar riski genel marker).'}</div>
       </div>
       <div style="margin-top:10px;display:flex;gap:8px;">
-        <button class="btn bsoft bsm" onclick="addLipidEntry()">📝 Yeni sonuç ekle</button>
+        <button class="btn bsoft bsm" onclick="addLipidEntry()">${en?'📝 Add new result':'📝 Yeni sonuç ekle'}</button>
       </div>
     </div>
   </div>`;
 }
 function addLipidEntry(){
+  const en=(typeof getLang==='function'&&getLang()==='en');
   const today=new Date().toISOString().slice(0,10);
-  const total=parseFloat(prompt('Total kolesterol (mmol/L):'));
+  const total=parseFloat(prompt(en?'Total cholesterol (mg/dL):':'Total kolesterol (mg/dL):'));
   if(isNaN(total))return;
-  const ldl=parseFloat(prompt('LDL (mmol/L):'));
+  const ldl=parseFloat(prompt(en?'LDL (mg/dL):':'LDL (mg/dL):'));
   if(isNaN(ldl))return;
-  const hdl=parseFloat(prompt('HDL (mmol/L):'));
+  const hdl=parseFloat(prompt(en?'HDL (mg/dL):':'HDL (mg/dL):'));
   if(isNaN(hdl))return;
-  const tg=parseFloat(prompt('TG (mmol/L):'));
+  const tg=parseFloat(prompt(en?'TG (mg/dL):':'TG (mg/dL):'));
   if(isNaN(tg))return;
-  const apoBStr=prompt('ApoB (mg/dL, yoksa boş bırak):');
+  const apoBStr=prompt(en?'ApoB (mg/dL, leave blank if none):':'ApoB (mg/dL, yoksa boş bırak):');
   const apoB=apoBStr?parseFloat(apoBStr):null;
   saveLipidEntry(today,total,ldl,hdl,tg,apoB);
   renderLipidTrackingCard();
-  showToast('💾 Lipid sonucu kaydedildi','pr');
+  showToast(en?'💾 Lipid result saved':'💾 Lipid sonucu kaydedildi','pr');
 }
 
 function renderBackupExport(){
@@ -10839,8 +10915,8 @@ function renderHairDay(){
     const todayDow=(new Date().getDay()+6)%7;  // Pzt=0
     const rows=HAIR_WEEKLY_SCHEDULE.map((w,i)=>{
       const isToday=i===todayDow;
-      return `<div style="display:grid;grid-template-columns:50px 1fr;gap:10px;padding:8px 10px;border-bottom:1px dashed var(--border-soft);${isToday?'background:rgba(245,197,210,0.18);border-radius:6px;':''}">
-        <div style="font-weight:${isToday?'700':'500'};color:${isToday?'var(--pink-deep)':'var(--text)'};">${en?w.dEn:w.d}${w.wash?' 💧':''}</div>
+      return `<div style="display:grid;grid-template-columns:50px 1fr;gap:10px;padding:8px 10px;border-bottom:1px dashed var(--border-soft);${isToday?'background:rgba(229,168,181,0.32);border-radius:6px;':''}">
+        <div style="font-weight:${isToday?'700':'500'};color:${isToday?'var(--cream-soft)':'var(--text)'};">${en?w.dEn:w.d}${w.wash?' 💧':''}</div>
         <div style="font-size:12.5px;color:var(--text-mid);line-height:1.5;">${en?w.actEn:w.act}</div>
       </div>`;
     }).join('');
@@ -10897,6 +10973,255 @@ function renderHairProds(){
   el.innerHTML=`<div class="card"><div class="cb">${groups}${shoppingBadge}</div></div>`;
 }
 
+// ─────────────────────────────────────────────────────────────
+// Iter 60 — GÜNLÜK RUTİN (Daily Checklist) — cycle/phase/endo-aware
+// ─────────────────────────────────────────────────────────────
+function getRoutineLogKey(d){const dt=(d instanceof Date)?d:new Date(d||Date.now());return 'routine_log_'+dt.toISOString().slice(0,10);}
+function getRoutineLog(d){try{return JSON.parse(localStorage.getItem(getRoutineLogKey(d))||'{}');}catch(e){return {};}}
+function saveRoutineLog(log,d){localStorage.setItem(getRoutineLogKey(d),JSON.stringify(log));}
+
+function openRoutine(){
+  document.body.dataset.page='routine';
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  const pg=document.getElementById('page-routine');
+  if(pg)pg.classList.add('active');
+  renderRoutine();
+}
+function closeRoutine(){
+  document.body.dataset.page='takvim';
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  const pg=document.getElementById('page-takvim');
+  if(pg)pg.classList.add('active');
+  const firstNb=document.querySelectorAll('.nb')[0];
+  document.querySelectorAll('.nb').forEach(b=>b.classList.remove('active'));
+  if(firstNb)firstNb.classList.add('active');
+}
+
+// Cycle/phase/endo-aware adım üreteci
+function buildRoutineSteps(timeOfDay,ctx){
+  const {c,per,flare,dow,en,sd}=ctx;
+  const steps=[];
+  if(timeOfDay==='morning'){
+    steps.push({time:'06:30',icon:'💧',title:en?'Warm salted water':'Ilık tuzlu su',desc:en?'1 large glass + pinch rock salt':'1 büyük bardak + tutam kaya tuzu',key:'m-water'});
+    steps.push({time:'07:00',icon:'💊',title:en?'Morning AC supplements':'Sabah AC supplement',desc:'Lugol 5% · NAC · Selenyum · Time Mg',key:'m-ac'});
+    // SPF — yürüyüş öncesi sadece SPF (Cum), diğerleri normal
+    if(dow===5){
+      steps.push({time:'07:15',icon:'🧴',title:en?'SPF only (before walk)':'Sadece SPF (yürüyüş öncesi)',desc:'Garnier BHA + Niacinamide SPF 50 · 3 dk',key:'m-spf-pre'});
+      steps.push({time:'07:30',icon:'🚶',title:en?'Morning walk':'Sabah yürüyüşü',desc:en?'45-60 min Zone 2':'45-60 dk Zone 2',key:'m-walk'});
+      steps.push({time:'08:30',icon:'🚿',title:en?'Shower after walk':'Yürüyüş sonrası duş',desc:'',key:'m-shower'});
+    }
+    steps.push({time:'07:30',icon:'💧',title:en?'Lugol iodine 5%':'Lugol iyot %5',desc:en?'1 drop in water (iodine 27 low)':'1 damla su içinde (iyot 27 düşük)',key:'m-lugol'});
+    steps.push({time:'08:00',icon:'🍳',title:en?'Breakfast (when hungry)':'Kahvaltı (acıkmaya göre)',desc:en?'Eggs + olives + bread · NO dairy/beef/chicken/eggplant':'Yumurta + zeytin + ekmek · süt/dana/tavuk/patlıcan YOK',key:'m-breakfast'});
+    steps.push({time:'08:30',icon:'💊',title:en?'Breakfast supplements':'Kahvaltı sonrası supplement',desc:'B-Complex · D3 · Omega-3 · Vit C',key:'m-breakfast-supp'});
+    // Saç yıkama Pzt+Çar+Cmt (dow 1, 3, 6)
+    if([1,3,6].includes(dow))steps.push({time:'09:00',icon:'💇',title:en?'Hair wash + scalp serum':'Saç yıkama + scalp serum',desc:en?'Sulfate-free shampoo + 2min scalp massage':'Sülfatsız şampuan + 2 dk scalp masaj',key:'m-hair-wash'});
+    // Tam cilt rutini — duş sonrası (Cum) veya direkt
+    const fullSkinTime=dow===5?'09:00':'09:30';
+    steps.push({time:fullSkinTime,icon:'🧴',title:en?'Full morning skin routine (7 steps)':'Tam sabah cilt rutini (7 adım)',desc:per?(en?'Period mode: skip retinol, hydration ↑':'Regl modu: retinol atla, nem ↑'):(en?'See Skin tab for product details':'Cilt sekmesi detay'),key:'m-skin-full'});
+  }else if(timeOfDay==='noon'){
+    steps.push({time:'12:00',icon:'🥗',title:en?'Lunch':'Öğle yemeği',desc:en?'Lamb/turkey 3x/wk · veg + healthy carb':'Kuzu/hindi 3x/hf · sebze + sağlıklı karb',key:'n-lunch'});
+    steps.push({time:'13:30',icon:'💊',title:en?'Afternoon AC':'İkindi AC',desc:'NAC · More than Mg + Vit C',key:'n-ac'});
+    steps.push({time:'14:30',icon:'🍎',title:en?'Snack (if hungry)':'Ara (acıkırsa)',desc:en?'Fruit + tahini OR nuts':'Meyve + tahin VEYA kuruyemiş',key:'n-snack'});
+    // Pre-pilates (Çar+Cum)
+    if([3,5].includes(dow))steps.push({time:'17:30',icon:'⚡',title:en?'Pre-pilates Benfolife':'Pre-pilates Benfolife',desc:en?'30 min before class':'Ders öncesi 30 dk',key:'n-prewo'});
+  }else{ // evening
+    // Egzersiz — günlük tip
+    let ex=null;
+    try{ex=(typeof SP!=='undefined'&&SP[dow])?SP[dow]:null;}catch(e){}
+    if(ex){
+      const exName=ex.n||'';
+      if(exName.startsWith('Ağırlık')){
+        if(flare){
+          steps.push({time:'18:00',icon:'🌸',title:en?'Endo flare → switch to pelvic floor':'Endo flare → pelvik tabana geç',desc:en?'20-30% downshift, gentle':'20-30% downshift, yumuşak',key:'e-workout'});
+        }else{
+          steps.push({time:'18:00',icon:'💪',title:exName,desc:ex.f,key:'e-workout'});
+        }
+      }else if([3,5].includes(dow)){
+        steps.push({time:'18:00',icon:'🧘',title:en?'Full Body Pilates (your class)':'Full Body Pilates (kendi dersin)',desc:en?'60-90 min · medium level':'60-90 dk · orta seviye',key:'e-pilates'});
+      }else if(exName.startsWith('Pelvik')){
+        steps.push({time:'18:00',icon:'🌸',title:exName,desc:ex.f,key:'e-pelvic'});
+      }
+    }
+    steps.push({time:'19:00',icon:'🍽️',title:en?'Dinner':'Akşam yemeği',desc:en?'Light protein + veg + warm':'Hafif protein + sebze + sıcak',key:'e-dinner'});
+    steps.push({time:'19:30',icon:'💊',title:en?'Dinner supplements':'Akşam yemek sonrası supplement',desc:'Anti turmeric + More than (MSM+VitC) + Lifextra · Mg',key:'e-supp-1'});
+    // Cilt akşam rutini
+    let skinTitle, skinDesc;
+    if(per){
+      skinTitle=en?'Night skin · period mode':'Akşam cilt · regl modu';
+      skinDesc=en?'Cleanse → Hyaluron → Medicube Jelly (skip retinol/AHA)':'Temizle → Hyaluron → Medicube Jelly (retinol/AHA atla)';
+    }else{
+      try{
+        const sa=(typeof SA!=='undefined'&&SA[sd])?SA[sd]:null;
+        const activeLbl=sa?sa.l:'';
+        skinTitle=en?`Night routine + ${activeLbl}`:`Akşam rutin + ${activeLbl}`;
+        skinDesc=en?'Cleanse → Hyaluron → Active step → Madescar':'Temizle → Hyaluron → Aktif adım → Madescar';
+      }catch(e){
+        skinTitle=en?'Night skin routine':'Akşam cilt rutini';
+        skinDesc='';
+      }
+    }
+    steps.push({time:'20:00',icon:'🧴',title:skinTitle,desc:skinDesc,key:'e-skin'});
+    // Saç yağı — regl haftası dışında
+    if(!per)steps.push({time:'22:00',icon:'💆',title:en?'Hair oil to ends':'Saç uçlarına yağ',desc:en?'Argan / jojoba / coconut':'Argan / jojoba / hindistancevizi',key:'e-hair-oil'});
+    steps.push({time:'22:30',icon:'💊',title:en?'Last supplement (Mg)':'Son supplement (Mg)',desc:en?'Magnesium glycinate for sleep':'Magnezyum glisinat — uyku için',key:'e-supp-2'});
+    steps.push({time:'23:00',icon:'🌙',title:en?'Wind down · silk pillowcase':'Uyku · ipek yastık',desc:en?'10:30-11 PM ideal · phone away':'22:30-23:00 ideal · telefon kapat',key:'e-sleep'});
+  }
+  return steps;
+}
+
+function renderRoutineSection(id,emoji,title,timeRange,steps,autoOpen,log){
+  const completed=steps.filter(s=>log[s.key]).length;
+  const total=steps.length;
+  const body=steps.map(s=>{
+    const done=!!log[s.key];
+    return `<div class="rt-step ${done?'rt-done':''}" onclick="toggleRoutineStep('${s.key}',this)">
+      <input type="checkbox" ${done?'checked':''} style="pointer-events:none;">
+      <div class="rt-step-content">
+        <div class="rt-step-head">
+          <span class="rt-step-time">${s.time}</span>
+          <span class="rt-step-icon">${s.icon}</span>
+          <span class="rt-step-title">${s.title}</span>
+        </div>
+        ${s.desc?`<div class="rt-step-desc">${s.desc}</div>`:''}
+      </div>
+    </div>`;
+  }).join('');
+  return `<div class="rt-section ${autoOpen?'rt-open':''}" data-section="${id}">
+    <button class="rt-section-header" onclick="toggleRoutineSection('${id}')">
+      <span class="rt-section-emoji">${emoji}</span>
+      <span class="rt-section-title">${title}</span>
+      <span class="rt-section-time">${timeRange}</span>
+      <span class="rt-section-progress">${completed}/${total}</span>
+      <span class="rt-section-chevron">▾</span>
+    </button>
+    <div class="rt-section-body">${body}</div>
+  </div>`;
+}
+
+function toggleRoutineSection(id){
+  const sec=document.querySelector(`#routine-${id} .rt-section`);
+  if(sec)sec.classList.toggle('rt-open');
+}
+
+function toggleRoutineStep(key,el){
+  const log=getRoutineLog();
+  if(log[key])delete log[key]; else log[key]={ts:Date.now()};
+  saveRoutineLog(log);
+  if(el){
+    el.classList.toggle('rt-done',!!log[key]);
+    const cb=el.querySelector('input[type="checkbox"]');
+    if(cb)cb.checked=!!log[key];
+  }
+  // Section progress badge + ana progress bar güncelle
+  renderRoutineProgress();
+  // Section header badge sayısını update et (tüm section'ları yeniden render etmeden)
+  document.querySelectorAll('.rt-section').forEach(sec=>{
+    const steps=sec.querySelectorAll('.rt-step');
+    const done=sec.querySelectorAll('.rt-step.rt-done').length;
+    const badge=sec.querySelector('.rt-section-progress');
+    if(badge)badge.textContent=`${done}/${steps.length}`;
+  });
+}
+
+function renderRoutineProgress(){
+  const el=document.getElementById('routine-progress-bar');
+  if(!el)return;
+  const en=getLang()==='en';
+  const all=document.querySelectorAll('#page-routine .rt-step');
+  const done=document.querySelectorAll('#page-routine .rt-step.rt-done').length;
+  const total=all.length;
+  const pct=total?Math.round(done/total*100):0;
+  el.innerHTML=`<div style="background:rgba(255,255,255,0.06);border-radius:12px;padding:14px 16px;border:1px solid rgba(212,164,181,0.20);">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+      <span style="font-size:11px;color:var(--cream-mute);text-transform:uppercase;letter-spacing:1.2px;">${en?"Today's Progress":'Bugünkü İlerleme'}</span>
+      <span style="font-family:'Playfair Display',serif;font-size:26px;font-weight:600;color:var(--cream-soft);">${pct}%</span>
+    </div>
+    <div style="background:rgba(0,0,0,0.20);border-radius:8px;height:8px;overflow:hidden;">
+      <div style="background:linear-gradient(90deg,var(--pink-deep),var(--mustard-soft));height:100%;width:${pct}%;transition:width 0.4s;"></div>
+    </div>
+    <div style="font-size:11px;color:var(--cream-mute);margin-top:8px;">${done}/${total} ${en?'completed':'tamamlandı'}</div>
+  </div>`;
+}
+
+function renderRoutine(){
+  const en=getLang()==='en';
+  const today=new Date();
+  const d=today;
+  let c=null, per=false, flare=false, sd=0;
+  try{c=(typeof ci==='function')?ci(d):null;}catch(e){}
+  try{per=(typeof inP==='function')?!!inP(d):false;}catch(e){}
+  try{const dl=(typeof getDayLog==='function')?getDayLog(d):null; flare=!!(dl&&dl.flare);}catch(e){}
+  try{sd=(typeof getSkinD==='function')?getSkinD(d):0;}catch(e){}
+  const dow=d.getDay();
+  const hour=today.getHours();
+  // Bilingual labels
+  const subEl=document.getElementById('routine-tb-sub');
+  if(subEl){
+    const dayName=en?d.toLocaleDateString('en-US',{weekday:'long'}):d.toLocaleDateString('tr-TR',{weekday:'long'});
+    const dateStr=d.toLocaleDateString(en?'en-US':'tr-TR',{day:'numeric',month:'long'});
+    const phaseLine=c?` · ${c.emoji} ${c.label} ${en?'Day':'Gün'} ${c.day}`:'';
+    const flareLine=flare?(en?' · 🔥 endo flare':' · 🔥 endo flare'):'';
+    subEl.textContent=`${dayName} · ${dateStr}${phaseLine}${flareLine}`;
+  }
+  const titleEl=document.getElementById('routine-page-title');
+  if(titleEl)titleEl.innerHTML=en?'<em>Today\'s Routine</em> 📋':'<em>Bugünün Rutini</em> 📋';
+  const labelEl=document.getElementById('routine-tab-label');
+  if(labelEl)labelEl.textContent=en?'DAILY PROGRAM':'GÜNLÜK PROGRAM';
+  // Aktif dilim
+  const activeSection=hour<12?'morning':(hour<18?'noon':'evening');
+  // Adımlar
+  const ctx={c,per,flare,dow,en,sd};
+  const morningSteps=buildRoutineSteps('morning',ctx);
+  const noonSteps=buildRoutineSteps('noon',ctx);
+  const eveningSteps=buildRoutineSteps('evening',ctx);
+  const log=getRoutineLog();
+  // Render 3 dilim
+  document.getElementById('routine-morning').innerHTML=renderRoutineSection('morning','🌅',en?'Morning':'Sabah','06:00 — 12:00',morningSteps,activeSection==='morning',log);
+  document.getElementById('routine-noon').innerHTML=renderRoutineSection('noon','☀️',en?'Noon':'Öğle','12:00 — 18:00',noonSteps,activeSection==='noon',log);
+  document.getElementById('routine-evening').innerHTML=renderRoutineSection('evening','🌙',en?'Evening':'Akşam','18:00 — 00:00',eveningSteps,activeSection==='evening',log);
+  // Progress bar
+  renderRoutineProgress();
+}
+
+// Iter 57 — Sıralama notice egzersiz takvimine dinamik bağlanır
+// Pzt/Per/Cmt: akşam gym → sabah tam rutin + gym sonrası tekrar
+// Sal/Paz: pelvik fizyopilates evde → standart 7 adım
+// Çar: 18:00 pilates dersi → sabah rutin + akşam SPF tazele
+// Cum: SABAH YÜRÜYÜŞ + 18:00 pilates → SPF önce + yürüyüş sonrası 7 adım
+function updateOrderNotice(d){
+  const orderWrap=document.getElementById('c-order-notice-wrap');
+  if(!orderWrap)return;
+  const en=getLang()==='en';
+  const dt=(d instanceof Date)?d:new Date(d);
+  const dow=dt.getDay();
+  const ex=(typeof SP!=='undefined'&&SP[dow])?SP[dow]:null;
+  const exName=ex?ex.n:'';
+  const orderStrong=en?'Order:':'Sıralama:';
+  let orderBody;
+  if(dow===5){
+    orderBody=en
+      ?'Before morning walk: SPF only (Garnier BHA + Niacinamide SPF 50, 3 min). After walk SHOWER → full 7-step routine. Evening 18:00 pilates → refresh SPF if outdoor.'
+      :'Sabah yürüyüşten önce: sadece SPF (Garnier BHA + Niacinamide SPF 50, 3 dk). Yürüyüş sonrası DUŞ → tam 7 adımlı rutin. Akşam 18:00 pilates → dışarıdaysan SPF tazele.';
+  }else if(exName.startsWith('Ağırlık')){
+    orderBody=en
+      ?'Morning: full 7-step routine (SPF mandatory). Evening gym session → SHOWER → repeat moisturizer + active step (no SPF at night).'
+      :'Sabah: tam 7 adımlı rutin (SPF şart). Akşam gym sonrası DUŞ → nemlendirici + aktif adımı tekrarla (gece SPF yok).';
+  }else if(dow===3){
+    orderBody=en
+      ?'Morning: full 7-step routine. 18:00 pilates class (you teach) → light sweat, just refresh SPF + moisturizer if needed.'
+      :'Sabah: tam 7 adımlı rutin. 18:00 pilates dersi (sen veriyorsun) → hafif terle, sadece SPF tazele + nemlendirici.';
+  }else if(exName.startsWith('Pelvik Taban')){
+    orderBody=en
+      ?'Standard 7-step routine morning & evening. Pelvic floor session today (home, light) → no extra wash needed.'
+      :'Sabah ve akşam standart 7 adımlı rutin. Bugün pelvik taban (evde, hafif) → ek yıkama gerek yok.';
+  }else{
+    orderBody=en
+      ?'Standard 7-step routine morning & evening. For full daily flow → "📋 Today\'s Routine" button on Today tab.'
+      :'Sabah ve akşam standart 7 adımlı rutin. Tam günlük akış için → Bugün sekmesindeki "📋 Bugünün Rutini" butonu.';
+  }
+  orderWrap.innerHTML=`<div class="notice ng"><div class="nicon">⏰</div><div><strong>${orderStrong}</strong> ${orderBody}</div></div>`;
+}
+
 // Iter 54 B6 — Skin sekmesi alt-tab (Yüz / Saç)
 function setSkinUTab(tab){
   const yuz=document.getElementById('skin-pane-yuz');
@@ -10928,15 +11253,8 @@ function renderSkin(){
       :'Yüz rutini cycle fazına göre değişir — regl haftası tret/AHA atla (cilt hassas), ovulasyon Vit C + niasinamid peak, luteal BHA + sebum kontrol. <strong>Acnelyse 0.025% Sal+Paz sandwich</strong> · Azelaic Pzt+Cmt · AHA 6% Per · Madescar+Hyaluron her gece bariyer. <em>Bugün hangi gündesin sayfa otomatik söyler.</em>';
     intro.innerHTML=`<span class="card-plain-tag">${tag}</span>${body}`;
   }
-  // Iter 54 A2 — Sıralama notice (Begümnaz akış)
-  const orderWrap=document.getElementById('c-order-notice-wrap');
-  if(orderWrap){
-    const orderStrong=en?'Order:':'Sıralama:';
-    const orderBody=en
-      ?'Before morning walk apply only SPF (Garnier BHA + Niacinamide SPF 50, 3 min). After walk SHOWER → then this 7-step full routine. See Calendar for daily schedule.'
-      :'Sabah yürüyüşe çıkmadan önce sadece SPF (Garnier BHA + Niacinamide SPF 50) sür (3 dk). Yürüyüş sonrası DUŞ → ardından bu 7 adımlı tam rutini yap. Detay için Takvim sayfasındaki günlük programa bak.';
-    orderWrap.innerHTML=`<div class="notice ng"><div class="nicon">⏰</div><div><strong>${orderStrong}</strong> ${orderBody}</div></div>`;
-  }
+  // Iter 57 — Sıralama notice egzersiz takvimine dinamik bağlanır (renderSkinDay tetikler)
+  updateOrderNotice(S.cD);
   // slbl labels bilingual
   const morningLbl=document.querySelector('#skin-pane-yuz .slbl:nth-of-type(1)');
   const prodsLbl=document.getElementById('c-prods-lbl');
@@ -10950,6 +11268,8 @@ function renderSkin(){
 }
 function renderSkinDay(){
   const d=S.cD,sd=getSkinD(d),c=ci(d),per=inP(d),pre=preP(d);
+  // Iter 57 — Sıralama notice gün-aware güncelle (egzersiz takvimine bağlı)
+  if(typeof updateOrderNotice==='function')updateOrderNotice(d);
   const sa=SA[sd],ea=(per||pre)&&sa.p.includes('Retinol')?{l:'Period Protocol',b:'brest',e:'💤',p:'Medicube Collagen Jelly Cream',no:'Skip retinol this week'}:sa;
   // Retinol-after morning: yesterday's skin day was 1, 3 veya 5 AND yesterday wasn't on period (period replaces retinol with rest)
   const yest=new Date(d);yest.setDate(yest.getDate()-1);
