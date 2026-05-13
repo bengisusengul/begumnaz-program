@@ -12,7 +12,7 @@ API key'i client'ta tutmak yerine **sunucu tarafında** saklamak için. Tek sefe
 Cloudflare Worker proxy:
 - Key sadece Cloudflare environment variable'da (sunucuda)
 - Client'tan key gelmez — sadece **proxy URL** ve isteğe bağlı **basit token**
-- Origin kısıtlama (sadece begumnazsengul.github.io'dan kabul)
+- Origin kısıtlama (sadece bengisusengul.github.io'dan kabul)
 - Rate limit 30/dk
 - Model whitelist (Haiku/Sonnet/Opus 4.x)
 
@@ -36,7 +36,7 @@ wrangler login
 ### 3. Worker projesi oluştur
 
 ```bash
-cd ~/Desktop/begumnaz-program
+cd ~/Desktop/bnsp-repo
 mkdir api-proxy && cd api-proxy
 
 # wrangler.toml
@@ -59,7 +59,7 @@ wrangler secret put ANTHROPIC_API_KEY
 
 # Allowed origins (virgülle ayrılmış)
 wrangler secret put ALLOWED_ORIGINS
-# Yapıştır: https://begumnazsengul.github.io,http://localhost:8000
+# Yapıştır: https://bengisusengul.github.io,http://localhost:8000
 
 # Opsiyonel: ekstra koruma için bir token (Begümnaz sadece kendi cihazından çağırsın)
 wrangler secret put AUTH_TOKEN
