@@ -1998,7 +1998,11 @@ select option{background:var(--bg-deep);color:var(--cream);}
       </div>
     </div>
 
-    <div class="slbl" style="padding:0;margin:0 0 8px;" data-i18n="settings_theme">🎨 Tema</div>
+    <!-- Iter 64 — Egzersiz konumu (ekipman modu) -->
+    <div class="slbl" style="padding:0;margin:0 0 8px;" id="settings-equip-lbl">🏋️ Egzersiz Konumu</div>
+    <div id="equip-card"></div>
+
+    <div class="slbl" style="padding:0;margin:14px 0 8px;" data-i18n="settings_theme">🎨 Tema</div>
     <div id="theme-card"></div>
 
     <div class="slbl" style="padding:0;margin:14px 0 8px;" data-i18n="settings_profile">👤 Profiller</div>
@@ -2886,6 +2890,7 @@ function setLang(lang){
   safeCall('renderMedicalLabs');
   safeCall('renderDoctorQuestionsCard');
   // Settings sub-cards
+  safeCall('renderEquipCard');  // Iter 64 — Egzersiz konumu (Ev/Gym/Dışarı)
   safeCall('renderThemeCard');
   safeCall('renderProfileCard');
   safeCall('renderBackupExport');
@@ -5039,6 +5044,71 @@ function renderThemeCard(){
 // Sayfa yüklendiğinde kaydedilmiş tema varsa uygula
 if(document.readyState!=='loading')loadSavedTheme();
 else document.addEventListener('DOMContentLoaded',loadSavedTheme);
+
+// Iter 64 — Egzersiz konumu (ekipman modu) — Ev / Gym / Dışarı
+function getWorkoutLocation(){return localStorage.getItem('workout_location')||'ev';}
+function setWorkoutLocation(loc){
+  if(!['ev','gym','disari'].includes(loc))return;
+  localStorage.setItem('workout_location',loc);
+  renderEquipCard();
+  // Aktif Egzersiz sayfası yenilensin
+  if(typeof renderEx==='function')try{renderEx();}catch(e){}
+  if(typeof renderExDay==='function')try{renderExDay();}catch(e){}
+  const en=getLang()==='en';
+  const lblMap={ev:en?'Home':'Ev',gym:'Gym',disari:en?'Outdoor':'Dışarı'};
+  if(typeof showToast==='function')showToast(`🏋️ ${en?'Workout location:':'Egzersiz konumu:'} ${lblMap[loc]}`,'pr');
+}
+function renderEquipCard(){
+  const el=document.getElementById('equip-card');
+  if(!el)return;
+  const en=getLang()==='en';
+  const cur=getWorkoutLocation();
+  const lbl=document.getElementById('settings-equip-lbl');
+  if(lbl)lbl.textContent=en?'🏋️ Workout Location':'🏋️ Egzersiz Konumu';
+  const helperTag=en?'🪞 This card':'🪞 Bu kart';
+  const helperBody=en
+    ?'Choose where you\'re training today. Exercise instructions adapt — <strong>Home</strong> (2-3 kg DB + bands + magic circle + pilates balls), <strong>Gym</strong> (full equipment), <strong>Outdoor</strong> (bodyweight + bands).'
+    :'Bugün nerede çalışıyorsun? Egzersiz talimatları uyarlanır — <strong>Ev</strong> (2-3 kg DB + bantlar + magic circle + pilates topları), <strong>Gym</strong> (tam ekipman), <strong>Dışarı</strong> (bodyweight + bant).';
+  const opts=[
+    {k:'ev',e:'🏠',l:en?'Home':'Ev',d:en?'2-3 kg DB · bands · ring · ball':'2-3 kg DB · bant · ring · top'},
+    {k:'gym',e:'🏋️',l:'Gym',d:en?'Full equipment':'Tam ekipman'},
+    {k:'disari',e:'🌳',l:en?'Outdoor':'Dışarı',d:en?'Bodyweight + band':'BW + bant'}
+  ];
+  const buttons=opts.map(o=>{
+    const active=cur===o.k;
+    return `<button onclick="setWorkoutLocation('${o.k}')" style="flex:1;min-width:0;padding:10px 8px;border-radius:10px;background:${active?'rgba(212,164,181,0.42)':'rgba(255,255,255,0.06)'};color:${active?'var(--cream-soft)':'var(--cream)'};border:1px solid ${active?'rgba(212,164,181,0.55)':'var(--glass-border)'};cursor:pointer;font-family:'Jost',sans-serif;display:flex;flex-direction:column;align-items:center;gap:2px;transition:all 0.2s;">
+      <span style="font-size:20px;">${o.e}</span>
+      <span style="font-size:13px;font-weight:${active?'700':'500'};">${o.l}</span>
+      <span style="font-size:10px;color:var(--cream-mute);line-height:1.3;text-align:center;">${o.d}</span>
+    </button>`;
+  }).join('');
+  el.innerHTML=`<div style="padding:14px 14px 12px;border-radius:12px;background:rgba(229,168,181,0.08);border:1px solid rgba(229,168,181,0.20);">
+    <div class="card-plain" style="margin-bottom:10px;"><span class="card-plain-tag">${helperTag}</span>${helperBody}</div>
+    <div style="display:flex;gap:8px;">${buttons}</div>
+  </div>`;
+}
+
+// Iter 64 — Egzersiz talimatlarını ekipman moduna göre vurgula
+// EX array h alanında "Ev: ... Gym: ... Dışarı: ..." pattern varsa aktif modu öne çıkar
+function formatExHow(text,loc){
+  if(!text)return '';
+  const locLabel={ev:'Ev',gym:'Gym',disari:'Dışarı'}[loc||'ev']||'Ev';
+  const emoji={Ev:'🏠',Gym:'🏋️','Dışarı':'🌳'};
+  // Lookahead ile location marker'larına göre splitle, delimiter'ları korur
+  const parts=text.split(/(?=\b(?:Ev|Gym|Dışarı):\s)/);
+  const hasLocations=parts.some(p=>/^(Ev|Gym|Dışarı):\s/.test(p));
+  if(!hasLocations)return text;  // Pattern yok, ham metin
+  return parts.map(part=>{
+    const m=part.match(/^(Ev|Gym|Dışarı):\s+([\s\S]+)$/);
+    if(!m){
+      const tr=part.trim();
+      return tr?`<div style="margin-bottom:6px;">${tr}</div>`:'';
+    }
+    const label=m[1], body=m[2].trim();
+    const isActive=label===locLabel;
+    return `<div style="margin:4px 0;padding:6px 9px;border-radius:6px;${isActive?'background:rgba(212,164,181,0.20);border-left:3px solid var(--pink-deep);color:var(--cream-soft);font-weight:500;':'opacity:0.5;border-left:3px solid transparent;'}"><span style="font-weight:700;">${emoji[label]||''} ${label}:</span> ${body}</div>`;
+  }).join('');
+}
 
 // ════════════════════════════════════════════════
 // Iter 28 — AI-assisted sabah merhamet mesajı
@@ -10043,7 +10113,8 @@ function renderExDay(){
         pelvikVideoLink=`<a href="https://www.youtube.com/results?search_query=${encodeURIComponent(info.search)}&sp=CAMSAhAB" target="_blank" class="btn bsage bsm" style="margin-top:4px;">▶ ${en?'This week\'s video':'Bu haftanın videosu'}</a>`;
       }
     }
-    const howShort = ex.h.length > 80 ? ex.h.substring(0,80)+'...' : ex.h;
+    // Iter 64 — Ekipman moduna göre talimatları formatla (Ev/Gym/Dışarı switch vurgu)
+    const howShort = (typeof formatExHow==='function')?formatExHow(ex.h,getWorkoutLocation()):(ex.h.length>80?ex.h.substring(0,80)+'...':ex.h);
     // Ovulasyon haftası substitusyon chip (Phase 2 Hafta 3C)
     let cycleSubChip='';
     if(cycleAdj && cycleAdj.substitution){
@@ -10232,11 +10303,12 @@ function renderStrengthGrid(){
   // Hiç veri yoksa kompakt boş durum
   const anyData=STRENGTH_GRID_LIFTS.some(l=>getLiftHistory(l.id,1).length>0);
   if(!anyData){
+    const _en=getLang()==='en';
     el.innerHTML=`<div class="strength-grid-card">
-      <div class="sg-title">Güç Trendi · 1RM Tahmini</div>
-      <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span>6 ana hareket için son seansların yaklaşık <strong>"tek tekrar maksı"</strong> grafiği. Set log'a kg + tekrar + zorluk girdikçe trend ortaya çıkar — <em>güçleniyor musun, sabit mi, düşüyor mu</em> tek bakışta görürsün. Cycle fazı her hücrenin sol kenarında renkli şerit olarak gösterilir.</div>
-      ${getEduLevel()!=='L1'?'<div class="sg-subtitle">6 ana hareket · Brzycki + Epley + RPE</div>':''}
-      <div class="sg-empty-grid">Set log girişi başladıkça 1RM trendlerin burada belirir. Her seans <strong>kg</strong> + <strong>rep</strong> + <strong>RPE</strong> doldurulduğunda otomatik çizilir.</div>
+      <div class="sg-title">${_en?'Strength Trend · 1RM Estimate':'Güç Trendi · 1RM Tahmini'}</div>
+      <div class="card-plain"><span class="card-plain-tag">${_en?'🪞 This card':'🪞 Bu kart'}</span>${_en?'<strong>"One rep max"</strong> chart for 6 main lifts. As you log kg + reps + RPE, the trend emerges — <em>are you getting stronger, plateauing, or losing?</em> A glance tells you. Cycle phase shown as colored strip on left edge of each cell.':'6 ana hareket için son seansların yaklaşık <strong>"tek tekrar maksı"</strong> grafiği. Set log\'a kg + tekrar + zorluk girdikçe trend ortaya çıkar — <em>güçleniyor musun, sabit mi, düşüyor mu</em> tek bakışta görürsün. Cycle fazı her hücrenin sol kenarında renkli şerit olarak gösterilir.'}</div>
+      <div class="sg-empty-grid">${_en?'Log your first set → 1RM baseline starts here. Each session fill <strong>kg</strong> + <strong>reps</strong> + <strong>RPE</strong>, the curve draws itself.':'İlk setini logla → 1RM tahminin burada başlar. Her seans <strong>kg</strong> + <strong>tekrar</strong> + <strong>RPE</strong> doldur, eğri kendi çizilir.'}</div>
+      <button onclick="window.scrollTo({top:document.querySelector('#page-egzersiz .exh')?.getBoundingClientRect().top+window.scrollY-80||0,behavior:'smooth'})" style="margin-top:10px;padding:10px 16px;background:linear-gradient(135deg,var(--pink-deep),var(--mustard-soft));color:var(--cream-soft);border:none;border-radius:10px;font-family:'Jost',sans-serif;font-size:13px;font-weight:600;cursor:pointer;width:100%;">👇 ${_en?'Jump to first exercise':'İlk harekete git'}</button>
     </div>`;
     return;
   }
@@ -10385,13 +10457,14 @@ function renderMuscleHeatmap(){
   if(!el)return;
   const{hits,detail,monday}=getMuscleHitsThisWeek(new Date());
   const totalSets=Object.values(hits).reduce((a,b)=>a+b,0);
-  const _mhPlain=`<div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span>Bu hafta hangi kası ne kadar çalıştığın <strong>vücut diyagramında</strong>. <em>Renk açıksa</em> o kasa az yüklendin, <em>koyusa</em> çok yüklendin demektir. Kas grubuna tıklayınca o haftaki ayrıntıyı + Latince adı + ne işe yaradığını öğrenirsin.</div>`;
+  const _mhEn=getLang()==='en';
+  const _mhPlain=`<div class="card-plain"><span class="card-plain-tag">${_mhEn?'🪞 This card':'🪞 Bu kart'}</span>${_mhEn?'Which muscle you worked how much this week, on a <strong>body diagram</strong>. <em>Light color</em> = low volume, <em>dark</em> = high. Tap a muscle group to see details, Latin name, and function.':'Bu hafta hangi kası ne kadar çalıştığın <strong>vücut diyagramında</strong>. <em>Renk açıksa</em> o kasa az yüklendin, <em>koyusa</em> çok yüklendin demektir. Kas grubuna tıklayınca o haftaki ayrıntıyı + Latince adı + ne işe yaradığını öğrenirsin.'}</div>`;
   if(totalSets<0.5){
     el.innerHTML=`<div class="muscle-heatmap-card">
-      <div class="mh-title">Kas Dengesi · Bu Hafta</div>
+      <div class="mh-title">${_mhEn?'Muscle Balance · This Week':'Kas Dengesi · Bu Hafta'}</div>
       ${_mhPlain}
-      ${getEduLevel()!=='L1'?'<div class="mh-subtitle">9 kas grubu × MEV//MRV oranı</div>':''}
-      <div class="mh-empty">Bu hafta henüz set log'u tamamlanmadı. Pazartesi'ten itibaren ✓ ettiğin setler kas grubu dağılımına işlenir, vücut diyagramında renkli alanlar olarak görünür.</div>
+      <div class="mh-empty">${_mhEn?'No sets logged this week yet. From Monday, every ✓ set maps onto muscle groups and lights up the body diagram. <strong>Log a few sets to wake the heatmap up.</strong>':'Bu hafta henüz set log\'u tamamlanmadı. Pazartesi\'den itibaren ✓ ettiğin setler kas grubu dağılımına işlenir, vücut diyagramında renkli alanlar olarak görünür. <strong>Birkaç set logla, ısı haritan uyansın.</strong>'}</div>
+      <button onclick="window.scrollTo({top:document.querySelector('#page-egzersiz .exh')?.getBoundingClientRect().top+window.scrollY-80||0,behavior:'smooth'})" style="margin-top:10px;padding:10px 16px;background:linear-gradient(135deg,var(--pink-deep),var(--mustard-soft));color:var(--cream-soft);border:none;border-radius:10px;font-family:'Jost',sans-serif;font-size:13px;font-weight:600;cursor:pointer;width:100%;">👇 ${_mhEn?'Jump to first exercise':'İlk harekete git'}</button>
     </div>`;
     return;
   }
@@ -10539,7 +10612,8 @@ function renderVolumeTrend(){
   // Empty state — aktif kas grubu için hiç veri yoksa, ama başka grupta veri varsa yine de chip'leri göster
   let chartHTML='';
   if(totalVolumeRecent<0.5){
-    chartHTML=`<div class="vt-empty">Bu kas grubu için son 12 hafta veri yok. ${target.label} çalıştığında set log'unu doldur, trend burada belirir. MEV ${target.mev} /  ${target.mav} / MRV ${target.mrv} hedef bantları çizilecek.</div>`;
+    const _vtEn=getLang()==='en';
+    chartHTML=`<div class="vt-empty">${_vtEn?`No data for this muscle group in the last 12 weeks. When you train ${target.label}, fill in the set log and the trend appears here. MEV ${target.mev} / ${target.mav} / MRV ${target.mrv} target bands will be drawn.`:`Bu kas grubu için son 12 hafta veri yok. ${target.label} çalıştığında set log'unu doldur, trend burada belirir. MEV ${target.mev} / ${target.mav} / MRV ${target.mrv} hedef bantları çizilecek.`}</div><button onclick="window.scrollTo({top:document.querySelector('#page-egzersiz .exh')?.getBoundingClientRect().top+window.scrollY-80||0,behavior:'smooth'})" style="margin-top:8px;padding:9px 14px;background:linear-gradient(135deg,var(--pink-deep),var(--mustard-soft));color:var(--cream-soft);border:none;border-radius:10px;font-family:'Jost',sans-serif;font-size:12.5px;font-weight:600;cursor:pointer;width:100%;">👇 ${_vtEn?'Jump to first exercise':'İlk harekete git'}</button>`;
   }else{
     // SVG bar chart — viewBox 360×180
     const W=360,H=160,padL=24,padR=8,padT=12,padB=24;
@@ -10652,13 +10726,14 @@ function renderPRTimeline(){
   const el=document.getElementById('e-pr-timeline');
   if(!el)return;
   const prs=getAllPRs(12);
-  const _ptPlain=`<div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span>Hangi hareket için ne zaman ve hangi cycle gününde <strong>yeni rekor</strong> kırdığının listesi. <em>"En güçlü pencere"</em> istatistiği — en çok PR attığın cycle fazını gösterir (3 cycle veri sonrası anlamlı). Kendi pattern'ini görürsün.</div>`;
+  const _ptEn=getLang()==='en';
+  const _ptPlain=`<div class="card-plain"><span class="card-plain-tag">${_ptEn?'🪞 This card':'🪞 Bu kart'}</span>${_ptEn?'List of when and in which cycle phase you set a <strong>new PR</strong> for each exercise. <em>"Strongest window"</em> stat — shows which cycle phase you peak in (meaningful after 3+ cycles). You see your own pattern.':'Hangi hareket için ne zaman ve hangi cycle gününde <strong>yeni rekor</strong> kırdığının listesi. <em>"En güçlü pencere"</em> istatistiği — en çok PR attığın cycle fazını gösterir (3 cycle veri sonrası anlamlı). Kendi pattern\'ini görürsün.'}</div>`;
   if(!prs.length){
     el.innerHTML=`<div class="pr-timeline-card">
-      <div class="pt-title">PR Zaman Çizelgesi</div>
+      <div class="pt-title">${_ptEn?'PR Timeline':'PR Zaman Çizelgesi'}</div>
       ${_ptPlain}
-      ${getEduLevel()!=='L1'?'<div class="pt-subtitle">Son 12 ay · cycle-aware</div>':''}
-      <div class="pt-empty">Henüz kaydedilmiş PR yok. Set log'ta ✓ giriş yap, 1RM tahmini önceki maxı geçtiğinde otomatik kaydedilir ve burada listelenir. 🏆</div>
+      <div class="pt-empty">${_ptEn?'No PRs logged yet. ✓ a set in the log; when your 1RM estimate beats your previous max, it auto-saves here. 🏆 <strong>Your first PR is one solid set away.</strong>':'Henüz kaydedilmiş PR yok. Set log\'ta ✓ giriş yap, 1RM tahmini önceki maxı geçtiğinde otomatik kaydedilir ve burada listelenir. 🏆 <strong>İlk PR\'ın bir sağlam set kadar uzakta.</strong>'}</div>
+      <button onclick="window.scrollTo({top:document.querySelector('#page-egzersiz .exh')?.getBoundingClientRect().top+window.scrollY-80||0,behavior:'smooth'})" style="margin-top:10px;padding:10px 16px;background:linear-gradient(135deg,var(--pink-deep),var(--mustard-soft));color:var(--cream-soft);border:none;border-radius:10px;font-family:'Jost',sans-serif;font-size:13px;font-weight:600;cursor:pointer;width:100%;">👇 ${_ptEn?'Jump to first exercise':'İlk harekete git'}</button>
     </div>`;
     return;
   }
@@ -11562,6 +11637,7 @@ function closeM(id){document.getElementById(id).classList.remove('open');}
 // Phase 3.D · 12 May 2026 — Ayarlar modal (Cycle ayarları + Tema + Profiller + Backup + API Proxy)
 function openSettingsModal(){
   // Render sub-cards (mevcut fonksiyonlar zaten ID'ye yazıyor; modal'da aynı ID'ler var)
+  if(typeof renderEquipCard==='function')renderEquipCard();  // Iter 64
   if(typeof renderThemeCard==='function')renderThemeCard();
   if(typeof renderProfileCard==='function')renderProfileCard();
   if(typeof renderBackupExport==='function')renderBackupExport();

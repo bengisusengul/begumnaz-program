@@ -88,12 +88,13 @@ export default {
     }
 
     // Forward to Anthropic
+    // anthropic-version 2023-06-01 → 2024-10-22 (PDF document content type için gerekli)
     const upstream = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
         'x-api-key': env.ANTHROPIC_API_KEY,
-        'anthropic-version': '2023-06-01'
+        'anthropic-version': '2024-10-22'
       },
       body: JSON.stringify(body)
     });
