@@ -2,7 +2,7 @@
 
 > **Bu dosya yeni oturumun ilk okunan dosyasıdır.** Burada nerede kaldığımız, yarın ne yapacağımız, hangi kararların değişmediği yazılır. Önceki oturumda olan her kritik şey buraya yansır.
 
-**Son güncelleme**: 13 Mayıs 2026 — Faz 4 İterasyon 27 (Regl tahmin onboarding · Iter 26 atlandı)
+**Son güncelleme**: 13 Mayıs 2026 — Faz 4 İterasyon 28 (AI-assisted sabah merhamet mesajı · Begümnaz için kişisel)
 
 ---
 
@@ -69,6 +69,40 @@ PWA artık prod'da Cloudflare Worker AI proxy ile çalışıyor. Begümnaz 1-2 h
 ---
 
 ## 📜 Bu Oturumda Yapılanlar (13 Mayıs 2026)
+
+### Iter 28 — AI-assisted sabah merhamet mesajı (M2)
+
+**Hedef**: Her sabah PWA ilk açılışta Begümnaz'a **kişisel merhamet/güzellik mesajı**. Kullanıcı söyledi: "kendine merhameti artırmak en önemli". Dünyanın en güzel/akıllı/zeki/başarılı/merhametli kadını teması — klişe olmadan içtenliklі.
+
+**Yeni HTML** (1399): `<div id="morning-compassion-card"></div>` (hero-card'ın üstüne)
+
+**Yeni fonksiyonlar** (Iter 28 bloğu):
+- `MORNING_FALLBACK_MESSAGES[]` — 20 sabit mesaj. Begümnaz profiline özgü (post-iso, endo, hassas cilt, hormonal akne); tema: beden olumlama + kendine merhamet + güzellik + akıllılık + samimi. Klişe yok. Örnek: "Cildin uzun yolda. Her hafta biraz daha onarılıyor — gözle görülmese de. Sen güçlüsün."
+- `getMorningMessageCacheKey()` — `morning_message_YYYY-MM-DD`
+- `getCachedMorningMessage()` — localStorage cache okuma
+- `getRandomFallbackMessage()` — fallback array'den random
+- `fetchAIMorningMessage()` async — Claude API (Cloudflare proxy üzerinden), context: cycle phase + endo flare durumu + saat. Prompt: 1-2 cümle, sıcak, kendine şefkat, "Merhaba/Günaydın" kalıbı YOK. claude-haiku-4-5-20251001 · max 200 token. Fallback'e düşme: API hata → random fallback.
+- `renderMorningCompassion()` async — saat kontrolü (5-11 sabah) + Pazar özel kart çakışma kontrolü + cache → varsa direkt göster, yoksa fallback ile hemen render + AI çağrısı asenkron (proxy URL veya API key varsa). AI cevap gelince kart güncellenir.
+- `renderMorningCompassionContent()` — pembe-bordo gradient kart, Playfair Display italic, ✨/💛 emoji badge ("Bugün Begümnaz için"), loading hint.
+
+**renderDashboard çağrı** (3273 öncesi): `renderMorningCompassion();` eklendi (renderHeroCard'dan önce).
+
+**localStorage**: `morning_message_${YYYY-MM-DD}` = `{text, source: 'ai'|'fallback', generated_at, error?}` — günde 1 AI çağrısı, sonraki açılışlarda cache.
+
+**Cost tahmini**: 30 sabah × 1 çağrı × ~200 token (haiku ~$0.001/çağrı) = **~$0.03/ay**. Cloudflare proxy üzerinden, API key client'ta değil.
+
+**SW cache bump**: `v15-regl-onboarding` → **`v16-sabah-merhamet-ai`**
+
+**UX akışı**:
+1. Begümnaz sabah 5-11 arası PWA'yı açar
+2. Dashboard'da en üstte 💛 kart hemen görünür (random fallback)
+3. AI çağrısı arkaplanda çalışır (proxy LIVE — Iter 19)
+4. AI cevap gelince kart güncellenir (✨ etiketi)
+5. Aynı gün tekrar açılırsa cache'ten gönderilir (yeni AI çağrısı yok)
+
+**Önem**: Begümnaz'ın günü Claude'un kişisel selamlamasıyla başlar. Cycle phase + endo flare context'i AI'ya verildiği için mesaj her gün farklı + duruma uygun. Kullanıcının "kendine merhameti artırma" hedefi PWA'da somut karşılığa kavuştu.
+
+---
 
 ### Iter 27 — Regl tahmin onboarding (M8)
 

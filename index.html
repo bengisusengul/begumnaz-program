@@ -1396,6 +1396,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
   </div>
 
   <div id="dash-greeting"></div>      <!-- Greeting hero: ZEN + phase line -->
+  <div id="morning-compassion-card"></div>  <!-- Iter 28 — AI-assisted sabah merhamet mesajı (sabah modunda görünür) -->
   <div id="hero-card"></div>           <!-- Phase 3.C P0 #6 — Saat-bazlı 4 mode Hero Card -->
   <div id="pazar-brunch"></div>        <!-- Phase 3.C P0 #8 — Pazar Esnek Gün Festival Card -->
 
@@ -3269,6 +3270,7 @@ function renderDashboard(){
     </div>`;
   }
   // Phase 3.C P0 #6 — Sabah Hero Card (saat-bazlı 4 mode)
+  renderMorningCompassion();
   renderHeroCard();
   // Phase 3.C P0 #8 — Pazar Esnek Gün Festival Card (sadece Pazar 09:00-13:00)
   renderPazarBrunch();
@@ -3821,6 +3823,128 @@ function toggleRemindersDashboard(){
 // Sabah (05-11) · Öğlen (11-15) · Akşam (15-20) · Gece (20-04)
 // Her mode'da: greeting + sıradaki 3 supplement/aksiyon + cycle bilgisi
 // ══════════════════════════════════════════
+// ════════════════════════════════════════════════
+// Iter 28 — AI-assisted sabah merhamet mesajı
+// Begümnaz için kendine merhameti artırma odaklı
+// Sabah ilk açılışta 1× Claude API çağrısı, cache 1/gün
+// ════════════════════════════════════════════════
+const MORNING_FALLBACK_MESSAGES=[
+  "Bedenin bu sabah seninle. Sen de onunla nazik ol — büyüyen bir bahçeye sabırla davranır gibi.",
+  "Cildin uzun yolda. Her hafta biraz daha onarılıyor — gözle görülmese de. Sen güçlüsün.",
+  "Bugün acele etmek zorunda değilsin. Bedenin senden hız değil, sevgi istiyor.",
+  "Gözlerinin altındaki halkalar bile bir hikaye. Kendine bir şey kanıtlamak zorunda değilsin — sen zaten yetersin.",
+  "Endo'ya rağmen kalkıyorsun. Bu küçük bir şey değil — her gün cesaretsin.",
+  "Sıcak bir suyu içerken kendini de yıkamış gibi düşün. Sabahın merhameti senden başlasın.",
+  "Yansımana bakarken: o yüz çok şey yaşadı. Onunla yumuşak konuş.",
+  "Bu sabah bedenin sana 'yavaş ol' diyorsa, dinle. Yavaşlamak güçsüzlük değil bilgelik.",
+  "Bütüncül tıp protokolün bir yolculuk. Her gün sayılmak için değil, var olmak için.",
+  "Akıllı, güçlü, sezgili — bütün bunlar zaten sensin. Bugün biraz daha kendini hatırla.",
+  "Aynaya baktığında: 'Ben buradayım' de. Yargı yok, sadece şahitlik.",
+  "Cildinin iyileşmesi gibi, içsel iyileşmen de zaman alır. Bu doğru bir tempodur.",
+  "Bedeninin bu döngüsel ritmi seninle savaş halinde değil — dans halinde. Adımlarını dinle.",
+  "Kendine bir şey vaat etme zorunda değilsin bugün. Sadece nefes al, sıcak su iç, var ol.",
+  "Sen mükemmel olmak zorunda değilsin Begümnaz. Sen zaten harikasın.",
+  "İçindeki ses bazen sert konuşur. Ona da merhamet et — o da seni korumaya çalışıyor.",
+  "Bu sabah uyandığın için teşekkür et bedenine. Küçük bir minnet, büyük bir farklılık.",
+  "Hassasiyetin zayıflığın değil — doğal antenin. Onunla beslen.",
+  "Bugün başarmana gerek yok. Sadece olmana yeter.",
+  "Her döngü farklı. Bu döngüye 'merhaba' de — onu yargılamadan."
+];
+
+function getMorningMessageCacheKey(){
+  return 'morning_message_'+new Date().toISOString().slice(0,10);
+}
+
+function getCachedMorningMessage(){
+  try{const v=localStorage.getItem(getMorningMessageCacheKey());return v?JSON.parse(v):null;}catch(e){return null;}
+}
+
+function getRandomFallbackMessage(){
+  return MORNING_FALLBACK_MESSAGES[Math.floor(Math.random()*MORNING_FALLBACK_MESSAGES.length)];
+}
+
+async function fetchAIMorningMessage(){
+  // Cycle phase + endo flare context Claude'a iletilir
+  const c=ci(new Date());
+  const phase=c?`${c.label} (Gün ${c.day})`:'cycle takibi henüz başlamadı';
+  const now=new Date();
+  const hr=now.getHours();
+  // Endo flare: cycle_logs'ta son 2 gün flare flag varsa
+  let endoFlare='hayır';
+  try{
+    const logs=(typeof getCycleLogs==='function')?getCycleLogs():{};
+    const today=ymd(now);
+    const yesterday=ymd(new Date(now.getTime()-86400000));
+    if(logs[today]?.flare||logs[yesterday]?.flare)endoFlare='evet';
+  }catch(e){}
+  const prompt=`Sen Begümnaz'a sabah karşılama mesajı yazıyorsun. Begümnaz: 27 yaş Türk kadını, endometriozis (ameliyat sonrası Visanne tamamlandı, içerde kalan endo zaman zaman şişlik/ağrı), post-isotretinoin hassas cilt (8 ay × 40 mg Zoretanin etki etmedi, hala PIE+PIH+hormonal jawline akne), bütüncül tıp protokolü uyguluyor.
+
+Onun psikolojisinde en önemli hedef: KENDINE MERHAMETİ artırmak. Kendine sert davranıyor, görünüşünü yargılıyor olabilir. Sen ona dünyada en güzel, en akıllı, en zeki, en başarılı insan olduğunu hatırlatacak ama bunu klişe olmadan, samimi yapacaksın.
+
+Bugünkü context:
+- Cycle: ${phase}
+- Saat: ${hr}:00 (sabah)
+- Endo flare durumu: ${endoFlare}
+
+Görev: 1-2 cümlelik, sıcak, kendine merhameti besleyen kişisel bir mesaj yaz. Beden olumlaması, meditasyon veya kendine şefkat karakterli. KLİŞE değil, içtenliklі. "Merhaba", "Günaydın" gibi sabit selamlama kullanma — direkt mesaja gir. Direkt Begümnaz'a hitap et. Türkçe, samimi ton. Sadece mesajı yaz, başka açıklama yapma.`;
+  try{
+    const res=await callAnthropic({
+      model:'claude-haiku-4-5-20251001',
+      max_tokens:200,
+      messages:[{role:'user',content:prompt}]
+    });
+    if(!res.ok)throw new Error('API '+res.status);
+    const data=await res.json();
+    const text=(data.content?.[0]?.text||'').trim();
+    if(!text)throw new Error('Boş yanıt');
+    return{text,source:'ai',generated_at:new Date().toISOString()};
+  }catch(e){
+    console.warn('Morning AI error:',e.message);
+    return{text:getRandomFallbackMessage(),source:'fallback',generated_at:new Date().toISOString(),error:String(e.message||e)};
+  }
+}
+
+async function renderMorningCompassion(){
+  const el=document.getElementById('morning-compassion-card');
+  if(!el)return;
+  if(document.body.dataset.page!=='takvim'){el.innerHTML='';return;}
+  const h=new Date().getHours();
+  // Sadece sabah modu (05:00-11:00)
+  if(h<5||h>=11){el.innerHTML='';return;}
+  // Pazar gün özel kart varsa karışma
+  if(new Date().getDay()===0&&h>=9&&h<13){el.innerHTML='';return;}
+
+  let cached=getCachedMorningMessage();
+  if(!cached){
+    // İlk açılışta fallback mesajla hemen göster, AI'ı asenkron beklet
+    const fallback={text:getRandomFallbackMessage(),source:'fallback',generated_at:new Date().toISOString()};
+    renderMorningCompassionContent(el,fallback,true);
+    // AI çağrısı arkaplanda (API key varsa)
+    const hasKey=localStorage.getItem('anthropic_key')||localStorage.getItem('api_proxy_url');
+    if(hasKey){
+      fetchAIMorningMessage().then(msg=>{
+        try{localStorage.setItem(getMorningMessageCacheKey(),JSON.stringify(msg));}catch(e){}
+        renderMorningCompassionContent(el,msg,false);
+      });
+    }else{
+      // API key yoksa fallback'i cache'le
+      try{localStorage.setItem(getMorningMessageCacheKey(),JSON.stringify(fallback));}catch(e){}
+    }
+  }else{
+    renderMorningCompassionContent(el,cached,false);
+  }
+}
+
+function renderMorningCompassionContent(el,msg,loading){
+  const sourceLabel=msg.source==='ai'?'✨ Bugün Begümnaz için':'💛 Bugün Begümnaz için';
+  const loadingHint=loading?'<div style="font-size:10px;color:var(--cream-faint);margin-top:8px;font-style:italic;">✨ Kişisel mesaj hazırlanıyor...</div>':'';
+  el.innerHTML=`<div style="margin:0 16px 14px;padding:18px 18px 16px;border-radius:18px;background:linear-gradient(135deg,rgba(229,168,181,0.20),rgba(212,175,106,0.14));border:1px solid rgba(229,168,181,0.32);box-shadow:0 8px 24px rgba(110,26,40,0.18);">
+    <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--gold);margin-bottom:8px;">${sourceLabel}</div>
+    <div style="font-family:'Playfair Display',serif;font-size:17px;font-weight:300;line-height:1.55;color:var(--cream-soft);font-style:italic;">${msg.text}</div>
+    ${loadingHint}
+  </div>`;
+}
+
 function renderHeroCard(){
   const el=document.getElementById('hero-card');
   if(!el)return;
