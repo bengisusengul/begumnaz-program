@@ -1750,7 +1750,10 @@ select option{background:var(--bg-deep);color:var(--cream);}
       </div>
     </div>
 
-    <div class="slbl" style="padding:0;margin:0 0 8px;">👤 Profiller</div>
+    <div class="slbl" style="padding:0;margin:0 0 8px;">🎨 Tema</div>
+    <div id="theme-card"></div>
+
+    <div class="slbl" style="padding:0;margin:14px 0 8px;">👤 Profiller</div>
     <div id="profile-card"></div>
 
     <div class="slbl" style="padding:0;margin:14px 0 8px;">💾 Yedekleme</div>
@@ -3823,6 +3826,139 @@ function toggleRemindersDashboard(){
 // Sabah (05-11) · Öğlen (11-15) · Akşam (15-20) · Gece (20-04)
 // Her mode'da: greeting + sıradaki 3 supplement/aksiyon + cycle bilgisi
 // ══════════════════════════════════════════
+// ════════════════════════════════════════════════
+// Iter 29 — AI-assisted dinamik tema (Settings → 🎨 Tema)
+// Begümnaz görsel yükler → Claude vision 6 renk çıkarır → CSS variables inject
+// localStorage: custom_theme {name, colors:{bgDeep,bgPink,cream,gold,coral,sage}}
+// ════════════════════════════════════════════════
+const THEME_VAR_KEYS=['bg-deep','bg-pink','cream','gold','coral','sage'];
+const THEME_DEFAULTS={
+  'bg-deep':'#6E1A28','bg-pink':'#E5A8B5','cream':'#FFF8F0','gold':'#D4AF6A','coral':'#C97B6E','sage':'#A8C0A0'
+};
+
+function getCustomTheme(){try{return JSON.parse(localStorage.getItem('custom_theme')||'null');}catch(e){return null;}}
+function saveCustomTheme(t){localStorage.setItem('custom_theme',JSON.stringify(t));}
+function clearCustomTheme(){localStorage.removeItem('custom_theme');}
+
+function applyThemeColors(colors){
+  const root=document.documentElement;
+  Object.entries(colors).forEach(([k,v])=>{
+    if(THEME_VAR_KEYS.includes(k))root.style.setProperty('--'+k,v);
+  });
+}
+
+function revertToDefaultTheme(){
+  const root=document.documentElement;
+  THEME_VAR_KEYS.forEach(k=>root.style.removeProperty('--'+k));
+  clearCustomTheme();
+  showToast('🎨 Varsayılan temaya dönüldü','pr');
+  renderThemeCard();
+}
+
+function loadSavedTheme(){
+  const t=getCustomTheme();
+  if(t&&t.colors)applyThemeColors(t.colors);
+}
+
+async function handleThemeImageUpload(input){
+  const file=input.files?.[0];
+  if(!file)return;
+  if(file.size>5*1024*1024){showToast('⚠️ Görsel 5 MB üstü, küçült','warn');return;}
+  const reader=new FileReader();
+  reader.onload=async()=>{
+    const dataUrl=reader.result;
+    const base64=String(dataUrl).split(',')[1];
+    const mediaType=file.type||'image/jpeg';
+    const previewEl=document.getElementById('theme-preview');
+    if(previewEl){
+      previewEl.innerHTML=`<div style="text-align:center;padding:20px;"><div style="font-size:13px;color:var(--cream-mute);">✨ Claude renkleri analiz ediyor...</div></div>`;
+    }
+    const prompt=`Bu görselden Begümnaz'ın bütüncül sağlık PWA'sına uygun bir renk paleti çıkar. 6 ana renk lazım:
+
+1. bg-deep: Ana arka plan rengi (sıcak, koyu, sıkıştırıcı değil). Hex.
+2. bg-pink: Vurgu/gradient stop (yumuşak, kadınsı, daha açık). Hex.
+3. cream: Metin rengi (açık, okunabilir, krem/beyaz tonu, koyu zeminle yüksek kontrast). Hex.
+4. gold: Başlık/vurgu rengi (sıcak, parlak, gold/honey/amber tonu). Hex.
+5. coral: İkincil vurgu (canlı ama nazik, coral/peach/rose). Hex.
+6. sage: Yardımcı doğal ton (sage/mauve/olive, ifade nötr). Hex.
+
+Pembe-bordo-cream-gold ana paletinden çok uzaklaşma — görselin tonunu yansıtmakla beraber sıcak, kadınsı, sağlık temalı kalsın.
+
+Sadece geçerli JSON dön, başka açıklama yok:
+{"name":"görselin kısa adı (örn: Cheetah Sunset)","colors":{"bg-deep":"#XXXXXX","bg-pink":"#XXXXXX","cream":"#XXXXXX","gold":"#XXXXXX","coral":"#XXXXXX","sage":"#XXXXXX"}}`;
+    try{
+      const res=await callAnthropic({
+        model:'claude-haiku-4-5-20251001',
+        max_tokens:400,
+        messages:[{role:'user',content:[
+          {type:'image',source:{type:'base64',media_type:mediaType,data:base64}},
+          {type:'text',text:prompt}
+        ]}]
+      });
+      if(!res.ok){const t=await res.text();throw new Error('API '+res.status+': '+t.substring(0,80));}
+      const data=await res.json();
+      const text=(data.content?.[0]?.text||'').trim();
+      // JSON extract — Claude bazen { } öncesi text döndürebilir
+      const m=text.match(/\{[\s\S]*\}/);
+      if(!m)throw new Error('JSON parse: '+text.substring(0,100));
+      const parsed=JSON.parse(m[0]);
+      if(!parsed.colors)throw new Error('colors yok');
+      // Önizleme + uygula butonu göster
+      window._pendingTheme=parsed;
+      if(previewEl){
+        const swatches=THEME_VAR_KEYS.map(k=>`<div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><div style="width:32px;height:32px;border-radius:8px;background:${parsed.colors[k]||THEME_DEFAULTS[k]};border:1px solid rgba(255,255,255,0.18);flex-shrink:0;"></div><div><div style="font-size:11px;font-weight:600;color:var(--cream);">${k}</div><div style="font-size:10px;color:var(--cream-mute);font-family:monospace;">${parsed.colors[k]||THEME_DEFAULTS[k]}</div></div></div>`).join('');
+        previewEl.innerHTML=`
+          <div style="font-size:11px;color:var(--gold);font-weight:700;margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;">✨ ${parsed.name||'Yeni Tema'}</div>
+          <div style="margin-bottom:14px;">${swatches}</div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
+            <button class="btn bp" onclick="applyPendingTheme()">✓ Uygula</button>
+            <button class="btn bsoft" onclick="cancelPendingTheme()">İptal</button>
+          </div>`;
+      }
+    }catch(e){
+      console.warn('Theme AI error:',e);
+      if(previewEl)previewEl.innerHTML=`<div style="font-size:12px;color:var(--coral);padding:12px;">⚠️ Renk çıkaramadım: ${String(e.message||e).substring(0,120)}</div>`;
+    }
+  };
+  reader.readAsDataURL(file);
+}
+
+function applyPendingTheme(){
+  const t=window._pendingTheme;
+  if(!t||!t.colors){showToast('⚠️ Önce görsel yükle','warn');return;}
+  applyThemeColors(t.colors);
+  saveCustomTheme(t);
+  showToast('🎨 Tema uygulandı: '+(t.name||'Özel'),'pr');
+  window._pendingTheme=null;
+  renderThemeCard();
+}
+
+function cancelPendingTheme(){
+  window._pendingTheme=null;
+  renderThemeCard();
+}
+
+function renderThemeCard(){
+  const el=document.getElementById('theme-card');
+  if(!el)return;
+  const current=getCustomTheme();
+  const currentInfo=current?`<div style="margin-bottom:10px;padding:8px 10px;background:rgba(212,175,106,0.10);border-left:3px solid var(--gold);border-radius:6px;font-size:11.5px;color:var(--cream-soft);"><strong>Aktif tema:</strong> ${current.name||'Özel'} · <button onclick="revertToDefaultTheme()" style="background:none;border:none;color:var(--coral);text-decoration:underline;cursor:pointer;font-size:11px;padding:0;">varsayılana dön</button></div>`:'<div style="margin-bottom:10px;font-size:11.5px;color:var(--cream-mute);">Aktif tema: <strong>Varsayılan</strong> (cheetah pembe-bordo)</div>';
+  el.innerHTML=`<div style="padding:14px 14px 12px;border-radius:12px;background:rgba(229,168,181,0.08);border:1px solid rgba(229,168,181,0.20);">
+    <div class="card-plain" style="margin-bottom:10px;"><span class="card-plain-tag">🪞 Bu kart</span>Beğendiğin bir görseli (cheetah, manzara, çiçek, sevdiğin renkler) <strong>yükle</strong> — Claude görselin tonunu analiz edip sana özel bir tema önerir. Onayla, tüm program o renklere bürünür. İstediğin zaman varsayılana dönebilirsin.</div>
+    ${currentInfo}
+    <label style="display:block;padding:14px;border:2px dashed rgba(229,168,181,0.42);border-radius:10px;text-align:center;cursor:pointer;background:rgba(110,26,40,0.18);">
+      <input type="file" accept="image/*" style="display:none;" onchange="handleThemeImageUpload(this)">
+      <div style="font-size:14px;color:var(--cream);font-weight:600;margin-bottom:4px;">📷 Görsel Yükle</div>
+      <div style="font-size:10.5px;color:var(--cream-mute);">JPG/PNG · max 5 MB · cheetah/manzara/çiçek/sevdiğin renkler</div>
+    </label>
+    <div id="theme-preview" style="margin-top:14px;"></div>
+  </div>`;
+}
+
+// Sayfa yüklendiğinde kaydedilmiş tema varsa uygula
+if(document.readyState!=='loading')loadSavedTheme();
+else document.addEventListener('DOMContentLoaded',loadSavedTheme);
+
 // ════════════════════════════════════════════════
 // Iter 28 — AI-assisted sabah merhamet mesajı
 // Begümnaz için kendine merhameti artırma odaklı
@@ -9156,9 +9292,10 @@ function renderStrip(id,activeD,cb){
 }
 function closeM(id){document.getElementById(id).classList.remove('open');}
 
-// Phase 3.D · 12 May 2026 — Ayarlar modal (Cycle ayarları + Profiller + Backup + API Proxy)
+// Phase 3.D · 12 May 2026 — Ayarlar modal (Cycle ayarları + Tema + Profiller + Backup + API Proxy)
 function openSettingsModal(){
   // Render sub-cards (mevcut fonksiyonlar zaten ID'ye yazıyor; modal'da aynı ID'ler var)
+  if(typeof renderThemeCard==='function')renderThemeCard();
   if(typeof renderProfileCard==='function')renderProfileCard();
   if(typeof renderBackupExport==='function')renderBackupExport();
   if(typeof renderApiProxyCard==='function')renderApiProxyCard();

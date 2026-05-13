@@ -2,7 +2,7 @@
 
 > **Bu dosya yeni oturumun ilk okunan dosyasıdır.** Burada nerede kaldığımız, yarın ne yapacağımız, hangi kararların değişmediği yazılır. Önceki oturumda olan her kritik şey buraya yansır.
 
-**Son güncelleme**: 13 Mayıs 2026 — Faz 4 İterasyon 28 (AI-assisted sabah merhamet mesajı · Begümnaz için kişisel)
+**Son güncelleme**: 13 Mayıs 2026 — Faz 4 İterasyon 29 (AI-assisted dinamik tema · görsel yükle + Claude vision + CSS variable injection)
 
 ---
 
@@ -69,6 +69,47 @@ PWA artık prod'da Cloudflare Worker AI proxy ile çalışıyor. Begümnaz 1-2 h
 ---
 
 ## 📜 Bu Oturumda Yapılanlar (13 Mayıs 2026)
+
+### Iter 29 — AI-assisted dinamik tema (M12) — Begümnaz görseli paleti belirler
+
+**Kullanıcı isteği**: "Begümnaz beğendiği bir referans görseli yüklesin, tüm program o renklere bürünsün. Kendi isteğiyle, benim müdahalem olmasa bile programın rengini değiştirebilsin."
+
+**Yeni Settings UI** (1753): `🎨 Tema` slbl + `<div id="theme-card"></div>` (Profiller'in üstünde)
+
+**Yeni fonksiyonlar (Iter 29 bloğu)**:
+- `THEME_VAR_KEYS` — 6 anahtar CSS variable adı (`bg-deep`, `bg-pink`, `cream`, `gold`, `coral`, `sage`)
+- `THEME_DEFAULTS` — varsayılan hex'ler (Iter 9 cheetah pembe-bordo paleti)
+- `getCustomTheme()` / `saveCustomTheme()` / `clearCustomTheme()` — localStorage `custom_theme`
+- `applyThemeColors(colors)` — `document.documentElement.style.setProperty('--XXX', hex)` runtime injection
+- `revertToDefaultTheme()` — variable'ları removeProperty + localStorage clear
+- `loadSavedTheme()` — sayfa yüklenince custom_theme varsa otomatik uygula (DOMContentLoaded)
+- `handleThemeImageUpload(input)` async — file → base64 + media_type → Claude vision API (Cloudflare proxy üzerinden)
+- `applyPendingTheme()` / `cancelPendingTheme()` — preview onay/iptal
+
+**Claude vision prompt**:
+- Görsel + 6 renk istek (bg-deep, bg-pink, cream, gold, coral, sage)
+- "Pembe-bordo-cream-gold ana paletinden çok uzaklaşma — sıcak, kadınsı, sağlık temalı kalsın"
+- JSON dönüş: `{name: "Cheetah Sunset", colors: {...}}`
+- claude-haiku-4-5-20251001 (vision destekli) · max 400 token
+
+**UX akışı**:
+1. Settings → 🎨 Tema → "📷 Görsel Yükle" (drag/drop-style label, dashed border)
+2. JPG/PNG yükle (max 5 MB)
+3. "✨ Claude renkleri analiz ediyor..." loading
+4. 6 renk swatch + hex kod + tema adı preview
+5. **✓ Uygula** → CSS variables runtime inject + localStorage save → toast "🎨 Tema uygulandı"
+6. **İptal** → preview kapanır, mevcut tema kalır
+7. Aktif tema kartında "🎨 [Tema adı] · varsayılana dön" linki
+
+**Inline hex sınırı**: Iter 9-24 ana CSS variables (`--bg-deep`, `--bg-pink`, vb.) ile renklendirildi. Inline `style="color:#XXX"` (244 yer) variable kullanmıyor — tema değişiminde bazı yerler hardcoded kalır. Iter 24 ana modal/nav'ı standardize etti. Dinamik tema **CSS variable kullanan tüm yerleri** değiştirir; inline hex'ler statik kalır (gelecek Iter'da CSS var'a çevrilebilir).
+
+**Cost**: Görsel yükleme 1x AI çağrı/değişim. Begümnaz tema değiştirdiğinde haiku-vision ~$0.005/çağrı. Aylık 5-10 değişiklik → ~$0.05/ay.
+
+**SW cache bump**: `v16-sabah-merhamet-ai` → **`v17-dinamik-tema-ai`**
+
+**Önem**: Begümnaz'ın programatik özerklik kazandığı kritik feature. Programın görsel kimliği artık SADECE ablanın kararı değil — Begümnaz istediği renge geçebilir. Kullanıcının özgün isteği (madde 12) tam karşılığa kavuştu.
+
+---
 
 ### Iter 28 — AI-assisted sabah merhamet mesajı (M2)
 
