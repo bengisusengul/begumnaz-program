@@ -2,58 +2,42 @@
 
 > **Bu dosya yeni oturumun ilk okunan dosyasıdır.** Burada nerede kaldığımız, yarın ne yapacağımız, hangi kararların değişmediği yazılır. Önceki oturumda olan her kritik şey buraya yansır.
 
-**Son güncelleme**: 13 Mayıs 2026 — Faz 6 Comprehensive Audit tamamlandı (12 uzman subagent raporu konsolide edildi · Iter 37 öncesi)
+**Son güncelleme**: 13 Mayıs 2026 — Iter 56-66b tamamlandı (Lipid Bengisu temizlik + Cilt kontrast + Greeting + Günlük Rutin sayfa + PDF parse fix + Ekipman modu Egzersiz sekmesine taşındı · PDF parse production LIVE)
 
 ---
 
 ## 🚨 SONRAKİ OTURUMDA İLK YAPILACAK (Next session first action)
 
-### 1. **Iter 37 — KRİTİK FIX Phase 1** (4-5 saat)
+### 1. Begümnaz gerçek kullanım feedback'i
 
-Faz 6 audit (12 uzman subagent) sonucu **9 KRİTİK (P0) bulgu** tespit edildi. Iter 37 ilk 4 kritik fix:
-
-- **K1**: Medical Drugs tab BOŞ — `SUPPLEMENTS_INVENTORY` `cat` değerleri ile `cats` obj key'leri uyumsuz (~30 dk)
-- **K2**: Endo Flare logging UI yok (backend var ama UI yok) — Cycle Daily Log'a toggle ekle (~2 saat)
-- **K3**: Cycle ovulation/phase boundary sabit (28 gün varsayımı, 32-gün cycle'da hatalı) — dinamik (cyc*0.4, cyc*0.5, cyc*0.6) (~1 saat)
-- **K9 (kısmi)**: WCAG kontrast AA FAIL — `--coral` `#C25A6C` → `#E8956A`, `--cream-faint` opacity 0.46→0.75, `--text-light` 0.48→0.75 (~1 saat)
-- Commit: `Faz 6 Iter 37: Critical fixes phase 1 — Drugs tab + Endo flare + Phase boundaries + Contrast`
-- SW cache bump: `v23` → `v24-faz6-iter37-critical-phase1`
-
-Detaylı plan: `/Users/agent9/.claude/plans/hey-frolicking-journal.md` (Faz 6 bölümü)
-
-### 2. **Iter 38-43 — Faz 6 Devamı** (toplam ~23-28 saat, 7 iter)
-
-- **Iter 38** (3-4h): K4-K8 — 5 Bengisu achievement sil, `renderPazarBrunch()` sil, IF fasting sil, dana/tavuk öğün filtreleme, Theme Card AI preview tamamla
-- **Iter 39** (4-5h): O1-O3, O9, O12 — Welcome stepper, Smart Measurement quick action, `.utab` ortak class, Settings sub-cards bilingual, Profile/Backup confirm
-- **Iter 40** (3-4h): O10-O11, M8 — CSS variable refactor (Diyet `!important` cascade + 48 inline hex), Dinamik tema kontrast doğrulama
-- **Iter 41** (3h): O4-O5, M4, M12-M13 — Pelvik video 4 hafta rotation, Mezoterapi protokolü, tret-pelvik uyarı, Cilt alışveriş Pazartesi, Cycle'dan Medical kart sil
-- **Iter 42** (3-4h): O6-O8, M1-M2 — Daily Log 3 mod (Quick/Full/Expert), Exercise Analytics 2 tab, Medical dinamik tab, pain severity scale, açık regl 30+ warning
-- **Iter 43** (3h): M3, M5, M7, M9, M11 — Glossary 50+ terim bilingual, CV% disclaimer, compulsive screening opt-in, Wedding Mirror gizleme, Apple Health setup guide
-
-### 3. Manuel `git push` — Iter 31, 33, 34, 35 + audit dokümantasyonu
-
-Bu oturum sonu 5+ unpushed commit olmalı:
-
-```bash
-cd /Users/agent9/Desktop/bnsp-repo
-git status                    # "ahead of origin/main by N commits" görmeli
-git push origin main          # manuel push
-```
-
-Push sonrası GitHub Pages otomatik deploy. SW cache **v23-i18n-content-objects-2026-05-13** — eski cache yenilenir.
-
-### 4. (Opsiyonel) Begümnaz gerçek kullanım feedback'i
-
-PWA artık Faz 4+5 ile çok daha kişisel + üretimde:
+PWA tüm büyük sistemler artık üretimde + Period Tracker PDF parse çalışıyor (61 cycle başarıyla yüklendi 13 Mayıs):
 - Sabah açılışta AI merhamet mesajı (Iter 28)
-- Settings'tan görsel yükle → tüm tema değişir (Iter 29)
-- Regl AI parse upload (Flo/Clue/Apple Health PDF → toplu ekleme — Iter 31)
-- Achievements Dashboard 🏆 (10 başarı, Bengisu temizlendi — Iter 31)
-- Cycle tam bilingual (Iter 33)
-- 4 ana sekme tam bilingual: Diet/Exercise/Skin/Medical (Iter 34)
-- WEEKLY_FOCUS + ZEN + BODY_INTENTIONS bilingual (Iter 35)
+- Settings → görsel yükle → tüm tema değişir (Iter 29)
+- Regl AI parse upload — Period Tracker 92-sayfa PDF, 61 cycle, ~7 sn parse (Iter 31 + 63 + 64 + 65 düzeltmeleri)
+- 📋 Günlük Rutin (Daily Checklist) sayfası — Bugün sekmesinde CTA → 3 dilim accordion (Sabah/Öğle/Akşam), cycle/phase/endo-aware (Iter 60)
+- 🏋️ Ekipman modu (Ev/Gym/Dışarı) — Egzersiz sekmesinde anlık seçim, her hareket kartında aktif moda göre kısa özet badge (Iter 64 + 66 + 66b)
+- 💬 AI Agent sohbet — Begümnaz profili-aware Claude Haiku 4.5 (Iter 47-48, prompt caching ~$3-6/ay)
+- Tam bilingual TR/EN — UI + AI yanıtları + WEEKLY_FOCUS + ZEN + GLOSSARY (Iter 32-46)
+- Lipid Takibi — Begümnaz 21.04.2026 (170/88/66/82 mg/dL NORMAL) seed, Bengisu FH/Norwitz blok tamamen temizlendi (Iter 56)
 
-Begümnaz 1-2 hafta günlük kullansın → real-world feedback → Iter 37+ critical fix sonrası gerçek kullanım analizi.
+Begümnaz 1-2 hafta günlük kullansın → real-world feedback → bekleyen iyileştirmeler listesini önceliklendir.
+
+### 2. Bekleyen iyileştirmeler (gerçek kullanım sonrası prioritize)
+
+**Faz 6 Audit yarım kalan P1+P2 (Iter 39-43 planlandı ama uygulanmadı — Iter 47-66 yeni feature'lara öncelik verildi)**:
+- O1: Welcome modal sonrası onboarding stepper
+- O4: Pelvik taban 4 haftalık video rotasyon sistemi (videoların gerçek URL'leri eksik)
+- O6: Cycle Daily Log 3 mod (Quick/Full/Expert) — cognitive load azaltma
+- M5: Cycle Length CV% disclaimer (±147 gün varyasyon — Begümnaz'ın gerçek PDF'inde göründü)
+- M11: Wedding Mirror event-less gizleme
+
+**Yeni potansiyel iş** (kullanıcı feedback'ine göre):
+- EX array gerçek ev/gym/dışarı **farklı hareket** ayrımı (şu an aynı hareket, sadece talimat varyasyonu — Iter 66b)
+- Iter 65'te bilinen küçük console hataları (`tliX`, `renderThyroidSupport`, `getRecent3CyclesRanges`, `toFixed null` — safeCall ile yutuluyor ama temiz console için cleanup)
+
+### 3. Cloudflare Worker — manuel deploy gerekiyor mu kontrol
+
+Bu oturumun sonunda Cloudflare Worker manuel olarak güncellendi (`anthropic-version: 2023-06-01`, secret eklendi). Yeni Iter'larda Worker'a dokunulmuyorsa (sadece index.html değişiyorsa) GitHub Pages auto-deploy yeter. Worker proxy ile ilgili bir şey değişirse yine **Cloudflare Dashboard → Edit Code → yapıştır → Save and Deploy** akışı.
 
 ---
 
@@ -66,9 +50,10 @@ Begümnaz 1-2 hafta günlük kullansın → real-world feedback → Iter 37+ cri
 | **Local** | `/Users/agent9/Desktop/bnsp-repo/` |
 | **Remote** | `https://github.com/bengisusengul/begumnaz-program.git` |
 | **Deploy** | https://bengisusengul.github.io/begumnaz-program/ (GitHub Pages) |
-| **Branch** | `main` (origin/main 1 commit gerisi) |
-| **PWA file** | `index.html` (9912 satır, ~688 KB) |
-| **SW cache** | `begumnaz-v23-i18n-content-objects-2026-05-13` |
+| **Branch** | `main` (origin/main ile senkron) |
+| **PWA file** | `index.html` (~12.3K satır, ~870 KB) |
+| **SW cache** | `begumnaz-v53-iter66b-ekipman-hint-kart-kapali-2026-05-13` |
+| **Worker** | `https://begumnaz-api-proxy.begumnaz.workers.dev` (anthropic-version 2023-06-01, secrets: ANTHROPIC_API_KEY + ALLOWED_ORIGINS) |
 | **Manifest** | `manifest.json` — Begümnaz branding |
 | **Bg image** | `bg.jpeg` |
 
@@ -81,11 +66,143 @@ Begümnaz 1-2 hafta günlük kullansın → real-world feedback → Iter 37+ cri
 - ✅ **Faz 3**: Deploy LIVE (GitHub Pages + Cloudflare Worker AI proxy — Iter 19'da tamamlandı)
 - ✅ **Faz 4**: PWA üretim olgunluğu (Iter 20-31 tamam · regl AI upload + achievements modal eklendi)
 - ✅ **Faz 5**: i18n TAM ÇEVİRİ (Iter 32-35 tamam · Cycle/Diet/Ex/Skin/Medical/WEEKLY_FOCUS/ZEN/BODY_INTENTIONS bilingual)
-- 🟢 **Faz 6**: Comprehensive audit (12 uzman subagent · 9 KRİTİK + 12 ÖNEMLİ + 13 ORTA bulgu konsolide · Iter 37-43 planlandı, 23-28 saat)
+- 🟡 **Faz 6**: Comprehensive audit (Iter 37-38 P0 kritik fix + Iter 41-43 polish kısmen uygulandı · P1+P2 bazı maddeler yeni feature'lara öncelik verildiği için ertelendi)
+- ✅ **Faz 7-8**: AI Agent sohbet (Iter 47-48 · Claude Haiku 4.5 prompt caching, #page-chat fullscreen)
+- ✅ **Faz 9**: Mobile P0 + Bilingual P0 + Bengisu son (Iter 50-51)
+- ✅ **Faz 10**: Saç & Cilt rename + alt-tab + cycle-aware saç bakımı (Iter 54-55)
+- ✅ **Faz 11**: Cilt koyu kart kontrast + Lipid Bengisu temizlik + Begümnaz 21.04.2026 seed (Iter 56)
+- ✅ **Faz 12**: Sıralama notice dinamik egzersize + Saç&Cilt buton + .snum kontrast (Iter 57)
+- ✅ **Faz 13**: Greeting tekrar temizlik + civciv küçük inline + chat sol üst + Diyet topbar (Iter 58)
+- ✅ **Faz 14**: Günlük Rutin (Daily Checklist) sayfası — Bugün CTA → 3 dilim accordion + cycle/phase/endo-aware (Iter 60)
+- ✅ **Faz 15**: PDF parse production fix — Worker anthropic-version + ANTHROPIC_API_KEY secret + max_tokens 8K + tarih varsayım kuralları (Iter 63-65 · 61 cycle başarıyla yüklendi)
+- ✅ **Faz 16**: Ekipman modu (Ev/Gym/Dışarı) Settings'ten Egzersiz sekmesine taşındı + kart kapalı haldeyken aktif moda göre özet badge (Iter 64 + 66 + 66b)
 
 ---
 
 ## 📜 Bu Oturumda Yapılanlar (13 Mayıs 2026)
+
+### Iter 66b — Hareket kartı kapalıyken aktif ekipman özeti badge (görsel feedback)
+
+**Kullanıcı raporu**: "Ekipman bar'da seçim yapınca egzersiz listesinde değişen bir şey görmüyorum." Iter 66'da bar Egzersiz sekmesine taşınmıştı ama `formatExHow` sadece kart AÇILDIKTAN sonra talimat içindeki vurguyu gösteriyordu — kart kapalı haldeyken görsel feedback yoktu.
+
+**Fix**:
+- `getEquipHint(text, loc)` helper — `ex.h` alanından aktif moda göre ilk cümleyi yakalar (regex: `\b{label}:\s+([\s\S]+?)(?=\s+\b(?:Ev|Gym|Dışarı):|\.\s*$|\.\s+[A-Z])`)
+- renderExDay HTML template'inde `.exh` sonrası + `.exb` öncesi:
+  ```html
+  <div class="exequip">🏠 <strong>Ev:</strong> 3 kg DB göğüs hizasında</div>
+  ```
+- `.exequip` CSS: pink-pale arka plan, cream-soft strong, tıklanınca kart açılır (`onclick="toggleEx(this.previousElementSibling)"`)
+- 18/32 hareket pattern içerir (squat, hip thrust, RDL, kürek, vb.) → badge görünür
+- Pelvik/pilates dersi gibi pattern içermeyen hareketler → badge'siz (doğru davranış)
+
+**Ekipman bar değiştirildiğinde**: `setWorkoutLocation` → `renderEx()` → `renderExDay()` → badge anında yeni moda güncellenir.
+
+**SW**: v52 → v53. Commit: `b0832c7`.
+
+---
+
+### Iter 66 — Ekipman modu Settings'ten Egzersiz sekmesine taşındı
+
+**Kullanıcı talebi**: "Egzersiz konumu kartını egzersiz sekmesine almalı, anlık seçebilmeli, seçtiği seçeneğe göre günlük plan anlık olarak güncellensin." Iter 64'te Settings'e konmuştu — derin yerde, bağlamsal değildi.
+
+**Fix**:
+- Egzersiz sekmesinde alt-tab "Antrenman/Ölçüm" sonrası, gün strip öncesi: `<div id="ex-equip-bar">`
+- `renderEquipBar()` helper — kompakt 3 pill buton inline (label + emoji yan yana, mobile için 1 satır)
+- Aktif buton bordo-pembe vurgu, inaktif transparent
+- Settings'ten `<div id="equip-card">` + `renderEquipCard()` fn TAMAMEN KALDIRILDI — Tek source of truth Egzersiz sekmesinde
+- `setWorkoutLocation`: `renderEquipCard` → `renderEquipBar`
+- `renderEx()` çağrı zincirine `renderEquipBar()` eklendi (sekme açılışında bar güncel state'te)
+- `openSettingsModal` + setLang propagation güncellendi
+
+**SW**: v51 → v52. Commit: `8120367`.
+
+---
+
+### Iter 65 — Worker anthropic-version rollback (PDF parse final fix)
+
+**Sorun**: Iter 64'te yanlış yönlendirme — Worker `anthropic-version: 2024-10-22` ayarlamıştım, PDF için gerek diye. Anthropic API: `400 invalid_request_error "anthropic-version is not valid"`.
+
+**Sebep**: Anthropic'in gerçek geçerli versiyonları **sadece `2023-01-01` ve `2023-06-01`**. `2024-10-22` valid version değil. PDF document content type 2023-06-01 stable altında çalışıyor.
+
+**Fix**: `cloudflare-worker.js` + `api-proxy/worker.js` → `anthropic-version: '2024-10-22'` → `'2023-06-01'`. Manual Cloudflare Dashboard redeploy.
+
+**Sonuç**: PDF parse 200 OK + 61 cycle preview başarıyla görüntülendi.
+
+Commit: `61cae9e`.
+
+---
+
+### Iter 63-64 — PDF parse production fix (max_tokens + Worker proxy + secret)
+
+**Kullanıcı raporu**: "PDF yüklemeyi denedim ama 'Geçerli regl tarihi bulunamadı' hatası" — 92-sayfa Period Tracker PDF (61 cycle, Begümnaz Ekim 2020 — Mayıs 2026).
+
+**Çözülen 4 katmanlı sorun**:
+
+1. **Token limit (Iter 63)**: `max_tokens: 2000` → 92-sayfa için yetersiz, JSON yarıda kesiliyordu. → `max_tokens: 8000`. Prompt'a sistem tarihi (`2026-05-13`) eklendi → "Apr 15", "Today", "Mar 18 - Apr 14" gibi yılsız tarihler için yıl varsayım kuralı net.
+
+2. **Cloudflare Worker anthropic-version (Iter 64)**: `2023-06-01` → `2024-10-22` (sanmıştım gerekli — Iter 65'te geri alındı).
+
+3. **PWA fetch monkey-patch proxy bypass (kullanıcı debug)**: `localStorage.getItem('api_proxy_url')` boştu → istek direkt `api.anthropic.com`'a gidip 401 alıyordu. Çözüm: Console'dan `localStorage.setItem('api_proxy_url', 'https://begumnaz-api-proxy.begumnaz.workers.dev')`.
+
+4. **Worker secret config (kullanıcı debug)**: Cloudflare Worker'da 4 secret vardı, 3'ü hatalı:
+   - `AUTH_TOKEN` (Worker kilitliyordu, `x-begumnaz-token` zorunlu kılıyordu) → SİLİNDİ
+   - `ANTHROPIC_API_KEY_begumnaz_program` (yanlış isim, Worker `env.ANTHROPIC_API_KEY` arıyor) → SİLİNDİ + doğru isimli yenisi oluşturuldu
+   - `ANTHROPIC_API_KEY_b...` + `ANTHROPIC_API_KEYsk...` (duplicate'ler) → SİLİNDİ
+   - Yeni Anthropic API key oluşturuldu + Cloudflare Worker `ANTHROPIC_API_KEY` secret'a yapıştırıldı
+
+**Sonuç**: PDF 200 OK + 61 cycle preview + "Hepsini ekle" butonu → 5 yıllık döngü geçmişi (33 gün ortalama, ±147 gün varyasyon — endometriozis uyumlu) localStorage'a yazıldı, tahminler aktive oldu.
+
+Commits: `53a9903` (Iter 63), `0494527` (Iter 64).
+
+---
+
+### Iter 62 — Döngü Ayarlar notice kaldırıldı
+
+**Kullanıcı talebi**: "Döngü sekmesindeki '⚙️ Ayarlar · döngü varsayılan · profiller · yedekleme · API proxy' notice — Dashboard topbar'da ⚙️ butonu zaten var, tekrar gereksiz."
+
+**Fix**: `index.html:1979-1982` kart kaldırıldı.
+
+**SW**: v49 → v50. Commit: `9343233`.
+
+---
+
+### Iter 60-61 — Günlük Rutin (Daily Checklist) sayfası + Hero Card greeting temizlik
+
+**Kullanıcı talebi**: "Begümnaz'ın günlük rutinini tek listede sabahtan akşama checklist olarak görebileceği bir yer olsun — Sabah/Öğle/Akşam dilimleri, checkbox işaretlenebilir."
+
+**Iter 60**:
+- Yeni `#page-routine` sayfası — Bugün CTA buton ("📋 Bugünün Tam Rutini" mauve-gold gradient)
+- 3 dilim accordion: 🌅 Sabah (06-12) · ☀️ Öğle (12-18) · 🌙 Akşam (18-00)
+- Şu anki saate uygun section auto-açık
+- `buildRoutineSteps(timeOfDay, ctx)` — cycle/phase/endo-aware adım üretici:
+  - SP[dow] egzersiz (Cuma yürüyüş, Pzt/Per/Cmt ağırlık, Çar/Cum 18:00 pilates, Sal/Paz pelvik)
+  - Saç yıkama Pzt/Çar/Cmt (HAIR_WEEKLY_SCHEDULE)
+  - Cilt rutin SA[sd] (regl haftası retinol skip)
+  - Sabah AC + kahvaltı supp + ikindi AC + akşam supp + son Mg
+  - Endo flare → ağırlık günü pelvik tabana switch
+- Checkbox + line-through + opacity 0.45 + localStorage `routine_log_${YYYY-MM-DD}` + progress % gradient bar
+- Sıralama notice "Detay için Takvim sayfası" → "Bugün sekmesindeki 📋 Bugünün Rutini butonu"
+- Bilingual TR/EN, setLang propagation
+
+**Iter 61**: Hero Card'da büyük "İyi akşamlar" başlık kaldırıldı — sadece topbar subtitle "BUGÜN · İYİ AKŞAMLAR" kalır. cycleLine ana başlık olarak büyütüldü (15px cream-soft).
+
+**SW**: v48 → v49. Commits: `846cee1` (Iter 60-61 bundle).
+
+---
+
+### Iter 56-59 — Cilt kontrast + Lipid Bengisu temizlik + Sıralama dinamik + Saç&Cilt rename
+
+**Iter 56**: Cilt koyu `.card` (Sabah/Akşam Rutini) içindeki `.sprod`/`.snote` cream-soft override; Lipid Takibi Bengisu kalıntıları (FH Şüphesi başlık + dayı+anne aile öyküsü + Norwitz LMHR blok + ESC/EAS 2019 + LDL 8.1 seed) **TAMAMEN TEMIZLENDI**; Begümnaz 21.04.2026 PDF değerleri seed: **Total 170 / LDL 88 / HDL 66 / TG 82 mg/dL — HEPSI NORMAL**; seed v1 → v2 cleanup logic.
+
+**Iter 57**: `updateOrderNotice(d)` helper — SP[dow] ile 5 koşullu dinamik mesaj (Cum yürüyüş / Pzt-Per-Cmt akşam gym / Çar pilates / Sal-Paz pelvik / default). Saç & Cilt alt-tab `rgba(184,83,107,0.46)` koyu pink-deep + inaktif görünür. Saç pane `.snum` cream-soft + pink-pale halka 13:1 WCAG AAA. Weekly bugünkü gün cream-soft.
+
+**Iter 58**: Dashboard greeting hero card `getGreeting(), <em>Begümnaz</em> ✨` → `<em>Begümnaz</em> ✨` (sadece ad, topbar "BUGÜN · İYİ AKŞAMLAR" tek greeting noktası). H1 civciv `font-size:0.6em + white-space:nowrap` (390px wrap önle). 💬 Chat butonu sağ → sol üst (`left:20px`). Mobile breakpoint güncel. Diyet topbar h1/tb-sub orta wine kontrast.
+
+**Iter 59**: Akşam Rutini özel rejim step (`background:var(--pink-pale)` inline) içinde inline color olmayan `.sprod`/`.snote` koyu wine — `:not([style*="color"])` selector ile inline pink-deep label korunur.
+
+**SW**: v44 → v47. Commits: `846cee1` (Iter 56-61 bundle).
+
+---
 
 ### Faz 6 Comprehensive Audit — 12 Uzman Subagent Raporu Konsolide (13 Mayıs 2026)
 
