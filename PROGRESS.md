@@ -2,7 +2,7 @@
 
 > **Bu dosya yeni oturumun ilk okunan dosyasıdır.** Burada nerede kaldığımız, yarın ne yapacağımız, hangi kararların değişmediği yazılır. Önceki oturumda olan her kritik şey buraya yansır.
 
-**Son güncelleme**: 13 Mayıs 2026 — Faz 4 İterasyon 22 (Beslenme + Supplement birleşik kart — 4 mikro + 8 doktor protokol slotu)
+**Son güncelleme**: 13 Mayıs 2026 — Faz 4 İterasyon 23 (Pop-up kapatma UX — 4 template modal sağ üst ✕ butonu)
 
 ---
 
@@ -69,6 +69,34 @@ PWA artık prod'da Cloudflare Worker AI proxy ile çalışıyor. Begümnaz 1-2 h
 ---
 
 ## 📜 Bu Oturumda Yapılanlar (13 Mayıs 2026)
+
+### Iter 23 — Pop-up kapatma UX iyileştirme (M10)
+
+**4 template modal'a sağ üst ✕ butonu eklendi**:
+- `#glossary-modal` (2049)
+- `#muscle-anatomy-modal` (2069)
+- `#plate-modal` (2100)
+- `#wedding-mirror-modal` (2120)
+
+Her birinde mevcut "Kapat" butonu vardı, sağ üst X yoktu. Standart UX için 32×32 px circular X butonu eklendi (`position:absolute; top:10px; right:10px`). Başlıklara `padding-right:36px` eklenerek X butonunun başlık üzerine binmesi engellendi.
+
+Diğer 10 modal'da Kapat butonu yeterli olduğu için dokunulmadı (over-engineering kaçınma).
+
+**Toast auto-dismiss** (Explore raporundaki endişe):
+- Mevcut `showToast()` (7954) zaten auto-dismiss yapıyor: success 3.5sn, normal/warn 2.2sn.
+- Süre uygun — değişiklik yapılmadı.
+
+**Kapatma yöntemleri (4 template modal için final)**:
+- ✕ sağ üst butonu (YENİ)
+- Alt "Kapat" butonu (mevcut)
+- ESC tuşu (mevcut, global handler)
+- Backdrop click (mevcut, global handler)
+
+**SW cache bump**: `v11-supplement-birlesik` → **`v12-popup-x-btn`**
+
+**Önem**: Kullanıcı dostluğu — özellikle mobile'da alt Kapat butonuna ulaşmak için scroll gerekebilir, sağ üst ✕ her zaman erişilebilir.
+
+---
 
 ### Iter 22 — Beslenme + Supplement birleşik kart (M5)
 

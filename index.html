@@ -2047,9 +2047,10 @@ select option{background:var(--bg-deep);color:var(--cream);}
 
 <!-- GLOSSARY MODAL (Phase 2 Hafta 5B) — altı çizili bilim terimleri tıklanınca açılır -->
 <div class="mo" id="glossary-modal">
-  <div class="modal" style="max-width:440px;">
+  <div class="modal" style="max-width:440px;position:relative;">
+    <button onclick="closeM('glossary-modal')" aria-label="Kapat" style="position:absolute;top:10px;right:10px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.10);border:1px solid rgba(255,255,255,0.18);color:var(--cream);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:5;">✕</button>
     <div class="mhandle"></div>
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;flex-wrap:wrap;padding-right:36px;">
       <h3 id="gloss-term-title" style="margin:0;">Terim</h3>
       <span id="gloss-term-cat" class="gloss-cat-pill gloss-cat-pattern">kategori</span>
     </div>
@@ -2067,9 +2068,10 @@ select option{background:var(--bg-deep);color:var(--cream);}
 
 <!-- MUSCLE ANATOMY MODAL (Phase 2 P2.4) — TR + Latince + fonksiyon + L2 mekanizma -->
 <div class="mo" id="muscle-anatomy-modal">
-  <div class="modal" style="max-width:460px;">
+  <div class="modal" style="max-width:460px;position:relative;">
+    <button onclick="closeM('muscle-anatomy-modal')" aria-label="Kapat" style="position:absolute;top:10px;right:10px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.10);border:1px solid rgba(255,255,255,0.18);color:var(--cream);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:5;">✕</button>
     <div class="mhandle"></div>
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;padding-right:36px;">
       <h3 id="ma-title" style="margin:0;">Kas</h3>
       <span id="ma-emoji" style="font-size:22px;"></span>
     </div>
@@ -2098,9 +2100,10 @@ select option{background:var(--bg-deep);color:var(--cream);}
 
 <!-- PLATE CALCULATOR MODAL (Phase 2 P2.3) — barbell + plakalar görsel -->
 <div class="mo" id="plate-modal">
-  <div class="modal" style="max-width:440px;">
+  <div class="modal" style="max-width:440px;position:relative;">
+    <button onclick="closeM('plate-modal')" aria-label="Kapat" style="position:absolute;top:10px;right:10px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.10);border:1px solid rgba(255,255,255,0.18);color:var(--cream);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:5;">✕</button>
     <div class="mhandle"></div>
-    <h3 id="plate-title">🥪 Plaka Dağılımı</h3>
+    <h3 id="plate-title" style="padding-right:36px;">🥪 Plaka Dağılımı</h3>
     <div class="msub" id="plate-sub">Toplam yük → bar + her tarafa eşit plakalar.</div>
     <div class="plate-mode-toggle" id="plate-mode-row">
       <button class="active" id="plate-mode-bar20" onclick="setPlateMode('bar20')">20 kg Bar</button>
@@ -2118,9 +2121,10 @@ select option{background:var(--bg-deep);color:var(--cream);}
 
 <!-- WEDDING MIRROR MODE MODAL (Phase 2 Hafta 8D) — düğüne 60 gün kala 1 kez otomatik açılır -->
 <div class="mo" id="wedding-mirror-modal">
-  <div class="modal" style="max-width:460px;">
+  <div class="modal" style="max-width:460px;position:relative;">
+    <button onclick="closeM('wedding-mirror-modal')" aria-label="Kapat" style="position:absolute;top:10px;right:10px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.10);border:1px solid rgba(255,255,255,0.18);color:var(--cream);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:5;">✕</button>
     <div class="mhandle"></div>
-    <h3 id="wm-modal-title">💍 Düğüne 60 gün kaldı</h3>
+    <h3 id="wm-modal-title" style="padding-right:36px;">💍 Düğüne 60 gün kaldı</h3>
     <div class="msub" id="wm-modal-sub">Bu süreçte vücudunla nasıl olmak istersin? Üç mod arasından seçim yap — her zaman değiştirilebilir.</div>
     <div class="wm-modal-content" id="wm-modal-content">
       <div class="wm-mode-option" data-mode="status_quo" onclick="selectWeddingMode('status_quo')">
