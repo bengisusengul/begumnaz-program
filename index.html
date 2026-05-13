@@ -5398,6 +5398,34 @@ const MICRONUTRIENT_INFO=[
   }
 ];
 
+// Doktor 16 ürün protokolü — dilim bazlı takip (Iter 22: M5 birleşik kart)
+const SUPPLEMENT_SLOTS=[
+  {key:'oil_pulling',  emoji:'🥥', t:'08:00', name:'Alkemist Oil Pulling',         items:'1 yk HC yağı 5-10 dk'},
+  {key:'sabah_ac',     emoji:'☀️', t:'08:30', name:'Sabah AC (5 ürün)',           items:'Akavital · Gül sirkesi · NADH · NAC · Bach (1.)'},
+  {key:'lugol',        emoji:'💧', t:'+2 saat', name:'Lugol iyot %5',              items:'4 damla · Bach (2.)'},
+  {key:'kahvalti_tok', emoji:'💊', t:'Kahvaltı tok', name:'Kahvaltı supplementleri', items:'Anti turmeric · More than · MM-12 · Lifextra · Time Mg · NBT Multi (+ Pzt Colewinde D)'},
+  {key:'ara_ogun',     emoji:'🍎', t:'14:30', name:'Ara + NAC (2.) + Bach (3.)',  items:'NAC 500mg · Bach 4 damla'},
+  {key:'ikindi_ac',    emoji:'🕓', t:'16:00', name:'İkindi AC',                    items:'Akavital · Gül sirkesi (2.)'},
+  {key:'aksam_tok',    emoji:'🍲', t:'17:30-19:00', name:'Akşam supplementleri',  items:'Anti turmeric · More than · Lifextra · Time Mg (2.)'},
+  {key:'gece_probiyotik', emoji:'🌙', t:'22:00', name:'Duobalance BV probiyotik', items:'1 kapsül · 4+ saat supplement uzak'}
+];
+
+function getSupplementLog(){try{return JSON.parse(localStorage.getItem('supplement_log')||'{}');}catch(e){return{};}}
+function setSupplementSlot(key, value){const l=getSupplementLog();const dk=new Date().toISOString().slice(0,10);if(!l[dk])l[dk]={};l[dk][key]=value;localStorage.setItem('supplement_log',JSON.stringify(l));renderMicronutrientCard();}
+
+function getTodaySupplementProgress(){
+  const dk=new Date().toISOString().slice(0,10);
+  const log=getSupplementLog()[dk]||{};
+  const taken=SUPPLEMENT_SLOTS.filter(s=>log[s.key]).length;
+  const total=SUPPLEMENT_SLOTS.length;
+  // Sonraki alınmayan slot — saat sırasıyla ilk false
+  const now=new Date();
+  const hr=now.getHours()*60+now.getMinutes();
+  const slotMin={oil_pulling:480,sabah_ac:510,lugol:660,kahvalti_tok:660,ara_ogun:870,ikindi_ac:960,aksam_tok:1110,gece_probiyotik:1320};
+  const upcoming=SUPPLEMENT_SLOTS.find(s=>!log[s.key] && slotMin[s.key]>=hr) || SUPPLEMENT_SLOTS.find(s=>!log[s.key]);
+  return{taken,total,upcoming,log};
+}
+
 function renderMicronutrientCard(){
   const el=document.getElementById('micronutrient-wrap');
   if(!el)return;
@@ -5414,14 +5442,40 @@ function renderMicronutrientCard(){
       <div class="mc-action">${m.action}</div>
     </div>`;
   }).join('');
+  // Bugünkü supplement durumu (Iter 22 — M5)
+  const prog=getTodaySupplementProgress();
+  const pctW=Math.round((prog.taken/prog.total)*100);
+  const slotRows=SUPPLEMENT_SLOTS.map(s=>{
+    const checked=prog.log[s.key]?'checked':'';
+    return `<label class="supp-slot${prog.log[s.key]?' taken':''}" style="display:flex;align-items:center;gap:8px;padding:8px 10px;border-radius:8px;background:${prog.log[s.key]?'rgba(168,192,160,0.14)':'rgba(255,255,255,0.04)'};border:1px solid ${prog.log[s.key]?'rgba(168,192,160,0.35)':'rgba(255,255,255,0.08)'};cursor:pointer;margin-bottom:4px;">
+      <input type="checkbox" ${checked} onchange="setSupplementSlot('${s.key}',this.checked)" style="cursor:pointer;flex-shrink:0;">
+      <span style="font-size:16px;flex-shrink:0;">${s.emoji}</span>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:12px;font-weight:600;color:var(--cream);"><span style="font-family:'Playfair Display',serif;color:var(--gold);margin-right:6px;">${s.t}</span>${s.name}</div>
+        <div style="font-size:10.5px;color:var(--cream-mute);margin-top:2px;line-height:1.4;">${s.items}</div>
+      </div>
+    </label>`;
+  }).join('');
+  const upcomingText=prog.upcoming?`Sonraki: <strong>${prog.upcoming.t} · ${prog.upcoming.emoji} ${prog.upcoming.name}</strong>`:'Bugün tamam! ✨';
   el.innerHTML=`<div class="micro-card">
-    <div class="mc-title">Mikronutrient Durumu</div>
-    <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span>Mizaç + yumurta + avokado diyetinde <strong>4 kritik mikro</strong>: C vitamini, K2, Omega-3, Lif. Hangisinin doğal kaynağı yeterli, hangisinde supplement gerekli — <em>doktor sorusu paketi</em> de hazır.</div>
-    ${getEduLevel()!=='L1'?'<div class="mc-subtitle">4 anahtar mikro · Begümnaz mizaç + yumurta + avokado + yeşillik</div>':''}
+    <div class="mc-title">Beslenme + Supplement Durumu</div>
+    <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span><strong>Üst:</strong> Mizaç diyetinde 4 kritik mikro (C/K2/Omega-3/Lif) gap analizi. <strong>Alt:</strong> Doktor 16 ürün protokolü bugünkü dilim takibi (8 saat dilimi). Detaylı saat çizelgesi: <em>Dashboard timeline</em>.</div>
     <div class="mc-grid">${items}</div>
+    <div style="margin:18px 0 8px;padding:14px 14px 12px;border-radius:12px;background:rgba(110,26,40,0.32);border:1px solid rgba(212,175,106,0.28);">
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;">
+        <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:300;color:var(--cream-soft);">💊 Bugünkü Supplement</div>
+        <div style="font-size:13px;color:var(--gold);font-weight:600;">${prog.taken}/${prog.total}</div>
+      </div>
+      <div style="height:6px;background:rgba(255,255,255,0.08);border-radius:3px;overflow:hidden;margin-bottom:10px;">
+        <div style="height:100%;width:${pctW}%;background:linear-gradient(90deg,var(--gold),var(--coral));transition:width 0.4s ease;"></div>
+      </div>
+      <div style="font-size:11.5px;color:var(--cream-mute);margin-bottom:10px;">${upcomingText}</div>
+      <div>${slotRows}</div>
+      <div style="font-size:10.5px;color:var(--cream-faint);font-style:italic;margin-top:8px;text-align:center;">Tek tıkla işaretle · Tam protokol Dashboard saat çizelgesinde</div>
+    </div>
     <div class="mc-doctor">
       <div class="mc-doctor-title">⚕️ Doktor sorusu paketi</div>
-      Lifextra/Anti turmeric içerik formu (D3 + K2 MK-7 var mı?), serum 25(OH)D 6-12 ay 1× (hedef 30-50 ng/mL), TSH/sT4/sT3 takibi, serum demir + ferritin (regl haftası kontrol için), B12 + folat (mizaç B12 yüksek ama emilim?). Tek seferde tüm bunlar bir test paneliyle istenebilir.
+      Lifextra/Anti turmeric içerik formu (D3 + K2 MK-7 var mı?), serum 25(OH)D 6-12 ay 1× (hedef 30-50 ng/mL), TSH/sT4/sT3 takibi (Lugol başlangıcı 6-8 hf sonrası), B12 + folat emilim kontrol. Bekleyen 3 soru: NADH dozu, NAC tek/iki, probiyotik alternatif.
     </div>
   </div>`;
 }

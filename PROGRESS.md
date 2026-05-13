@@ -2,7 +2,7 @@
 
 > **Bu dosya yeni oturumun ilk okunan dosyasıdır.** Burada nerede kaldığımız, yarın ne yapacağımız, hangi kararların değişmediği yazılır. Önceki oturumda olan her kritik şey buraya yansır.
 
-**Son güncelleme**: 13 Mayıs 2026 — Faz 4 İterasyon 21 (Cilt ürün listesi Begümnaz'a güncel + Mikronutrient Vit C Bengisu temizliği)
+**Son güncelleme**: 13 Mayıs 2026 — Faz 4 İterasyon 22 (Beslenme + Supplement birleşik kart — 4 mikro + 8 doktor protokol slotu)
 
 ---
 
@@ -69,6 +69,44 @@ PWA artık prod'da Cloudflare Worker AI proxy ile çalışıyor. Begümnaz 1-2 h
 ---
 
 ## 📜 Bu Oturumda Yapılanlar (13 Mayıs 2026)
+
+### Iter 22 — Beslenme + Supplement birleşik kart (M5)
+
+Mikronutrient kartı (Diet sekmesi) ve doktor 16 ürün supplement protokolü ayrı yerlerde duruyordu (Dashboard'da timeline detay, Diet'te sadece 4 mikro). M5 hedefi: **TEK kart**ta birleştirmek.
+
+**Yeni yapı (renderMicronutrientCard genişletildi)**:
+- Kart adı değişti: "Mikronutrient Durumu" → **"Beslenme + Supplement Durumu"**
+- **Üst yarı (mevcut)**: 4 mikro nutrient grid — C vit / K2 / Omega-3 / Lif
+- **Orta yarı (YENİ)**: 💊 Bugünkü Supplement bölümü
+  - **Progress bar** (taken/total) — gold→coral gradient, %ile görsel
+  - **8 saat dilimi checkbox'ı** (her biri tıklanır):
+    1. 🥥 08:00 Alkemist Oil Pulling
+    2. ☀️ 08:30 Sabah AC (5 ürün: Akavital+Gül sirkesi+NADH+NAC+Bach)
+    3. 💧 +2 saat Lugol iyot %5 (4 damla + Bach 2.)
+    4. 💊 Kahvaltı tok (6 ürün + Pzt Colewinde D)
+    5. 🍎 14:30 Ara + NAC (2.) + Bach (3.)
+    6. 🕓 16:00 İkindi AC (Akavital + Gül sirkesi 2.)
+    7. 🍲 17:30-19:00 Akşam (Anti turmeric + More than + Lifextra + Time Mg 2.)
+    8. 🌙 22:00 Duobalance BV probiyotik
+  - **"Sonraki" mesajı**: Şu an saatine göre upcoming slot vurgulanır (örn: "Sonraki: 14:30 · 🍎 Ara + NAC (2.) + Bach (3.)")
+  - "Bugün tamam ✨" mesajı (hepsi alınınca)
+- **Alt yarı (mevcut + güncel)**: ⚕️ Doktor sorusu paketi + bekleyen 3 soru hatırlatma
+
+**Yeni fonksiyonlar**:
+- `SUPPLEMENT_SLOTS` sabit array (8 dilim, key/emoji/saat/isim/içerik)
+- `getSupplementLog()` — localStorage `supplement_log` parse (zaten BACKUP_KEYS'de)
+- `setSupplementSlot(key, value)` — checkbox tıklanınca log güncelle + re-render
+- `getTodaySupplementProgress()` — taken/total + upcoming slot hesabı (current time bazlı)
+
+**localStorage**: `supplement_log` = `{YYYY-MM-DD: {oil_pulling: true, sabah_ac: false, ...}}`
+
+**Hala Dashboard'da**: Detaylı timeline (saat saat, hangi ürün hangi zamanda, etkileşim notları, doktor onayı bekleyen flag'ler). Diet kart "Detaylı saat çizelgesi: Dashboard" yönlendirmesi yapar.
+
+**SW cache bump**: `v10-cilt-mikronutrient-fix` → **`v11-supplement-birlesik`**
+
+**Önem**: Begümnaz Diet sekmesini açtığında **tek bakışta** günün beslenme gap'i + supplement progress'i görür. Detay için Dashboard'a inebilir. Karar paralleli yokken takip kayboluyordu — şimdi her sekmede tutarlı view.
+
+---
 
 ### Iter 21 — Cilt ürün listesi Begümnaz'a güncel + Mikronutrient Vit C Bengisu temizliği
 
