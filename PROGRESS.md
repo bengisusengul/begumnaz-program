@@ -229,7 +229,7 @@ Bugünkü iterasyonlar **9-15 arası**. Önceki oturumlardan devralınan + bu ot
 
 ---
 
-## 📊 Commit Geçmişi (16 commit · son 15 bu oturumun iterasyonları)
+## 📊 Commit Geçmişi (18 commit · son 17 bu oturum + önceki iterasyonları)
 
 ```
 3b469ad  Phase 1: Markdown dokümantasyon iskeleti tamamlandı
@@ -248,6 +248,8 @@ f95d2d7  Faz 2 Iter 12: fixPeriodData20260504 disabled (Bengisu period seed)
 f224140  Faz 2 Iter 13: Diyet sayfası kart kontrastı — agresif text override
 59bc99a  Faz 2 Iter 14: "acıkmadan" → "acıkınca" (Türkçe semantik düzeltme)
 b2f5a98  Faz 2 Iter 15: Hacettepe Lab tamamen kaldırıldı — Bengisu kalıntısı  ⬅ UNPUSHED
+aa2c4bf  PROGRESS.md kapsamlı yeniden yazıldı — oturum devamlılık dosyası  ⬅ UNPUSHED
+c771a81  Faz 2 Iter 16: DEPLOY-API-PROXY.md path/origin tutarsızlık fix  ⬅ UNPUSHED
 ```
 
 ---
