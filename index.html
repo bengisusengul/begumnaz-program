@@ -73,10 +73,21 @@ body{
   max-width:100vw;
 }
 /* Iter 25 — Mobile responsive proaktif fix: küçük ekranlarda (≤360px) tasma korunması */
+@media (max-width:430px){
+  /* Iter 48 — Tablet altı: kart padding biraz daralt, başlık küçült */
+  .card,.bx-card,.al-card,.micro-card{padding-left:14px;padding-right:14px;}
+  h1{font-size:30px;}
+  h2{font-size:22px;}
+  h3{font-size:16px;}
+  .slbl{font-size:11px;letter-spacing:1.4px;}
+}
 @media (max-width:360px){
   body{font-size:14px;}
-  .card,.bx-card,.al-card,.micro-card{padding-left:14px;padding-right:14px;}
+  .card,.bx-card,.al-card,.micro-card{padding-left:12px;padding-right:12px;}
   .topbar{padding-left:12px;padding-right:12px;}
+  h1{font-size:26px;}
+  h2{font-size:19px;}
+  h3{font-size:15px;}
 }
 
 /* Tüm başlık + ritüel metinler için Playfair Display (Billie Eilish-style klasik serif) */
@@ -426,17 +437,45 @@ input:focus, select:focus, textarea:focus{outline:2px solid var(--pink-deep);out
 /* FOOD */
 .fi{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border-soft);}
 .fi:last-of-type{border-bottom:none;}
-.ficon{font-size:22px;flex-shrink:0;}
-.fin{flex:1;}
-.fname{font-size:14px;font-weight:500;color:var(--text);}
-.fmac{font-size:11px;color:var(--text-light);margin-top:2px;}
+.ficon{font-size:22px;flex-shrink:0;line-height:1;}
+.fin{flex:1;min-width:0;}
+.fname{font-size:14px;font-weight:500;color:var(--text);word-break:break-word;overflow-wrap:anywhere;line-height:1.35;}
+.fmac{font-size:11px;color:var(--text-light);margin-top:2px;word-break:break-word;}
 .fkcal{font-family:'Playfair Display','Playfair Display',serif;font-size:18px;color:var(--gold);flex-shrink:0;}
+/* Iter 48 — Mobile responsive (uzun yemek adları + dar ekran) */
+@media (max-width:430px){
+  .fi{gap:9px;padding:11px 0;}
+  .ficon{font-size:20px;}
+  .fname{font-size:13px;}
+  .fmac{font-size:10.5px;}
+  .fkcal{font-size:16px;}
+}
+@media (max-width:360px){
+  .fi{gap:7px;padding:10px 0;}
+  .ficon{font-size:18px;}
+  .fname{font-size:12.5px;}
+  .fmac{font-size:10px;}
+  .fkcal{font-size:15px;}
+}
 
 /* MACRO ROW */
 .mrow{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px;}
-.mbox{text-align:center;padding:14px 6px;background:rgba(15,30,38,0.50);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);border-radius:var(--r-xs);border:1px solid rgba(255,255,255,0.14);box-shadow:0 4px 12px rgba(0,0,0,0.2);}
+.mbox{text-align:center;padding:14px 6px;background:rgba(15,30,38,0.50);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);border-radius:var(--r-xs);border:1px solid rgba(255,255,255,0.14);box-shadow:0 4px 12px rgba(0,0,0,0.2);min-width:0;}
 .mval{font-family:'Playfair Display','Playfair Display',serif;font-size:22px;font-weight:600;color:var(--cream-soft);}
 .mlbl{font-size:9px;text-transform:uppercase;letter-spacing:0.8px;color:var(--cream-mute);margin-top:3px;}
+/* Iter 48 — Macro grid mobile scaling */
+@media (max-width:430px){
+  .mrow{gap:6px;}
+  .mbox{padding:12px 4px;}
+  .mval{font-size:19px;}
+  .mlbl{font-size:8.5px;letter-spacing:0.5px;}
+}
+@media (max-width:360px){
+  .mrow{gap:5px;}
+  .mbox{padding:10px 3px;}
+  .mval{font-size:17px;}
+  .mlbl{font-size:8px;}
+}
 
 /* SKIN */
 .sstep{display:flex;gap:10px;align-items:flex-start;padding:10px 0;border-bottom:1px dashed var(--border-soft);}
@@ -2806,7 +2845,7 @@ function getWeeklyDigest(){
     else if(c.phase==='Ovulation')phaseNote='Bu hafta ovulasyon penceresinde — enerjin yüksek, ama ligamentler hassas (mid-cycle pelvik flare riski).';
     else if(c.phase==='Luteal Phase' && c.day>=getAvgCycleLen()-6)phaseNote='Bu hafta geç luteal — BMR yüksek, vücut sıkı çalıştı. Hafifletmek mantıklı.';
     else if(c.phase==='Follicular Phase')phaseNote='Bu hafta folliküler — östrojen yükseldi, kas yapımı için iyi pencere.';
-    else phaseNote='Bu hafta erken luteal — volume ve fat oxidation için iyi hafta.';
+    else phaseNote='Bu hafta erken luteal — volume için iyi hafta · magnezyum + B6 başlat · serotonin destek (hindi, yumurta).';
   }
   return{walks,workouts,meal1s,meal2s,waters,rests,cycles,totalVolume:Math.round(totalVolume),avgRPE,prCount,skipped:skipped.slice(0,3),modified:modified.slice(0,3),phaseNote};
 }
@@ -3019,20 +3058,44 @@ function getMacroTarget(d=new Date()){
   const c=ci(d);
   const base={...MACRO_BASE,bonus:null,note:null};
   if(!c)return base;
+  // Iter 48 — Bilingual macro notes + Bengisu "fat oxidation" kalıntısı temizlendi
+  // (Begümnaz mizaç temelli beslenme — keto/fat-oxidation odağı yok, magnezyum/protein/cycle-aware vurgu)
+  const en=getLang()==='en';
   if(c.phase==='Menstruation'){
-    return{kcal:1900,p:170,f:120,c:40,bonus:'+50 kcal · +10g protein',note:'🔴 Regl: kırmızı et + ciğer · demir + B12 · tuz 8-10g · iron loss için ekstra protein'};
+    return{
+      kcal:1900,p:170,f:120,c:40,
+      bonus:en?'+50 kcal · +10g protein':'+50 kcal · +10g protein',
+      note:en
+        ?'🔴 Period: red meat + liver · iron + B12 · salt 8-10g · extra protein for iron loss recovery'
+        :'🔴 Regl: kırmızı et (kuzu) + ciğer · demir + B12 · tuz 8-10g · demir kaybı için ekstra protein'
+    };
   }
-  // Ovulasyon (Day 13-16): protein vurgu (kas sentezi modest 3-5%)
   if(c.phase==='Ovulation'){
-    return{kcal:1900,p:170,f:120,c:40,bonus:'+50 kcal',note:'🌸 Ovulasyon: östrojen yüksek · protein vurgu · omega-3 + yağlı balık öne çık'};
+    return{
+      kcal:1900,p:170,f:120,c:40,
+      bonus:'+50 kcal',
+      note:en
+        ?'🌸 Ovulation: estrogen peak · protein emphasis · omega-3 (fatty fish) · collagen 15g + Vit C pre-WO (ligament protection)'
+        :'🌸 Ovulasyon: östrojen yüksek · protein vurgu · omega-3 (yağlı balık) · kollajen 15g + Vit C pre-WO (ligament koruma)'
+    };
   }
   if(c.phase==='Luteal Phase'){
-    // Geç luteal son 6 gün: +150 kcal + karb artışı (progesteron peak, BMR +%8-12, RED-S koruma)
     if(c.day>=getAvgCycleLen()-6){
-      return{kcal:2000,p:165,f:125,c:60,bonus:'+150 kcal · +20g karb',note:'🌙 Geç luteal: BMR +%8-12 · magnezyum + tuz vurgusu · ekstra karb hak ettin · progesteron peak'};
+      return{
+        kcal:2000,p:165,f:125,c:60,
+        bonus:en?'+150 kcal · +20g carbs':'+150 kcal · +20g karb',
+        note:en
+          ?'🌙 Late luteal: BMR +8-12% · magnesium + salt emphasis · extra carbs (you earned them) · progesterone peak'
+          :'🌙 Geç luteal: BMR +%8-12 · magnezyum + tuz vurgusu · ekstra karb hak ettin · progesteron peak'
+      };
     }
-    // Erken luteal: progesteron yükseliyor, Mg/B6 başlangıcı
-    return{kcal:1900,p:165,f:122,c:45,bonus:'+50 kcal',note:'🌙 Erken luteal: progesteron yükseliyor · magnezyum + B6 başlat · fat oxidation ↑'};
+    return{
+      kcal:1900,p:165,f:122,c:45,
+      bonus:'+50 kcal',
+      note:en
+        ?'🌙 Early luteal: progesterone rising · start magnesium + B6 · serotonin support (turkey, eggs)'
+        :'🌙 Erken luteal: progesteron yükseliyor · magnezyum + B6 başlat · serotonin desteği (hindi, yumurta)'
+    };
   }
   return base;
 }
@@ -3389,47 +3452,48 @@ const CD={
 // İZİNLİ PROTEİN: kuzu/koyun/hindi (3x/hafta), doğal yumurta
 
 // 1. ÖĞÜN — Kahvaltı (acıkma sinyalinde) — yumurta + pişmiş sebze + çiğ kuruyemiş + zeytin + mayasız ekmek
+// Iter 48 — Meal arrays bilingual (nEn + noteEn EN versiyonları)
 const M1=[
-  {n:'1 yumurta + kabak sote + zeytinyağı + kaya tuzu',i:'🍳',p:8,f:18,c:6,k:230},   // Pzt
-  {n:'1 yumurta + ıspanak sote + zeytinyağı + kaya tuzu',i:'🍳',p:9,f:18,c:5,k:235}, // Sal
-  {n:'1 yumurta + pırasa sote + zeytinyağı + kaya tuzu',i:'🍳',p:8,f:18,c:7,k:240},  // Çar
-  {n:'1 yumurta + brokoli buharda + zeytinyağı + kaya tuzu',i:'🍳',p:9,f:18,c:6,k:235}, // Per
-  {n:'1 yumurta + havuç sote + zeytinyağı + kaya tuzu',i:'🍳',p:8,f:18,c:9,k:250},   // Cum
-  {n:'1 yumurta + karnabahar buharda + zeytinyağı + kaya tuzu',i:'🍳',p:9,f:18,c:5,k:235}, // Cmt
-  {n:'1 yumurta + karalahana sote + zeytinyağı + kaya tuzu',i:'🍳',p:9,f:18,c:6,k:240}, // Paz
+  {n:'1 yumurta + kabak sote + zeytinyağı + kaya tuzu',nEn:'1 egg + sautéed zucchini + olive oil + rock salt',i:'🍳',p:8,f:18,c:6,k:230},
+  {n:'1 yumurta + ıspanak sote + zeytinyağı + kaya tuzu',nEn:'1 egg + sautéed spinach + olive oil + rock salt',i:'🍳',p:9,f:18,c:5,k:235},
+  {n:'1 yumurta + pırasa sote + zeytinyağı + kaya tuzu',nEn:'1 egg + sautéed leek + olive oil + rock salt',i:'🍳',p:8,f:18,c:7,k:240},
+  {n:'1 yumurta + brokoli buharda + zeytinyağı + kaya tuzu',nEn:'1 egg + steamed broccoli + olive oil + rock salt',i:'🍳',p:9,f:18,c:6,k:235},
+  {n:'1 yumurta + havuç sote + zeytinyağı + kaya tuzu',nEn:'1 egg + sautéed carrot + olive oil + rock salt',i:'🍳',p:8,f:18,c:9,k:250},
+  {n:'1 yumurta + karnabahar buharda + zeytinyağı + kaya tuzu',nEn:'1 egg + steamed cauliflower + olive oil + rock salt',i:'🍳',p:9,f:18,c:5,k:235},
+  {n:'1 yumurta + karalahana sote + zeytinyağı + kaya tuzu',nEn:'1 egg + sautéed kale + olive oil + rock salt',i:'🍳',p:9,f:18,c:6,k:240},
 ];
 
 // 1. ÖĞÜN YAN — Kahvaltı yanı: çiğ kuruyemiş + zeytin + keten + mayasız ekmek
 const M1S=[
-  {n:'1 avuç çiğ badem + 7 dolmalık fıstık + 1 avuç zeytin + keten + mayasız ekmek',i:'🌰',p:9,f:24,c:14,k:330,note:'badem geceden ıslatılmış'},
-  {n:'1 avuç çiğ kabak çekirdeği + 1 avuç zeytin + keten + mayasız ekmek',i:'🌰',p:8,f:22,c:14,k:300,note:'gül+zeytin yaprağı çayı'},
-  {n:'1 avuç çiğ badem + zeytin + keten + mayasız ekmek',i:'🌰',p:8,f:22,c:14,k:310,note:'gül+zeytin yaprağı çayı'},
-  {n:'1 avuç çiğ kabak çekirdeği + dolmalık fıstık + zeytin + mayasız ekmek',i:'🌰',p:9,f:24,c:14,k:330,note:'keten tohumu salataya'},
-  {n:'1 avuç çiğ badem + zeytin + keten + mayasız ekmek',i:'🌰',p:8,f:22,c:14,k:310,note:'aynı safa çayı sonra'},
-  {n:'1 avuç çiğ kabak çekirdeği + 7 fıstık + zeytin + mayasız ekmek',i:'🌰',p:9,f:24,c:14,k:330,note:'tatlı meyve sonra'},
-  {n:'1 avuç çiğ badem + zeytin + keten + mayasız ekmek',i:'🌰',p:8,f:22,c:14,k:310,note:'gül çayı'},
+  {n:'1 avuç çiğ badem + 7 dolmalık fıstık + 1 avuç zeytin + keten + mayasız ekmek',nEn:'Handful raw almonds + 7 pine nuts + handful olives + flaxseed + sourdough',i:'🌰',p:9,f:24,c:14,k:330,note:'badem geceden ıslatılmış',noteEn:'almonds soaked overnight'},
+  {n:'1 avuç çiğ kabak çekirdeği + 1 avuç zeytin + keten + mayasız ekmek',nEn:'Handful raw pumpkin seeds + handful olives + flaxseed + sourdough',i:'🌰',p:8,f:22,c:14,k:300,note:'gül+zeytin yaprağı çayı',noteEn:'rose + olive leaf tea'},
+  {n:'1 avuç çiğ badem + zeytin + keten + mayasız ekmek',nEn:'Handful raw almonds + olives + flaxseed + sourdough',i:'🌰',p:8,f:22,c:14,k:310,note:'gül+zeytin yaprağı çayı',noteEn:'rose + olive leaf tea'},
+  {n:'1 avuç çiğ kabak çekirdeği + dolmalık fıstık + zeytin + mayasız ekmek',nEn:'Handful raw pumpkin seeds + pine nuts + olives + sourdough',i:'🌰',p:9,f:24,c:14,k:330,note:'keten tohumu salataya',noteEn:'add flaxseed to salad'},
+  {n:'1 avuç çiğ badem + zeytin + keten + mayasız ekmek',nEn:'Handful raw almonds + olives + flaxseed + sourdough',i:'🌰',p:8,f:22,c:14,k:310,note:'aynı safa çayı sonra',noteEn:'aynı safa tea after'},
+  {n:'1 avuç çiğ kabak çekirdeği + 7 fıstık + zeytin + mayasız ekmek',nEn:'Handful raw pumpkin seeds + 7 pine nuts + olives + sourdough',i:'🌰',p:9,f:24,c:14,k:330,note:'tatlı meyve sonra',noteEn:'sweet fruit after'},
+  {n:'1 avuç çiğ badem + zeytin + keten + mayasız ekmek',nEn:'Handful raw almonds + olives + flaxseed + sourdough',i:'🌰',p:8,f:22,c:14,k:310,note:'gül çayı',noteEn:'rose tea'},
 ];
 
-// 2. ÖĞÜN — Öğle (12-13) — salçasız+unsuz sebze çorbası + sebze yemeği + et (3x/hafta) veya alternatif
+// 2. ÖĞÜN — Öğle (12-13) — salçasız+unsuz sebze çorbası + sebze yemeği + et (3x/hafta)
 const M2=[
-  {n:'Sebze çorbası + sebze yemeği + 3 köfte KUZU',i:'🥣',p:30,f:18,c:25,k:380,note:'Pzt — et günü'},
-  {n:'Sebze çorbası + sebze yemeği (et yok, çiğ kuruyemiş ek)',i:'🥣',p:14,f:16,c:30,k:300,note:'Sal — vejeteryan'},
-  {n:'Sebze çorbası + sebze yemeği + 3 köfte KOYUN',i:'🥣',p:30,f:20,c:25,k:400,note:'Çar — et günü'},
-  {n:'Sebze çorbası + sebze yemeği + 2 yumurta',i:'🥣',p:18,f:18,c:28,k:330,note:'Per — yumurta ek'},
-  {n:'Sebze çorbası + sebze yemeği + 3 köfte HİNDİ',i:'🥣',p:32,f:14,c:25,k:360,note:'Cum — et günü'},
-  {n:'Sebze çorbası + mercimek/nohut yemek',i:'🥣',p:18,f:12,c:38,k:340,note:'Cmt — baklagil vejeteryan'},
-  {n:'Sebze çorbası + perde pilavı (basmati + çiğ badem + havuç)',i:'🍚',p:14,f:16,c:50,k:400,note:'Paz — pirinç günü'},
+  {n:'Sebze çorbası + sebze yemeği + 3 köfte KUZU',nEn:'Vegetable soup + veg dish + 3 LAMB meatballs',i:'🥣',p:30,f:18,c:25,k:380,note:'Pzt — et günü',noteEn:'Mon — meat day'},
+  {n:'Sebze çorbası + sebze yemeği (et yok, çiğ kuruyemiş ek)',nEn:'Vegetable soup + veg dish (no meat, add raw nuts)',i:'🥣',p:14,f:16,c:30,k:300,note:'Sal — vejeteryan',noteEn:'Tue — vegetarian'},
+  {n:'Sebze çorbası + sebze yemeği + 3 köfte KOYUN',nEn:'Vegetable soup + veg dish + 3 SHEEP meatballs',i:'🥣',p:30,f:20,c:25,k:400,note:'Çar — et günü',noteEn:'Wed — meat day'},
+  {n:'Sebze çorbası + sebze yemeği + 2 yumurta',nEn:'Vegetable soup + veg dish + 2 eggs',i:'🥣',p:18,f:18,c:28,k:330,note:'Per — yumurta ek',noteEn:'Thu — eggs added'},
+  {n:'Sebze çorbası + sebze yemeği + 3 köfte HİNDİ',nEn:'Vegetable soup + veg dish + 3 TURKEY meatballs',i:'🥣',p:32,f:14,c:25,k:360,note:'Cum — et günü',noteEn:'Fri — meat day'},
+  {n:'Sebze çorbası + mercimek/nohut yemek',nEn:'Vegetable soup + lentil/chickpea dish',i:'🥣',p:18,f:12,c:38,k:340,note:'Cmt — baklagil vejeteryan',noteEn:'Sat — legumes vegetarian'},
+  {n:'Sebze çorbası + perde pilavı (basmati + çiğ badem + havuç)',nEn:'Vegetable soup + perde pilaf (basmati + raw almonds + carrot)',i:'🍚',p:14,f:16,c:50,k:400,note:'Paz — pirinç günü',noteEn:'Sun — rice day'},
 ];
 
 // 2. ÖĞÜN YAN = ARA ÖĞÜN 15:00 — 1 porsiyon tatlı meyve (ekşi HARİÇ)
 const M2S=[
-  {n:'1 muz',i:'🍌',p:1,f:0,c:27,k:105,note:'tatlı, ekşi değil'},
-  {n:'2-3 hurma',i:'🌴',p:1,f:0,c:24,k:90,note:'tatlı, mineral kaynağı'},
-  {n:'1 tatlı elma',i:'🍎',p:0,f:0,c:25,k:95,note:'pişmiş değil, ham olabilir (meyve hariç çiğ sebze yasak)'},
-  {n:'1 armut',i:'🍐',p:1,f:0,c:25,k:100,note:'tatlı çeşit'},
-  {n:'1 küçük salkım tatlı üzüm',i:'🍇',p:1,f:0,c:24,k:90,note:'tatlı, ekşi DEĞİL'},
-  {n:'3-4 incir (taze veya kuru)',i:'🍑',p:1,f:0,c:24,k:95,note:'kuru ise az'},
-  {n:'1 avuç kuru üzüm',i:'🍇',p:1,f:0,c:25,k:95,note:'sınırlı miktarda'},
+  {n:'1 muz',nEn:'1 banana',i:'🍌',p:1,f:0,c:27,k:105,note:'tatlı, ekşi değil',noteEn:'sweet, not sour'},
+  {n:'2-3 hurma',nEn:'2-3 dates',i:'🌴',p:1,f:0,c:24,k:90,note:'tatlı, mineral kaynağı',noteEn:'sweet, mineral source'},
+  {n:'1 tatlı elma',nEn:'1 sweet apple',i:'🍎',p:0,f:0,c:25,k:95,note:'pişmiş değil, ham olabilir (meyve hariç çiğ sebze yasak)',noteEn:'raw OK (raw vegetables forbidden but fruit excepted)'},
+  {n:'1 armut',nEn:'1 pear',i:'🍐',p:1,f:0,c:25,k:100,note:'tatlı çeşit',noteEn:'sweet variety'},
+  {n:'1 küçük salkım tatlı üzüm',nEn:'Small bunch sweet grapes',i:'🍇',p:1,f:0,c:24,k:90,note:'tatlı, ekşi DEĞİL',noteEn:'sweet, NOT sour'},
+  {n:'3-4 incir (taze veya kuru)',nEn:'3-4 figs (fresh or dried)',i:'🍑',p:1,f:0,c:24,k:95,note:'kuru ise az',noteEn:'small portion if dried'},
+  {n:'1 avuç kuru üzüm',nEn:'Handful raisins',i:'🍇',p:1,f:0,c:25,k:95,note:'sınırlı miktarda',noteEn:'limited amount'},
 ];
 
 // SKIN — Begümnaz post-iso bariyer + hassas + aşamalı protokol
@@ -4060,12 +4124,12 @@ const WEEKLY_FOCUS_TEXTS={
   luteal_build:{
     tag:'PAZARTESI · BU HAFTA ODAK',
     title:'Erken Sonbahar · Cadı (Volume Penceresi)',
-    subtitle:'Erken luteal — progesteron yükseliyor, fat oxidation artar. Volume için iyi gün.',
+    subtitle:'Erken luteal — progesteron yükseliyor, volume için iyi gün. Magnezyum + B6 başlama zamanı.',
     intro:'Cadı arketipi (bilge): introspection, derinleşme, sezgi keskin. Progesteron başlar yükselmeye ama PMS henüz yok. Bu hafta volume-heavy işler ve dayanıklılık için iyi pencere — agresif intensity düşmeli ama volume kalır.',
     hormone:'Progesteron 1→8 ng/mL yükselişe geçti. Östrojen ikinci peak (luteal mid). Testosteron normalize. Relaxin düşer.',
-    physiology:'Fat oxidation ↑ — yağ daha verimli yakılır. İnsülin duyarlılığı orta (karb hala kullanılır). BMR hafif yükselir (+5-8%). Vücut ısısı +0.2°C. Magnezyum + B6 başlamak için ideal.',
+    physiology:'İnsülin duyarlılığı orta (karb hala kullanılır). BMR hafif yükselir (+5-8%). Vücut ısısı +0.2°C. Magnezyum + B6 başlamak için ideal — kramp + mood koruma.',
     training:'Volume %5 artırma penceresi (rep aralığı 10-15). Intensity orta (RPE 7-8). Yardımcı hareketler için iyi gün — single-leg work, glute izolasyon, core. Compound hareketler RPE 8 max.',
-    nutrition:'Magnezyum 300-350 mg + B6 (P5P 25mg) başlat — kramp + mood koruma. Karb post-WO penceresi (40-50g) — fat oxidation\'a rağmen rezerv için. Protein 1.8-2.0 g/kg. Su +250 ml (BMR yükselişi).',
+    nutrition:'Magnezyum 300-350 mg + B6 (P5P 25mg) başlat — kramp + mood koruma. Karb post-WO penceresi (40-50g) — rezerv için. Protein 1.8-2.0 g/kg. Su +250 ml (BMR yükselişi). Serotonin desteği: hindi, yumurta.',
     risk:'PMS belirtileri Day 21-22\'den başlayabilir. Mood değişimi farkındalığı yüksek tut — antrenman kararını "zorla" değil "dinle"den ver. Geç luteal\'a hazırlık başlıyor.',
     closing:'Bu hafta <em>derinleşme</em> hafta. Cadı arketipi sezgi konuşur — bedenin söylediği "biraz çoğaltabilirim" doğru, "ekstra zorla" doğru değil. Aralık hassas.'
   },
@@ -4136,12 +4200,12 @@ const WEEKLY_FOCUS_TEXTS_EN={
   luteal_build:{
     tag:'MONDAY · THIS WEEK\'S FOCUS',
     title:'Early Autumn · Witch (Volume Window)',
-    subtitle:'Early luteal — progesterone rising, fat oxidation increases. A good day for volume.',
+    subtitle:'Early luteal — progesterone rising, a good day for volume. Time to start magnesium + B6.',
     intro:'The Witch archetype (wise): introspection, deepening, sharp intuition. Progesterone begins rising but PMS hasn\'t started yet. This week is a good window for volume-heavy work and endurance — aggressive intensity should drop but volume stays.',
     hormone:'Progesterone rising from 1→8 ng/mL. Estrogen second peak (luteal mid). Testosterone normalised. Relaxin drops.',
-    physiology:'Fat oxidation ↑ — fat is burned more efficiently. Insulin sensitivity moderate (carbs still usable). BMR slightly elevated (+5-8%). Body temp +0.2°C. Ideal time to start magnesium + B6.',
+    physiology:'Insulin sensitivity moderate (carbs still usable). BMR slightly elevated (+5-8%). Body temp +0.2°C. Ideal time to start magnesium + B6 — cramp + mood protection.',
     training:'Volume +5% increase window (rep range 10-15). Moderate intensity (RPE 7-8). Good day for accessory work — single-leg work, glute isolation, core. Compound moves RPE 8 max.',
-    nutrition:'Start magnesium 300-350 mg + B6 (P5P 25mg) — cramp + mood protection. Carbs in post-WO window (40-50g) — reserve despite fat oxidation. Protein 1.8-2.0 g/kg. Water +250 ml (BMR rise).',
+    nutrition:'Start magnesium 300-350 mg + B6 (P5P 25mg) — cramp + mood protection. Carbs in post-WO window (40-50g) — reserve. Protein 1.8-2.0 g/kg. Water +250 ml (BMR rise). Serotonin support: turkey, eggs.',
     risk:'PMS symptoms may begin Day 21-22. Keep mood-change awareness high — make training decisions from "listen" not "force". Late-luteal preparation is beginning.',
     closing:'This week is a week of <em>deepening</em>. The Witch archetype speaks in intuition — your body saying "I can add a little" is right; "force extra" is not. The interval is delicate.'
   },
@@ -6753,10 +6817,10 @@ function renderDietDay(){
     <div style="background:linear-gradient(135deg,rgba(232,178,63,0.18),rgba(168,192,160,0.12));border-radius:14px;padding:16px;margin-bottom:14px;text-align:center;border:1px solid rgba(232,178,63,0.30);">
       <div style="font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--mustard-soft);font-weight:700;margin-bottom:8px;">${remainingLbl}</div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;">
-        <div><div style="font-family:'Playfair Display','Playfair Display',serif;font-size:32px;font-weight:600;line-height:1;color:${remColor(rem.kcal)};">${rem.kcal}</div><div style="font-size:10px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">kcal</div></div>
-        <div><div style="font-family:'Playfair Display','Playfair Display',serif;font-size:32px;font-weight:600;line-height:1;color:${remColor(rem.p)};">${rem.p}</div><div style="font-size:10px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">${gProteinLbl}</div></div>
-        <div><div style="font-family:'Playfair Display','Playfair Display',serif;font-size:32px;font-weight:600;line-height:1;color:${remColor(rem.f)};">${rem.f}</div><div style="font-size:10px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">${gFatLbl}</div></div>
-        <div><div style="font-family:'Playfair Display','Playfair Display',serif;font-size:32px;font-weight:600;line-height:1;color:${remColor(rem.c*5)};">${rem.c}</div><div style="font-size:10px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">${gCarbLbl}</div></div>
+        <div><div style="font-family:'Playfair Display','Playfair Display',serif;font-size:clamp(20px,7vw,32px);font-weight:600;line-height:1;color:${remColor(rem.kcal)};">${rem.kcal}</div><div style="font-size:10px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">kcal</div></div>
+        <div><div style="font-family:'Playfair Display','Playfair Display',serif;font-size:clamp(20px,7vw,32px);font-weight:600;line-height:1;color:${remColor(rem.p)};">${rem.p}</div><div style="font-size:10px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">${gProteinLbl}</div></div>
+        <div><div style="font-family:'Playfair Display','Playfair Display',serif;font-size:clamp(20px,7vw,32px);font-weight:600;line-height:1;color:${remColor(rem.f)};">${rem.f}</div><div style="font-size:10px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">${gFatLbl}</div></div>
+        <div><div style="font-family:'Playfair Display','Playfair Display',serif;font-size:clamp(20px,7vw,32px);font-weight:600;line-height:1;color:${remColor(rem.c*5)};">${rem.c}</div><div style="font-size:10px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">${gCarbLbl}</div></div>
       </div>
     </div>
     <div style="font-size:11px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;text-align:center;">${ringsLbl}</div>
@@ -6780,21 +6844,30 @@ function getMacroCategory(f){
   return '';
 }
 function fItemSwap(f, slot, dayKey){
+  // Iter 48 — Bilingual meal name + note + macro labels + button titles
+  const en=getLang()==='en';
+  const fName=en?(f.nEn||f.n):f.n;
+  const fNote=en?(f.noteEn||f.note):f.note;
   const done=isMealDone(slot,dayKey);
-  const fEnc=encodeURIComponent(f.n);
+  const fEnc=encodeURIComponent(fName);
   const cat=getMacroCategory(f);
+  const checkTitle=done?(en?'Eaten — undo':'Yedim — geri al'):(en?'Mark as eaten':'Bunu yediğimi işaretle');
+  const proteinLbl=en?'P':'P';
+  const fatLbl=en?'F':'Y';
+  const recipeTitle=en?'Recipe':'Tarif';
+  const altsTitle=en?'Alternatives':'Alternatifler';
   return`<div class="fi ${done?'eaten':''}" data-cat="${cat}">
-    <div class="meal-check ${done?'done':''}" onclick="toggleMealDone('${slot}','${dayKey.replace(/'/g,"\\'")}')" title="${done?'Yedim — geri al':'Bunu yediğimi işaretle'}"></div>
+    <div class="meal-check ${done?'done':''}" onclick="toggleMealDone('${slot}','${dayKey.replace(/'/g,"\\'")}')" title="${checkTitle}"></div>
     <div class="ficon">${f.i}</div>
     <div class="fin">
-      <div class="fname">${f.n}</div>
-      <div class="fmac">P: ${f.p}g · Y: ${f.f}g${f.note?' · '+f.note:''}</div>
+      <div class="fname">${fName}</div>
+      <div class="fmac">${proteinLbl}: ${f.p}g · ${fatLbl}: ${f.f}g${fNote?' · '+fNote:''}</div>
     </div>
     <div style="display:flex;flex-direction:column;align-items:flex-end;gap:4px;">
       <div class="fkcal">${f.k}</div>
       <div style="display:flex;gap:4px;">
-        <button class="btn bghost" style="padding:3px 9px;font-size:11px;border-radius:20px;" onclick="openRecipe(decodeURIComponent('${fEnc}'),{k:${f.k},p:${f.p},f:${f.f}})" title="Tarif">📖</button>
-        <button class="btn bghost" style="padding:3px 9px;font-size:11px;border-radius:20px;" onclick="openFoodAlts(decodeURIComponent('${fEnc}'),'${slot}','${dayKey.replace(/'/g,"\\'")}')" title="Alternatifler">🔄</button>
+        <button class="btn bghost" style="padding:3px 9px;font-size:11px;border-radius:20px;" onclick="openRecipe(decodeURIComponent('${fEnc}'),{k:${f.k},p:${f.p},f:${f.f}})" title="${recipeTitle}">📖</button>
+        <button class="btn bghost" style="padding:3px 9px;font-size:11px;border-radius:20px;" onclick="openFoodAlts(decodeURIComponent('${fEnc}'),'${slot}','${dayKey.replace(/'/g,"\\'")}')" title="${altsTitle}">🔄</button>
       </div>
     </div>
   </div>`;
