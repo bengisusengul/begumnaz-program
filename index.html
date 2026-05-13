@@ -2816,10 +2816,12 @@ function ci(d=new Date()){
   // Dinamik phase boundary — luteal phase ~14 gün stabil (12-16), ovulasyon cyc-14 günü
   // 28 günlük → ovuDay 14 (mevcut), 32 günlük → ovuDay 18 (doğru), 24 günlük → ovuDay 10
   const ovuDay=Math.max(dur+2,cyc-14);
-  if(day<=dur)return{day,phase:'Menstruation',label:'Regl · Kış',archetype:'Bilge Kadın',emoji:'🔴',cls:'np'};
-  if(day<=ovuDay-2)return{day,phase:'Follicular Phase',label:'Folliküler · İlkbahar',archetype:'Genç Kız',emoji:'🌱',cls:'ns'};
-  if(day<=ovuDay+1)return{day,phase:'Ovulation',label:'Ovulasyon · Yaz',archetype:'Anne',emoji:'🌸',cls:'ng'};
-  return{day,phase:'Luteal Phase',label:'Luteal · Sonbahar',archetype:'Cadı (Bilge)',emoji:'🌙',cls:'nm'};
+  // Iter 44 — phase label + archetype bilingual
+  const en=(typeof getLang==='function'&&getLang()==='en');
+  if(day<=dur)return{day,phase:'Menstruation',label:en?'Menstruation · Winter':'Regl · Kış',archetype:en?'Wise Woman':'Bilge Kadın',emoji:'🔴',cls:'np'};
+  if(day<=ovuDay-2)return{day,phase:'Follicular Phase',label:en?'Follicular · Spring':'Folliküler · İlkbahar',archetype:en?'Maiden':'Genç Kız',emoji:'🌱',cls:'ns'};
+  if(day<=ovuDay+1)return{day,phase:'Ovulation',label:en?'Ovulation · Summer':'Ovulasyon · Yaz',archetype:en?'Mother':'Anne',emoji:'🌸',cls:'ng'};
+  return{day,phase:'Luteal Phase',label:en?'Luteal · Autumn':'Luteal · Sonbahar',archetype:en?'Wise Crone':'Cadı (Bilge)',emoji:'🌙',cls:'nm'};
 }
 
 // inP() — first checks logged period entries (ground truth), then falls back to prediction
@@ -3364,7 +3366,10 @@ const SA={
 
 // STATE
 const S={calY:new Date().getFullYear(),calM:new Date().getMonth(),selD:new Date(),dD:new Date(),eD:new Date(),cD:new Date(),done:JSON.parse(localStorage.getItem('done')||'{}'),swaps:JSON.parse(localStorage.getItem('swaps')||'{}'),meas:JSON.parse(localStorage.getItem('meas')||'[]'),sTarget:null,sAlts:[],sIdx:null,rData:[],workoutLog:JSON.parse(localStorage.getItem('workout_log')||'{}'),activeTimer:null};
-const MN=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+// Iter 44 — Month names bilingual
+const MN_TR=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
+const MN_EN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const MN=new Proxy([],{get(_,p){const arr=(typeof getLang==='function'&&getLang()==='en')?MN_EN:MN_TR;return arr[p];}});
 const DN=['Pzt','Sal','Çar','Per','Cum','Cmt','Paz'];
 
 // NAV
@@ -3460,50 +3465,66 @@ function renderMedical(){
   if(typeof renderDoctorQuestionsCard==='function')renderDoctorQuestionsCard();
 }
 
-// Phase 3.D · Kan Testi (Labs) ayrı render — Bedenim ve Tiroidim'in Sonuçlar+AI tab'ı modüler
+// Phase 3.D · Kan Testi (Labs) — Iter 44 bilingual
 function renderMedicalLabs(){
   const el=document.getElementById('thyroid-support-medical');
   if(!el)return;
-  // Eski renderThyroidSupport sadece labs/AI kısmını burada göster (yeni Medical bağlamında)
+  const en=getLang()==='en';
   const labResults=JSON.parse(localStorage.getItem('lab_results')||'[]');
   const lastResult=labResults.length?labResults[labResults.length-1]:null;
+  const cardTitle=en?'🧪 Blood Test · PDF/Photo Upload + AI Analysis':'🧪 Kan Testi · PDF/Foto Upload + AI Analiz';
+  const cardTag=en?'🪞 This card':'🪞 Bu kart';
+  const cardHelper=en?`When you receive a new blood test, <strong>upload PDF or photo</strong> → Claude AI analyzes in plain English: <em>"Your status now, before, and how supplements should change."</em>`:`Yeni kan tahlilin geldiğinde <strong>PDF veya foto yükle</strong> → Claude AI yalın Türkçe analiz eder: <em>"Durumun nasıl, önceden böyleydi, supplementlerin böyle değişmeli."</em>`;
+  const pdfBtn=en?'📄 Upload PDF':'📄 PDF yükle';
+  const photoBtn=en?'📷 Upload Photo':'📷 Foto yükle';
+  const lastResultLbl=en?'📊 Latest Result':'📊 Son Sonuç';
+  const dateUnknown=en?'date?':'tarih?';
+  const aiNotDone=en?'AI analysis not yet done':'AI analiz henüz yapılmamış';
+  const showRawLbl=en?'📋 Show raw values':'📋 Ham değerleri göster';
+  const emptyHint=en?'No blood test results yet. Upload PDF/photo when your new results arrive.':'Henüz kan tahlili sonucu yüklenmemiş. Yeni sonucun geldiğinde PDF/foto yükle.';
+  const historyLbl=en?`📜 Past results (${labResults.length-1} entries)`:`📜 Geçmiş sonuçlar (${labResults.length-1} adet)`;
+  const noSummary=en?'no summary':'özet yok';
   el.innerHTML=`<div class="card">
-    <div class="ch"><h3>🧪 Kan Testi · PDF/Foto Upload + AI Analiz</h3></div>
+    <div class="ch"><h3>${cardTitle}</h3></div>
     <div class="cb">
-      <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span>Yeni kan tahlilin geldiğinde <strong>PDF veya foto yükle</strong> → Claude AI yalın Türkçe analiz eder: <em>"Durumun nasıl, önceden böyleydi, supplementlerin böyle değişmeli."</em></div>
+      <div class="card-plain"><span class="card-plain-tag">${cardTag}</span>${cardHelper}</div>
       <div style="display:flex;gap:8px;margin:14px 0;flex-wrap:wrap;">
-        <button class="btn bp bsm" style="flex:1;min-width:140px;" onclick="document.getElementById('lab-pdf-input').click()">📄 PDF yükle</button>
-        <button class="btn bsoft bsm" style="flex:1;min-width:140px;" onclick="document.getElementById('lab-img-input').click()">📷 Foto yükle</button>
+        <button class="btn bp bsm" style="flex:1;min-width:140px;" onclick="document.getElementById('lab-pdf-input').click()">${pdfBtn}</button>
+        <button class="btn bsoft bsm" style="flex:1;min-width:140px;" onclick="document.getElementById('lab-img-input').click()">${photoBtn}</button>
         <input type="file" id="lab-pdf-input" accept="application/pdf" style="display:none;" onchange="handleLabUpload(event,'pdf')">
         <input type="file" id="lab-img-input" accept="image/*" style="display:none;" onchange="handleLabUpload(event,'image')">
       </div>
       <div id="lab-upload-status"></div>
       ${lastResult?`<div style="background:rgba(232,178,63,0.10);border-radius:10px;padding:14px;margin-bottom:10px;">
         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-          <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--mustard-soft);">📊 Son Sonuç</div>
-          <div style="font-size:11px;color:var(--cream-mute);">${lastResult.date||'tarih?'}</div>
+          <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--mustard-soft);">${lastResultLbl}</div>
+          <div style="font-size:11px;color:var(--cream-mute);">${lastResult.date||dateUnknown}</div>
         </div>
-        ${lastResult.aiAnalysis?`<div style="font-size:13px;color:var(--cream);line-height:1.7;white-space:pre-wrap;">${lastResult.aiAnalysis}</div>`:'<div style="font-size:12px;color:var(--cream-mute);">AI analiz henüz yapılmamış</div>'}
-        ${lastResult.values?`<details style="margin-top:10px;"><summary style="font-size:11px;color:var(--mustard-soft);cursor:pointer;">📋 Ham değerleri göster</summary><pre style="font-size:11px;color:var(--cream-mute);background:rgba(0,0,0,0.20);padding:10px;border-radius:6px;margin-top:6px;white-space:pre-wrap;max-height:200px;overflow-y:auto;">${JSON.stringify(lastResult.values,null,2)}</pre></details>`:''}
-      </div>`:'<div style="font-size:12px;color:var(--cream-mute);font-style:italic;text-align:center;padding:14px 0;">Henüz kan tahlili sonucu yüklenmemiş. Yeni sonucun geldiğinde PDF/foto yükle.</div>'}
-      ${labResults.length>1?`<details style="margin-top:14px;"><summary style="font-size:12px;color:var(--mustard-soft);cursor:pointer;">📜 Geçmiş sonuçlar (${labResults.length-1} adet)</summary><div style="margin-top:8px;">${labResults.slice(0,-1).reverse().map(r=>`<div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:10px;margin-bottom:6px;font-size:11px;color:var(--cream-mute);"><strong>${r.date||'?'}</strong> · ${r.summary||'özet yok'}</div>`).join('')}</div></details>`:''}
+        ${lastResult.aiAnalysis?`<div style="font-size:13px;color:var(--cream);line-height:1.7;white-space:pre-wrap;">${lastResult.aiAnalysis}</div>`:`<div style="font-size:12px;color:var(--cream-mute);">${aiNotDone}</div>`}
+        ${lastResult.values?`<details style="margin-top:10px;"><summary style="font-size:11px;color:var(--mustard-soft);cursor:pointer;">${showRawLbl}</summary><pre style="font-size:11px;color:var(--cream-mute);background:rgba(0,0,0,0.20);padding:10px;border-radius:6px;margin-top:6px;white-space:pre-wrap;max-height:200px;overflow-y:auto;">${JSON.stringify(lastResult.values,null,2)}</pre></details>`:''}
+      </div>`:`<div style="font-size:12px;color:var(--cream-mute);font-style:italic;text-align:center;padding:14px 0;">${emptyHint}</div>`}
+      ${labResults.length>1?`<details style="margin-top:14px;"><summary style="font-size:12px;color:var(--mustard-soft);cursor:pointer;">${historyLbl}</summary><div style="margin-top:8px;">${labResults.slice(0,-1).reverse().map(r=>`<div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:10px;margin-bottom:6px;font-size:11px;color:var(--cream-mute);"><strong>${r.date||'?'}</strong> · ${r.summary||noSummary}</div>`).join('')}</div></details>`:''}
     </div>
   </div>`;
 }
 
-// Phase 3.D · Doktor Soruları kart (mevcut THYROID_DOCTOR_QUESTIONS verisi)
+// Phase 3.D · Doktor Soruları — Iter 44 bilingual
 function renderDoctorQuestionsCard(){
   const el=document.getElementById('doctor-questions-card');
   if(!el || typeof THYROID_DOCTOR_QUESTIONS==='undefined')return;
+  const en=getLang()==='en';
   const cats=Object.keys(THYROID_DOCTOR_QUESTIONS).map(cat=>{
     const items=THYROID_DOCTOR_QUESTIONS[cat].map(q=>`<div class="thy-question-item">${q}</div>`).join('');
     return `<div class="thy-question-cat"><div class="thy-question-cat-title">${cat}</div>${items}</div>`;
   }).join('');
   const total=Object.values(THYROID_DOCTOR_QUESTIONS).reduce((a,b)=>a+b.length,0);
+  const title=en?'❓ Questions for Doctor':'❓ Doktora Soracaklarım';
+  const tag=en?'🪞 This card':'🪞 Bu kart';
+  const helper=en?`<strong>${total} question${total===1?'':'s'}</strong> · ${Object.keys(THYROID_DOCTOR_QUESTIONS).length} categor${Object.keys(THYROID_DOCTOR_QUESTIONS).length===1?'y':'ies'}. Select what you need before your endocrinologist appointment. Take it along with <em>medical-documents/HAKAN-BEY-RANDEVU-PAKETI.md</em>.`:`<strong>${total} soru</strong> · ${Object.keys(THYROID_DOCTOR_QUESTIONS).length} kategori. Endokrinologa randevu öncesi ihtiyacın olanları seç. <em>medical-documents/HAKAN-BEY-RANDEVU-PAKETI.md</em> dosyasıyla birlikte götür.`;
   el.innerHTML=`<div class="card">
-    <div class="ch"><h3>❓ Doktora Soracaklarım</h3></div>
+    <div class="ch"><h3>${title}</h3></div>
     <div class="cb">
-      <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span><strong>${total} soru</strong> · ${Object.keys(THYROID_DOCTOR_QUESTIONS).length} kategori. Endokrinologa randevu öncesi ihtiyacın olanları seç. <em>medical-documents/HAKAN-BEY-RANDEVU-PAKETI.md</em> dosyasıyla birlikte götür.</div>
+      <div class="card-plain"><span class="card-plain-tag">${tag}</span>${helper}</div>
       ${cats}
     </div>
   </div>`;
@@ -3742,7 +3763,7 @@ function renderDashboard(){
   const cyc=getAvgCycleLen();
   const months=['Ocak','Şubat','Mart','Nisan','Mayıs','Haziran','Temmuz','Ağustos','Eylül','Ekim','Kasım','Aralık'];
   document.getElementById('today-str').textContent=today.getDate()+' '+months[today.getMonth()]+' '+today.getFullYear();
-  document.getElementById('dash-greeting-label').textContent='BUGÜN · '+getGreeting().toUpperCase();
+  document.getElementById('dash-greeting-label').textContent=t('today_label')+' · '+getGreeting().toUpperCase();
 
   const greetEl=document.getElementById('dash-greeting');
   if(greetEl){
@@ -4334,7 +4355,7 @@ function maybeOpenWeddingMirrorModal(){
 
 function openWeddingMirrorManually(){
   const days=getDaysUntilEvent();
-  if(days===null){showToast('Önce Cycle Settings\'te "Önemli Tarih" ekle','warn');return;}
+  if(days===null){showToast(bi('Önce Cycle Settings\'te "Önemli Tarih" ekle','Add "Important Date" in Cycle Settings first'),'warn');return;}
   const settings=getCycleSettings();
   const lbl=settings.eventLabel||'Düğün';
   document.getElementById('wm-modal-title').textContent=`💍 ${lbl}'e ${days} gün kaldı`;
@@ -4539,7 +4560,7 @@ function revertToDefaultTheme(){
   const root=document.documentElement;
   THEME_VAR_KEYS.forEach(k=>root.style.removeProperty('--'+k));
   clearCustomTheme();
-  showToast('🎨 Varsayılan temaya dönüldü','pr');
+  showToast(bi('🎨 Varsayılan temaya dönüldü','🎨 Reverted to default theme'),'pr');
   renderThemeCard();
 }
 
@@ -4551,7 +4572,7 @@ function loadSavedTheme(){
 async function handleThemeImageUpload(input){
   const file=input.files?.[0];
   if(!file)return;
-  if(file.size>5*1024*1024){showToast('⚠️ Görsel 5 MB üstü, küçült','warn');return;}
+  if(file.size>5*1024*1024){showToast(bi('⚠️ Görsel 5 MB üstü, küçült','⚠️ Image over 5MB, please resize'),'warn');return;}
   const reader=new FileReader();
   reader.onload=async()=>{
     const dataUrl=reader.result;
@@ -5269,7 +5290,7 @@ function openCustomFoodModal(slot){
 }
 async function aiEstimateMacros(){
   const text=document.getElementById('cfm-text').value.trim();
-  if(!text){alert('Önce ne yediğini yaz.');return;}
+  if(!text){alert(bi('Önce ne yediğini yaz.','Type what you ate first.'));return;}
   let key=localStorage.getItem('anthropic_key');
   if(!key){
     key=prompt('Anthropic API key (kişisel kullanım için, localStorage\'a kaydedilir):');
@@ -5395,7 +5416,7 @@ function saveCustomFood(){
   let p=parseFloat(document.getElementById('cfm-p').value)||0;
   let f=parseFloat(document.getElementById('cfm-f').value)||0;
   let c=parseFloat(document.getElementById('cfm-c').value)||0;
-  if(!text){alert('Yemek adı boş olamaz');return;}
+  if(!text){alert(bi('Yemek adı boş olamaz','Food name cannot be empty'));return;}
   // Phase 3.C feedback fix — input boşsa AI fallback (Begümnaz macro toplamı 0/0/0/0 bug)
   if(!k && !p && !f && !c && window._lastAIParsed){
     k=window._lastAIParsed.kcal||0;
@@ -5403,7 +5424,7 @@ function saveCustomFood(){
     f=window._lastAIParsed.fat||0;
     c=window._lastAIParsed.carbs||0;
   }
-  if(!k && !p && !f && !c){alert('En az bir makro değer gir (AI tahmini de boş)');return;}
+  if(!k && !p && !f && !c){alert(bi('En az bir makro değer gir (AI tahmini de boş)','Enter at least one macro value (AI estimate also empty)'));return;}
   const ai=!!window._lastAIParsed;
   addCustomMeal(S.dD,{n:text,k:Math.round(k),p:Math.round(p),f:Math.round(f),c:Math.round(c),slot:S.cfmContext.slot,ai});
   window._lastAIParsed=null;
@@ -5667,11 +5688,11 @@ function handleHealthJson(event){
       const blob=JSON.parse(e.target.result);
       const result=parseHealthAutoExport(blob)||parseSimpleDayMap(blob);
       if(!result||Object.keys(result).length===0){
-        showToast('⚠️ Tanınmayan format · Health Auto Export veya {YYYY-MM-DD: {...}} bekleniyor','warn');
+        showToast(bi('⚠️ Tanınmayan format · Health Auto Export veya {YYYY-MM-DD: {...}} bekleniyor','⚠️ Unrecognized format · expects Health Auto Export or {YYYY-MM-DD: {...}}'),'warn');
         return;
       }
       const days=Object.keys(result);
-      const conf=confirm(`${days.length} günlük sağlık verisi bulundu (${days[0]} → ${days[days.length-1]}). Mevcut günlük kayıtların üzerine yazılacak. Devam edilsin mi?`);
+      const conf=confirm(bi(`${days.length} günlük sağlık verisi bulundu (${days[0]} → ${days[days.length-1]}). Mevcut günlük kayıtların üzerine yazılacak. Devam edilsin mi?`,`${days.length} days of health data found (${days[0]} → ${days[days.length-1]}). Existing daily logs will be overwritten. Continue?`));
       if(!conf)return;
       let imported=0;
       days.forEach(dk=>{
@@ -5687,7 +5708,7 @@ function handleHealthJson(event){
       if(typeof renderSelDay==='function')renderSelDay();
       if(typeof renderEx==='function' && document.getElementById('page-egzersiz').classList.contains('active'))renderEx();
     }catch(err){
-      showToast('⚠️ JSON okunamadı: '+(err.message||err),'warn');
+      showToast(bi('⚠️ JSON okunamadı: ','⚠️ JSON read failed: ')+(err.message||err),'warn');
     }
   };
   reader.readAsText(file);
@@ -5839,7 +5860,7 @@ function fillHealthPhotoModal(parsed){
 function saveHealthPhotoData(){
   const dateStr=document.getElementById('hpm-date').value;
   if(!/^\d{4}-\d{2}-\d{2}$/.test(dateStr)){
-    alert('Geçerli bir tarih seç');
+    alert(bi('Geçerli bir tarih seç','Select a valid date'));
     return;
   }
   const num=id=>{
@@ -5866,7 +5887,7 @@ function saveHealthPhotoData(){
     hrv:numFloat('hpm-hrv'),
   };
   if(!Object.values(cleaned).some(v=>v>0)){
-    alert('En az bir alan dolu olmalı');
+    alert(bi('En az bir alan dolu olmalı','At least one field must be filled'));
     return;
   }
   saveHealthDay(dateStr,cleaned);
@@ -6168,20 +6189,23 @@ function tapWaterCup(idx){
 function renderWaterBar(){
   const wrap=document.getElementById('water-wrap');
   if(!wrap)return;
+  // Iter 44 — bilingual
+  const en=getLang()==='en';
   const cnt=getWaterCount(S.dD);
   // Phase-adjusted hedef: regl 10 (kan kaybı + Mg ↑), ovulation 9 (sıcaklık ↑), kreatin günü +1
   const ph=ci(S.dD);
   let target=8, label='~2L', phaseNote='';
-  if(inP(S.dD)){target=10;label='~2.5L';phaseNote=' · 🔴 Regl: kan kaybı + magnezyum ↑';}
-  else if(ph && ph.phase==='Ovulation'){target=9;label='~2.25L';phaseNote=' · 🌸 Ovulasyon: vücut ısısı +0.3°C';}
-  else if(ph && ph.phase==='Luteal Phase' && ph.day>=getAvgCycleLen()-6){target=9;label='~2.25L';phaseNote=' · 🌙 Geç luteal: su tutma değil, hidrasyon kritik';}
+  if(inP(S.dD)){target=10;label='~2.5L';phaseNote=en?' · 🔴 Period: blood loss + magnesium ↑':' · 🔴 Regl: kan kaybı + magnezyum ↑';}
+  else if(ph && ph.phase==='Ovulation'){target=9;label='~2.25L';phaseNote=en?' · 🌸 Ovulation: body temp +0.3°C':' · 🌸 Ovulasyon: vücut ısısı +0.3°C';}
+  else if(ph && ph.phase==='Luteal Phase' && ph.day>=getAvgCycleLen()-6){target=9;label='~2.25L';phaseNote=en?' · 🌙 Late luteal: not water retention, hydration is critical':' · 🌙 Geç luteal: su tutma değil, hidrasyon kritik';}
   // Time Magnezyum yan etkisi: 3L+ önerilir → minimum 9 bardak (her gün)
-  if(target<9)target=9, label='~2.25L', phaseNote=' · 💪 Time Magnezyum: 3L+ şart';
+  if(target<9){target=9; label='~2.25L'; phaseNote=en?' · 💪 Time Magnesium: 3L+ required':' · 💪 Time Magnezyum: 3L+ şart';}
   let cups='';
   for(let i=0;i<target;i++)cups+=`<div class="water-cup ${i<cnt?'full':''}" onclick="tapWaterCup(${i})"></div>`;
+  const waterTitle=en?`💧 Water · Goal ${target} cups (${label})${phaseNote}`:`💧 Su · Hedef ${target} bardak (${label})${phaseNote}`;
   wrap.innerHTML=`<div class="water-card">
     <div class="water-head">
-      <div class="water-title">💧 Su · Hedef ${target} bardak (${label})${phaseNote}</div>
+      <div class="water-title">${waterTitle}</div>
       <div class="water-count">${cnt}/${target}</div>
     </div>
     <div class="water-row">${cups}</div>
@@ -6264,18 +6288,24 @@ function renderDiet(){renderStrip('d-strip',S.dD,d=>{S.dD=d;renderDietDay();});r
 
 // ── Mikronutrient Gap kartı (Phase 2 Hafta 7A — Ajan 4 beslenme zamanlama)
 // 4 ana mikro: C vit, K2 MK-7, Omega-3, Lif
-// Her biri için: target + Begümnaz mizaç diyetinde tahmini natural source + status + supplement aksiyon
+// Iter 44 — MICRONUTRIENT_INFO bilingual (statusLabel, sourceTitle, source, action)
 const MICRONUTRIENT_INFO=[
   {
     key:'vitc',
     emoji:'🍋',
     name:'Vitamin C',
     target:'≥75 mg/gün',
-    status:'mid', // ok | mid | low (mizaç diyette default mid)
-    statusLabel:'Sınırda',
-    sourceTitle:'Mizaç kaynak',
-    source:'Limon (sıkma) ~30 mg, biber dilimi ~25 mg, maydanoz/dereotu ~10-15 mg, avokado ~10 mg. 1. öğüne mecburi 🍋 + biber + maydanoz = ~50-60 mg.',
-    action:'Hedef: günde +1 limon sıkımı + 1 yk maydanoz/dereotu + 1 ince biber dilimi. Antioksidan + kolajen sentezi (post-isotretinoin bariyer onarımı için kritik).'
+    status:'mid',
+    statusLabel:{tr:'Sınırda', en:'Borderline'},
+    sourceTitle:{tr:'Mizaç kaynak', en:'Temperament source'},
+    source:{
+      tr:'Limon (sıkma) ~30 mg, biber dilimi ~25 mg, maydanoz/dereotu ~10-15 mg, avokado ~10 mg. 1. öğüne mecburi 🍋 + biber + maydanoz = ~50-60 mg.',
+      en:'Lemon juice ~30 mg, pepper slice ~25 mg, parsley/dill ~10-15 mg, avocado ~10 mg. Mandatory in 1st meal 🍋 + pepper + parsley = ~50-60 mg.'
+    },
+    action:{
+      tr:'Hedef: günde +1 limon sıkımı + 1 yk maydanoz/dereotu + 1 ince biber dilimi. Antioksidan + kolajen sentezi (post-isotretinoin bariyer onarımı için kritik).',
+      en:'Goal: +1 lemon juice + 1 tbsp parsley/dill + 1 thin pepper slice daily. Antioxidant + collagen synthesis (critical for post-isotretinoin barrier repair).'
+    }
   },
   {
     key:'k2',
@@ -6283,10 +6313,16 @@ const MICRONUTRIENT_INFO=[
     name:'K2 MK-7',
     target:'90-120 µg/gün',
     status:'mid',
-    statusLabel:'Yeterli (et+yumurta)',
-    sourceTitle:'Mizaç kaynak',
-    source:'Yumurta sarısı (~32 µg/yumurta), tereyağı/ghee (~15 µg/yk), karaciğer (~70 µg/100g, haftada 1-2 kere), ferment besinler (yok mizaç).',
-    action:'Anti turmeric\'in K2 MK-7 içeriği belirsiz — doktor sorusu (Lifextra formülasyonu). Eksikse 100µg MK-7 supplement (yağlı öğünle).'
+    statusLabel:{tr:'Yeterli (et+yumurta)', en:'Adequate (meat+egg)'},
+    sourceTitle:{tr:'Mizaç kaynak', en:'Temperament source'},
+    source:{
+      tr:'Yumurta sarısı (~32 µg/yumurta), tereyağı/ghee (~15 µg/yk), karaciğer (~70 µg/100g, haftada 1-2 kere), ferment besinler (yok mizaç).',
+      en:'Egg yolk (~32 µg/egg), butter/ghee (~15 µg/tbsp), liver (~70 µg/100g, 1-2x/week), fermented foods (none in temperament diet).'
+    },
+    action:{
+      tr:'Anti turmeric\'in K2 MK-7 içeriği belirsiz — doktor sorusu (Lifextra formülasyonu). Eksikse 100µg MK-7 supplement (yağlı öğünle).',
+      en:'Anti turmeric\'s K2 MK-7 content unclear — ask doctor (Lifextra formulation). If deficient, 100µg MK-7 supplement (with fatty meal).'
+    }
   },
   {
     key:'omega3',
@@ -6294,10 +6330,16 @@ const MICRONUTRIENT_INFO=[
     name:'Omega-3 (EPA+DHA)',
     target:'1-2 g/gün',
     status:'ok',
-    statusLabel:'İyi (balık günleri)',
-    sourceTitle:'Mizaç kaynak',
-    source:'Somon 200g ~3.5g, levrek 200g ~1.5g, sardalya ~2g/100g, kuzu/dana ~0.2g/100g, omega-3 yumurta ~0.3g/yumurta. Haftada ≥3 balık → günlük ortalama 1.5g+.',
-    action:'Hedef: haftada minimum 3 öğün balık (somon/levrek/sardalya). Balık <3 ise 1g EPA+DHA supplement (öğünle).'
+    statusLabel:{tr:'İyi (balık günleri)', en:'Good (fish days)'},
+    sourceTitle:{tr:'Mizaç kaynak', en:'Temperament source'},
+    source:{
+      tr:'Somon 200g ~3.5g, levrek 200g ~1.5g, sardalya ~2g/100g, kuzu ~0.2g/100g, omega-3 yumurta ~0.3g/yumurta. Haftada ≥3 balık → günlük ortalama 1.5g+.',
+      en:'Salmon 200g ~3.5g, seabass 200g ~1.5g, sardine ~2g/100g, lamb ~0.2g/100g, omega-3 egg ~0.3g/egg. ≥3 fish/week → daily average 1.5g+.'
+    },
+    action:{
+      tr:'Hedef: haftada minimum 3 öğün balık (somon/levrek/sardalya). Balık <3 ise 1g EPA+DHA supplement (öğünle).',
+      en:'Goal: minimum 3 fish meals/week (salmon/seabass/sardine). If fish <3, 1g EPA+DHA supplement (with meal).'
+    }
   },
   {
     key:'fiber',
@@ -6305,12 +6347,19 @@ const MICRONUTRIENT_INFO=[
     name:'Lif',
     target:'15-25 g/gün',
     status:'low',
-    statusLabel:'Düşük (klasik öneri 25-30g)',
-    sourceTitle:'Mizaç kaynak',
-    source:'½ avokado ~7g, roka/ıspanak ~2g/100g, karalahana ~4g/100g, semizotu ~3g/100g, soğan ~2g, maydanoz ~2g. Toplam ~12-18g günlük (avokado + bol yeşillik ile).',
-    action:'Mizaç lif klasik öneriden düşük doğal — sindirim/transit sorunu yoksa endişeleme. Şişkinlik veya transit yavaş ise: psyllium husk 5-10g/akşam (su ile), opsiyonel.'
+    statusLabel:{tr:'Düşük (klasik öneri 25-30g)', en:'Low (classic guide 25-30g)'},
+    sourceTitle:{tr:'Mizaç kaynak', en:'Temperament source'},
+    source:{
+      tr:'½ avokado ~7g, roka/ıspanak ~2g/100g, karalahana ~4g/100g, semizotu ~3g/100g, soğan ~2g, maydanoz ~2g. Toplam ~12-18g günlük (avokado + bol yeşillik ile).',
+      en:'½ avocado ~7g, arugula/spinach ~2g/100g, kale ~4g/100g, purslane ~3g/100g, onion ~2g, parsley ~2g. Total ~12-18g daily (avocado + plenty of greens).'
+    },
+    action:{
+      tr:'Mizaç lif klasik öneriden düşük doğal — sindirim/transit sorunu yoksa endişeleme. Şişkinlik veya transit yavaş ise: psyllium husk 5-10g/akşam (su ile), opsiyonel.',
+      en:'Temperament fiber naturally below classic guide — no worry if no digestion/transit issue. If bloating or slow transit: psyllium husk 5-10g/evening (with water), optional.'
+    }
   }
 ];
+function _miField(m, field){const v=m[field];if(!v)return '';if(typeof v==='string')return v;return v[getLang()==='en'?'en':'tr']||v.tr||'';}
 
 // Doktor 16 ürün protokolü — dilim bazlı takip (Iter 22: M5 birleşik kart)
 const SUPPLEMENT_SLOTS=[
@@ -6343,6 +6392,8 @@ function getTodaySupplementProgress(){
 function renderMicronutrientCard(){
   const el=document.getElementById('micronutrient-wrap');
   if(!el)return;
+  // Iter 44 — bilingual labels
+  const en=getLang()==='en';
   const items=MICRONUTRIENT_INFO.map(m=>{
     const statusCls='status-'+m.status;
     const badgeCls=m.status;
@@ -6350,13 +6401,12 @@ function renderMicronutrientCard(){
       <div class="mc-emoji">${m.emoji}</div>
       <div class="mc-name">${m.name}</div>
       <div class="mc-target">${m.target}</div>
-      <span class="mc-status-badge ${badgeCls}">${m.statusLabel}</span>
-      <div class="mc-source-title">${m.sourceTitle}</div>
-      <div class="mc-source">${m.source}</div>
-      <div class="mc-action">${m.action}</div>
+      <span class="mc-status-badge ${badgeCls}">${_miField(m,'statusLabel')}</span>
+      <div class="mc-source-title">${_miField(m,'sourceTitle')}</div>
+      <div class="mc-source">${_miField(m,'source')}</div>
+      <div class="mc-action">${_miField(m,'action')}</div>
     </div>`;
   }).join('');
-  // Bugünkü supplement durumu (Iter 22 — M5)
   const prog=getTodaySupplementProgress();
   const pctW=Math.round((prog.taken/prog.total)*100);
   const slotRows=SUPPLEMENT_SLOTS.map(s=>{
@@ -6370,14 +6420,21 @@ function renderMicronutrientCard(){
       </div>
     </label>`;
   }).join('');
-  const upcomingText=prog.upcoming?`Sonraki: <strong>${prog.upcoming.t} · ${prog.upcoming.emoji} ${prog.upcoming.name}</strong>`:'Bugün tamam! ✨';
+  const upcomingText=prog.upcoming
+    ?(en?`Next: <strong>${prog.upcoming.t} · ${prog.upcoming.emoji} ${prog.upcoming.name}</strong>`:`Sonraki: <strong>${prog.upcoming.t} · ${prog.upcoming.emoji} ${prog.upcoming.name}</strong>`)
+    :(en?'Done today! ✨':'Bugün tamam! ✨');
+  const cardTitle=en?'Nutrition + Supplement Status':'Beslenme + Supplement Durumu';
+  const cardTag=en?'🪞 This card':'🪞 Bu kart';
+  const cardHelper=en?`<strong>Top:</strong> 4 critical micros (C/K2/Omega-3/Fiber) gap analysis in temperament diet. <strong>Bottom:</strong> Doctor's 16-product protocol today's slot tracking (8 time slots). Detailed schedule: <em>Dashboard timeline</em>.`:`<strong>Üst:</strong> Mizaç diyetinde 4 kritik mikro (C/K2/Omega-3/Lif) gap analizi. <strong>Alt:</strong> Doktor 16 ürün protokolü bugünkü dilim takibi (8 saat dilimi). Detaylı saat çizelgesi: <em>Dashboard timeline</em>.`;
+  const suppTodayTitle=en?'💊 Today\'s Supplements':'💊 Bugünkü Supplement';
+  const suppFooter=en?'One tap to check · Full protocol in Dashboard timeline':'Tek tıkla işaretle · Tam protokol Dashboard saat çizelgesinde';
   el.innerHTML=`<div class="micro-card">
-    <div class="mc-title">Beslenme + Supplement Durumu</div>
-    <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span><strong>Üst:</strong> Mizaç diyetinde 4 kritik mikro (C/K2/Omega-3/Lif) gap analizi. <strong>Alt:</strong> Doktor 16 ürün protokolü bugünkü dilim takibi (8 saat dilimi). Detaylı saat çizelgesi: <em>Dashboard timeline</em>.</div>
+    <div class="mc-title">${cardTitle}</div>
+    <div class="card-plain"><span class="card-plain-tag">${cardTag}</span>${cardHelper}</div>
     <div class="mc-grid">${items}</div>
     <div style="margin:18px 0 8px;padding:14px 14px 12px;border-radius:12px;background:rgba(110,26,40,0.32);border:1px solid rgba(212,175,106,0.28);">
       <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:8px;">
-        <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:300;color:var(--cream-soft);">💊 Bugünkü Supplement</div>
+        <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:300;color:var(--cream-soft);">${suppTodayTitle}</div>
         <div style="font-size:13px;color:var(--gold);font-weight:600;">${prog.taken}/${prog.total}</div>
       </div>
       <div style="height:6px;background:rgba(255,255,255,0.08);border-radius:3px;overflow:hidden;margin-bottom:10px;">
@@ -6385,11 +6442,11 @@ function renderMicronutrientCard(){
       </div>
       <div style="font-size:11.5px;color:var(--cream-mute);margin-bottom:10px;">${upcomingText}</div>
       <div>${slotRows}</div>
-      <div style="font-size:10.5px;color:var(--cream-faint);font-style:italic;margin-top:8px;text-align:center;">Tek tıkla işaretle · Tam protokol Dashboard saat çizelgesinde</div>
+      <div style="font-size:10.5px;color:var(--cream-faint);font-style:italic;margin-top:8px;text-align:center;">${suppFooter}</div>
     </div>
     <div class="mc-doctor">
-      <div class="mc-doctor-title">⚕️ Doktor sorusu paketi</div>
-      Lifextra/Anti turmeric içerik formu (D3 + K2 MK-7 var mı?), serum 25(OH)D 6-12 ay 1× (hedef 30-50 ng/mL), TSH/sT4/sT3 takibi (Lugol başlangıcı 6-8 hf sonrası), B12 + folat emilim kontrol. Bekleyen 3 soru: NADH dozu, NAC tek/iki, probiyotik alternatif.
+      <div class="mc-doctor-title">${en?'⚕️ Doctor question package':'⚕️ Doktor sorusu paketi'}</div>
+      ${en?'Lifextra/Anti turmeric content forms (does it contain D3 + K2 MK-7?), serum 25(OH)D every 6-12 months 1× (target 30-50 ng/mL), TSH/sT4/sT3 follow-up (6-8 weeks after Lugol start), B12 + folate absorption check. 3 pending questions: NADH dose, NAC single/double, probiotic alternative.':'Lifextra/Anti turmeric içerik formu (D3 + K2 MK-7 var mı?), serum 25(OH)D 6-12 ay 1× (hedef 30-50 ng/mL), TSH/sT4/sT3 takibi (Lugol başlangıcı 6-8 hf sonrası), B12 + folat emilim kontrol. Bekleyen 3 soru: NADH dozu, NAC tek/iki, probiyotik alternatif.'}
     </div>
   </div>`;
 }
@@ -6433,22 +6490,33 @@ function renderDietDay(){
       const wTarget=inP(d)?10:(c&&c.phase==='Ovulation')?9:8;
       const wDone=getWaterCount(d)>=wTarget;
       const phaseEmoji=c?c.emoji:'☀️';
-      const phaseLabel=c?c.label:'Yeni gün';
+      // Iter 44 — Diet hero bilingual
+      const en=getLang()==='en';
+      const phaseLabel=c?c.label:(en?'New day':'Yeni gün');
+      const todayLbl=en?'Today':'Bugün';
       const protectedReason=getProtectedDays()[dayKey];
+      const minActionsLbl=en?'Today\'s 3 minimum actions:':'Bugünün 3 minimum eylemi:';
+      const meal1Txt=en?'1st meal — breakfast (when hungry)':'1. öğün — kahvaltı (acıkınca)';
+      const meal2Txt=en?'2nd meal — lunch (12-13)':'2. öğün — öğle (12-13)';
+      const cupsTxt=en?`${wTarget} cups of water`:`${wTarget} bardak su`;
+      const sickLbl=en?'🤒 Sick':'🤒 Hasta';
+      const travelLbl=en?'✈️ Travel':'✈️ Seyahat';
+      const heavyLbl=en?'🩸 Heavy period':'🩸 Yoğun regl';
+      const protectedLbl=en?'Protected days don\'t break your streak · be gentle with yourself':'Korunan günler streak\'i kırmaz · kendine yumuşak ol';
       heroEl.innerHTML=`<div style="margin:0 16px 14px;padding:16px 18px;border-radius:18px;background:rgba(42,14,20,0.78);backdrop-filter:blur(22px) saturate(180%);-webkit-backdrop-filter:blur(22px) saturate(180%);border:1px solid var(--glass-border);box-shadow:0 8px 32px rgba(0,0,0,0.28),inset 0 1px 0 var(--glass-highlight);color:var(--cream);">
-        <div style="font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:var(--mustard-soft);margin-bottom:8px;font-weight:600;">${phaseEmoji} Bugün · ${phaseLabel}${protectedReason?' · '+protectedReason:''}</div>
-        <div style="font-size:15px;font-weight:600;color:var(--cream-soft);margin-bottom:12px;">Bugünün 3 minimum eylemi:</div>
+        <div style="font-size:11px;letter-spacing:1.2px;text-transform:uppercase;color:var(--mustard-soft);margin-bottom:8px;font-weight:600;">${phaseEmoji} ${todayLbl} · ${phaseLabel}${protectedReason?' · '+protectedReason:''}</div>
+        <div style="font-size:15px;font-weight:600;color:var(--cream-soft);margin-bottom:12px;">${minActionsLbl}</div>
         <div style="display:flex;flex-direction:column;gap:8px;font-size:13px;color:var(--cream);">
-          <div style="display:flex;align-items:center;gap:10px;">${m1Done?'<span style="color:var(--accent-sage);font-weight:700;">✓</span>':'<span style="color:var(--mustard-soft);">·</span>'} <span style="${m1Done?'opacity:0.55;text-decoration:line-through;text-decoration-color:var(--cream-faint);':''}">1. öğün — kahvaltı (acıkınca)</span></div>
-          <div style="display:flex;align-items:center;gap:10px;">${m2Done?'<span style="color:var(--accent-sage);font-weight:700;">✓</span>':'<span style="color:var(--mustard-soft);">·</span>'} <span style="${m2Done?'opacity:0.55;text-decoration:line-through;text-decoration-color:var(--cream-faint);':''}">2. öğün — öğle (12-13)</span></div>
-          <div style="display:flex;align-items:center;gap:10px;">${wDone?'<span style="color:var(--accent-sage);font-weight:700;">✓</span>':'<span style="color:var(--mustard-soft);">·</span>'} <span style="${wDone?'opacity:0.55;text-decoration:line-through;text-decoration-color:var(--cream-faint);':''}">${wTarget} bardak su</span></div>
+          <div style="display:flex;align-items:center;gap:10px;">${m1Done?'<span style="color:var(--accent-sage);font-weight:700;">✓</span>':'<span style="color:var(--mustard-soft);">·</span>'} <span style="${m1Done?'opacity:0.55;text-decoration:line-through;text-decoration-color:var(--cream-faint);':''}">${meal1Txt}</span></div>
+          <div style="display:flex;align-items:center;gap:10px;">${m2Done?'<span style="color:var(--accent-sage);font-weight:700;">✓</span>':'<span style="color:var(--mustard-soft);">·</span>'} <span style="${m2Done?'opacity:0.55;text-decoration:line-through;text-decoration-color:var(--cream-faint);':''}">${meal2Txt}</span></div>
+          <div style="display:flex;align-items:center;gap:10px;">${wDone?'<span style="color:var(--accent-sage);font-weight:700;">✓</span>':'<span style="color:var(--mustard-soft);">·</span>'} <span style="${wDone?'opacity:0.55;text-decoration:line-through;text-decoration-color:var(--cream-faint);':''}">${cupsTxt}</span></div>
         </div>
         <div style="margin-top:14px;display:flex;gap:6px;flex-wrap:wrap;">
-          <button class="btn bsm bghost" onclick="toggleProtectDay('🤒 Hasta')" style="${protectedReason==='🤒 Hasta'?'background:rgba(232,178,63,0.22);border-color:var(--mustard);color:var(--mustard-soft);':''}">🤒 Hasta</button>
-          <button class="btn bsm bghost" onclick="toggleProtectDay('✈️ Seyahat')" style="${protectedReason==='✈️ Seyahat'?'background:rgba(232,178,63,0.22);border-color:var(--mustard);color:var(--mustard-soft);':''}">✈️ Seyahat</button>
-          <button class="btn bsm bghost" onclick="toggleProtectDay('🩸 Yoğun regl')" style="${protectedReason==='🩸 Yoğun regl'?'background:rgba(217,89,30,0.22);border-color:var(--coral);color:var(--coral-soft);':''}">🩸 Yoğun regl</button>
+          <button class="btn bsm bghost" onclick="toggleProtectDay('${sickLbl}')" style="${protectedReason===sickLbl?'background:rgba(232,178,63,0.22);border-color:var(--mustard);color:var(--mustard-soft);':''}">${sickLbl}</button>
+          <button class="btn bsm bghost" onclick="toggleProtectDay('${travelLbl}')" style="${protectedReason===travelLbl?'background:rgba(232,178,63,0.22);border-color:var(--mustard);color:var(--mustard-soft);':''}">${travelLbl}</button>
+          <button class="btn bsm bghost" onclick="toggleProtectDay('${heavyLbl}')" style="${protectedReason===heavyLbl?'background:rgba(217,89,30,0.22);border-color:var(--coral);color:var(--coral-soft);':''}">${heavyLbl}</button>
         </div>
-        <div style="margin-top:8px;font-size:10px;color:var(--cream-faint);">Korunan günler streak'i kırmaz · kendine yumuşak ol</div>
+        <div style="margin-top:8px;font-size:10px;color:var(--cream-faint);">${protectedLbl}</div>
       </div>`;
     } else {
       heroEl.innerHTML='';
@@ -6473,20 +6541,26 @@ function renderDietDay(){
   // Cycle-aware macro target (luteal +100, regl +150)
   const mt=getMacroTarget(d);
   const tRow=document.getElementById('macro-target-row');
+  // Iter 44 — macro labels bilingual
+  const enMc=getLang()==='en';
+  const proteinLbl=enMc?'Protein':'Protein';
+  const fatLbl=enMc?'Fat':'Yağ';
+  const carbLbl=enMc?'Carbs':'Karb';
   if(tRow)tRow.innerHTML=`
     <div class="mbox"><div class="mval">${mt.kcal.toLocaleString('tr-TR').replace(/,/g,'.')}</div><div class="mlbl">kcal</div></div>
-    <div class="mbox"><div class="mval">${mt.p}g</div><div class="mlbl">Protein</div></div>
-    <div class="mbox"><div class="mval">${mt.f}g</div><div class="mlbl">Yağ</div></div>
-    <div class="mbox"><div class="mval">${mt.c}g</div><div class="mlbl">Karb</div></div>`;
+    <div class="mbox"><div class="mval">${mt.p}g</div><div class="mlbl">${proteinLbl}</div></div>
+    <div class="mbox"><div class="mval">${mt.f}g</div><div class="mlbl">${fatLbl}</div></div>
+    <div class="mbox"><div class="mval">${mt.c}g</div><div class="mlbl">${carbLbl}</div></div>`;
   const bRow=document.getElementById('macro-bonus-note');
   if(bRow)bRow.innerHTML=mt.note?`<div class="notice ng" style="margin-bottom:0;font-size:12px;"><div class="nicon">${mt.bonus?'⬆️':'·'}</div><div><strong>${mt.bonus||''}</strong> ${mt.note}</div></div>`:'';
 
-  // Period notice — phase-specific (regl vs late luteal)
+  // Period notice — phase-specific (regl vs late luteal) · Iter 44 bilingual
+  const periodNoticeTR=`<div class="notice np"><div class="nicon">🔴</div><div><strong>Regl günü:</strong> +50 kcal · kırmızı et + ciğer vurgusu · demir + B12 · tuz 8-10g.<br><span style="font-size:11px;">⚖️ Tartı 1-2 kg yüksek görünür — su tutuyorsun, yağ değil.</span></div></div>`;
+  const periodNoticeEN=`<div class="notice np"><div class="nicon">🔴</div><div><strong>Period day:</strong> +50 kcal · red meat + liver emphasis · iron + B12 · salt 8-10g.<br><span style="font-size:11px;">⚖️ Scale may show 1-2 kg higher — water retention, not fat.</span></div></div>`;
+  const lutealNoticeTR=`<div class="notice nm"><div class="nicon">🌙</div><div><strong>Geç luteal:</strong> +150 kcal · karbı 60g'a çıkar · magnezyum + tuz vurgusu · gündüz tatlı krizi normal (BMR +%8-12).</div></div>`;
+  const lutealNoticeEN=`<div class="notice nm"><div class="nicon">🌙</div><div><strong>Late luteal:</strong> +150 kcal · increase carbs to 60g · magnesium + salt emphasis · daytime sweet cravings normal (BMR +8-12%).</div></div>`;
   document.getElementById('d-notice').innerHTML=(per&&c)
-    ? (inP(d)
-        ? `<div class="notice np"><div class="nicon">🔴</div><div><strong>Regl günü:</strong> +50 kcal · kırmızı et + ciğer vurgusu · demir + B12 · tuz 8-10g.<br><span style="font-size:11px;">⚖️ Tartı 1-2 kg yüksek görünür — su tutuyorsun, yağ değil.</span></div></div>`
-        : `<div class="notice nm"><div class="nicon">🌙</div><div><strong>Geç luteal:</strong> +150 kcal · karbı 60g'a çıkar · magnezyum + tuz vurgusu · gündüz tatlı krizi normal (BMR +%8-12).</div></div>`
-      )
+    ? (inP(d) ? (enMc?periodNoticeEN:periodNoticeTR) : (enMc?lutealNoticeEN:lutealNoticeTR))
     : '';
 
   // Meals (selected or default)
@@ -6514,35 +6588,46 @@ function renderDietDay(){
       <button class="cm-del" onclick="removeCustomMeal(S.dD,'${cm.id}')" title="Sil">✕</button>
     </div>`).join('');
 
+  // Iter 44 — meal slots bilingual
+  const enMl=getLang()==='en';
+  const suggestLbl=enMl?'🤖 Suggest':'🤖 Bana öner';
+  const customLbl=enMl?'+ Not on the list? Add custom':'+ Listede yok mu? Yazarak ekle';
+  const mealTotalLbl=enMl?'Meal Total':'Öğün Toplamı';
+  const breakfastSuppNote=enMl?'💊 Breakfast supp: Anti turmeric 2 + More than 1 + NBT Life Guard 1 + Anti MM-12 1 + Lifextra On Hepa 1 + Time Magnesium 1 (Mon morning: Colewinde Vit D extra)':'💊 Kahvaltı supp: Anti turmeric 2 + More than 1 + NBT Life Guard 1 + Anti MM-12 1 + Lifextra On Hepa 1 + Time Magnezyum 1 (Pzt sabah: Colewinde Vit D ek)';
+  const dinnerSuppNote=enMl?'💊 Evening supp: Anti turmeric 2 + More than 1 + Lifextra On Hepa 1 + Time Magnesium 1 (2nd doses)':'💊 Akşam supp: Anti turmeric 2 + More than 1 + Lifextra On Hepa 1 + Time Magnezyum 1 (2. dozlar)';
+  const temperamentNote=enMl?'🍲 Temperament-based: salça-free + flour-free vegetable soup + vegetable dish · meat 3x/week (lamb/sheep/turkey)':'🍲 Mizaç temelli: salçasız + unsuz sebze çorbası + sebze yemeği · et 3x/hafta (kuzu/koyun/hindi)';
+  const periodReglNote=enMl?'🔴 Period: prioritize liver / red meat options':'🔴 Regl: ciğer / kırmızı et seçimini öne çıkar';
+  const lateLutealNote=enMl?'🌙 Late luteal: get 35g of today\'s carbs from here':'🌙 Geç luteal: bugün 35g karbı buradan al';
+
   document.getElementById('m1b').innerHTML=
-    `<div class="ai-suggest-trigger"><button class="btn bsoft bsm" onclick="openAISuggest('m1')">🤖 Bana öner</button></div>`+
+    `<div class="ai-suggest-trigger"><button class="btn bsoft bsm" onclick="openAISuggest('m1')">${suggestLbl}</button></div>`+
     fItemSwap(m1,'m1_main',dayKey)+
     fItemSwap(ms,'m1_side',dayKey)+
     renderCustom('m1')+
-    `<button class="cf-add-btn" onclick="openCustomFoodModal('m1')">+ Listede yok mu? Yazarak ekle</button>
+    `<button class="cf-add-btn" onclick="openCustomFoodModal('m1')">${customLbl}</button>
     <div style="border-top:1px solid var(--border-soft);padding-top:10px;margin-top:10px;">
       <div style="display:flex;justify-content:space-between;align-items:center;">
-        <span style="font-size:13px;font-weight:600;">Öğün Toplamı</span>
+        <span style="font-size:13px;font-weight:600;">${mealTotalLbl}</span>
         <span style="font-family:'Playfair Display','Playfair Display',serif;font-size:20px;color:var(--gold);">${m1.k+ms.k+cms.filter(cm=>cm.slot==='m1').reduce((s,cm)=>s+cm.k,0)} kcal</span>
       </div>
-      <div style="font-size:11px;color:var(--text-mid);margin-top:6px;">💊 Kahvaltı supp: Anti turmeric 2 + More than 1 + NBT Life Guard 1 + Anti MM-12 1 + Lifextra On Hepa 1 + Time Magnezyum 1 (Pzt sabah: Colewinde Vit D ek)</div>
-      ${inP(d)?`<div style="font-size:11px;color:var(--pink-deep);margin-top:4px;">🔴 Regl: ciğer / kırmızı et seçimini öne çıkar</div>`:''}
+      <div style="font-size:11px;color:var(--text-mid);margin-top:6px;">${breakfastSuppNote}</div>
+      ${inP(d)?`<div style="font-size:11px;color:var(--pink-deep);margin-top:4px;">${periodReglNote}</div>`:''}
     </div>`;
 
   document.getElementById('m2b').innerHTML=
-    `<div class="ai-suggest-trigger"><button class="btn bsoft bsm" onclick="openAISuggest('m2')">🤖 Bana öner</button></div>`+
+    `<div class="ai-suggest-trigger"><button class="btn bsoft bsm" onclick="openAISuggest('m2')">${suggestLbl}</button></div>`+
     fItemSwap(m2,'m2_main',dayKey)+
     fItemSwap(m2s,'m2_side',dayKey)+
     renderCustom('m2')+
-    `<button class="cf-add-btn" onclick="openCustomFoodModal('m2')">+ Listede yok mu? Yazarak ekle</button>
+    `<button class="cf-add-btn" onclick="openCustomFoodModal('m2')">${customLbl}</button>
     <div style="border-top:1px solid var(--border-soft);padding-top:10px;margin-top:10px;">
       <div style="display:flex;justify-content:space-between;align-items:center;">
-        <span style="font-size:13px;font-weight:600;">Öğün Toplamı</span>
+        <span style="font-size:13px;font-weight:600;">${mealTotalLbl}</span>
         <span style="font-family:'Playfair Display','Playfair Display',serif;font-size:20px;color:var(--gold);">${m2.k+m2s.k+cms.filter(cm=>cm.slot==='m2').reduce((s,cm)=>s+cm.k,0)} kcal</span>
       </div>
-      <div style="font-size:11px;color:var(--text-mid);margin-top:4px;">💊 Akşam supp: Anti turmeric 2 + More than 1 + Lifextra On Hepa 1 + Time Magnezyum 1 (2. dozlar)</div>
-      <div style="font-size:11px;color:var(--sage);margin-top:4px;">🍲 Mizaç temelli: salçasız + unsuz sebze çorbası + sebze yemeği · et 3x/hafta (kuzu/koyun/hindi)</div>
-      ${(c&&c.day>=getAvgCycleLen()-6&&c.phase==='Luteal Phase')?`<div style="font-size:11px;color:#6a4a60;margin-top:4px;">🌙 Geç luteal: bugün 35g karbı buradan al</div>`:''}
+      <div style="font-size:11px;color:var(--text-mid);margin-top:4px;">${dinnerSuppNote}</div>
+      <div style="font-size:11px;color:var(--sage);margin-top:4px;">${temperamentNote}</div>
+      ${(c&&c.day>=getAvgCycleLen()-6&&c.phase==='Luteal Phase')?`<div style="font-size:11px;color:#6a4a60;margin-top:4px;">${lateLutealNote}</div>`:''}
     </div>`;
 
   // Supplement timeline · Begümnaz 16 ürün protokolü (08:00-22:00)
@@ -6566,23 +6651,34 @@ function renderDietDay(){
   const rem = getRemainingMacros(d);
   // Tolerans bandı: negatif = terracotta (pink-deep'i regl notice'inden ayırdık), düşük = warm gold, OK = sage
   const remColor = (v) => v<-50?'#d97e5e':v<0?'#d4a574':v<50?'var(--gold)':'var(--sage)';
+  // Iter 44 — macro labels bilingual
+  const enMr=getLang()==='en';
+  const remainingLbl=enMr?'⏳ Remaining Today':'⏳ Bugün Kalan';
+  const ringsLbl=enMr?'📊 Actual consumption rings':'📊 Gerçek tüketim ringleri';
+  const lowLbl=enMr?'low':'düşük';
+  const targetLbl=enMr?'target':'hedef';
+  const slightLbl=enMr?'slight exceed':'hafif aşım';
+  const exceededLbl=enMr?'exceeded':'aşıldı';
+  const gProteinLbl=enMr?'g protein':'g protein';
+  const gFatLbl=enMr?'g fat':'g yağ';
+  const gCarbLbl=enMr?'g carbs':'g karb';
   if(macroEl) macroEl.innerHTML=`
     <div style="background:linear-gradient(135deg,rgba(232,178,63,0.18),rgba(168,192,160,0.12));border-radius:14px;padding:16px;margin-bottom:14px;text-align:center;border:1px solid rgba(232,178,63,0.30);">
-      <div style="font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--mustard-soft);font-weight:700;margin-bottom:8px;">⏳ Bugün Kalan</div>
+      <div style="font-size:11px;text-transform:uppercase;letter-spacing:2px;color:var(--mustard-soft);font-weight:700;margin-bottom:8px;">${remainingLbl}</div>
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px;">
         <div><div style="font-family:'Playfair Display','Playfair Display',serif;font-size:32px;font-weight:600;line-height:1;color:${remColor(rem.kcal)};">${rem.kcal}</div><div style="font-size:10px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">kcal</div></div>
-        <div><div style="font-family:'Playfair Display','Playfair Display',serif;font-size:32px;font-weight:600;line-height:1;color:${remColor(rem.p)};">${rem.p}</div><div style="font-size:10px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">g protein</div></div>
-        <div><div style="font-family:'Playfair Display','Playfair Display',serif;font-size:32px;font-weight:600;line-height:1;color:${remColor(rem.f)};">${rem.f}</div><div style="font-size:10px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">g yağ</div></div>
-        <div><div style="font-family:'Playfair Display','Playfair Display',serif;font-size:32px;font-weight:600;line-height:1;color:${remColor(rem.c*5)};">${rem.c}</div><div style="font-size:10px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">g karb</div></div>
+        <div><div style="font-family:'Playfair Display','Playfair Display',serif;font-size:32px;font-weight:600;line-height:1;color:${remColor(rem.p)};">${rem.p}</div><div style="font-size:10px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">${gProteinLbl}</div></div>
+        <div><div style="font-family:'Playfair Display','Playfair Display',serif;font-size:32px;font-weight:600;line-height:1;color:${remColor(rem.f)};">${rem.f}</div><div style="font-size:10px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">${gFatLbl}</div></div>
+        <div><div style="font-family:'Playfair Display','Playfair Display',serif;font-size:32px;font-weight:600;line-height:1;color:${remColor(rem.c*5)};">${rem.c}</div><div style="font-size:10px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-top:4px;">${gCarbLbl}</div></div>
       </div>
     </div>
-    <div style="font-size:11px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;text-align:center;">📊 Gerçek tüketim ringleri</div>
+    <div style="font-size:11px;color:var(--text-light);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;text-align:center;">${ringsLbl}</div>
     <div class="ring-grid">${renderMacroRings(d)}</div>
     <div style="font-size:11px;color:var(--text-light);margin-top:14px;text-align:center;line-height:1.5;">
-      <span style="color:#7eb5cc;">●</span> düşük &nbsp;
-      <span style="color:#7a9b6a;">●</span> hedef &nbsp;
-      <span style="color:#c9a96e;">●</span> hafif aşım &nbsp;
-      <span style="color:#c97b6e;">●</span> aşıldı
+      <span style="color:#7eb5cc;">●</span> ${lowLbl} &nbsp;
+      <span style="color:#7a9b6a;">●</span> ${targetLbl} &nbsp;
+      <span style="color:#c9a96e;">●</span> ${slightLbl} &nbsp;
+      <span style="color:#c97b6e;">●</span> ${exceededLbl}
     </div>`;
 }
 
@@ -6807,7 +6903,7 @@ function confirmSet(dk,exId,setIdx){
   if(!entry||!entry.sets[setIdx])return;
   const set=entry.sets[setIdx];
   if(set.actual.weight==null||set.actual.reps==null||set.actual.rpe==null){
-    showToast('Ağırlık + rep + RPE eksik','warn');
+    showToast(bi('Ağırlık + rep + RPE eksik','Weight + rep + RPE missing'),'warn');
     return;
   }
   set.state='done';
@@ -7058,7 +7154,7 @@ function applySheetReason(reason){
     }
   });
   if(touched===0){
-    showToast('Tüm setler zaten işaretli','warn');
+    showToast(bi('Tüm setler zaten işaretli','All sets already marked'),'warn');
     closeSetSheet();return;
   }
   if(entry.sets.every(s=>s.state!=='pending'))entry.completedAt=Date.now();
@@ -7379,10 +7475,10 @@ function handleImportFile(event){
     try{
       const blob=JSON.parse(e.target.result);
       if(blob.app!=='Begümnaz Program'||!blob.data){
-        showToast('⚠️ Bu dosya Begümnaz Program backup\'ı değil','warn');
+        showToast(bi('⚠️ Bu dosya Begümnaz Program backup\'ı değil','⚠️ This file is not a Begümnaz Program backup'),'warn');
         return;
       }
-      const conf=confirm(`Bu yedek (${blob.exportedAt?.split('T')[0]}) ${Object.keys(blob.data).length} alan içeriyor. Mevcut tüm verilerin üzerine yazılacak. Devam edilsin mi?`);
+      const conf=confirm(bi(`Bu yedek (${blob.exportedAt?.split('T')[0]}) ${Object.keys(blob.data).length} alan içeriyor. Mevcut tüm verilerin üzerine yazılacak. Devam edilsin mi?`,`This backup (${blob.exportedAt?.split('T')[0]}) contains ${Object.keys(blob.data).length} fields. All current data will be overwritten. Continue?`));
       if(!conf)return;
       // Sadece BACKUP_KEYS içindeki key'leri yükle (güvenlik)
       let restored=0;
@@ -7395,7 +7491,7 @@ function handleImportFile(event){
       showToast(`✓ ${restored} alan geri yüklendi · sayfa yenileniyor`,'pr');
       setTimeout(()=>location.reload(),1200);
     }catch(err){
-      showToast('⚠️ Dosya okunamadı: '+(err.message||err),'warn');
+      showToast(bi('⚠️ Dosya okunamadı: ','⚠️ File read failed: ')+(err.message||err),'warn');
     }
   };
   reader.readAsText(file);
@@ -7969,7 +8065,7 @@ function saveApiProxySettings(){
   const token=tokenEl?tokenEl.value.trim():'';
   // Basit URL validation
   if(url && !/^https?:\/\//i.test(url)){
-    showToast('⚠️ Proxy URL https:// veya http:// ile başlamalı','warn');
+    showToast(bi('⚠️ Proxy URL https:// veya http:// ile başlamalı','⚠️ Proxy URL must start with https:// or http://'),'warn');
     return;
   }
   setApiProxyUrl(url);
@@ -7980,13 +8076,13 @@ function saveApiProxySettings(){
 
 async function testApiProxy(){
   const url=document.getElementById('apx-url')?.value.trim();
-  if(!url){showToast('Önce Proxy URL gir','warn');return;}
+  if(!url){showToast(bi('Önce Proxy URL gir','Enter Proxy URL first'),'warn');return;}
   try{
     // Save edip sonra basit test çağrısı yap
     setApiProxyUrl(url);
     const tokenEl=document.getElementById('apx-token');
     if(tokenEl)setApiProxyToken(tokenEl.value.trim());
-    showToast('⏳ Test çağrısı...','pr');
+    showToast(bi('⏳ Test çağrısı...','⏳ Test call...'),'pr');
     const res=await callAnthropic({
       model:'claude-haiku-4-5-20251001',
       max_tokens:30,
@@ -7999,7 +8095,7 @@ async function testApiProxy(){
     }
     const data=await res.json();
     const text=data.content?.[0]?.text||'(boş)';
-    showToast('✓ Proxy çalışıyor · "'+text.substring(0,40)+'"','pr');
+    showToast(bi('✓ Proxy çalışıyor · "','✓ Proxy works · "')+text.substring(0,40)+'"','pr');
   }catch(e){
     showToast('❌ '+(e.message||e),'warn');
   }
@@ -8117,16 +8213,16 @@ function addNewProfile(){
   if(!name||!name.trim())return;
   const emoji=prompt('Emoji (opsiyonel, örn. 🌷, 💕, 🦋):','👤')||'👤';
   const id=name.trim().toLowerCase().replace(/[^a-z0-9]/g,'_').substring(0,20);
-  if(!id){showToast('Geçerli bir ad gir','warn');return;}
+  if(!id){showToast(bi('Geçerli bir ad gir','Enter a valid name'),'warn');return;}
   const list=getProfileList();
   if(list.find(p=>p.id===id)){
-    showToast('Bu ID zaten var, farklı bir ad seç','warn');
+    showToast(bi('Bu ID zaten var, farklı bir ad seç','This ID already exists, pick another name'),'warn');
     return;
   }
   list.push({id,name:name.trim(),emoji,createdAt:Date.now()});
   saveProfileList(list);
   // Yeni profile geç (mevcut veri arşive yedeklenir, yeni profil boş başlar)
-  if(confirm(`"${emoji} ${name.trim()}" profili oluşturuldu. Şimdi geçmek ister misin?\n(Mevcut verilerin "${getActiveProfileId()}" profiline yedeklenir, geri dönebilirsin.)`)){
+  if(confirm(bi(`"${emoji} ${name.trim()}" profili oluşturuldu. Şimdi geçmek ister misin?\n(Mevcut verilerin "${getActiveProfileId()}" profiline yedeklenir, geri dönebilirsin.)`,`Profile "${emoji} ${name.trim()}" created. Switch to it now?\n(Current data will be archived to "${getActiveProfileId()}" profile, you can switch back anytime.)`))){
     switchToProfile(id);
   }else{
     renderProfileCard();
@@ -8497,7 +8593,7 @@ function applyOvulationSub(idx,dow,dk){
       if(altEx)break;
     }
   }
-  if(!altEx){showToast('Alternatif hareket bulunamadı','warn');return;}
+  if(!altEx){showToast(bi('Alternatif hareket bulunamadı','No alternative exercise found'),'warn');return;}
   if(!S.swaps[dk])S.swaps[dk]={};
   S.swaps[dk][idx]=altEx;
   localStorage.setItem('swaps',JSON.stringify(S.swaps));
@@ -8608,7 +8704,7 @@ const MUSCLE_ANATOMY={
 
 function showMuscleAnatomy(muscleKey){
   const a=MUSCLE_ANATOMY[muscleKey];
-  if(!a){showToast('Bu kas için anatomi bilgisi yok','warn');return;}
+  if(!a){showToast(bi('Bu kas için anatomi bilgisi yok','No anatomy info for this muscle'),'warn');return;}
   document.getElementById('ma-title').textContent=a.label;
   document.getElementById('ma-emoji').textContent=a.emoji;
   document.getElementById('ma-latin').innerHTML='<span class="ma-latin">'+a.latin+'</span>';
@@ -8653,7 +8749,7 @@ function setPlateMode(mode){
 }
 
 function showPlateModal(weight,keepMode){
-  if(!weight||weight<=0){showToast('Önce bir kg değeri gir','warn');return;}
+  if(!weight||weight<=0){showToast(bi('Önce bir kg değeri gir','Enter a kg value first'),'warn');return;}
   window._lastPlateWeight=weight;
   if(!keepMode){
     const stored=_getPlateMode();
@@ -8929,7 +9025,7 @@ function timerComplete(){
   // Visual flash
   const el=document.getElementById('rest-timer');
   if(el){el.classList.add('done');setTimeout(()=>el?.classList.remove('done'),1500);}
-  showToast('🎯 Dinlenme bitti — sıradaki set hazır','pr');
+  showToast(bi('🎯 Dinlenme bitti — sıradaki set hazır','🎯 Rest done — next set ready'),'pr');
   renderRestTimer();
   // 4 saniye sonra otomatik kaybol
   setTimeout(()=>{
@@ -8969,8 +9065,13 @@ function hideRestTimer(){
   if(el)el.style.display='none';
 }
 
-// Toast helper (basit)
+// Iter 44 — bilingual helper: pass {tr, en} object or plain string
+function bi(tr, en){return getLang()==='en'?(en||tr):tr;}
+function biObj(obj){return getLang()==='en'?(obj.en||obj.tr):obj.tr;}
+
+// Toast helper (basit) — msg objesini {tr,en} olarak kabul eder
 function showToast(msg,kind){
+  if(msg && typeof msg==='object' && msg.tr)msg=biObj(msg);
   let t=document.getElementById('toast-host');
   if(!t){t=document.createElement('div');t.id='toast-host';t.style.cssText='position:fixed;bottom:96px;left:50%;transform:translateX(-50%);z-index:9999;display:flex;flex-direction:column;gap:8px;align-items:center;pointer-events:none;';document.body.appendChild(t);}
   const el=document.createElement('div');
@@ -9013,8 +9114,10 @@ function renderEx(){renderStrip('e-strip',S.eD,d=>{S.eD=d;renderExDay();});rende
 function renderExDay(){
   const d=S.eD,dow=d.getDay(),sp=SP[dow],exs=EX[dow],dk=d.toDateString();
   const c=ci(d);
-  document.getElementById('ex-title').innerHTML=`<em>${sp?sp.e+' '+sp.n:'🛌 Dinlenme'}</em>`;
-  document.getElementById('ex-sub').textContent=sp?sp.f:'Dinlenme günü · hafif yürüyüş önerilir';
+  // Iter 44 — rest day bilingual
+  const _enEx=getLang()==='en';
+  document.getElementById('ex-title').innerHTML=`<em>${sp?sp.e+' '+sp.n:(_enEx?'🛌 Rest':'🛌 Dinlenme')}</em>`;
+  document.getElementById('ex-sub').textContent=sp?sp.f:(_enEx?'Rest day · light walk recommended':'Dinlenme günü · hafif yürüyüş önerilir');
   document.getElementById('e-rest').style.display=sp?'none':'block';
   // Cycle-aware adjustment hesabı — banner + egzersiz kartı substitusyon chip için
   const cycleAdj=sp?getCycleAwareWorkoutAdjustment(d):null;
@@ -9160,7 +9263,8 @@ function renderExDay(){
     }
     // Bilim Modu kaldırıldı (Iter 20) — eduChip + eduPanel görünmez
     const eduChip='', eduPanel='';
-    div.innerHTML=`<div class="exh" onclick="toggleEx(this)"><div class="exc ${headerCls}" style="display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">${headerState}</div><div class="exn ${doneSets===totalSets?'done':''}">${ex.c?'🎯 ':''}${ex.n}</div><div class="exs">${ex.s}</div></div><div class="exb"><div class="mtags">${ex.m.map(m=>`<span class="mtag">${m}</span>`).join('')}${ex.c?'<span class="mtag" style="background:var(--pink-pale);color:var(--pink-deep);">Core</span>':''}</div>${pelvikRotChip}<div class="exhow" style="font-size:13px;color:var(--text-mid);line-height:1.6;">${howShort}</div><div class="exacts"><button class="btn bsoft bsm gif-btn" data-id="${ex.id}" data-name="${ex.n}" data-muscles="${ex.m.join(',')}" data-how="${encodeURIComponent(ex.h)}">🎬 Nasıl Yapılır</button><button class="btn bghost bsm" onclick="openSwap(${i},${dow},'${dk}')">🔄 Değiştir</button>${eduChip}${cycleSubChip}${pelvikVideoLink}</div>${eduPanel}<div class="set-log">${prevHint}${setRows}<div class="set-quick-states"><button class="modify" onclick="openSetSheet('modify','${dk}','${ex.id}')">⚡ Değiştirdim</button><button class="skip" onclick="openSetSheet('skip','${dk}','${ex.id}')">🛌 Atladım</button></div>${summary}</div></div>`;
+    // Iter 44 — Exercise card buttons via t() (keys already exist: ex_video, ex_swap, ex_modify, ex_skip)
+    div.innerHTML=`<div class="exh" onclick="toggleEx(this)"><div class="exc ${headerCls}" style="display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">${headerState}</div><div class="exn ${doneSets===totalSets?'done':''}">${ex.c?'🎯 ':''}${ex.n}</div><div class="exs">${ex.s}</div></div><div class="exb"><div class="mtags">${ex.m.map(m=>`<span class="mtag">${m}</span>`).join('')}${ex.c?'<span class="mtag" style="background:var(--pink-pale);color:var(--pink-deep);">Core</span>':''}</div>${pelvikRotChip}<div class="exhow" style="font-size:13px;color:var(--text-mid);line-height:1.6;">${howShort}</div><div class="exacts"><button class="btn bsoft bsm gif-btn" data-id="${ex.id}" data-name="${ex.n}" data-muscles="${ex.m.join(',')}" data-how="${encodeURIComponent(ex.h)}">${t('ex_video')}</button><button class="btn bghost bsm" onclick="openSwap(${i},${dow},'${dk}')">${t('ex_swap')}</button>${eduChip}${cycleSubChip}${pelvikVideoLink}</div>${eduPanel}<div class="set-log">${prevHint}${setRows}<div class="set-quick-states"><button class="modify" onclick="openSetSheet('modify','${dk}','${ex.id}')">${t('ex_modify')}</button><button class="skip" onclick="openSetSheet('skip','${dk}','${ex.id}')">${t('ex_skip')}</button></div>${summary}</div></div>`;
     // GIF butonuna event listener ekle
     const gifBtn = div.querySelector('.gif-btn');
     if(gifBtn) gifBtn.addEventListener('click', function(e){
@@ -9170,7 +9274,10 @@ function renderExDay(){
     list.appendChild(div);
   });
   const cd=CD[dow];
-  document.getElementById('e-cool').innerHTML=cd?`<div class="slbl">🧘 Soğuma — ${cd.n}</div><div class="card"><div class="cb"><div style="font-size:13px;color:var(--text-mid);margin-bottom:12px;">${cd.d}</div><a href="https://www.youtube.com/results?search_query=${encodeURIComponent(cd.y)}" target="_blank" class="btn bsage bsm">▶ Soğuma Videosu</a></div></div>`:'';
+  // Iter 44 — cooldown bilingual
+  const _enCD=getLang()==='en';
+  const cdVideoLbl=_enCD?'▶ Cool-down Video':'▶ Soğuma Videosu';
+  document.getElementById('e-cool').innerHTML=cd?`<div class="slbl">${t('ex_cooldown')} — ${cd.n}</div><div class="card"><div class="cb"><div style="font-size:13px;color:var(--text-mid);margin-bottom:12px;">${cd.d}</div><a href="https://www.youtube.com/results?search_query=${encodeURIComponent(cd.y)}" target="_blank" class="btn bsage bsm">${cdVideoLbl}</a></div></div>`:'';
 }
 function toggleEx(h){h.nextElementSibling.classList.toggle('open');}
 function toggleDone(e,k,el){e.stopPropagation();S.done[k]=!S.done[k];localStorage.setItem('done',JSON.stringify(S.done));renderExDay();renderWeekSum();}
@@ -9889,29 +9996,50 @@ function renderSkinDay(){
   const yest=new Date(d);yest.setDate(yest.getDate()-1);
   const yestSd=getSkinD(yest);
   const yestRetinol=[1,3,5].includes(yestSd) && !inP(yest) && !preP(yest);
-  // Phase-aware skincare notice — regl: hidrasyon ↑ + AHA/BHA tamamen atla; ovulation: glow yönü; luteal: sebum kontrol
+  // Iter 44 — bilingual phase notices
+  const en=getLang()==='en';
+  const dayLbl=en?'Day':'Gün';
+  const skinDayLbl=en?`Skin day ${sd}.`:`Cilt günü ${sd}.`;
   let cNoticeHtml='';
   if(!c){
-    cNoticeHtml=`<div class="notice np"><div class="nicon">🌸</div><div><strong>Döngü takibi yok:</strong> Döngü sekmesinden regllerini ekle, retinol/AHA önerileri kişiselleşsin.</div></div>`;
+    cNoticeHtml=en
+      ?`<div class="notice np"><div class="nicon">🌸</div><div><strong>No cycle tracking:</strong> Add your periods from the Cycle tab so retinol/AHA recommendations get personalized.</div></div>`
+      :`<div class="notice np"><div class="nicon">🌸</div><div><strong>Döngü takibi yok:</strong> Döngü sekmesinden regllerini ekle, retinol/AHA önerileri kişiselleşsin.</div></div>`;
   } else if(per){
-    cNoticeHtml=`<div class="notice np"><div class="nicon">🔴</div><div><strong>Regl Gün ${c.day} · Hidrasyon Modu:</strong> Cilt bariyerin bugün kutsal — sadece besle. Retinol ve AHA/BHA'yı bu hafta atla. Ceramide + hyaluronik asit ↑ · Medicube Jelly Cream öne çıkar. Basit ve şefkatli tutalım.</div></div>`;
+    cNoticeHtml=en
+      ?`<div class="notice np"><div class="nicon">🔴</div><div><strong>Period Day ${c.day} · Hydration Mode:</strong> Your skin barrier is sacred today — just nourish. Skip retinol and AHA/BHA this week. Ceramide + hyaluronic acid ↑ · Medicube Jelly Cream front and center. Keep it simple and gentle.</div></div>`
+      :`<div class="notice np"><div class="nicon">🔴</div><div><strong>Regl Gün ${c.day} · Hidrasyon Modu:</strong> Cilt bariyerin bugün kutsal — sadece besle. Retinol ve AHA/BHA'yı bu hafta atla. Ceramide + hyaluronik asit ↑ · Medicube Jelly Cream öne çıkar. Basit ve şefkatli tutalım.</div></div>`;
   } else if(pre){
-    cNoticeHtml=`<div class="notice nm"><div class="nicon">🌙</div><div><strong>PMS / yaklaşan regl (Gün ${c.day}):</strong> Progesteron derin kazı başladı, sebum artıyor. Retinol'ü haftaya 1'e düşür, AHA/BHA'yı kademeli azalt. BHA temizleyici hâlâ dost.</div></div>`;
+    cNoticeHtml=en
+      ?`<div class="notice nm"><div class="nicon">🌙</div><div><strong>PMS / approaching period (Day ${c.day}):</strong> Progesterone deep wave has started, sebum rising. Drop retinol to 1× this week, taper AHA/BHA gradually. BHA cleanser still your friend.</div></div>`
+      :`<div class="notice nm"><div class="nicon">🌙</div><div><strong>PMS / yaklaşan regl (Gün ${c.day}):</strong> Progesteron derin kazı başladı, sebum artıyor. Retinol'ü haftaya 1'e düşür, AHA/BHA'yı kademeli azalt. BHA temizleyici hâlâ dost.</div></div>`;
   } else if(c.phase==='Ovulation'){
-    cNoticeHtml=`<div class="notice ng"><div class="nicon">🌸</div><div><strong>Ovulasyon Gün ${c.day} · En parlak halindesin:</strong> Östrojen peakta, doğal kollajen sentezin maksimum. Vitamin C + niasinamid bu hafta en etkili — radyant olmaya hazır mısın? Cilt günü ${sd}.</div></div>`;
+    cNoticeHtml=en
+      ?`<div class="notice ng"><div class="nicon">🌸</div><div><strong>Ovulation Day ${c.day} · You're at your brightest:</strong> Estrogen peaks, natural collagen synthesis maxes out. Vitamin C + niacinamide most effective this week — ready to be radiant? ${skinDayLbl}</div></div>`
+      :`<div class="notice ng"><div class="nicon">🌸</div><div><strong>Ovulasyon Gün ${c.day} · En parlak halindesin:</strong> Östrojen peakta, doğal kollajen sentezin maksimum. Vitamin C + niasinamid bu hafta en etkili — radyant olmaya hazır mısın? ${skinDayLbl}</div></div>`;
   } else if(c.phase==='Luteal Phase'){
-    cNoticeHtml=`<div class="notice nm"><div class="nicon">🌙</div><div><strong>Luteal Gün ${c.day} · Cildin altında dönüşüm var:</strong> Progesteron sebum üretimini artırır — yağlanma seni yargılamıyor, vücudun konuşuyor. BHA + niasinamid odakla, dokunma azalt. Cilt günü ${sd}.</div></div>`;
+    cNoticeHtml=en
+      ?`<div class="notice nm"><div class="nicon">🌙</div><div><strong>Luteal Day ${c.day} · Transformation under your skin:</strong> Progesterone boosts sebum — oiliness isn't judging you, your body's talking. Focus BHA + niacinamide, reduce touching. ${skinDayLbl}</div></div>`
+      :`<div class="notice nm"><div class="nicon">🌙</div><div><strong>Luteal Gün ${c.day} · Cildin altında dönüşüm var:</strong> Progesteron sebum üretimini artırır — yağlanma seni yargılamıyor, vücudun konuşuyor. BHA + niasinamid odakla, dokunma azalt. ${skinDayLbl}</div></div>`;
   } else {
-    cNoticeHtml=`<div class="notice ${c.cls}"><div class="nicon">${c.emoji}</div><div><strong>${c.label} · Gün ${c.day}:</strong> Östrojen yükseliyor, kollajen sentezi yüksek. Aktif rutin penceresi açık — Vitamin C ve retinol gecesini buna göre dene. Cilt günü ${sd}.</div></div>`;
+    cNoticeHtml=en
+      ?`<div class="notice ${c.cls}"><div class="nicon">${c.emoji}</div><div><strong>${c.label} · ${dayLbl} ${c.day}:</strong> Estrogen rising, collagen synthesis high. Active routine window open — try Vitamin C and retinol evenings accordingly. ${skinDayLbl}</div></div>`
+      :`<div class="notice ${c.cls}"><div class="nicon">${c.emoji}</div><div><strong>${c.label} · ${dayLbl} ${c.day}:</strong> Östrojen yükseliyor, kollajen sentezi yüksek. Aktif rutin penceresi açık — Vitamin C ve retinol gecesini buna göre dene. ${skinDayLbl}</div></div>`;
   }
   document.getElementById('c-notice').innerHTML=cNoticeHtml;
   document.getElementById('c-active-badge').innerHTML=`<span class="sabadge ${ea.b}">${ea.e} ${ea.l}</span>`;
   // Retinol-after notice
-  document.getElementById('c-retinol-after').innerHTML=yestRetinol?`<div class="notice np"><div class="nicon">🔴</div><div><strong>Retinol gecesi sonrası:</strong> Vitamin C ve Koreaco ampulü atla → 4 adıma in (1, 2, 5, 6). Cilt hassas, SPF kesinlikle atlama.</div></div>`:'';
+  const retinolAfterHtml=en
+    ?`<div class="notice np"><div class="nicon">🔴</div><div><strong>Morning after retinol:</strong> Skip Vitamin C and Koreaco ampoule → reduce to 4 steps (1, 2, 5, 6). Skin is sensitive, do not skip SPF.</div></div>`
+    :`<div class="notice np"><div class="nicon">🔴</div><div><strong>Retinol gecesi sonrası:</strong> Vitamin C ve Koreaco ampulü atla → 4 adıma in (1, 2, 5, 6). Cilt hassas, SPF kesinlikle atlama.</div></div>`;
+  document.getElementById('c-retinol-after').innerHTML=yestRetinol?retinolAfterHtml:'';
   // Morning steps — skip steps 3 (Koreaco) and 4 (Florence C) on retinol-after mornings
+  const skipAfterRetinolNote=en?' <em style="font-size:11px;color:var(--text-light);text-decoration:none;">(skip after retinol)</em>':' <em style="font-size:11px;color:var(--text-light);text-decoration:none;">(retinol sonrası atla)</em>';
+  const dampSkinNote=en?'💧 Apply to damp skin':'💧 Nemli cilde uygula';
+  const spfNote=en?'☀️ Last step — do not skip even on cloudy days!':'☀️ Son adım — kapalı havada bile atlama!';
   document.getElementById('c-morn').innerHTML=SM.map((p,i)=>{
     const skip=yestRetinol&&(i===2||i===3);
-    return `<div class="sstep" style="${skip?'opacity:0.35;':''}"><div class="snum" style="${skip?'background:var(--surface2);color:var(--text-light);':''}">${i+1}</div><div><div class="sprod" style="${skip?'text-decoration:line-through;':''}">${p}${skip?' <em style="font-size:11px;color:var(--text-light);text-decoration:none;">(retinol sonrası atla)</em>':''}</div>${i===1?'<div class="snote">💧 Nemli cilde uygula</div>':i===5?'<div class="snote">☀️ Son adım — kapalı havada bile atlama!</div>':''}</div></div>`;
+    return `<div class="sstep" style="${skip?'opacity:0.35;':''}"><div class="snum" style="${skip?'background:var(--surface2);color:var(--text-light);':''}">${i+1}</div><div><div class="sprod" style="${skip?'text-decoration:line-through;':''}">${p}${skip?skipAfterRetinolNote:''}</div>${i===1?`<div class="snote">${dampSkinNote}</div>`:i===5?`<div class="snote">${spfNote}</div>`:''}</div></div>`;
   }).join('');
   let eh=SEB.map((p,i)=>`<div class="sstep"><div class="snum">${i+1}</div><div><div class="sprod">${p}</div></div></div>`).join('');
   eh+=`<div class="sstep" style="background:var(--pink-pale);border-radius:10px;padding:10px;margin-top:6px;"><div class="snum" style="background:var(--pink-soft);">★</div><div><div class="sprod" style="color:var(--pink-deep);">${ea.e} ${ea.l}</div><div class="sprod">${ea.p}</div><div class="snote">${ea.no}</div>${sd===4?'<div class="snote" style="color:var(--pink-deep);font-weight:600;">⏱ 10 min wait!</div>':''}</div></div>`;
@@ -9950,35 +10078,36 @@ function renderProds(){
   const phaseBanner = phaseLabel ? `<div style="margin-bottom:12px;padding:10px 12px;background:linear-gradient(135deg,var(--pink-pale),var(--gold-soft));border-radius:10px;font-size:12px;color:var(--text);font-weight:600;">${phaseLabel}</div>` : '';
   const isHighlighted = name => emphasis.some(e=>name.includes(e.split(' (')[0].trim()));
   // Status: ✅ kullan · ⚠️ dikkat · 🛒 alınacak (Iter 41 M12: checkbox ile ✅'e dönüşür) · ❌ bırak
+  // Iter 44 — kategori başlıkları bilingual
   const groups=[
-    {c:'Temizleyici',i:[
+    {c:en?'Cleanser':'Temizleyici',i:[
       {n:'✅ Garnier Vit C Cleanser (sabah hafif yıkama)',shop:'Rossmann · ~80 TL · ⚠️ batıyorsa bırak'},
       {n:'🛒 Yumuşak temizleyici (krem/jel, sülfatsız) — CeraVe HC / Bioderma Sensibio / LRP Toleriane',shop:'Eczane · 250-450 TL'},
     ]},
-    {c:'Serum (Sabah)',i:[
+    {c:en?'Serum (Morning)':'Serum (Sabah)',i:[
       {n:'✅ ISANA Vit C 10% Serum (sabah, hf 3-4 alternatif gün)',shop:'Rossmann · ~70 TL'},
       {n:'✅ ISANA Hyaluron + Panthenol Serum (her sabah + akşam)',shop:'Rossmann · ~60 TL'},
       {n:'🛒 Niacinamide 10% serum — TO + Zinc / COSRX 15% / Naacare',shop:"Trendyol/Watson's · 200-350 TL"},
     ]},
-    {c:'Aktif (Akşam)',i:[
+    {c:en?'Active (Evening)':'Aktif (Akşam)',i:[
       {n:'✅ Acnelyse 0.025% (tretinoin) — Sal + Paz, sandwich tekniği',shop:'Reçeteli · Eczane'},
       {n:'⚠️ ISANA AHA 6% Glycolic (hf 1, sadece tret olmayan Per gece)',shop:'Rossmann · ~70 TL'},
       {n:'🛒 Azelaic acid 10% — The Ordinary / Naturium',shop:'Trendyol · 250-450 TL'},
     ]},
-    {c:'Nemlendirici / Bariyer',i:[
+    {c:en?'Moisturizer / Barrier':'Nemlendirici / Bariyer',i:[
       {n:'✅ Madescar (Centella) — gece nemlendirici + spot bariyer (tret üstüne mecbur)',shop:'Eczane · ~150 TL'},
       {n:'✅ Garnier Hyaluron Fresh (sabah/akşam light nem)',shop:"Rossmann/Watson's · ~90 TL"},
     ]},
-    {c:'SPF (Mecbur)',i:[
+    {c:en?'SPF (Mandatory)':'SPF (Mecbur)',i:[
       {n:'✅ Garnier BHA + Niacinamide SPF 50 (her sabah son adım)',shop:"Rossmann/Watson's · ~150 TL"},
       {n:'✅ The Purest Solutions BB Cream (SPF üstüne istendiğinde)',shop:'Eczane/Trendyol · ~120 TL'},
     ]},
-    {c:'Göz Kremi',i:[
+    {c:en?'Eye Cream':'Göz Kremi',i:[
       {n:'✅ ISANA Peptid Augencreme (akşam — peptid + ince çizgi)',shop:'Rossmann · ~50 TL'},
       {n:'✅ ISANA Augencreme 0% (sabah — sade, parfümsüz baz)',shop:'Rossmann · ~40 TL'},
     ]},
-    {c:'Bırakıldı',i:[
-      {n:'❌ ISANA Micellar Su — cilt yakıyor, uygun değil',shop:''},
+    {c:en?'Discontinued':'Bırakıldı',i:[
+      {n:en?'❌ ISANA Micellar Water — irritates skin, not suitable':'❌ ISANA Micellar Su — cilt yakıyor, uygun değil',shop:''},
     ]}
   ];
 
@@ -10057,36 +10186,61 @@ function renderMeas(){
   document.getElementById('pbar').style.width=prog+'%';
   const lostKg=(cur?(cur-cur).toFixed(2):0);
   const remKg=(cur-62.5).toFixed(2);
+  // Iter 44 — bilingual labels
+  const en=getLang()==='en';
   // 5-metrik mini pano (Hafta 4A)
   const mmEl=document.getElementById('multi-metrics');
   if(mmEl){
     const mm=getMultiMetricProgress();
-    mmEl.innerHTML=`<div class="mm-section-lbl">+ 4 başka metrik (vücudunla bütüncül uyum)</div>
+    const sectionLbl=en?'+ 4 more metrics (holistic harmony with your body)':'+ 4 başka metrik (vücudunla bütüncül uyum)';
+    const waistLbl=en?'Waist':'Bel';
+    const stepsLbl=en?'Steps':'Adım';
+    const moodLbl=en?'Mood':'Ruh hali';
+    const waistTgt=en?'→ &lt;80 cm goal (dietitian)':'→ &lt;80 cm hedef (diyetisyen)';
+    const squatTgt=en?'→ ≥1.5× bodyweight (~95-100kg)':'→ ≥1.5× kilo (~95-100kg)';
+    const stepsTgt=en?`7-day avg · 8-10K goal${mm.stepsDays?` · ${mm.stepsDays}/7`:''}`:`7-gün ort. · 8-10K hedef${mm.stepsDays?` · ${mm.stepsDays}/7`:''}`;
+    const moodTgt=en?`7-day avg · 4+/5 goal${mm.moodCount?` · ${mm.moodCount} log${mm.moodCount===1?'':'s'}`:''}`:`7-gün ort. · 4+/5 hedef${mm.moodCount?` · ${mm.moodCount} kayıt`:''}`;
+    mmEl.innerHTML=`<div class="mm-section-lbl">${sectionLbl}</div>
     <div class="mm-grid">
-      <div class="mm-cell"><div class="mm-icon">📏</div><div class="mm-lbl">Bel</div><div class="mm-val ${mm.curWaist?'':'empty'}">${mm.curWaist?mm.curWaist+' cm':'—'}</div><div class="mm-target">→ &lt;80 cm hedef (diyetisyen)</div></div>
-      <div class="mm-cell"><div class="mm-icon">💪</div><div class="mm-lbl">Squat 1RM</div><div class="mm-val ${mm.bestSquat1RM>0?'':'empty'}">${mm.bestSquat1RM>0?mm.bestSquat1RM+' kg':'—'}</div><div class="mm-target">→ ≥1.5× kilo (~95-100kg)</div></div>
-      <div class="mm-cell"><div class="mm-icon">🚶</div><div class="mm-lbl">Adım</div><div class="mm-val ${mm.avgSteps?'':'empty'}">${mm.avgSteps?mm.avgSteps.toLocaleString('tr-TR').replace(/,/g,'.'):'—'}</div><div class="mm-target">7-gün ort. · 8-10K hedef${mm.stepsDays?` · ${mm.stepsDays}/7`:''}</div></div>
-      <div class="mm-cell"><div class="mm-icon">💚</div><div class="mm-lbl">Ruh hali</div><div class="mm-val ${mm.avgMood?'':'empty'}">${mm.avgMood?mm.avgMood+'/5':'—'}</div><div class="mm-target">7-gün ort. · 4+/5 hedef${mm.moodCount?` · ${mm.moodCount} kayıt`:''}</div></div>
+      <div class="mm-cell"><div class="mm-icon">📏</div><div class="mm-lbl">${waistLbl}</div><div class="mm-val ${mm.curWaist?'':'empty'}">${mm.curWaist?mm.curWaist+' cm':'—'}</div><div class="mm-target">${waistTgt}</div></div>
+      <div class="mm-cell"><div class="mm-icon">💪</div><div class="mm-lbl">Squat 1RM</div><div class="mm-val ${mm.bestSquat1RM>0?'':'empty'}">${mm.bestSquat1RM>0?mm.bestSquat1RM+' kg':'—'}</div><div class="mm-target">${squatTgt}</div></div>
+      <div class="mm-cell"><div class="mm-icon">🚶</div><div class="mm-lbl">${stepsLbl}</div><div class="mm-val ${mm.avgSteps?'':'empty'}">${mm.avgSteps?mm.avgSteps.toLocaleString('tr-TR').replace(/,/g,'.'):'—'}</div><div class="mm-target">${stepsTgt}</div></div>
+      <div class="mm-cell"><div class="mm-icon">💚</div><div class="mm-lbl">${moodLbl}</div><div class="mm-val ${mm.avgMood?'':'empty'}">${mm.avgMood?mm.avgMood+'/5':'—'}</div><div class="mm-target">${moodTgt}</div></div>
     </div>`;
   }
   // Milestone celebration kontrol et
   const milestoneEl=document.getElementById('milestone-celebration');
   if(milestoneEl){
-    const milestones=[{kg:3,emoji:'🌱',label:'-3 kg · İlk hareket'},{kg:6,emoji:'🌸',label:'-6 kg · Faz 2 hedefi'},{kg:10,emoji:'🌟',label:'-10 kg · Hedef yakın'},{kg:14,emoji:'🏆',label:'-14 kg · Hedef bandında'}];
+    const milestones=en
+      ?[{kg:3,emoji:'🌱',label:'-3 kg · First step'},{kg:6,emoji:'🌸',label:'-6 kg · Phase 2 goal'},{kg:10,emoji:'🌟',label:'-10 kg · Close to goal'},{kg:14,emoji:'🏆',label:'-14 kg · Goal band'}]
+      :[{kg:3,emoji:'🌱',label:'-3 kg · İlk hareket'},{kg:6,emoji:'🌸',label:'-6 kg · Faz 2 hedefi'},{kg:10,emoji:'🌟',label:'-10 kg · Hedef yakın'},{kg:14,emoji:'🏆',label:'-14 kg · Hedef bandında'}];
     const reached=milestones.filter(m=>parseFloat(lostKg)>=m.kg);
     if(reached.length>0){
       const latest=reached[reached.length-1];
-      milestoneEl.innerHTML=`<div style="margin-bottom:14px;padding:14px 16px;border-radius:14px;background:linear-gradient(135deg,#fdf3e0,var(--gold-soft));border:1px solid var(--gold);text-align:center;"><div style="font-size:24px;margin-bottom:4px;">${latest.emoji}</div><div style="font-size:13px;font-weight:600;color:var(--gold-honey);">${latest.label}</div><div style="font-size:11px;color:var(--text-mid);margin-top:4px;">Bu yolculuğu sen yapıyorsun. Bedenin sana güveniyor 💕</div></div>`;
+      const celebLbl=en?'You\'re making this journey. Your body trusts you 💕':'Bu yolculuğu sen yapıyorsun. Bedenin sana güveniyor 💕';
+      milestoneEl.innerHTML=`<div style="margin-bottom:14px;padding:14px 16px;border-radius:14px;background:linear-gradient(135deg,#fdf3e0,var(--gold-soft));border:1px solid var(--gold);text-align:center;"><div style="font-size:24px;margin-bottom:4px;">${latest.emoji}</div><div style="font-size:13px;font-weight:600;color:var(--gold-honey);">${latest.label}</div><div style="font-size:11px;color:var(--text-mid);margin-top:4px;">${celebLbl}</div></div>`;
     } else {
       milestoneEl.innerHTML='';
     }
   }
-  // Body neutrality dil — değer odaklı yerine ilişki odaklı (Hafta 4A — Ajan 6)
-  const lostStr=parseFloat(lostKg)>=0?`<strong>${lostKg}</strong> kg yolculuğun başından`:`<strong>${Math.abs(lostKg)}</strong> kg başlangıçtan üstte`;
-  document.getElementById('pnote').innerHTML=`${lostStr} · sağlık metriklerine <strong>${remKg>0?remKg:0}</strong> kg<div style="font-size:11px;color:var(--text-light);margin-top:4px;">Hız bedenine ait — cycle, uyku, regl etkili. Yüksekse tartı kızdırma; bedenin sana farklı dilden konuşuyor.<br>⚠️ Akıllı tartı (bioimpedance) mizaç temelli diyette ±%5-8 hata payı. DEXA daha güvenilir.<br>📌 5 metrikin 3'ü gelişiyor → kilo durağan olsa bile <strong>İLERLEME VAR</strong> (anti-kompulsif çerçeve).</div>`;
-  document.getElementById('sgrid').innerHTML=[{lb:'Vücut Yağı',v:(l.fat||0)+'%',d:pr?((l.fat||0)-(pr.fat||0)).toFixed(1):null,g:'<0'},{lb:'Kas Kütlesi',v:(l.muscle||0)+' kg',d:pr?((l.muscle||0)-(pr.muscle||0)).toFixed(1):null,g:'>0'},{lb:'Bel',v:(l.waist||0)+' cm',d:pr?((l.waist||0)-(pr.waist||0)).toFixed(1):null,g:'<0'},{lb:'Kalça',v:(l.hip||0)+' cm',d:pr?((l.hip||0)-(pr.hip||0)).toFixed(1):null,g:'<0'}].map(s=>`<div class="sbox"><div class="sv">${s.v}</div><div class="sl">${s.lb}</div>${s.d!==null?`<div class="sd ${((s.g.includes('<')&&parseFloat(s.d)<0)||(s.g.includes('>')&&parseFloat(s.d)>0))?'good':'warn'}">${parseFloat(s.d)>0?'+':''}${s.d}</div>`:''}</div>`).join('');
+  // Body neutrality dil
+  const lostStr=parseFloat(lostKg)>=0
+    ?(en?`<strong>${lostKg}</strong> kg from journey start`:`<strong>${lostKg}</strong> kg yolculuğun başından`)
+    :(en?`<strong>${Math.abs(lostKg)}</strong> kg above start`:`<strong>${Math.abs(lostKg)}</strong> kg başlangıçtan üstte`);
+  const remKgLbl=en?`· toward health metrics <strong>${remKg>0?remKg:0}</strong> kg`:`· sağlık metriklerine <strong>${remKg>0?remKg:0}</strong> kg`;
+  const pnoteDetail=en
+    ?`Pace belongs to your body — cycle, sleep, period influence it. If higher, don't blame the scale; your body is speaking in a different language.<br>⚠️ Smart scale (bioimpedance) on temperament-based diet has ±5-8% error margin. DEXA is more reliable.<br>📌 3 of 5 metrics improving → even if weight is stable, <strong>PROGRESS EXISTS</strong> (anti-compulsive framing).`
+    :`Hız bedenine ait — cycle, uyku, regl etkili. Yüksekse tartı kızdırma; bedenin sana farklı dilden konuşuyor.<br>⚠️ Akıllı tartı (bioimpedance) mizaç temelli diyette ±%5-8 hata payı. DEXA daha güvenilir.<br>📌 5 metrikin 3'ü gelişiyor → kilo durağan olsa bile <strong>İLERLEME VAR</strong> (anti-kompulsif çerçeve).`;
+  document.getElementById('pnote').innerHTML=`${lostStr} ${remKgLbl}<div style="font-size:11px;color:var(--text-light);margin-top:4px;">${pnoteDetail}</div>`;
+  // sgrid stats
+  const statLabels=en
+    ?{bf:'Body Fat',muscle:'Muscle Mass',waist:'Waist',hip:'Hip'}
+    :{bf:'Vücut Yağı',muscle:'Kas Kütlesi',waist:'Bel',hip:'Kalça'};
+  document.getElementById('sgrid').innerHTML=[{lb:statLabels.bf,v:(l.fat||0)+'%',d:pr?((l.fat||0)-(pr.fat||0)).toFixed(1):null,g:'<0'},{lb:statLabels.muscle,v:(l.muscle||0)+' kg',d:pr?((l.muscle||0)-(pr.muscle||0)).toFixed(1):null,g:'>0'},{lb:statLabels.waist,v:(l.waist||0)+' cm',d:pr?((l.waist||0)-(pr.waist||0)).toFixed(1):null,g:'<0'},{lb:statLabels.hip,v:(l.hip||0)+' cm',d:pr?((l.hip||0)-(pr.hip||0)).toFixed(1):null,g:'<0'}].map(s=>`<div class="sbox"><div class="sv">${s.v}</div><div class="sl">${s.lb}</div>${s.d!==null?`<div class="sd ${((s.g.includes('<')&&parseFloat(s.d)<0)||(s.g.includes('>')&&parseFloat(s.d)>0))?'good':'warn'}">${parseFloat(s.d)>0?'+':''}${s.d}</div>`:''}</div>`).join('');
   const hist=document.getElementById('mhist');
-  hist.innerHTML=S.meas.length?`<table class="mtbl"><thead><tr><th>Tarih</th><th>Kilo</th><th>Yağ</th><th>Kas</th><th>Bel</th></tr></thead><tbody>${[...S.meas].reverse().map(m=>`<tr><td>${m.date}</td><td>${m.weight} kg</td><td>${m.fat||'-'}%</td><td>${m.muscle||'-'}</td><td>${m.waist||'-'}</td></tr>`).join('')}</tbody></table>`:'<p style="font-size:13px;color:var(--text-light);text-align:center;padding:20px;">Henüz ölçüm kaydı yok.</p>';
+  const tblHeaders=en?'<th>Date</th><th>Weight</th><th>Fat</th><th>Muscle</th><th>Waist</th>':'<th>Tarih</th><th>Kilo</th><th>Yağ</th><th>Kas</th><th>Bel</th>';
+  const emptyHist=en?'No measurements yet.':'Henüz ölçüm kaydı yok.';
+  hist.innerHTML=S.meas.length?`<table class="mtbl"><thead><tr>${tblHeaders}</tr></thead><tbody>${[...S.meas].reverse().map(m=>`<tr><td>${m.date}</td><td>${m.weight} kg</td><td>${m.fat||'-'}%</td><td>${m.muscle||'-'}</td><td>${m.waist||'-'}</td></tr>`).join('')}</tbody></table>`:`<p style="font-size:13px;color:var(--text-light);text-align:center;padding:20px;">${emptyHist}</p>`;
 }
 function handleUp(e){S.rData=[];const p=document.getElementById('rprev');p.innerHTML='';Array.from(e.target.files).forEach(f=>{const r=new FileReader();r.onload=ev=>{S.rData.push(ev.target.result);const img=document.createElement('img');img.src=ev.target.result;img.style.cssText='width:70px;height:70px;object-fit:cover;border-radius:10px;border:2px solid var(--border);';p.appendChild(img);document.getElementById('abtn').disabled=false;};r.readAsDataURL(f);});}
 async function analyzeR(){
@@ -10094,7 +10248,13 @@ async function analyzeR(){
   const btn=document.getElementById('abtn'),res=document.getElementById('rres');
   btn.innerHTML='<span class="spin"></span> Analiz ediliyor...';btn.disabled=true;
   const c=ci(),pr=S.meas.length?S.meas[S.meas.length-1]:null;
-  try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:800,messages:[{role:'user',content:[...S.rData.map(img=>({type:'image',source:{type:'base64',media_type:'image/jpeg',data:img.split(',')[1]}})),{type:'text',text:`Begümnaz'ın kişisel sağlık koçusun. Akıllı ölçüm ekran görüntülerini analiz et.\nProfil: 27 yaş kadın, Türkiye. Endometriozis (ameliyat sonrası Visanne tamamlandı, içerde kalan endo için fonksiyonel/bütüncül tıp protokolü) · Post-isotretinoin hassas cilt (8 ay × 40 mg Zoretanin) · Hormonal jawline akne (endo flare ile koreleli) · Doktor reçetesi 16 ürün (Akavital prebiyotik, Lugol iyot %5, NAC, Anti turmeric, Lifextra On Hepa karaciğer, Time Magnezyum, Duobalance BV Cran probiyotik 22:00, Bach çiçekleri, Anti MM-12, NBT Life Guard, More than MSM+VitC, Colewinde Vit D haftalık, NADH sabah AC, Benfolife pre-workout, gül sirkesi, Alkemist HC yağı oil pulling). Mizaç temelli beslenme: sıcak su mecbur, soğuk yasak, çiğ sebze yasak, süt ürünleri yasak, dana/tavuk yasak, kuzu/koyun/hindi izinli (3x/hafta öğle), patlıcan yasak, çay/kahve yasak (sadece gül+zeytin yaprağı/aynı safa/melissa+papatya). Egzersiz: 3 ağırlık (Pzt+Per+Cmt) + 2 pelvik taban fizyopilates (Sal+Paz) + 2 full body pilates dersi (Çar+Cum 18:00 kendi öğrencisiyle, hem öğretmen hem katılımcı) + 5-6 yürüyüş.\nRegl: ${c?`${c.phase}, Gün ${c.day}`:'döngü kaydı henüz yok'}.\n${pr?`Önceki: ${pr.weight}kg, %${pr.fat} yağ`:''}\n\nKan paneli (21.04.2026): İyot 27 (düşük) → Lugol açıklandı · Selenyum 58 (düşük) · T3 4.20 (hafif yüksek) · Demir 204-206 (yüksek) → demir takviyesi YASAK · B12 738 (yüksek) · Endo flare negatif · HbA1c %5.10 normal · CRP 0.18 normal.\n\n⚠️ ÖNEMLİ: Akıllı tartı (bioimpedance) hassas. Cycle phase varyasyonu (geç luteal +1-3 kg sıvı) etkiler. Endo flare bloating da yansır. Yorumlarken bunları hatırlat. Kilo hedefi belirsizse onu BASKILAMA — sağlık metrikleri (endo flare yönetimi, cilt iyileşmesi, supplement tolerans, uyku, ruh hali) ön planda.\n\nAnaliz et: 1) Bu haftanın özeti 2) Değişiklikler (sayısal + kalitatif) 3) Regl/endo flare etkisi var mı? 4) Bedeni bu hafta sana ne söyledi (enerji, uyku, ruh hali, supplement tolerans)? 5) Dikkat etmesi gerekenler. Kilo merkezli değil, sağlık merkezli yorumla.\n\n<strong>Türkçe yaz</strong>, dürüst ama şefkatli ton. "Başarısız" gibi shame-içeren dil kullanma.`}]}]})});
+  // Iter 44 — Smart Measurement prompt bilingual
+  const _enSM=getLang()==='en';
+  const phaseStr=c?`${c.phase}, Day ${c.day}`:(_enSM?'no cycle log yet':'döngü kaydı henüz yok');
+  const prevStr=pr?(_enSM?`Previous: ${pr.weight}kg, ${pr.fat}% fat`:`Önceki: ${pr.weight}kg, %${pr.fat} yağ`):'';
+  const smPromptTR=`Begümnaz'ın kişisel sağlık koçusun. Akıllı ölçüm ekran görüntülerini analiz et.\nProfil: 27 yaş kadın, Türkiye. Endometriozis (ameliyat sonrası Visanne tamamlandı, içerde kalan endo için fonksiyonel/bütüncül tıp protokolü) · Post-isotretinoin hassas cilt (8 ay × 40 mg Zoretanin) · Hormonal jawline akne · Doktor reçetesi 16 ürün. Mizaç temelli beslenme: sıcak su mecbur, çiğ sebze + süt ürünleri + dana/tavuk + patlıcan + çay/kahve yasak; kuzu/koyun/hindi izinli (3x/hafta öğle). Egzersiz: 3 ağırlık + 2 pelvik taban + 2 pilates dersi + 5-6 yürüyüş.\nRegl: ${phaseStr}.\n${prevStr}\n\nKan paneli (21.04.2026): İyot 27 (düşük) → Lugol · Selenyum 58 (düşük) · T3 4.20 (hafif yüksek) · Demir 204-206 (yüksek) → demir takviyesi YASAK · B12 738 (yüksek) · CRP 0.18 normal.\n\n⚠️ ÖNEMLİ: Akıllı tartı (bioimpedance) hassas. Cycle phase varyasyonu (geç luteal +1-3 kg sıvı) etkiler. Endo flare bloating da yansır. Yorumlarken bunları hatırlat. Kilo merkezli değil, sağlık merkezli yorumla.\n\nAnaliz et: 1) Bu haftanın özeti 2) Değişiklikler (sayısal + kalitatif) 3) Regl/endo flare etkisi 4) Bedeni bu hafta sana ne söyledi (enerji, uyku, ruh hali, supplement tolerans)? 5) Dikkat etmesi gerekenler. Türkçe yaz, dürüst ama şefkatli ton. Shame-içeren dil yok.`;
+  const smPromptEN=`You are Begümnaz's personal health coach. Analyse the smart-scale screenshots.\nProfile: 27y woman, Turkey. Endometriosis (post-Visanne, holistic/functional medicine protocol for residual endo) · Post-isotretinoin sensitive skin (8mo × 40mg Zoretanin) · Hormonal jawline acne · Doctor's 16-product protocol. Temperament-based nutrition: warm water mandatory; raw vegetables + dairy + beef/chicken + eggplant + tea/coffee FORBIDDEN; lamb/sheep/turkey allowed (3x/wk lunch). Exercise: 3 weight + 2 pelvic floor + 2 pilates class + 5-6 walks.\nCycle: ${phaseStr}.\n${prevStr}\n\nBlood panel (2026-04-21): Iodine 27 (low) → Lugol · Selenium 58 (low) · T3 4.20 (slightly high) · Iron 204-206 (high) → iron supplements FORBIDDEN · B12 738 (high) · CRP 0.18 normal.\n\n⚠️ IMPORTANT: Smart scale (bioimpedance) is sensitive. Cycle phase variation (late luteal +1-3 kg fluid) affects it. Endo flare bloating shows up too. Remind these in your interpretation. NOT weight-centric — health-centric.\n\nAnalyse: 1) This week's summary 2) Changes (numeric + qualitative) 3) Period/endo flare effect 4) What did your body tell you this week (energy, sleep, mood, supplement tolerance)? 5) Points to watch. Write in English, honest but compassionate tone. No shame-laden language.`;
+  try{const r=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:800,messages:[{role:'user',content:[...S.rData.map(img=>({type:'image',source:{type:'base64',media_type:'image/jpeg',data:img.split(',')[1]}})),{type:'text',text:_enSM?smPromptEN:smPromptTR}]}]})});
   const data=await r.json();res.innerHTML=`<div class="aibox">${(data.content?.[0]?.text||'').replace(/\n/g,'<br>')}</div>`;}
   catch(e){res.innerHTML=`<div class="aibox">❌ Connection error.</div>`;}
   btn.innerHTML='🤖 Re-analyse';btn.disabled=false;
@@ -10168,7 +10328,7 @@ const PDF_PERIODS=[]; // Begümnaz fresh start — no seeded history
 function seedFromPDF(){
   const existing=getPeriods();
   if(existing.length){
-    if(!confirm(`Şu an ${existing.length} regl kaydın var. PDF verisi (${PDF_PERIODS.length} kayıt) ile değiştirilsin mi? Mevcut kayıtların silinecek.`))return;
+    if(!confirm(bi(`Şu an ${existing.length} regl kaydın var. PDF verisi (${PDF_PERIODS.length} kayıt) ile değiştirilsin mi? Mevcut kayıtların silinecek.`,`You currently have ${existing.length} period logs. Replace with PDF data (${PDF_PERIODS.length} entries)? Existing logs will be deleted.`)))return;
   }
   const seeded=PDF_PERIODS.map(([start,days])=>{
     const startD=fromYmd(start);
@@ -10271,15 +10431,20 @@ function renderCyHero(){
       openWarn=`<div onclick="actPeriodEnd()" style="margin:10px 12px 0;padding:10px 12px;background:linear-gradient(135deg,rgba(217,89,30,0.22),rgba(232,178,63,0.14));border-left:3px solid #D9591E;border-radius:8px;font-size:12px;color:var(--cream);cursor:pointer;line-height:1.5;">${msg}</div>`;
     }
   }
-  document.getElementById('cy-topsub').textContent=`${c.label} · Gün ${c.day} / ~${cyc}`;
+  // Iter 44 — Cycle hero bilingual
+  const en=getLang()==='en';
+  const dayLbl=en?'Day':'Gün';
+  const nextPeriodTxt=en?`⏳ Next period: ${daysToNext} day${daysToNext===1?'':'s'}`:`⏳ Sıradaki regl: ${daysToNext} gün`;
+  const logsTxt=en?`📊 ${ps.length} period log${ps.length===1?'':'s'}`:`📊 ${ps.length} regl kaydı`;
+  document.getElementById('cy-topsub').textContent=`${c.label} · ${dayLbl} ${c.day} / ~${cyc}`;
   wrap.innerHTML=`<div class="cy-hero">
     <div class="cy-hero-emoji">${c.emoji}</div>
-    <div class="cy-hero-day"><em>Gün ${c.day}</em> / ~${cyc}</div>
+    <div class="cy-hero-day"><em>${dayLbl} ${c.day}</em> / ~${cyc}</div>
     <div class="cy-hero-phase">${c.label}</div>
     <div style="font-size:11px;color:var(--text-light);text-transform:uppercase;letter-spacing:1.2px;margin-top:4px;">${c.archetype}</div>
     <div class="cy-hero-meta">
-      <span class="cy-hero-pill">⏳ Sıradaki regl: ${daysToNext} gün</span>
-      <span class="cy-hero-pill">📊 ${ps.length} regl kaydı</span>
+      <span class="cy-hero-pill">${nextPeriodTxt}</span>
+      <span class="cy-hero-pill">${logsTxt}</span>
     </div>
     ${openWarn}
     <div class="cy-quote">"${zen}"</div>
@@ -10491,8 +10656,11 @@ function toggleCyHist(){
   if(!body)return;
   const open=body.style.display!=='none';
   body.style.display=open?'none':'block';
-  if(title)title.textContent=open?'📜 Geçmişi göster':'📜 Geçmişi gizle';
+  const en=getLang()==='en';
+  if(title)title.textContent=open?(en?'📜 Show history':'📜 Geçmişi göster'):(en?'📜 Hide history':'📜 Geçmişi gizle');
   if(icon)icon.textContent=open?'▾':'▴';
+  // Cycle history toggle title cyc count'lu — yeniden render et
+  if(typeof renderCyHistory==='function')renderCyHistory();
 }
 
 function renderCyHistory(){
@@ -10504,31 +10672,38 @@ function renderCyHistory(){
   }
   document.getElementById('cy-hist-lbl').style.display='block';
   document.getElementById('cy-hist-card').style.display='block';
-  // Toggle başlığını cycle sayısı ile zenginleştir
+  // Iter 44 — bilingual
+  const en=getLang()==='en';
   const tt=document.getElementById('cy-hist-toggle-title');
   if(tt && tt.textContent.startsWith('📜')){
     const isOpen=document.getElementById('cy-hist').style.display!=='none';
-    tt.textContent=`📜 Cycle geçmişi (${ps.length} kayıt) ${isOpen?'· gizle':'· göster'}`;
+    const visTxt=isOpen?(en?'· hide':'· gizle'):(en?'· show':'· göster');
+    const lbl=en?`📜 Cycle history (${ps.length} log${ps.length===1?'':'s'})`:`📜 Cycle geçmişi (${ps.length} kayıt)`;
+    tt.textContent=`${lbl} ${visTxt}`;
   }
   const fmt=ds=>{const d=fromYmd(ds);return d.getDate()+' '+MN[d.getMonth()];};
-  const flowL={spotting:'Damlayan',light:'Hafif Akan',medium:'Akan',heavy:'Bol Akan'};
+  const flowL=en?{spotting:'Spotting',light:'Light',medium:'Medium',heavy:'Heavy'}:{spotting:'Damlayan',light:'Hafif Akan',medium:'Akan',heavy:'Bol Akan'};
+  const dayUnit=en?'days':'gün';
+  const ongoingTxt=en?'ongoing':'devam ediyor';
+  const openTxt=en?' (open)':' (açık)';
+  const deleteTitle=en?'Delete':'Sil';
   const html=[...ps].reverse().map((p,revIdx)=>{
     const idx=ps.length-1-revIdx;
     const dur=p.end?1+dayDiff(fromYmd(p.end),fromYmd(p.start)):null;
     let cycLen=null;
     if(idx>0)cycLen=dayDiff(fromYmd(ps[idx].start),fromYmd(ps[idx-1].start));
     const meta=[
-      dur?`${dur} gün`:`devam ediyor`,
+      dur?`${dur} ${dayUnit}`:ongoingTxt,
       cycLen?`cycle ${cycLen}d`:null,
       p.flow?flowL[p.flow]:null,
     ].filter(Boolean).join(' · ');
     return `<div class="cy-hist-i">
       <div class="cy-hist-dot"></div>
       <div class="cy-hist-c">
-        <div class="cy-hist-d">${fmt(p.start)}${p.end?' — '+fmt(p.end):' (açık)'}</div>
+        <div class="cy-hist-d">${fmt(p.start)}${p.end?' — '+fmt(p.end):openTxt}</div>
         <div class="cy-hist-m">${meta}</div>
       </div>
-      <button class="cy-hist-x" onclick="deletePeriod('${p.id}')" title="Sil">✕</button>
+      <button class="cy-hist-x" onclick="deletePeriod('${p.id}')" title="${deleteTitle}">✕</button>
     </div>`;
   }).join('');
   document.getElementById('cy-hist').innerHTML=html;
@@ -10545,6 +10720,8 @@ function renderCyInsights(){
   document.getElementById('cy-ins-lbl').style.display='block';
   document.getElementById('cy-ins-card').style.display='block';
   const cyc=getAvgCycleLen(),dur=getAvgPeriodDur();
+  // Iter 44 — bilingual labels
+  const en=getLang()==='en';
   // Symptom frequency
   const sympCount={};
   Object.values(logs).forEach(l=>(l.symptoms||[]).forEach(s=>sympCount[s]=(sympCount[s]||0)+1));
@@ -10552,7 +10729,9 @@ function renderCyInsights(){
   const sympMap=Object.fromEntries(SYMP_OPTS.map(o=>[o.id,o]));
   // Phase-by-phase mood + energy aggregation
   const PHASES=['Menstruation','Follicular Phase','Ovulation','Luteal Phase'];
-  const PHASE_META={Menstruation:{e:'🔴',short:'Regl'},'Follicular Phase':{e:'🌱',short:'Folliküler'},Ovulation:{e:'🌸',short:'Ovulasyon'},'Luteal Phase':{e:'🌙',short:'Luteal'}};
+  const PHASE_META=en
+    ?{Menstruation:{e:'🔴',short:'Period'},'Follicular Phase':{e:'🌱',short:'Follicular'},Ovulation:{e:'🌸',short:'Ovulation'},'Luteal Phase':{e:'🌙',short:'Luteal'}}
+    :{Menstruation:{e:'🔴',short:'Regl'},'Follicular Phase':{e:'🌱',short:'Folliküler'},Ovulation:{e:'🌸',short:'Ovulasyon'},'Luteal Phase':{e:'🌙',short:'Luteal'}};
   const phaseAgg={};
   PHASES.forEach(p=>phaseAgg[p]={energySum:0,energyN:0,sleepSum:0,sleepN:0,moodCount:{}});
   Object.entries(logs).forEach(([dy,l])=>{
@@ -10571,17 +10750,24 @@ function renderCyInsights(){
     const avgE=b.energyN?(b.energySum/b.energyN).toFixed(1):'—';
     const avgS=b.sleepN?(b.sleepSum/b.sleepN).toFixed(1):'—';
     const topMood=Object.entries(b.moodCount).sort((a,b)=>b[1]-a[1])[0];
-    const moodInfo=topMood && moodMap[topMood[0]] ? `${moodMap[topMood[0]].i} ${moodMap[topMood[0]].l}` : '—';
+    const moodInfo=topMood && moodMap[topMood[0]] ? `${moodMap[topMood[0]].i} ${en?(moodMap[topMood[0]].lEn||moodMap[topMood[0]].l):moodMap[topMood[0]].l}` : '—';
     const meta=PHASE_META[p];
-    return `<div style="display:grid;grid-template-columns:80px 1fr 1fr 1fr;gap:8px;padding:8px 10px;border-bottom:1px dashed var(--border-soft);font-size:12px;align-items:center;"><div style="font-weight:600;color:var(--text);">${meta.e} ${meta.short}</div><div style="color:var(--text-mid);"><span style="font-size:10px;color:var(--text-light);">enerji</span> <strong style="color:var(--text);">${avgE}</strong></div><div style="color:var(--text-mid);"><span style="font-size:10px;color:var(--text-light);">uyku</span> <strong style="color:var(--text);">${avgS}</strong></div><div style="color:var(--text-mid);font-size:11px;">${moodInfo}</div></div>`;
+    const energyLbl=en?'energy':'enerji';
+    const sleepLbl=en?'sleep':'uyku';
+    return `<div style="display:grid;grid-template-columns:80px 1fr 1fr 1fr;gap:8px;padding:8px 10px;border-bottom:1px dashed var(--border-soft);font-size:12px;align-items:center;"><div style="font-weight:600;color:var(--text);">${meta.e} ${meta.short}</div><div style="color:var(--text-mid);"><span style="font-size:10px;color:var(--text-light);">${energyLbl}</span> <strong style="color:var(--text);">${avgE}</strong></div><div style="color:var(--text-mid);"><span style="font-size:10px;color:var(--text-light);">${sleepLbl}</span> <strong style="color:var(--text);">${avgS}</strong></div><div style="color:var(--text-mid);font-size:11px;">${moodInfo}</div></div>`;
   }).filter(Boolean).join('');
+  const avgCycLbl=en?'Average Cycle':'Ortalama Cycle';
+  const avgPerLbl=en?'Average Period':'Ortalama Regl';
+  const dayUnit=en?'days':'gün';
+  const phaseAvgLbl=en?'Phase-by-phase averages':'Phase\'e göre ortalamalar';
+  const topSympLbl=en?'Most frequent symptoms':'En sık semptomlar';
   const html=`
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
-      <div class="cy-pred"><div class="cy-pred-l">Ortalama Cycle</div><div class="cy-pred-v">${cyc} gün</div></div>
-      <div class="cy-pred"><div class="cy-pred-l">Ortalama Regl</div><div class="cy-pred-v">${dur} gün</div></div>
+      <div class="cy-pred"><div class="cy-pred-l">${avgCycLbl}</div><div class="cy-pred-v">${cyc} ${dayUnit}</div></div>
+      <div class="cy-pred"><div class="cy-pred-l">${avgPerLbl}</div><div class="cy-pred-v">${dur} ${dayUnit}</div></div>
     </div>
-    ${phaseRows?`<div style="font-size:11px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--text-light);margin-bottom:8px;">Phase'e göre ortalamalar</div><div style="background:var(--surface2);border-radius:10px;margin-bottom:14px;overflow:hidden;">${phaseRows}</div>`:''}
-    ${topSymps.length?`<div style="font-size:11px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--text-light);margin-bottom:8px;">En sık semptomlar</div><div style="display:flex;flex-wrap:wrap;gap:6px;">${topSymps.map(([id,n])=>{const o=sympMap[id]||{i:'•',l:id};return `<span class="symp-chip active">${o.i} ${o.l} <span style="opacity:0.7;">(${n}x)</span></span>`;}).join('')}</div>`:''}
+    ${phaseRows?`<div style="font-size:11px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--text-light);margin-bottom:8px;">${phaseAvgLbl}</div><div style="background:var(--surface2);border-radius:10px;margin-bottom:14px;overflow:hidden;">${phaseRows}</div>`:''}
+    ${topSymps.length?`<div style="font-size:11px;font-weight:600;letter-spacing:1.2px;text-transform:uppercase;color:var(--text-light);margin-bottom:8px;">${topSympLbl}</div><div style="display:flex;flex-wrap:wrap;gap:6px;">${topSymps.map(([id,n])=>{const o=sympMap[id]||{i:'•',l:id};const label=en?(o.lEn||o.l):o.l;return `<span class="symp-chip active">${o.i} ${label} <span style="opacity:0.7;">(${n}x)</span></span>`;}).join('')}</div>`:''}
   `;
   document.getElementById('cy-ins').innerHTML=html;
 }
@@ -10604,7 +10790,7 @@ function actPeriodEnd(){
   const ps=getPeriods();
   const last=ps[ps.length-1];
   if(!last||last.end){alert(t('alert_no_open_period'));return;}
-  if(today<last.start){alert('Bitiş tarihi başlangıçtan önce olamaz.');return;}
+  if(today<last.start){alert(bi('Bitiş tarihi başlangıçtan önce olamaz.','End date cannot be before start date.'));return;}
   last.end=today;
   savePeriods(ps);
   refreshAll();
@@ -10616,7 +10802,7 @@ function actUndoStart(){
   let idx=ps.findIndex(p=>p.start===today && !p.end);
   // Yoksa bugün başlamış kapalı/açık herhangi kaydı sil
   if(idx===-1)idx=ps.findIndex(p=>p.start===today);
-  if(idx===-1){alert('Bugün için kayıt bulunamadı.');return;}
+  if(idx===-1){alert(bi('Bugün için kayıt bulunamadı.','No log found for today.'));return;}
   ps.splice(idx,1);
   savePeriods(ps);
   refreshAll();
@@ -10659,9 +10845,9 @@ function renderBulkRows(){
 function addBulkRow(){_bulkRows.push({start:'',end:'',flow:''});renderBulkRows();}
 function saveBulkImport(){
   const valid=_bulkRows.filter(r=>r.start);
-  if(!valid.length){alert('En az bir başlangıç tarihi gir.');return;}
+  if(!valid.length){alert(bi('En az bir başlangıç tarihi gir.','Enter at least one start date.'));return;}
   // Check end >= start
-  for(const r of valid){if(r.end && r.end<r.start){alert('Bitiş tarihi başlangıçtan önce olamaz: '+r.start);return;}}
+  for(const r of valid){if(r.end && r.end<r.start){alert(bi('Bitiş tarihi başlangıçtan önce olamaz: ','End date cannot be before start date: ')+r.start);return;}}
   const ps=getPeriods();
   valid.forEach(r=>ps.push({id:pid(),start:r.start,end:r.end||null,flow:r.flow||null,note:''}));
   savePeriods(ps);
@@ -10826,7 +11012,7 @@ function renderHomeEventCountdown(){
   el.innerHTML=`<div style="margin-top:6px;font-size:12px;color:var(--pink-deep);font-weight:500;">${msg}</div>`;
 }
 function resetCycleData(){
-  if(!confirm('TÜM cycle verileri silinecek (regl kayıtları, semptom günlükleri, ayarlar). Geri alınamaz. Devam?'))return;
+  if(!confirm(bi('TÜM cycle verileri silinecek (regl kayıtları, semptom günlükleri, ayarlar). Geri alınamaz. Devam?','ALL cycle data will be deleted (period logs, symptom logs, settings). Cannot be undone. Continue?')))return;
   localStorage.removeItem('periods');
   localStorage.removeItem('cycle_logs');
   localStorage.removeItem('cycle_settings');
@@ -10999,7 +11185,7 @@ function registerServiceWorker(){
       newSW.addEventListener('statechange',()=>{
         if(newSW.state==='installed'&&navigator.serviceWorker.controller){
           // Yeni versiyon hazır
-          if(typeof showToast==='function')showToast('🔄 Yeni sürüm mevcut · sayfayı yenile','pr');
+          if(typeof showToast==='function')showToast(bi('🔄 Yeni sürüm mevcut · sayfayı yenile','🔄 New version available · refresh page'),'pr');
         }
       });
     });
