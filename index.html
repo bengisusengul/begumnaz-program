@@ -293,14 +293,16 @@ body[data-page="cilt"] .slbl{color:var(--diyet-text-primary,#2A0E14) !important;
 #page-olcum,#page-medical{--tab-accent:#DDA0AE;--tab-accent-deep:#832232;--tab-accent-glow:rgba(221,160,174,0.28);}     /* Şarap Pembe */      /* Mauve + su mavisi karışım — Medical */
 #page-chat{--tab-accent:#D4A4B5;--tab-accent-deep:#B8536B;--tab-accent-glow:rgba(212,164,181,0.28);}     /* Iter 47 — Mauve · samimi sohbet tonu */
 
-/* Iter 47 — AI Agent chat layout */
-#page-chat.active{display:flex;flex-direction:column;min-height:100vh;padding-bottom:0;}
-#page-chat #chat-messages{flex:1;overflow-y:auto;padding:0 16px 16px;display:flex;flex-direction:column;gap:10px;min-height:120px;}
+/* Iter 49 — AI Agent chat layout (full-screen immersive · input area her zaman görünür) */
+#page-chat.active{position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;padding-bottom:0;background:linear-gradient(180deg,#6E1A28 0%,#832232 55%,#4A1018 100%);overflow:hidden;}
+#page-chat.active .tb{flex-shrink:0;}
+#page-chat.active #chat-greeting-card{flex-shrink:0;max-height:50vh;overflow-y:auto;}
+#page-chat #chat-messages{flex:1 1 auto;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:8px 16px 16px;display:flex;flex-direction:column;gap:10px;min-height:120px;}
 .chat-msg{max-width:85%;padding:11px 15px;border-radius:18px;font-size:14px;line-height:1.55;white-space:pre-wrap;box-shadow:0 2px 8px rgba(0,0,0,0.18);word-wrap:break-word;overflow-wrap:anywhere;}
 .chat-msg-user{align-self:flex-end;background:linear-gradient(135deg,var(--accent-mauve),var(--pink));color:var(--ink);font-weight:500;}
 .chat-msg-assistant{align-self:flex-start;background:rgba(255,255,255,0.06);color:var(--cream);border:1px solid var(--glass-border);}
 .chat-msg-loading{align-self:flex-start;background:rgba(255,255,255,0.04);color:var(--cream-mute);font-style:italic;}
-#chat-input-area{position:sticky;bottom:0;padding:12px 16px;background:rgba(42,14,20,0.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--glass-border);display:flex;gap:8px;align-items:flex-end;z-index:5;}
+#chat-input-area{flex-shrink:0;padding:12px 16px;padding-bottom:calc(12px + env(safe-area-inset-bottom));background:rgba(42,14,20,0.96);backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);border-top:1px solid var(--glass-border);display:flex;gap:8px;align-items:flex-end;z-index:5;box-shadow:0 -8px 24px rgba(0,0,0,0.32);}
 #chat-input{flex:1;max-height:140px;min-height:44px;padding:11px 14px;border-radius:14px;background:var(--surface2);border:1px solid var(--glass-border);color:var(--cream);resize:none;font-family:'Jost',sans-serif;font-size:14px;line-height:1.4;outline:none;transition:border-color 0.15s;}
 #chat-input:focus{border-color:var(--accent-mauve);}
 #chat-input::placeholder{color:var(--text-light);}
@@ -308,6 +310,9 @@ body[data-page="cilt"] .slbl{color:var(--diyet-text-primary,#2A0E14) !important;
 #chat-send-btn:disabled{opacity:0.55;cursor:not-allowed;}
 .chat-suggest-chip{background:rgba(212,164,181,0.18);border:1px solid var(--accent-mauve);color:var(--cream);padding:9px 13px;border-radius:18px;font-size:11.5px;cursor:pointer;font-family:inherit;text-align:left;line-height:1.5;transition:all 0.15s;}
 .chat-suggest-chip:hover{background:rgba(212,164,181,0.32);}
+/* Chat aktifken bottom nav gizle (immersive full-screen) */
+body.chat-open .bnav{display:none !important;}
+body.chat-open{overflow:hidden;}
 
 /* CYCLE STRIP */
 .cstrip{margin:0 16px 16px;background:rgba(42,14,20,0.78);backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);border-radius:var(--r);padding:16px 18px;display:flex;align-items:center;gap:14px;border:1px solid rgba(255,255,255,0.18);box-shadow:0 12px 40px rgba(0,0,0,0.35),inset 0 1px 0 rgba(255,255,255,0.12);color:var(--cream);}
@@ -2689,6 +2694,10 @@ function setLang(lang){
   safeCall('renderEx');
   safeCall('renderMeas');
   safeCall('renderAnalyticsToggle');
+  // Diet ek render fns (Iter 49: dil değişiminde burnout/cycle-diet/streak güncellensin)
+  safeCall('renderCycleDietCard');
+  safeCall('renderStreakBadge');
+  safeCall('renderDietDay');
   // Skin
   safeCall('renderSkin');
   // Medical
@@ -6183,7 +6192,21 @@ function renderStreakBadge(){
   // BURNOUT DETECTION — Last 5 days mostly low → caring intervention (dismissible · Phase 3.C feedback)
   const burnoutDismissed=localStorage.getItem('burnout_alert_dismissed_'+new Date().toISOString().slice(0,10))==='1';
   if(burnout && !burnoutDismissed){
-    wrap.innerHTML=`<div class="streak-card cool" style="border-color:#d4a574;background:linear-gradient(135deg,var(--gold-soft),#fdf3e0);position:relative;"><span class="streak-flame">🩹</span><div><strong style="color:var(--gold-honey);">Dur biraz, sende bir şeyler oluyor.</strong><br><span style="font-size:12px;color:var(--text-mid);">Son 5 günün çoğunda hedefin altındaydın. Hasta? Yorgun? Yoğun regl? Seyahat?<br>👉 Yarın için 3-günlük mini-reset (sadece kahvaltı + su yeter) — kendine yumuşak ol, app sizi kovalamayacak.</span></div><button onclick="localStorage.setItem('burnout_alert_dismissed_'+new Date().toISOString().slice(0,10),'1');renderStreakBadge();" style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.10);border:none;border-radius:50%;width:24px;height:24px;font-size:14px;cursor:pointer;color:var(--gold-honey);" aria-label="Kapat">✕</button></div>`;
+    // Iter 49 — Bilingual + layout fix (emoji + başlık + buton üst üste binmeme)
+    const en=getLang()==='en';
+    const title=en?'Pause — something\'s going on with you.':'Dur biraz, sende bir şeyler oluyor.';
+    const body=en
+      ?'You\'ve been below your goal most of the last 5 days. Sick? Tired? Heavy period? Traveling?<br>👉 Try a 3-day mini-reset for tomorrow (just breakfast + water is enough) — be gentle with yourself, the app won\'t chase you.'
+      :'Son 5 günün çoğunda hedefin altındaydın. Hasta? Yorgun? Yoğun regl? Seyahat?<br>👉 Yarın için 3-günlük mini-reset (sadece kahvaltı + su yeter) — kendine yumuşak ol, app sizi kovalamayacak.';
+    const closeLbl=en?'Close':'Kapat';
+    wrap.innerHTML=`<div class="streak-card cool" style="border-color:#d4a574;background:linear-gradient(135deg,var(--gold-soft),#fdf3e0);position:relative;padding-right:38px;padding-top:14px;padding-bottom:14px;display:flex;align-items:flex-start;gap:12px;">
+      <span class="streak-flame" style="flex-shrink:0;">🩹</span>
+      <div style="flex:1;min-width:0;">
+        <strong style="color:var(--gold-honey);display:block;margin-bottom:6px;line-height:1.35;">${title}</strong>
+        <span style="font-size:12px;color:#5C1722;line-height:1.55;">${body}</span>
+      </div>
+      <button onclick="localStorage.setItem('burnout_alert_dismissed_'+new Date().toISOString().slice(0,10),'1');renderStreakBadge();" style="position:absolute;top:10px;right:10px;background:rgba(140,90,26,0.18);border:none;border-radius:50%;width:26px;height:26px;font-size:13px;cursor:pointer;color:var(--gold-honey);display:flex;align-items:center;justify-content:center;" aria-label="${closeLbl}">✕</button>
+    </div>`;
     return;
   }
 
@@ -6270,29 +6293,51 @@ function renderMacroRings(d){
 }
 
 // ─── CYCLE-AWARE DIET CARD ───
-// Sacred feminine ton: komut değil davet · arketip enerjisini taşıyan mesaj
+// Iter 49 — Bilingual (title + msg)
 const PHASE_DIET={
   'Menstruation':{
-    icon:'🔴',title:'Regl · Kış · Bilge Kadın',
-    msg:'Kanın akar, içsel sezgin keskinleşir. Demir + ciğer/kırmızı et, sıcak çay, ısıtıcı yemek. "Hayır" deme hakkın bugün özellikle güçlü.',
+    icon:'🔴',
+    title:{tr:'Regl · Kış · Bilge Kadın', en:'Period · Winter · Wise Woman'},
+    msg:{
+      tr:'Kanın akar, içsel sezgin keskinleşir. Demir + ciğer/kırmızı et, sıcak çay, ısıtıcı yemek. "Hayır" deme hakkın bugün özellikle güçlü.',
+      en:'Your blood flows, inner intuition sharpens. Iron + liver/red meat (lamb), warm tea, warming food. Your right to say "no" is especially strong today.'
+    },
     bg:'linear-gradient(135deg, var(--pink-pale), #fbe0db)',
   },
   'Follicular Phase':{
-    icon:'🌱',title:'Folliküler · İlkbahar · Genç Kız',
-    msg:'Östrojen yükseliyor, merakın açılıyor. Sebzede çeşitlilik, hafif ama doyurucu. Yeni tatları deneyebilir, yapılmayan şeyleri ele alabilirsin.',
+    icon:'🌱',
+    title:{tr:'Folliküler · İlkbahar · Genç Kız', en:'Follicular · Spring · Maiden'},
+    msg:{
+      tr:'Östrojen yükseliyor, merakın açılıyor. Sebzede çeşitlilik, hafif ama doyurucu. Yeni tatları deneyebilir, yapılmayan şeyleri ele alabilirsin.',
+      en:'Estrogen rising, your curiosity opens up. Variety in vegetables, light but satisfying. You can try new flavors, tackle undone tasks.'
+    },
     bg:'linear-gradient(135deg, var(--mauve-soft), #e8f0e0)',
   },
   'Ovulation':{
-    icon:'🌸',title:'Ovulasyon · Yaz · Anne',
-    msg:'En parlak halinde. Bağlantı, paylaşım, görünme penceresi. Yağlı balık + omega-3 + bol yeşillik harika uyum. Ver, ama kendini de ver.',
+    icon:'🌸',
+    title:{tr:'Ovulasyon · Yaz · Anne', en:'Ovulation · Summer · Mother'},
+    msg:{
+      tr:'En parlak halinde. Bağlantı, paylaşım, görünme penceresi. Yağlı balık + omega-3 + bol yeşillik harika uyum. Ver, ama kendini de ver.',
+      en:'At your brightest. Window for connection, sharing, being seen. Fatty fish + omega-3 + plenty of greens are a great match. Give — but give to yourself too.'
+    },
     bg:'linear-gradient(135deg, var(--gold-soft), #f5e8d8)',
   },
   'Luteal Phase':{
-    icon:'🌙',title:'Luteal · Sonbahar · Cadı (Bilge)',
-    msg:'İçe dönüş zamanı. Sınırlarına saygı duy, gereksizi at. Sıcak yemek + protein, magnezyum + B6, az mavi ışık. Tatlı krizleri sezgi sinyali değil, hormon — protein onu sustur.',
+    icon:'🌙',
+    title:{tr:'Luteal · Sonbahar · Cadı (Bilge)', en:'Luteal · Autumn · Wise Crone'},
+    msg:{
+      tr:'İçe dönüş zamanı. Sınırlarına saygı duy, gereksizi at. Sıcak yemek + protein, magnezyum + B6, az mavi ışık. Tatlı krizleri sezgi sinyali değil, hormon — protein onu sustur.',
+      en:'Time to turn inward. Respect your boundaries, release the unnecessary. Warm food + protein, magnesium + B6, less blue light. Sweet cravings aren\'t intuition — they\'re hormones; protein quiets them.'
+    },
     bg:'linear-gradient(135deg, var(--mauve-soft), #ebd9e8)',
   },
 };
+function _pdField(phase, field){
+  const v=PHASE_DIET[phase]&&PHASE_DIET[phase][field];
+  if(!v)return '';
+  if(typeof v==='string')return v;
+  return v[getLang()==='en'?'en':'tr']||v.tr||'';
+}
 function renderCycleDietCard(d){
   const wrap=document.getElementById('cycle-diet-wrap');
   if(!wrap)return;
@@ -6300,23 +6345,18 @@ function renderCycleDietCard(d){
   if(!c){wrap.innerHTML='';return;}
   const conf=PHASE_DIET[c.phase]||PHASE_DIET['Luteal Phase'];
   const mt=getMacroTarget(d);
-  // Phase 3.D feedback (12 May 2026) — Eski hardcoded "Günlük Akış" kartı ile birleştirildi
-  // Cycle-aware mesaj + timeline tek kart altında
+  // Iter 49 — Bilingual + Bengisu IF/EVOO/peynir hardcoded timeline kaldırıldı
+  // (Detaylı Begümnaz protokol timeline'ı zaten supp-tl bölümünde — duplikasyon önlendi)
+  const en=getLang()==='en';
+  const dayLbl=en?'Day':'Gün';
+  const todayLbl=en?'today':'bugün';
+  const seeBelow=en?'⏰ Today\'s detailed timeline (Begümnaz protocol) is in the supplements section below.':'⏰ Bugünün detaylı akışı (Begümnaz protokolü) aşağıdaki supplement bölümünde.';
   wrap.innerHTML=`<div class="cycle-diet-card" style="background:${conf.bg};">
     <div class="cdc-icon">${conf.icon}</div>
-    <div class="cdc-title" style="color:#2a1f0a;">${conf.title} · Gün ${c.day}</div>
-    <div class="cdc-msg" style="color:#3a2c14;">${conf.msg}</div>
-    ${mt.bonus?`<div class="cdc-bonus">⬆️ ${mt.bonus} bugün</div>`:''}
-    <div style="margin-top:14px;padding-top:14px;border-top:1px solid rgba(0,0,0,0.12);">
-      <div style="font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#3a2c14;margin-bottom:8px;">⏰ Bugün'ün Akışı</div>
-      <div class="tl" style="color:#2a1f0a;">
-        <div class="tli"><div class="tlt" style="color:#3a2c14;">07:30</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti" style="color:#2a1f0a;">🥄 EVOO + limon + tuz shot</div><div class="tlde" style="color:#4a3a1c;">1 yk high-phenolic + ½ limon + kaya tuzu</div><span class="tltag ts">~120 kcal</span></div></div>
-        <div class="tli"><div class="tlt" style="color:#3a2c14;">10:00</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti" style="color:#2a1f0a;">🥚 1. Öğün</div><div class="tlde" style="color:#4a3a1c;">Yumurta + peynir + ½ avokado + yeşillik (esnek)</div><span class="tltag td">${mt.kcal?Math.round(mt.kcal*0.40):'~600'} kcal</span></div></div>
-        <div class="tli"><div class="tlt" style="color:#3a2c14;">14:00</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti" style="color:#2a1f0a;">🍯 Pre-WO</div><div class="tlde" style="color:#4a3a1c;">30g karb + 15-25g protein · WO öncesi 60 dk</div><span class="tltag ts">~200 kcal</span></div></div>
-        <div class="tli"><div class="tlt" style="color:#3a2c14;">17:00</div><div class="tlline"><div class="tldot"></div><div class="tlbar"></div></div><div class="tlc"><div class="tlti" style="color:#2a1f0a;">🥩 2. Öğün</div><div class="tlde" style="color:#4a3a1c;">Et/balık + salata · post-WO</div><span class="tltag td">${mt.kcal?Math.round(mt.kcal*0.40):'~700'} kcal</span></div></div>
-        <div class="tli"><div class="tlt" style="color:#3a2c14;">19:00</div><div class="tlline"><div class="tldot"></div></div><div class="tlc"><div class="tlti" style="color:#2a1f0a;">⏱ Açlık Penceresi Kapanır</div><div class="tlde" style="color:#4a3a1c;">Sadece su · bitki çayı · sade kahve</div><span class="tltag te">IF</span></div></div>
-      </div>
-    </div>
+    <div class="cdc-title" style="color:#2a1f0a;">${_pdField(c.phase,'title')} · ${dayLbl} ${c.day}</div>
+    <div class="cdc-msg" style="color:#3a2c14;">${_pdField(c.phase,'msg')}</div>
+    ${mt.bonus?`<div class="cdc-bonus">⬆️ ${mt.bonus} ${todayLbl}</div>`:''}
+    <div style="margin-top:12px;padding:10px 12px;background:rgba(0,0,0,0.08);border-radius:8px;font-size:11.5px;color:#3a2c14;line-height:1.5;">${seeBelow}</div>
   </div>`;
 }
 
@@ -8398,6 +8438,7 @@ ALIŞVERİŞ LİSTESİ (3): yumuşak temizleyici (CeraVe/Bioderma/LRP), Niacinam
 
 function openChat(){
   document.body.dataset.page='chat';
+  document.body.classList.add('chat-open');  // Iter 49: bottom nav gizle + body scroll lock
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.getElementById('page-chat').classList.add('active');
   renderChatGreeting();
@@ -8412,6 +8453,7 @@ function openChat(){
   setTimeout(()=>{const el=document.getElementById('chat-input');if(el)el.focus();},150);
 }
 function closeChat(){
+  document.body.classList.remove('chat-open');  // Iter 49: bottom nav geri gel
   if(typeof showP==='function')showP('takvim',document.querySelectorAll('.nb')[0]);
 }
 function autosizeChatInput(el){el.style.height='auto';el.style.height=Math.min(140,el.scrollHeight)+'px';}
@@ -11323,10 +11365,19 @@ function deletePeriod(id){
 }
 
 function refreshAll(){
-  renderCycle();
-  renderCal();
-  renderSelDay();
-  renderCycleStripTop();
+  // Iter 49 — Regl ekleme/silme TÜM sekmelerin phase-aware kartlarını günceller
+  // Cilt rotasyonu, diyet faz mesajı, dashboard hero, egzersiz cycle-aware uyarıları
+  const safeCall=(fn)=>{try{if(typeof window[fn]==='function')window[fn]();}catch(e){console.warn('refreshAll',fn,e);}};
+  safeCall('renderCycle');
+  safeCall('renderCal');
+  safeCall('renderSelDay');
+  safeCall('renderCycleStripTop');
+  // Phase-aware sekmeler
+  safeCall('renderDashboard');
+  safeCall('renderDiet');
+  safeCall('renderSkin');
+  safeCall('renderEx');
+  safeCall('renderCycleDietCard');
 }
 
 // ─── BULK IMPORT (onboarding) ───
