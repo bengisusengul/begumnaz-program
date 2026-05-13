@@ -1393,6 +1393,8 @@ select option{background:var(--bg-deep);color:var(--cream);}
     <div class="tb-sub" id="today-str" style="margin-top:8px;"></div>
     <!-- Phase 3.D · 12 May 2026 — ⚙️ Ayarlar butonu (modal açar) -->
     <button onclick="openSettingsModal()" aria-label="Ayarlar" style="position:absolute;top:56px;right:20px;width:42px;height:42px;border-radius:50%;background:rgba(42,14,20,0.78);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(232,221,196,0.20);color:var(--cream-soft);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,0.25);">⚙️</button>
+    <!-- Iter 31 — 🏆 Başarılarım butonu (Settings butonu solunda) -->
+    <button onclick="openAchievementsModal()" aria-label="Başarılarım" style="position:absolute;top:56px;right:72px;width:42px;height:42px;border-radius:50%;background:rgba(42,14,20,0.78);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(232,221,196,0.20);color:var(--cream-soft);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,0.25);">🏆</button>
   </div>
 
   <div id="dash-greeting"></div>      <!-- Greeting hero: ZEN + phase line -->
@@ -1716,8 +1718,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
        Bugün dashboard'da ⚙️ Ayarlar butonu ile MODAL olarak açılır
        Begümnaz: "regl sekmesi bu şekilde çok kalabalık ve gereksiz şeyler kalmış" -->
 
-  <!-- Phase 3.C feedback (12 May) — Achievements collapsible buradan (Diyet'ten taşındı) -->
-  <div id="achievements-settings-wrap"></div>
+  <!-- Iter 31 — Achievements buradan Dashboard topbar'a (🏆 buton) taşındı; container kaldırıldı -->
 
   <!-- Phase 3.D · 12 May 2026 — Aşağıdaki 3 kart Medical Records sekmesine taşındı -->
   <div id="medical-tab-link-card" style="margin:16px 16px 0;padding:14px;background:rgba(180,121,144,0.10);border:1px solid rgba(180,121,144,0.30);border-radius:14px;text-align:center;cursor:pointer;" onclick="showP('medical',document.querySelectorAll('.nb')[5])">
@@ -1911,11 +1912,38 @@ select option{background:var(--bg-deep);color:var(--cream);}
 </div>
 
 <!-- LOG PAST PERIOD MODAL -->
-<div class="mo" id="log-past-modal">
-  <div class="modal">
+
+
+<!-- Iter 31 — Achievements modal (Dashboard 🏆 butonundan açılır) -->
+<div class="mo" id="achievements-modal">
+  <div class="modal" style="max-width:480px;position:relative;">
+    <button onclick="closeM('achievements-modal')" aria-label="Kapat" style="position:absolute;top:10px;right:10px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.10);border:1px solid rgba(255,255,255,0.18);color:var(--cream);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:5;">✕</button>
     <div class="mhandle"></div>
-    <h3>Geçmiş Regl Ekle 🗓</h3>
-    <div class="msub">Tarih aralığını gir. Akış şiddeti opsiyonel.</div>
+    <h3 style="padding-right:36px;">🏆 Başarılarım</h3>
+    <div class="msub">Anti-kompulsif çerçeve · stres yaratmaz, sadece gözlem.</div>
+    <div id="achievements-modal-body"></div>
+  </div>
+</div>
+
+<div class="mo" id="log-past-modal">
+  <div class="modal" style="position:relative;">
+    <button onclick="closeM('log-past-modal')" aria-label="Kapat" style="position:absolute;top:10px;right:10px;width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,0.10);border:1px solid rgba(255,255,255,0.18);color:var(--cream);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:5;">✕</button>
+    <div class="mhandle"></div>
+    <h3 style="padding-right:36px;">Geçmiş Regl Ekle 🗓</h3>
+
+    <!-- Iter 31 — AI parse upload: önceki uygulamadan veri toplu yükleme -->
+    <div style="margin:12px 0 18px;padding:14px;border-radius:12px;background:rgba(229,168,181,0.10);border:1px solid rgba(229,168,181,0.28);">
+      <div style="font-size:12px;font-weight:700;color:var(--gold);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px;">📷 Topluca Yükle (AI parse)</div>
+      <div style="font-size:11.5px;color:var(--cream-mute);line-height:1.55;margin-bottom:10px;">Daha önce kullandığın regl uygulamasından (Flo, Clue, Apple Health, Period Tracker vb.) <strong>ekran görüntüsü veya PDF</strong> yükle. Claude tarihleri otomatik okur, hepsini ekler.</div>
+      <label style="display:block;padding:12px;border:2px dashed rgba(229,168,181,0.42);border-radius:10px;text-align:center;cursor:pointer;background:rgba(110,26,40,0.20);">
+        <input type="file" accept="image/*,application/pdf" multiple style="display:none;" onchange="handlePeriodHistoryUpload(this)">
+        <div style="font-size:13px;color:var(--cream);font-weight:600;">📤 Görsel / PDF Yükle</div>
+        <div style="font-size:10.5px;color:var(--cream-mute);margin-top:2px;">Birden fazla seçebilirsin · max 5 MB / dosya</div>
+      </label>
+      <div id="lp-ai-status" style="margin-top:10px;"></div>
+    </div>
+
+    <div style="font-size:11px;font-weight:700;color:var(--cream-mute);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:6px;">📅 Veya tek tek manuel ekle</div>
     <div class="fr"><label>Başlangıç</label><input type="date" id="lp-start"></div>
     <div class="fr"><label>Bitiş (opsiyonel)</label><input type="date" id="lp-end"></div>
     <div class="fr"><label>Akış Şiddeti</label>
@@ -1929,7 +1957,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
     </div>
     <div class="macts">
       <button class="btn bghost" style="flex:1;" onclick="closeM('log-past-modal')">İptal</button>
-      <button class="btn bp" style="flex:2;" onclick="saveLogPast()">💾 Kaydet</button>
+      <button class="btn bp" style="flex:2;" onclick="saveLogPast()">💾 Tek kayıt kaydet</button>
     </div>
   </div>
 </div>
@@ -4924,71 +4952,103 @@ function renderHeatmap(){
   </div>`;
 }
 
-// ─── ACHIEVEMENTS ───
+// ─── ACHIEVEMENTS (Iter 31 — Begümnaz uyumlu rewrite) ───
+// Dashboard 🏆 butonundan açılır modal'da gösterilir.
+// Bengisu kalıntıları temizlendi (Lipid/FH/Pazar brunch/Bisglycinate/Yeşillik Kraliçesi vb.).
+// Begümnaz protokolüne uygun: sıcak su, 16 ürün supplement, tret, ayak banyosu, sabah merhamet.
 function calculateAchievements(){
-  const allDone=getMealsDone();
-  const water=getWaterLog();
+  const allDone=(typeof getMealsDone==='function')?getMealsDone():{};
+  const water=(typeof getWaterLog==='function')?getWaterLog():{};
   const customs=JSON.parse(localStorage.getItem('custom_meals')||'{}');
+  const supplements=JSON.parse(localStorage.getItem('supplement_log')||'{}');
   const todayD=new Date();todayD.setHours(0,0,0,0);
 
-  // Yumurta sayısı: m1_main meals_done içinde "yumurta" geçen yemeklerin yumurta sayısı
-  let eggCount=0;
-  for(const k of Object.keys(allDone)){
-    if(!k.endsWith('_m1_main'))continue;
-    const dayKey=k.replace(/_m1_main$/,'');
-    const dt=new Date(dayKey);
-    if(isNaN(dt))continue;
-    const idx=dt.getDay()%7;
-    const m1=SEL_MEALS[dayKey+'_m1_main']||M1[idx];
-    if(m1 && /yumurta/i.test(m1.n)){
-      const m=m1.n.match(/(\d+)\s*yumurta/i);
-      eggCount+=m?parseInt(m[1]):3;
-    }
+  // Streak (mevcut)
+  const{streak}=(typeof getStreakInfo==='function')?getStreakInfo():{streak:0};
+
+  // Sıcak su ustası — günde 5+ bardak ılık/sıcak su × 7 gün (Begümnaz protokolü: soğuk su yasak)
+  const warmWaterDays=Object.values(water).filter(v=>v>=5).length;
+
+  // Supplement disiplini — son 30 günde günlük supplement slot'larından en az 5/8 işaretli
+  let suppDays=0;
+  for(let i=0;i<30;i++){
+    const d=new Date(todayD.getTime()-i*86400000);
+    const dk=d.toISOString().slice(0,10);
+    const log=supplements[dk]||{};
+    const taken=Object.values(log).filter(Boolean).length;
+    if(taken>=5)suppDays++;
   }
-  // Salata günleri (m2_side done)
-  const saladDays=Object.keys(allDone).filter(k=>k.endsWith('_m2_side')).length;
-  // Hidrasyon (8+ bardak günler)
-  const hydroDays=Object.values(water).filter(v=>v>=8).length;
-  // Streak
-  const{streak}=getStreakInfo();
-  // Luteal complete
+
+  // Mizaç beslenme — yumurta + ızgara/kuzu/koyun/hindi meal_done günleri (m1_main veya m2_main "kuzu"/"yumurta"/"hindi" geçenler)
+  let mizacDays=0;
+  for(const k of Object.keys(allDone)){
+    if(!k.endsWith('_m1_main')&&!k.endsWith('_m2_main'))continue;
+    const dayKey=k.replace(/_m[12]_main$/,'');
+    const slot=k.endsWith('_m1_main')?'m1_main':'m2_main';
+    const meal=SEL_MEALS[dayKey+'_'+slot];
+    if(meal&&meal.n&&/(yumurta|kuzu|koyun|hindi)/i.test(meal.n))mizacDays++;
+  }
+
+  // Luteal complete (genel — keep)
   let lutealComplete=0;
   for(let i=0;i<60;i++){
     const d=new Date(todayD.getTime()-i*86400000);
     const c=ci(d);
-    if(c && c.phase==='Luteal Phase' && isDailyComplete(d))lutealComplete++;
+    if(c && c.phase==='Luteal Phase' && (typeof isDailyComplete==='function'?isDailyComplete(d):false))lutealComplete++;
   }
+
   // Custom food count
-  const customCount=Object.values(customs).reduce((s,arr)=>s+arr.length,0);
-  // Phase 3.C P1 #6 — 7 yeni achievement (mevcut 6'ya ek)
-  const activeModes=getActiveModes();
-  const lipidLog=getLipidLog();
-  const supplementsActive=1; // Begümnaz siparişler geldi, kullanıyor
+  const customCount=Object.values(customs).reduce((s,arr)=>s+(Array.isArray(arr)?arr.length:0),0);
+
+  // Sabah merhamet — son 30 günde morning_message_ key'i kaç günde var
+  let compassionDays=0;
+  for(let i=0;i<30;i++){
+    const d=new Date(todayD.getTime()-i*86400000);
+    const dk=d.toISOString().slice(0,10);
+    if(localStorage.getItem('morning_message_'+dk))compassionDays++;
+  }
+
+  // Tret disiplini — Sal+Paz tret günleri (skincare log yoksa placeholder 0)
+  // Şimdilik: Iter 31'de skincare log yapısı sade, geçici olarak supplement_log'tan estimate
+  let tretDays=0;
+  for(let i=0;i<28;i++){
+    const d=new Date(todayD.getTime()-i*86400000);
+    const dow=d.getDay();
+    if(dow!==2&&dow!==0)continue; // Sal=2, Paz=0
+    const dk=d.toISOString().slice(0,10);
+    // skincare_log varsa kontrol, yoksa 0
+    const sk=JSON.parse(localStorage.getItem('skincare_log')||'{}')[dk];
+    if(sk&&sk.tret)tretDays++;
+  }
+
   return [
-    {id:'egg',icon:'🥚',name:'Yumurta-vor',progress:eggCount,goal:30,desc:'30 yumurta tüket'},
-    {id:'salad',icon:'🌿',name:'Yeşillik Kraliçesi',progress:saladDays,goal:14,desc:'14 gün akşam salatası'},
-    {id:'hydro',icon:'💧',name:'Hidrasyon Ustası',progress:hydroDays,goal:7,desc:'7 gün 8 bardak su'},
-    {id:'streak',icon:'🔥',name:'Streak Şampiyonu',progress:streak,goal:7,desc:'7 gün üst üste tamam'},
-    {id:'luteal',icon:'🌸',name:'Cycle Dostu',progress:lutealComplete,goal:5,desc:'5 luteal günü tamamla'},
-    {id:'ai',icon:'🤖',name:'Akıllı Yiyici',progress:customCount,goal:10,desc:'10 custom yemek ekle'},
-    // Phase 3.C P1 yeni 7
-    {id:'mg_kramp',icon:'💊',name:'Mg Kramp Çözücü',progress:1,goal:1,desc:'Bisglycinate ile semptom geçti ✓'},
-    {id:'esneklik',icon:'🌿',name:'Esneklik Kabulü',progress:1,goal:1,desc:'Mizaç temelli + Pazar brunch'},
-    {id:'5metrik',icon:'📊',name:'5 Metrik Bilgesi',progress:1,goal:1,desc:'Sadece kg değil 5 metrik'},
-    {id:'hakan_paket',icon:'🩺',name:'Doktor Hazırlık',progress:1,goal:1,desc:'Doktor randevu hazırlığı'},
-    {id:'pazar_brunch',icon:'🎉',name:'Pazar Hak Ettin',progress:0,goal:4,desc:'4 hafta Pazar brunch anti-kompulsif'},
-    {id:'t3_dostu',icon:'🦋',name:'T3 Dostu',progress:supplementsActive*5,goal:30,desc:'30 gün Time Magnezyum streak'},
-    {id:'lipid',icon:'❤️',name:'Lipid Düşürücü',progress:lipidLog.length,goal:3,desc:'3 lipid test kaydı (FH takip)'},
+    {id:'streak',icon:'🔥',name:'Streak Şampiyonu',progress:streak,goal:7,desc:'7 gün üst üste günlük tamamla'},
+    {id:'warm_water',icon:'💧',name:'Sıcak Su Ustası',progress:warmWaterDays,goal:7,desc:'7 gün 5+ bardak ılık/sıcak su (mizaç protokolü)'},
+    {id:'supplement',icon:'💊',name:'Supplement Disiplini',progress:suppDays,goal:14,desc:'14 gün 5+ supplement slotu (doktor 16 ürün protokolü)'},
+    {id:'compassion',icon:'💛',name:'Kendine Merhamet',progress:compassionDays,goal:21,desc:'21 sabah açılışta merhamet mesajı (kendini hatırla)'},
+    {id:'mizac',icon:'🥚',name:'Mizaç Beslenme',progress:mizacDays,goal:21,desc:'21 öğün yumurta/kuzu/koyun/hindi (Begümnaz proteinleri)'},
+    {id:'luteal',icon:'🌸',name:'Cycle Dostu',progress:lutealComplete,goal:5,desc:'5 luteal günü tamamla (PMS dönemi)'},
+    {id:'tret',icon:'🧴',name:'Tret Disiplini',progress:tretDays,goal:8,desc:'8 hafta Sal+Paz Acnelyse 0.025% (sandwich tekniği)'},
+    {id:'custom_food',icon:'🤖',name:'Akıllı Yiyici',progress:customCount,goal:10,desc:'10 custom yemek (AI makro analizi)'},
+    {id:'doctor_prep',icon:'🩺',name:'Doktor Takibi',progress:1,goal:1,desc:'Doktor randevu paketinizi hazırla (kan + supplement)'},
+    {id:'foot_bath',icon:'🦶',name:'Ayak Banyosu Düzenli',progress:0,goal:14,desc:'14 gün 20:00 ayak banyosu (manuel takip — yakında)'},
   ];
 }
-function renderAchievements(){
-  // Phase 3.C feedback (12 May) — Diyet sayfasından kaldırıldı, Cycle Settings'e taşındı
-  const wrap=document.getElementById('achievements-wrap');
-  if(wrap)wrap.innerHTML=''; // legacy temizlik
 
-  // Cycle Settings'te opsiyonel collapsible kart
+function openAchievementsModal(){
+  renderAchievements();
+  document.getElementById('achievements-modal').classList.add('open');
+}
+
+function renderAchievements(){
+  // Legacy temizlik (Dashboard'a taşındı — Iter 31)
+  const wrap=document.getElementById('achievements-wrap');
+  if(wrap)wrap.innerHTML='';
   const settingsWrap=document.getElementById('achievements-settings-wrap');
-  if(!settingsWrap)return;
+  if(settingsWrap)settingsWrap.innerHTML='';
+
+  const body=document.getElementById('achievements-modal-body');
+  if(!body)return;
   const ach=calculateAchievements();
   const unlockedCount=ach.filter(a=>a.progress>=a.goal).length;
   const items=ach.map(a=>{
@@ -5004,23 +5064,9 @@ function renderAchievements(){
       </div>
     </div>`;
   }).join('');
-  // Collapsible — Begümnaz istediğinde açar, default kapalı
-  const isOpen=localStorage.getItem('ach_settings_open')==='1';
-  settingsWrap.innerHTML=`<div class="card" style="margin-top:16px;">
-    <div class="ch" style="cursor:pointer;" onclick="toggleAchSettings()">
-      <h3>🏆 Başarılarım <span style="font-size:11px;color:var(--cream-mute);font-weight:400;">(${unlockedCount}/${ach.length} açıldı)</span></h3>
-      <span style="font-size:18px;color:var(--cream-mute);">${isOpen?'▴':'▾'}</span>
-    </div>
-    <div class="cb" id="ach-settings-body" style="display:${isOpen?'block':'none'};">
-      <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span>Anti-kompulsif çerçeve: <strong>opsiyonel</strong> görünüm. İstediğinde aç, istediğinde gizle. Sürekli görünmüyor — stres yaratmamak için.</div>
-      ${items}
-    </div>
-  </div>`;
-}
-function toggleAchSettings(){
-  const isOpen=localStorage.getItem('ach_settings_open')==='1';
-  localStorage.setItem('ach_settings_open',isOpen?'0':'1');
-  renderAchievements();
+  body.innerHTML=`<div class="card-plain" style="margin-bottom:14px;"><span class="card-plain-tag">🪞 Bu kart</span>Anti-kompulsif çerçeve: stres yaratmaz, sayı baskısı yok. Sadece <em>gözlem</em>. Her başarı Begümnaz protokolüne özel — sıcak su, supplement, tret, kendine merhamet, mizaç beslenme.</div>
+    <div style="font-size:12px;color:var(--gold);text-align:center;margin-bottom:10px;font-weight:600;">${unlockedCount}/${ach.length} açıldı</div>
+    ${items}`;
 }
 
 // ─── APPLE HEALTH (Photo + AI parse) ───
@@ -9624,7 +9670,7 @@ function renderCyPredictions(){
         <div style="font-size:42px;line-height:1;margin-bottom:12px;">🌸</div>
         <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:300;color:var(--cream-soft);margin-bottom:8px;">Tahminler henüz hazır değil</div>
         <div style="font-size:13px;color:var(--cream-mute);line-height:1.6;max-width:300px;margin:0 auto 16px;">İlk regl başlangıç tarihini ekle — sonraki regl, ovulasyon, fertil pencere ve PMS dönemi otomatik tahmin edilir. 2+ kayıt sonrası median döngü uzunluğuna göre netleşir.</div>
-        <button class="btn bp" onclick="document.getElementById('cy-start-input')?.focus();document.getElementById('cy-start-input')?.scrollIntoView({behavior:'smooth',block:'center'});" style="display:inline-block;padding:10px 22px;font-size:13px;">📅 Regl Ekle</button>
+        <button class="btn bp" onclick="openLogPast()" style="display:inline-block;padding:10px 22px;font-size:13px;">📅 Regl Ekle</button>
         <div style="font-size:11px;color:var(--cream-faint);margin-top:14px;font-style:italic;">Tüm veriler yalnızca bu cihazda saklanır · Bengisu seed verisi yok (Iter 12)</div>
       </div>`;
     document.getElementById('cy-pred-disclaimer').textContent='';
@@ -9843,7 +9889,108 @@ function openLogPast(){
   document.getElementById('lp-start').value='';
   document.getElementById('lp-end').value='';
   document.getElementById('lp-flow').value='';
+  const st=document.getElementById('lp-ai-status');if(st)st.innerHTML='';
   document.getElementById('log-past-modal').classList.add('open');
+}
+
+// Iter 31 — AI parse: önceki uygulamadan regl geçmişi toplu yükleme
+async function handlePeriodHistoryUpload(input){
+  const files=Array.from(input.files||[]);
+  if(!files.length)return;
+  const statusEl=document.getElementById('lp-ai-status');
+  const tooLarge=files.find(f=>f.size>5*1024*1024);
+  if(tooLarge){
+    statusEl.innerHTML=`<div style="font-size:11.5px;color:var(--coral);padding:8px;">⚠️ "${tooLarge.name}" 5 MB üstü — küçült veya daha az sayfayla tekrar dene.</div>`;
+    return;
+  }
+  statusEl.innerHTML=`<div style="font-size:12px;color:var(--cream-mute);padding:8px;">✨ Claude ${files.length} dosyayı analiz ediyor...</div>`;
+  const allFound=[];
+  for(let i=0;i<files.length;i++){
+    const f=files[i];
+    try{
+      const dataUrl=await new Promise((res,rej)=>{const r=new FileReader();r.onload=()=>res(r.result);r.onerror=rej;r.readAsDataURL(f);});
+      const base64=String(dataUrl).split(',')[1];
+      const mediaType=f.type||'image/jpeg';
+      // PDF için Claude API "document" content type kullanır, image için "image"
+      const isPdf=mediaType==='application/pdf';
+      const contentBlock=isPdf
+        ?{type:'document',source:{type:'base64',media_type:'application/pdf',data:base64}}
+        :{type:'image',source:{type:'base64',media_type:mediaType,data:base64}};
+      const prompt=`Bu görsel/PDF'de bir regl (menstrüel period) takip uygulamasından alınmış veri var (Flo, Clue, Apple Health, Period Tracker veya benzeri). Tüm regl başlangıç tarihlerini ve mümkünse bitiş tarihlerini çıkar.
+
+Çıktıyı SADECE geçerli JSON olarak ver, başka açıklama yok:
+{
+  "periods": [
+    {"start": "YYYY-MM-DD", "end": "YYYY-MM-DD veya null", "flow": "spotting|light|medium|heavy veya null"}
+  ]
+}
+
+Kurallar:
+- Tarih formatı kesin "YYYY-MM-DD" (örn 2024-03-15)
+- Bitiş tarihi yoksa null
+- Akış şiddeti yoksa null
+- Sadece regl tarihleri — ovulasyon/fertil pencere DAHIL ETME
+- Tarihler çakışıyorsa veya belirsizse, en güvenilir olan başlangıç tarihini al
+- Eğer hiç regl verisi yoksa: {"periods": []}`;
+      statusEl.innerHTML=`<div style="font-size:12px;color:var(--cream-mute);padding:8px;">✨ Dosya ${i+1}/${files.length}: ${f.name.substring(0,40)}...</div>`;
+      const res=await callAnthropic({
+        model:'claude-haiku-4-5-20251001',
+        max_tokens:2000,
+        messages:[{role:'user',content:[contentBlock,{type:'text',text:prompt}]}]
+      });
+      if(!res.ok){const t=await res.text();throw new Error('API '+res.status+': '+t.substring(0,80));}
+      const data=await res.json();
+      const text=(data.content?.[0]?.text||'').trim();
+      const m=text.match(/\{[\s\S]*\}/);
+      if(!m)throw new Error('JSON bulunamadı');
+      const parsed=JSON.parse(m[0]);
+      if(Array.isArray(parsed.periods))allFound.push(...parsed.periods);
+    }catch(e){
+      console.warn('Regl parse error file',f.name,e);
+      statusEl.innerHTML=`<div style="font-size:11.5px;color:var(--coral);padding:8px;">⚠️ "${f.name}" işlenemedi: ${String(e.message||e).substring(0,80)}</div>`;
+      // Diğer dosyalara devam
+    }
+  }
+  // Mevcut tarihlerle çakışma kontrolü
+  const existing=getPeriods();
+  const existingStarts=new Set(existing.map(p=>p.start));
+  const unique=allFound.filter(p=>p.start&&/^\d{4}-\d{2}-\d{2}$/.test(p.start)&&!existingStarts.has(p.start));
+  // Tarih sırasıyla sırala (en eski başta)
+  unique.sort((a,b)=>a.start.localeCompare(b.start));
+  if(!unique.length){
+    statusEl.innerHTML=`<div style="font-size:12px;color:var(--coral);padding:10px;">⚠️ Geçerli regl tarihi bulunamadı. Manuel ekleme deneyebilirsin.</div>`;
+    return;
+  }
+  // Preview göster + onay iste
+  window._pendingPeriods=unique;
+  const previewRows=unique.slice(0,30).map(p=>`<div style="font-size:12px;padding:4px 0;border-bottom:1px dashed rgba(255,255,255,0.08);"><strong>${p.start}</strong>${p.end?` → ${p.end}`:''}${p.flow?` · ${p.flow}`:''}</div>`).join('');
+  const moreText=unique.length>30?`<div style="font-size:11px;color:var(--cream-mute);font-style:italic;margin-top:6px;">+ ${unique.length-30} daha...</div>`:'';
+  statusEl.innerHTML=`<div style="padding:10px;background:rgba(168,192,160,0.14);border-radius:8px;border:1px solid rgba(168,192,160,0.32);">
+    <div style="font-size:13px;color:var(--cream-soft);font-weight:600;margin-bottom:8px;">✨ ${unique.length} yeni regl tarihi bulundu</div>
+    <div style="max-height:200px;overflow-y:auto;margin-bottom:10px;">${previewRows}${moreText}</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;">
+      <button class="btn bp bsm" onclick="confirmBulkPeriods()">✓ Hepsini ekle (${unique.length})</button>
+      <button class="btn bghost bsm" onclick="cancelBulkPeriods()">İptal</button>
+    </div>
+  </div>`;
+}
+
+function confirmBulkPeriods(){
+  const arr=window._pendingPeriods||[];
+  if(!arr.length)return;
+  const ps=getPeriods();
+  arr.forEach(p=>ps.push({id:pid(),start:p.start,end:p.end||null,flow:p.flow||null,note:'AI import'}));
+  savePeriods(ps);
+  const settings=getCycleSettings();if(!settings.onboarded){settings.onboarded=true;saveCycleSettingsObj(settings);}
+  showToast(`✓ ${arr.length} regl tarihi eklendi`,'pr');
+  window._pendingPeriods=null;
+  closeM('log-past-modal');
+  refreshAll();
+}
+
+function cancelBulkPeriods(){
+  window._pendingPeriods=null;
+  const st=document.getElementById('lp-ai-status');if(st)st.innerHTML='';
 }
 function saveLogPast(){
   const start=document.getElementById('lp-start').value;

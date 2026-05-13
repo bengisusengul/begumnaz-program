@@ -2,7 +2,7 @@
 
 > **Bu dosya yeni oturumun ilk okunan dosyasıdır.** Burada nerede kaldığımız, yarın ne yapacağımız, hangi kararların değişmediği yazılır. Önceki oturumda olan her kritik şey buraya yansır.
 
-**Son güncelleme**: 13 Mayıs 2026 — Faz 4 İterasyon 30A (i18n EN Dashboard bilingual · renderHeroCard + nextActions + ZEN + compassion)
+**Son güncelleme**: 13 Mayıs 2026 — Faz 4 İterasyon 31 (Regl AI parse upload + Achievements Dashboard 🏆 + Begümnaz uyumlu)
 
 ---
 
@@ -78,6 +78,73 @@ Begümnaz 1-2 hafta günlük kullansın → real-world feedback → Iter 30+ ön
 ---
 
 ## 📜 Bu Oturumda Yapılanlar (13 Mayıs 2026)
+
+### Iter 31 — Regl AI parse upload + Achievements Dashboard'a + Begümnaz uyumlu
+
+**Kullanıcı raporu**: (a) Iter 27'de placeholder buton çalışmıyordu (`cy-start-input` yoktu). (b) Begümnaz yıllarca regl verisi tek tek manuel girmek istemiyor — eski uygulamadan (Flo, Clue, Apple Health) **ekran görüntüsü / PDF** yüklemek istiyor. (c) "Başarılarım" kartı Cycle Settings içindeydi, Begümnaz'a anlamsız geliyordu — Dashboard'a (Settings butonu yanına) taşınsın + Bengisu kalıntıları temizlensin.
+
+**1. Regl Ekle butonu fix (Iter 27 placeholder)**:
+- 9627: `cy-start-input.focus()` → `openLogPast()` (artık modal açılıyor)
+
+**2. Log-Past Modal AI Parse Upload** (yeni özellik):
+- Modal başına yeni bölüm: "📷 Topluca Yükle (AI parse)" — pembe-bordo gradient kart
+- File input `accept="image/*,application/pdf" multiple` — birden fazla dosya seçilebilir
+- Açıklama: "Flo, Clue, Apple Health, Period Tracker veya benzeri uygulamadan ekran görüntüsü/PDF yükle. Claude tarihleri otomatik okur."
+- Modal alt yarı: "📅 Veya tek tek manuel ekle" — eski form korundu (geri uyumlu)
+- Sağ üst ✕ butonu eklendi (Iter 23 pattern)
+
+**Yeni fonksiyonlar**:
+- `handlePeriodHistoryUpload(input)` async — multiple file döngüsü
+  - Her dosya için FileReader → base64
+  - PDF için `{type:'document'}` content block, görsel için `{type:'image'}` (Anthropic API multi-modal)
+  - Claude Haiku 4.5 vision + max 2000 token
+  - Prompt: regl başlangıç/bitiş/akış JSON çıkarma kuralları
+  - Sırayla işle, her dosya sonrası status update ("Dosya 2/5: flo.pdf...")
+- Çakışma kontrolü: mevcut `getPeriods()` start tarihleriyle karşılaştır, duplicate'leri filtrele
+- Preview: bulunan tarihlerin listesi (max 30 göster, fazlası "+X daha..."), onay butonları
+- `confirmBulkPeriods()` → tüm yeni period'ları `savePeriods()` ile toplu ekle, toast "✓ X regl tarihi eklendi"
+- `cancelBulkPeriods()` → preview iptal
+
+**3. Achievements Dashboard'a taşındı**:
+- Dashboard topbar Settings butonu solunda yeni 🏆 buton (`right:72px`) → `openAchievementsModal()`
+- Yeni modal `#achievements-modal` (1914 öncesi) — X butonu + Playfair Display başlık + body
+- Cycle Settings'teki `achievements-settings-wrap` div kaldırıldı (yorum bırakıldı)
+- `renderAchievements()` artık modal body'sine render eder
+- Eski `toggleAchSettings()` kaldırıldı (collapsible toggle gereksiz)
+
+**4. calculateAchievements() Begümnaz uyumlu rewrite**:
+
+**Silinen Bengisu kalıntıları** (13 başarı → 10 başarı):
+- "Yumurta-vor (30 yumurta)" — Begümnaz mizaç diyetinde yumurta var ama "30 yumurta" anlamsız
+- "Yeşillik Kraliçesi (14 akşam salatası)" — Bengisu
+- "Hidrasyon Ustası (8 bardak)" — Begümnaz protokolünde **soğuk su yasak**, 5 bardak ılık/sıcak su hedefi
+- "Mg Kramp Çözücü (Bisglycinate)" — Begümnaz Time Mg kullanıyor
+- "Esneklik Kabulü (Pazar brunch)" — Bengisu Pazar brunch
+- "Pazar Hak Ettin (4 hafta brunch)" — Bengisu
+- "T3 Dostu (Time Mg 30 gün)" — yeni "Supplement Disiplini" 16 ürün için genelleştirildi
+- "Lipid Düşürücü (FH takip)" — Bengisu Familial Hypercholesterolemia için
+- "5 Metrik Bilgesi" — kaldırıldı (generic, anlamlı değildi)
+
+**Yeni Begümnaz başarıları (10)**:
+1. 🔥 **Streak Şampiyonu** — 7 gün üst üste günlük tamam (keep)
+2. 💧 **Sıcak Su Ustası** — 7 gün 5+ bardak ılık/sıcak su (mizaç protokolü)
+3. 💊 **Supplement Disiplini** — 14 gün 5+ supplement slotu (doktor 16 ürün protokolü) · `supplement_log` üzerinden
+4. 💛 **Kendine Merhamet** — 21 sabah merhamet mesajı okuma (`morning_message_` key count)
+5. 🥚 **Mizaç Beslenme** — 21 öğün yumurta/kuzu/koyun/hindi (Begümnaz proteinleri)
+6. 🌸 **Cycle Dostu** — 5 luteal günü tamamla (keep)
+7. 🧴 **Tret Disiplini** — 8 hafta Sal+Paz Acnelyse 0.025% sandwich · `skincare_log` üzerinden (manuel takip future)
+8. 🤖 **Akıllı Yiyici** — 10 custom yemek (AI makro analizi)
+9. 🩺 **Doktor Takibi** — Doktor randevu paketi hazırlama
+10. 🦶 **Ayak Banyosu Düzenli** — 14 gün 20:00 ayak banyosu (manuel takip — yakında)
+
+**SW cache bump**: `v18-i18n-dashboard` → **`v19-regl-ai-import-achievements`**
+
+**Önem**:
+- Begümnaz yıllarca regl verisini **tek bir görsel/PDF upload** ile birkaç saniyede ekler — manuel girme yükü kalktı
+- Achievements artık Begümnaz'ın gerçek protokolüne özel — sıcak su, 16 ürün supplement, tret, kendine merhamet, mizaç beslenme — anlamlı başarı tracking
+- Dashboard 🏆 butonu Settings yanında → Cycle sekmesi temizlendi, başarı her sekmeden erişilebilir
+
+---
 
 ### Iter 30A — i18n EN Dashboard bilingual (M1 phase 1)
 
