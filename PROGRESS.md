@@ -2,7 +2,7 @@
 
 > **Bu dosya yeni oturumun ilk okunan dosyasıdır.** Burada nerede kaldığımız, yarın ne yapacağımız, hangi kararların değişmediği yazılır. Önceki oturumda olan her kritik şey buraya yansır.
 
-**Son güncelleme**: 13 Mayıs 2026 — Faz 4 İterasyon 25 (Mobile responsive proaktif tasma koruması)
+**Son güncelleme**: 13 Mayıs 2026 — Faz 4 İterasyon 27 (Regl tahmin onboarding · Iter 26 atlandı)
 
 ---
 
@@ -69,6 +69,34 @@ PWA artık prod'da Cloudflare Worker AI proxy ile çalışıyor. Begümnaz 1-2 h
 ---
 
 ## 📜 Bu Oturumda Yapılanlar (13 Mayıs 2026)
+
+### Iter 27 — Regl tahmin onboarding (M8)
+
+**Mevcut**: `renderCyPredictions()` (9263) — kullanıcı regl eklemediyse `cy-pred-card` gizlendi. Boş gösterim.
+
+**Yeni**: Boş durumda **onboarding placeholder** render edilir:
+- 🌸 emoji + "Tahminler henüz hazır değil" Playfair Display başlık
+- Açıklama: "İlk regl başlangıç tarihini ekle — sonraki regl, ovulasyon, fertil pencere, PMS dönemi otomatik tahmin edilir. 2+ kayıt sonrası median'a göre netleşir."
+- **📅 Regl Ekle** butonu → mevcut `cy-start-input` formuna scroll + focus
+- Alt not: "Tüm veriler yalnızca bu cihazda · Bengisu seed verisi yok (Iter 12)"
+
+**Önem**: Begümnaz PWA'yı ilk açtığında tahmin kartı boş değil, cazip onboarding görür. Iter 12'de Bengisu period seed disabled edildi — onboarding yeni kullanıcıya kullanım kılavuzu sunuyor.
+
+**SW cache bump**: `v14-mobile-overflow-fix` → **`v15-regl-onboarding`**
+
+---
+
+### Iter 26 — Egzersiz video linkleri (atlandı, ek not)
+
+**Durum**: Plan'da search URL → direct watch URL upgrade öngörüldü.
+
+**Bulgu**: PWA'da `YT_MAP` zaten direct watch URL kullanıyor (renderExDay içinde `gifImg.onclick = window.open('https://www.youtube.com/watch?v='+ytId)`). Yani PWA tarafı CALIŞIYOR — kullanıcı GIF tıkladığında direct video açılır.
+
+**md dosyaları** (AGIRLIK-GUNLERI-DETAY.md, PELVIK-TABAN-VIDEOLARI.md): 19 search URL ve 7 kanal adı içeriyor. Search URL'ler çalışıyor (YouTube her zaman search yapar) ama "hangi video" kullanıcı seçimine bağlı.
+
+**Karar**: Spesifik direct watch URL'leri için kullanıcı feedback gerekli (Begümnaz hangi videoları beğenir?). Iter 26 **atlandı**, gelecek Iter'da kullanıcı önerileriyle güncellenir. PWA tarafı zaten optimal.
+
+---
 
 ### Iter 25 — Mobile responsive proaktif tasma koruması (M3)
 

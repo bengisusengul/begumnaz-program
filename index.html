@@ -9263,8 +9263,18 @@ function setSleep(n){const dy=ymd(new Date());const cur=getDayLog(dy);setDayLog(
 function renderCyPredictions(){
   const ps=getPeriods();
   if(!ps.length){
-    document.getElementById('cy-pred-lbl').style.display='none';
-    document.getElementById('cy-pred-card').style.display='none';
+    // Iter 27 onboarding placeholder — kullanıcı henüz regl eklemedi
+    document.getElementById('cy-pred-lbl').style.display='block';
+    document.getElementById('cy-pred-card').style.display='block';
+    document.getElementById('cy-pred-grid').innerHTML=`
+      <div style="grid-column:1/-1;text-align:center;padding:24px 16px;">
+        <div style="font-size:42px;line-height:1;margin-bottom:12px;">🌸</div>
+        <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:300;color:var(--cream-soft);margin-bottom:8px;">Tahminler henüz hazır değil</div>
+        <div style="font-size:13px;color:var(--cream-mute);line-height:1.6;max-width:300px;margin:0 auto 16px;">İlk regl başlangıç tarihini ekle — sonraki regl, ovulasyon, fertil pencere ve PMS dönemi otomatik tahmin edilir. 2+ kayıt sonrası median döngü uzunluğuna göre netleşir.</div>
+        <button class="btn bp" onclick="document.getElementById('cy-start-input')?.focus();document.getElementById('cy-start-input')?.scrollIntoView({behavior:'smooth',block:'center'});" style="display:inline-block;padding:10px 22px;font-size:13px;">📅 Regl Ekle</button>
+        <div style="font-size:11px;color:var(--cream-faint);margin-top:14px;font-style:italic;">Tüm veriler yalnızca bu cihazda saklanır · Bengisu seed verisi yok (Iter 12)</div>
+      </div>`;
+    document.getElementById('cy-pred-disclaimer').textContent='';
     return;
   }
   document.getElementById('cy-pred-lbl').style.display='block';
