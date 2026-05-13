@@ -5361,7 +5361,7 @@ const MICRONUTRIENT_INFO=[
     statusLabel:'Sınırda',
     sourceTitle:'Mizaç kaynak',
     source:'Limon (sıkma) ~30 mg, biber dilimi ~25 mg, maydanoz/dereotu ~10-15 mg, avokado ~10 mg. 1. öğüne mecburi 🍋 + biber + maydanoz = ~50-60 mg.',
-    action:'Hedef: günde +1 limon sıkımı + 1 yk maydanoz/dereotu + 1 ince biber dilimi. Demir emilimi 3-4× artırır (regl haftası kritik).'
+    action:'Hedef: günde +1 limon sıkımı + 1 yk maydanoz/dereotu + 1 ince biber dilimi. Antioksidan + kolajen sentezi (post-isotretinoin bariyer onarımı için kritik).'
   },
   {
     key:'k2',
@@ -8806,50 +8806,56 @@ function renderSkinDay(){
   document.getElementById('c-brush').innerHTML=[1,3,5].includes(d.getDay())?`<div class="notice ng"><div class="nicon">🫧</div><div><strong>Silicone Brush Day:</strong> Use during morning cleanse.</div></div>`:'';
 }
 function renderProds(){
-  // Phase-aware emphasis — bu phase'de hangi ürün öne çıkar
+  // Begümnaz ürün envanteri — skin-ultimate/URUN-LISTESI.md'ye göre (Iter 21)
+  // Phase-aware vurgu: regl=bariyer/hidrasyon, ovulasyon=Vit C, luteal=Madescar+sebum, folliküler=tret/aktif
   const c=ci(S.cD), per=inP(S.cD);
-  const emphasis = per ? ['Medicube Collagen Jelly Cream','Bioderma Atoderm Crème Ultra']
-    : c?.phase==='Ovulation' ? ['Florence Bio Vitamin C Serum','Koreaco Brightening Ampoule — Alpha-Arbutin 2% + Niacinamide 10%']
-    : c?.phase==='Luteal Phase' ? ['COSRX AHA/BHA Clarifying Toner (Day 4)','Garnier BHA Purifying Cleanser (evening)']
-    : c?.phase==='Follicular Phase' ? ['The Ordinary Retinol 0.2% in Squalane (Day 1,3,5)','COSRX 6 Peptide Skin Booster']
+  const emphasis = per ? ['ISANA Hyaluron + Panthenol Serum','Madescar (Centella)']
+    : c?.phase==='Ovulation' ? ['ISANA Vit C 10% Serum','Niacinamide 10% serum (Alınacak)']
+    : c?.phase==='Luteal Phase' ? ['Garnier BHA + Niacinamide SPF 50','Madescar (Centella)']
+    : c?.phase==='Follicular Phase' ? ['Acnelyse 0.025% (tretinoin)','Azelaic acid 10% (Alınacak)']
     : [];
-  const phaseLabel = per ? '🔴 Regl: hidrasyon ürünleri öne çık'
-    : c?.phase==='Ovulation' ? '🌸 Ovulasyon: Vitamin C + parlaklık'
-    : c?.phase==='Luteal Phase' ? '🌙 Luteal: BHA + sebum kontrol'
-    : c?.phase==='Follicular Phase' ? '🌱 Folliküler: aktif rutin penceresi'
+  const phaseLabel = per ? '🔴 Regl: bariyer + hidrasyon (hassas hafta, aktifleri atla)'
+    : c?.phase==='Ovulation' ? '🌸 Ovulasyon: Vit C + niacinamide peak — parlaklık'
+    : c?.phase==='Luteal Phase' ? '🌙 Luteal: SPF + Madescar + sebum kontrol'
+    : c?.phase==='Follicular Phase' ? '🌱 Folliküler: tret + azelaic peak — aktif rutin penceresi'
     : '';
   const phaseBanner = phaseLabel ? `<div style="margin-bottom:12px;padding:10px 12px;background:linear-gradient(135deg,var(--pink-pale),var(--gold-soft));border-radius:10px;font-size:12px;color:var(--text);font-weight:600;">${phaseLabel}</div>` : '';
   const isHighlighted = name => emphasis.some(e=>name.includes(e.split(' (')[0].trim()));
-  // UK shop bilgisi — Begümnaz UK'de yaşıyor, en yakın mağaza referansı kişiselleştirme katar
+  // TR pazar — Eczane (CeraVe/Bioderma/LRP), Trendyol (TO/COSRX), Rossmann (ISANA), Watson's/Gratis
+  // Status: ✅ kullan · ⚠️ dikkat · 🛒 alınacak · ❌ bırak
   const groups=[
     {c:'Temizleyici',i:[
-      {n:'Tea Tree Foaming Face Wash (sabah)',shop:'Amazon UK · ~£5'},
-      {n:'Garnier BHA Purifying Cleanser (akşam)',shop:'Boots / Superdrug · ~£3-4'},
+      {n:'✅ Garnier Vit C Cleanser (sabah hafif yıkama)',shop:'Rossmann · ~80 TL · ⚠️ batıyorsa bırak'},
+      {n:'🛒 Yumuşak temizleyici (krem/jel, sülfatsız) — CeraVe HC / Bioderma Sensibio / LRP Toleriane',shop:'Eczane · 250-450 TL'},
     ]},
-    {c:'Tonik / Booster',i:[
-      {n:'COSRX 6 Peptide Skin Booster',shop:'Amazon UK / YesStyle · ~£18'},
-      {n:'COSRX AHA/BHA Clarifying Toner (Gün 4)',shop:'Amazon UK / Boots · ~£15'},
+    {c:'Serum (Sabah)',i:[
+      {n:'✅ ISANA Vit C 10% Serum (sabah, hf 3-4 alternatif gün)',shop:'Rossmann · ~70 TL'},
+      {n:'✅ ISANA Hyaluron + Panthenol Serum (her sabah + akşam)',shop:'Rossmann · ~60 TL'},
+      {n:'🛒 Niacinamide 10% serum — TO + Zinc / COSRX 15% / Naacare',shop:'Trendyol/Watson\'s · 200-350 TL'},
     ]},
-    {c:'Serum / Ampul',i:[
-      {n:'Koreaco Brightening Ampoule — Alpha-Arbutin 2% + Niacinamide 10%',shop:'YesStyle / Stylevana · ~£20'},
-      {n:'Florence Bio Vitamin C Serum',shop:'Boots · ~£10-12'},
+    {c:'Aktif (Akşam)',i:[
+      {n:'✅ Acnelyse 0.025% (tretinoin) — Sal + Paz, sandwich tekniği',shop:'Reçeteli · Eczane'},
+      {n:'⚠️ ISANA AHA 6% Glycolic (hf 1, sadece tret olmayan Per gece)',shop:'Rossmann · ~70 TL'},
+      {n:'🛒 Azelaic acid 10% — The Ordinary / Naturium',shop:'Trendyol · 250-450 TL'},
     ]},
-    {c:'Aktif (Gece)',i:[
-      {n:'The Ordinary Retinol 0.2% in Squalane (Gün 1,3,5)',shop:'Boots / Superdrug · ~£6'},
+    {c:'Nemlendirici / Bariyer',i:[
+      {n:'✅ Madescar (Centella) — gece nemlendirici + spot bariyer (tret üstüne mecbur)',shop:'Eczane · ~150 TL'},
+      {n:'✅ Garnier Hyaluron Fresh (sabah/akşam light nem)',shop:'Rossmann/Watson\'s · ~90 TL'},
     ]},
-    {c:'Nemlendirici',i:[
-      {n:'Medicube Collagen Jelly Cream',shop:'YesStyle · ~£25'},
-      {n:'Bioderma Atoderm Crème Ultra (retinol geceleri)',shop:'Boots · ~£15'},
-    ]},
-    {c:'Güneş Koruması',i:[
-      {n:'COSRX Ultra-Light Invisible Sunscreen SPF50 PA++++',shop:'Amazon UK · ~£17'},
-      {n:'La Roche-Posay Anthelios UVMune 400 SPF50+ (Mini SPF için)',shop:'Boots · ~£18'},
+    {c:'SPF (Mecbur)',i:[
+      {n:'✅ Garnier BHA + Niacinamide SPF 50 (her sabah son adım)',shop:'Rossmann/Watson\'s · ~150 TL'},
+      {n:'✅ The Purest Solutions BB Cream (SPF üstüne istendiğinde)',shop:'Eczane/Trendyol · ~120 TL'},
     ]},
     {c:'Göz Kremi',i:[
-      {n:'COSRX Advanced Snail Peptide Eye Cream (her akşam)',shop:'Amazon UK · ~£22'},
+      {n:'✅ ISANA Peptid Augencreme (akşam — peptid + ince çizgi)',shop:'Rossmann · ~50 TL'},
+      {n:'✅ ISANA Augencreme 0% (sabah — sade, parfümsüz baz)',shop:'Rossmann · ~40 TL'},
+    ]},
+    {c:'Bırakıldı',i:[
+      {n:'❌ ISANA Micellar Su — cilt yakıyor, uygun değil',shop:''},
     ]}
   ];
-  document.getElementById('c-prods').innerHTML=phaseBanner+groups.map(x=>`<div style="margin-bottom:14px;"><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-light);margin-bottom:8px;">${x.c}</div>${x.i.map(i=>{const hi=isHighlighted(i.n);return `<div style="font-size:13px;padding:6px 8px;border-bottom:1px dashed var(--border-soft);${hi?'background:rgba(232,180,184,0.18);border-radius:6px;font-weight:600;':''}">${hi?'⭐ ':'· '}${i.n}<div style="font-size:10px;color:var(--text-light);margin-top:2px;font-weight:400;">${i.shop}</div></div>`;}).join('')}</div>`).join('');
+  const shoppingBadge = `<div style="margin-top:14px;padding:10px 12px;background:rgba(140,90,26,0.12);border-left:3px solid var(--gold);border-radius:6px;font-size:11px;color:var(--text);"><strong>🛒 Eklenecek 3 ürün</strong> (~700-1200 TL): yumuşak temizleyici, niacinamide 10%, azelaic acid 10%. 8 haftalık ekleme sırası: hf 1-2 bariyer kur, hf 3 niacinamide, hf 4 azelaic, hf 5 Vit C alternatif. Detay: <em>skin-ultimate/URUN-LISTESI.md</em></div>`;
+  document.getElementById('c-prods').innerHTML=phaseBanner+groups.map(x=>`<div style="margin-bottom:14px;"><div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--text-light);margin-bottom:8px;">${x.c}</div>${x.i.map(i=>{const hi=isHighlighted(i.n);return `<div style="font-size:13px;padding:6px 8px;border-bottom:1px dashed var(--border-soft);${hi?'background:rgba(232,180,184,0.18);border-radius:6px;font-weight:600;':''}">${hi?'⭐ ':''}${i.n}${i.shop?`<div style="font-size:10px;color:var(--text-light);margin-top:2px;font-weight:400;">${i.shop}</div>`:''}</div>`;}).join('')}</div>`).join('')+shoppingBadge;
 }
 
 // METRICS

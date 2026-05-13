@@ -2,7 +2,7 @@
 
 > **Bu dosya yeni oturumun ilk okunan dosyasıdır.** Burada nerede kaldığımız, yarın ne yapacağımız, hangi kararların değişmediği yazılır. Önceki oturumda olan her kritik şey buraya yansır.
 
-**Son güncelleme**: 13 Mayıs 2026 — **Faz 4 BAŞLADI** İterasyon 20 (Cleanup: Adaptive Yük + Bilim Modu kaldırıldı, -293 satır)
+**Son güncelleme**: 13 Mayıs 2026 — Faz 4 İterasyon 21 (Cilt ürün listesi Begümnaz'a güncel + Mikronutrient Vit C Bengisu temizliği)
 
 ---
 
@@ -69,6 +69,36 @@ PWA artık prod'da Cloudflare Worker AI proxy ile çalışıyor. Begümnaz 1-2 h
 ---
 
 ## 📜 Bu Oturumda Yapılanlar (13 Mayıs 2026)
+
+### Iter 21 — Cilt ürün listesi Begümnaz'a güncel + Mikronutrient Vit C Bengisu temizliği
+
+**Cilt ürün listesi (M7) — KRİTİK BENGİSU KALINTISI TEMİZLENDİ**:
+- `renderProds()` (~8800) tamamen yeniden yazıldı. **`skin-ultimate/URUN-LISTESI.md`** kaynak alındı.
+- **Silinen Bengisu ürünleri**: Tea Tree Foaming Cleanser, Garnier BHA Cleanser, COSRX 6 Peptide, COSRX AHA/BHA Toner, Koreaco Brightening, Florence Bio Vit C, **The Ordinary Retinol 0.2%** (kritik yanlış — Begümnaz reçeteli tret kullanır), Medicube Collagen Jelly, Bioderma Atoderm, COSRX SPF, LRP Anthelios, COSRX Snail Eye
+- **Silinen UK shop ref'leri**: Amazon UK, Boots/Superdrug, YesStyle/Stylevana — Begümnaz TR'de
+- **Eklenen Begümnaz ürünleri** (URUN-LISTESI.md'den):
+  - Temizleyici: Garnier Vit C Cleanser ✅ + Alınacak (CeraVe HC / Bioderma Sensibio / LRP Toleriane) 🛒
+  - Serum sabah: ISANA Vit C 10% ✅ + ISANA Hyaluron+Panthenol ✅ + Niacinamide 10% 🛒
+  - Aktif akşam: **Acnelyse 0.025% (tretinoin)** ✅ — Sal+Paz sandwich · ISANA AHA 6% ⚠️ · Azelaic acid 10% 🛒
+  - Nemlendirici: Madescar (Centella) ✅ + Garnier Hyaluron Fresh ✅
+  - SPF: Garnier BHA + Niacinamide SPF 50 ✅ (mecbur) + Purest Solutions BB ✅
+  - Göz: ISANA Peptid Augencreme ✅ + ISANA Augencreme 0% ✅
+  - Bırakıldı: ISANA Micellar Su ❌ (yakıyor)
+- **Phase-aware emphasis güncellendi**: Regl→bariyer/hidrasyon, Ovulasyon→Vit C+niacinamide, Luteal→Madescar+SPF, Folliküler→tret+azelaic
+- **TR shop fiyatları eklendi**: Eczane (CeraVe/Bioderma/LRP), Rossmann (ISANA), Trendyol (TO/COSRX), Watson's, Gratis
+- **Status badge'leri**: ✅ kullan · ⚠️ dikkat · 🛒 alınacak · ❌ bırak
+- **Alt info**: "🛒 Eklenecek 3 ürün ~700-1200 TL · 8 haftalık ekleme sırası" badge
+
+**Mikronutrient (M5 ön-temizlik) — Bengisu kalıntısı tek cümle**:
+- `renderMicronutrientCard()` (~5400) → Vit C action cümlesi:
+  - Eski: "Demir emilimi 3-4× artırır (regl haftası kritik)" — Bengisu için yazılmış (demir emilimi Vit C ile). Begümnaz'da demir zaten yüksek (204), takviye yasak.
+  - Yeni: "Antioksidan + kolajen sentezi (post-isotretinoin bariyer onarımı için kritik)" — Begümnaz protokolüne uygun (8 ay isotretinoin sonrası bariyer onarımı önceliği).
+
+**SW cache bump**: `v9-cleanup-adaptive-bilim` → **`v10-cilt-mikronutrient-fix`**
+
+**Önem**: Iter 17'de glossary tret tanımı düzeltildi (post-isotretinoin maddesi eklendi) ama PWA cilt sayfasındaki ürün listesi hala Bengisu'nun "The Ordinary Retinol" gösteriyordu. Iter 21 ile **tret protokol tutarlılığı sağlandı**: glossary, ürün listesi, PROGRESS.md, URUN-LISTESI.md hepsi Acnelyse 0.025% gösteriyor.
+
+---
 
 ### Iter 20 — Faz 4 Cleanup: Adaptive Yük + Bilim Modu kaldırıldı
 
