@@ -81,14 +81,17 @@ body{
   h3{font-size:16px;}
   .slbl{font-size:11px;letter-spacing:1.4px;}
 }
-@media (max-width:380px){
-  /* Iter 50 B1: topbar 3 buton 42→36px, right 20/72/124 → 14/56/98 (toplam 134px viewport-uyumlu) */
+@media (max-width:430px){
+  /* Iter 50 B1 (Iter 52 fix: 380px → 430px breakpoint genişletildi — iPhone 12 Pro 390px de dahil)
+     Topbar 3 buton 42→36px, right 20/72/124 → 14/56/98 (toplam 134px viewport-uyumlu) */
   .topbar button[onclick^="openSettingsModal"],
   .topbar button[onclick^="openAchievementsModal"],
   .topbar button[onclick^="openChat"]{width:36px !important;height:36px !important;font-size:18px !important;}
   .topbar button[onclick^="openSettingsModal"]{right:14px !important;}
   .topbar button[onclick^="openAchievementsModal"]{right:56px !important;}
   .topbar button[onclick^="openChat"]{right:98px !important;}
+  /* Topbar h1 başlık + civciv emoji buton zonuna çarpmasın: padding-right reserve */
+  .topbar h1{padding-right:144px;font-size:32px;line-height:1.15;}
 }
 @media (max-width:360px){
   body{font-size:14px;}
