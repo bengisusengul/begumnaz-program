@@ -1,7 +1,7 @@
 // Begümnaz Program · Service Worker (Phase 3.B-A)
 // Görev: PWA install + offline cache + (gelecek) push notification
 
-const CACHE_NAME = 'begumnaz-v49-iter61-hero-card-greeting-temizlik-2026-05-13';
+const CACHE_NAME = 'begumnaz-v50-iter62-dongu-ayarlar-notice-kaldir-2026-05-13';
 const ASSETS = [
   './',
   './index.html',
