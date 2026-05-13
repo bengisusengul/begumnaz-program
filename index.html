@@ -3189,20 +3189,31 @@ function openGif(exId, exName, muscles, howText) {
   document.getElementById('gif-muscles').textContent = muscles.join(' · ');
   document.getElementById('gif-how').innerHTML = '<ol>' + howText.split('. ').filter(s=>s.length>8).map(s=>`<li>${s}.</li>`).join('') + '</ol>';
   window.currentExId = exId;
-  // YouTube thumbnail
+  // Iter 45 — Video butonu her zaman görünür (YT_MAP yoksa search URL fallback)
   const ytId = YT_MAP[exId];
   const gifImg = document.getElementById('gif-img');
   const gifLoad = document.getElementById('gif-loading');
+  const ytBtn = document.getElementById('gif-yt-btn');
+  const en=(typeof getLang==='function'&&getLang()==='en');
   if (ytId) {
     gifImg.src = 'https://img.youtube.com/vi/' + ytId + '/hqdefault.jpg';
     gifImg.style.display = 'block';
     gifLoad.style.display = 'none';
-    document.getElementById('gif-yt-btn').style.display = 'block';
+    if(ytBtn){
+      ytBtn.style.display='block';
+      ytBtn.innerHTML=`<button class="btn bsoft bsm" onclick="openYoutube(window.currentExId)">${en?'▶ Watch on YouTube':'▶ YouTube\'da İzle'}</button>`;
+    }
   } else {
+    // Iter 45 — Search URL fallback (en çok izlenen sort eklendi)
     gifImg.style.display = 'none';
     gifLoad.style.display = 'flex';
-    gifLoad.textContent = '🎬 No video available';
-    document.getElementById('gif-yt-btn').style.display = 'none';
+    gifLoad.style.flexDirection='column';
+    gifLoad.style.gap='10px';
+    gifLoad.innerHTML=`<div style="font-size:32px;">🔍</div><div style="font-size:13px;color:var(--cream-mute);text-align:center;line-height:1.5;">${en?'No preview available.<br>Search YouTube for top-watched form videos.':'Önizleme yok.<br>YouTube\'da en çok izlenen form videolarını ara.'}</div>`;
+    if(ytBtn){
+      ytBtn.style.display='block';
+      ytBtn.innerHTML=`<button class="btn bsoft bsm" onclick="openYoutube(window.currentExId)">${en?'🔍 Search on YouTube':'🔍 YouTube\'da Ara'}</button>`;
+    }
   }
   document.getElementById('gif-overlay').classList.add('open');
 }
@@ -3226,8 +3237,9 @@ function closeGif() {
   document.getElementById('gif-yt-btn').style.display = 'none';
 }
 function openYoutube(exId) {
-  const ytId = YT_MAP[exId];
-  if (ytId) window.open('https://www.youtube.com/watch?v=' + ytId, '_blank');
+  // Iter 45 — YT_MAP yoksa search URL fallback
+  const v=getExerciseVideoUrl(exId, findExerciseName(exId));
+  window.open(v.url, '_blank');
 }
 
 // 33 mevcut hareket → 27 koru + 12 yeni = 30 atama (5 gün × 6 hareket)
@@ -7029,6 +7041,22 @@ function findExerciseName(exId){
   }
   return exId.toUpperCase();
 }
+// Iter 45 — Video helper: YT_MAP yoksa ex.y veya ex.n fallback ile search URL
+function findExById(exId){
+  for(const dow in EX){
+    const arr=EX[dow]||[];
+    for(const ex of arr)if(ex.id===exId)return ex;
+  }
+  return null;
+}
+function getExerciseVideoUrl(exId, exName){
+  const ytId=YT_MAP[exId];
+  if(ytId)return {url:'https://www.youtube.com/watch?v='+ytId, isWatch:true};
+  // Iter 45 — Fallback: YouTube search "view count sort" (&sp=CAMSAhAB) ile EN ÇOK İZLENEN ilk sırada
+  const ex=findExById(exId);
+  const q=(ex&&ex.y)||(exName||exId)+' form';
+  return {url:'https://www.youtube.com/results?search_query='+encodeURIComponent(q)+'&sp=CAMSAhAB', isWatch:false};
+}
 function celebratePR(exId,candidate1RM,prevMax,dk){
   S.activePR={exId,candidate1RM,prevMax,dk,ts:Date.now()};
   if(navigator.vibrate)try{navigator.vibrate([100,60,100,60,260]);}catch(e){}
@@ -9246,7 +9274,8 @@ function renderExDay(){
           <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.2px;color:var(--accent-mauve);margin-bottom:3px;">🔄 ${en?'Rotation Week':'Rotasyon Haftası'} ${info.weekLabel}/4 · ${info.theme}</div>
           <div style="font-size:11.5px;font-weight:500;">${info.video}</div>
         </div>`;
-        pelvikVideoLink=`<a href="https://www.youtube.com/results?search_query=${encodeURIComponent(info.search)}" target="_blank" class="btn bsage bsm" style="margin-top:4px;">▶ ${en?'This week\'s video':'Bu haftanın videosu'}</a>`;
+        // Iter 45 — Pelvik video: "en çok izlenen" sort
+        pelvikVideoLink=`<a href="https://www.youtube.com/results?search_query=${encodeURIComponent(info.search)}&sp=CAMSAhAB" target="_blank" class="btn bsage bsm" style="margin-top:4px;">▶ ${en?'This week\'s video':'Bu haftanın videosu'}</a>`;
       }
     }
     const howShort = ex.h.length > 80 ? ex.h.substring(0,80)+'...' : ex.h;
@@ -9277,7 +9306,8 @@ function renderExDay(){
   // Iter 44 — cooldown bilingual
   const _enCD=getLang()==='en';
   const cdVideoLbl=_enCD?'▶ Cool-down Video':'▶ Soğuma Videosu';
-  document.getElementById('e-cool').innerHTML=cd?`<div class="slbl">${t('ex_cooldown')} — ${cd.n}</div><div class="card"><div class="cb"><div style="font-size:13px;color:var(--text-mid);margin-bottom:12px;">${cd.d}</div><a href="https://www.youtube.com/results?search_query=${encodeURIComponent(cd.y)}" target="_blank" class="btn bsage bsm">${cdVideoLbl}</a></div></div>`:'';
+  // Iter 45 — Cooldown video: "en çok izlenen" sort
+  document.getElementById('e-cool').innerHTML=cd?`<div class="slbl">${t('ex_cooldown')} — ${cd.n}</div><div class="card"><div class="cb"><div style="font-size:13px;color:var(--text-mid);margin-bottom:12px;">${cd.d}</div><a href="https://www.youtube.com/results?search_query=${encodeURIComponent(cd.y)}&sp=CAMSAhAB" target="_blank" class="btn bsage bsm">${cdVideoLbl}</a></div></div>`:'';
 }
 function toggleEx(h){h.nextElementSibling.classList.toggle('open');}
 function toggleDone(e,k,el){e.stopPropagation();S.done[k]=!S.done[k];localStorage.setItem('done',JSON.stringify(S.done));renderExDay();renderWeekSum();}
@@ -9317,7 +9347,9 @@ function showSwapAlt(idx){
   const gifUrl = GIF_MAP[a.id];
   if(gifUrl){
     gifImg.src=gifUrl;
-    gifImg.onclick = ()=>{ const ytId=YT_MAP[a.id]; if(ytId) window.open('https://www.youtube.com/watch?v='+ytId,'_blank'); };
+    // Iter 45 — Swap modal video click: YT_MAP yoksa search URL fallback
+    gifImg.onclick = ()=>{ const v=getExerciseVideoUrl(a.id, a.n); window.open(v.url,'_blank'); };
+    gifImg.style.cursor='pointer';
   } else {
     gifLoad.textContent='🎬 Önizleme yok';
   }
