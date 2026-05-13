@@ -2599,11 +2599,11 @@ function saveCycleLogs(o){localStorage.setItem('cycle_logs',JSON.stringify(o));}
 // ── Akşam 30sn check-in (Phase 2 Hafta 4B — Ajan 8 davranış)
 // 5 mood: ✨ Parlak / 💪 Güçlü / 🌊 Dengeli / 🌫️ Bulanık / 🌙 Sakin (hiçbiri "başarısız")
 const EVENING_MOODS=[
-  {id:'parlak',e:'✨',l:'Parlak',m:'happy'},
-  {id:'guclu',e:'💪',l:'Güçlü',m:'calm'},
-  {id:'dengeli',e:'🌊',l:'Dengeli',m:'calm'},
-  {id:'bulanik',e:'🌫️',l:'Bulanık',m:'anxious'},
-  {id:'sakin',e:'🌙',l:'Sakin',m:'calm'}
+  {id:'parlak',e:'✨',l:'Parlak',lEn:'Bright',m:'happy'},
+  {id:'guclu',e:'💪',l:'Güçlü',lEn:'Strong',m:'calm'},
+  {id:'dengeli',e:'🌊',l:'Dengeli',lEn:'Balanced',m:'calm'},
+  {id:'bulanik',e:'🌫️',l:'Bulanık',lEn:'Cloudy',m:'anxious'},
+  {id:'sakin',e:'🌙',l:'Sakin',lEn:'Calm',m:'calm'}
 ];
 function getEveningCheckIn(d){
   const dk=ymd(d);
@@ -2795,43 +2795,83 @@ function isLoggedPeriodDay(d){
 // ZEN QUOTES — phase-specific (sacred feminine, Maisie Hill / Lisa Lister referansları)
 // ══════════════════════════════════════════
 const ZEN={
-  'Menstruation':[
-    'Kanın akar, içindeki bilgelik dışına çıkar.',
-    'Cevap verme hakkını geri al — bu hafta "hayır" demen yeterli.',
-    'Yumuşacık ol kendine. Vücudun dinleniyor, sen de izin ver.',
-    'Yavaşlamak güçsüzlük değil; akıştır.',
-    'İçeri çekil, kendini sar. Bu çekiliş, görüşünün açılması için.',
-    'Bedenin sezgi söylüyor — durup dinle.',
-    'Bugün dünyaya borcun yok.',
-  ],
-  'Follicular Phase':[
-    'Toprağın altında çiçek hazırlanır — sen de.',
-    'Merakını dinle. Yapamayacağını düşündüğün neler?',
-    'Östrojen yükseliyor, kapı açılıyor — risk al.',
-    'Yaratıcılığın yeniden uyanıyor — yazmaya, çizmeye, yeni tatlara izin ver.',
-    'Bugün başladığın küçük şey, yarın büyür.',
-    'Genç Kız enerjini onurlandır — özgürce yarınla, koşulsuzca dene.',
-  ],
-  'Ovulation':[
-    'En parlak halindesin — kendini saklamana gerek yok.',
-    'Adrenalin + dopamin penceresi açıldı — bedenin "yap" diyor.',
-    'Bağlantı kur, paylaş, görün. Anne arketibin tam burada.',
-    'Verme kapasiten yüksek bugün — ama kendine de ver.',
-    'Cinsel çekim, sosyal güç, parlaklık — hepsi seninkidir.',
-    'Bugün dünyaya görün. Saklanmak için bir yıl daha vakit var.',
-  ],
-  'Luteal Phase':[
-    'Cadı arketibin uyanıyor — neyi tamamlaman gerek?',
-    'Gereksizi at. Sınırlarına saygı duy. Hayır demek de yaratımdır.',
-    'Yavaşlamak da güçtür — özellikle hızlı olmaya zorlandığın bir dünyada.',
-    'Bedenin saklı veriyi yüzeye çıkarıyor — dinlerken yargılama.',
-    'Şişkinlik, sebum, kramp — vücudun konuşması, hatası değil.',
-    'Sezgin keskin bugün — düşler, içsel sesler, beklenmedik fikirler kıymetli.',
-    'Sonbahar geldi içine. Hasat edilen olur, dinlenme kazanılır.',
-  ],
+  tr:{
+    'Menstruation':[
+      'Kanın akar, içindeki bilgelik dışına çıkar.',
+      'Cevap verme hakkını geri al — bu hafta "hayır" demen yeterli.',
+      'Yumuşacık ol kendine. Vücudun dinleniyor, sen de izin ver.',
+      'Yavaşlamak güçsüzlük değil; akıştır.',
+      'İçeri çekil, kendini sar. Bu çekiliş, görüşünün açılması için.',
+      'Bedenin sezgi söylüyor — durup dinle.',
+      'Bugün dünyaya borcun yok.',
+    ],
+    'Follicular Phase':[
+      'Toprağın altında çiçek hazırlanır — sen de.',
+      'Merakını dinle. Yapamayacağını düşündüğün neler?',
+      'Östrojen yükseliyor, kapı açılıyor — risk al.',
+      'Yaratıcılığın yeniden uyanıyor — yazmaya, çizmeye, yeni tatlara izin ver.',
+      'Bugün başladığın küçük şey, yarın büyür.',
+      'Genç Kız enerjini onurlandır — özgürce yarınla, koşulsuzca dene.',
+    ],
+    'Ovulation':[
+      'En parlak halindesin — kendini saklamana gerek yok.',
+      'Adrenalin + dopamin penceresi açıldı — bedenin "yap" diyor.',
+      'Bağlantı kur, paylaş, görün. Anne arketibin tam burada.',
+      'Verme kapasiten yüksek bugün — ama kendine de ver.',
+      'Cinsel çekim, sosyal güç, parlaklık — hepsi seninkidir.',
+      'Bugün dünyaya görün. Saklanmak için bir yıl daha vakit var.',
+    ],
+    'Luteal Phase':[
+      'Cadı arketibin uyanıyor — neyi tamamlaman gerek?',
+      'Gereksizi at. Sınırlarına saygı duy. Hayır demek de yaratımdır.',
+      'Yavaşlamak da güçtür — özellikle hızlı olmaya zorlandığın bir dünyada.',
+      'Bedenin saklı veriyi yüzeye çıkarıyor — dinlerken yargılama.',
+      'Şişkinlik, sebum, kramp — vücudun konuşması, hatası değil.',
+      'Sezgin keskin bugün — düşler, içsel sesler, beklenmedik fikirler kıymetli.',
+      'Sonbahar geldi içine. Hasat edilen olur, dinlenme kazanılır.',
+    ],
+  },
+  en:{
+    'Menstruation':[
+      'Your blood flows, and the wisdom within flows outward.',
+      'Reclaim your right to not answer — saying "no" this week is enough.',
+      'Be tender with yourself. Your body is resting; allow yourself to rest too.',
+      'Slowing down is not weakness — it is flow.',
+      'Withdraw inward, wrap yourself. This retreat is for your vision to widen.',
+      'Your body is speaking intuition — pause and listen.',
+      'You owe the world nothing today.',
+    ],
+    'Follicular Phase':[
+      'Beneath the soil, the flower prepares — so do you.',
+      'Listen to your curiosity. What did you think you couldn\'t do?',
+      'Estrogen is rising, the door is opening — take a risk.',
+      'Your creativity is reawakening — let writing, drawing, new flavours in.',
+      'The small thing you start today will grow tomorrow.',
+      'Honour your Maiden energy — try freely, experiment without conditions.',
+    ],
+    'Ovulation':[
+      'You are at your most radiant — no need to hide yourself.',
+      'The adrenaline + dopamine window is open — your body says "do".',
+      'Connect, share, be seen. Your Mother archetype lives right here.',
+      'Your capacity to give is high today — but give to yourself too.',
+      'Magnetism, social power, radiance — they all belong to you.',
+      'Be visible to the world today. There\'s another year to hide.',
+    ],
+    'Luteal Phase':[
+      'Your Witch archetype is awakening — what needs completing?',
+      'Cast off the unnecessary. Honour your boundaries. Saying no is also creation.',
+      'Slowing down is also power — especially in a world that demands speed.',
+      'Your body is bringing hidden data to the surface — listen without judging.',
+      'Bloating, sebum, cramps — your body speaking, not failing.',
+      'Your intuition is sharp today — dreams, inner voices, unexpected ideas are precious.',
+      'Autumn has come into you. What is harvested becomes; rest is earned.',
+    ],
+  }
 };
 function getZen(phase,d=new Date()){
-  const list=ZEN[phase]||ZEN['Luteal Phase'];
+  const lang=getLang();
+  const set=ZEN[lang]||ZEN.tr;
+  const list=set[phase]||set['Luteal Phase'];
   const start=new Date(d.getFullYear(),0,0);
   const dayOfYear=Math.floor((d-start)/86400000);
   return list[dayOfYear%list.length];
@@ -3696,22 +3736,26 @@ function renderEveningCheckIn(){
   }
   // 19:00 öncesi gizli
   if(h<19 || h>=24){el.innerHTML='';return;}
-  // Cycle context — proaktif kibar önek (regl Day 1-2, az uyku vs.)
+  // Cycle context — proaktif kibar önek (regl Day 1-2, az uyku vs.) — bilingual
   const c=ci(now);
+  const en=getLang()==='en';
   let preface='';
   if(c && inP(now) && c.day<=2){
-    preface=`<div class="ec-preface">🔴 Regl Gün ${c.day} — bedenin bugün senden daha yumuşak istedi. Hangi tonu hissediyorsun?</div>`;
+    preface=`<div class="ec-preface">${en?`🔴 Period Day ${c.day} — your body asked for more softness today. What tone are you feeling?`:`🔴 Regl Gün ${c.day} — bedenin bugün senden daha yumuşak istedi. Hangi tonu hissediyorsun?`}</div>`;
   }else if(c && c.phase==='Luteal Phase' && c.day>=getAvgCycleLen()-3){
-    preface=`<div class="ec-preface">🌙 Geç luteal — vücut ısısı ve duygu hassas. Yargısız bir an.</div>`;
+    preface=`<div class="ec-preface">${en?'🌙 Late luteal — body temp and emotion sensitive. A non-judgmental moment.':'🌙 Geç luteal — vücut ısısı ve duygu hassas. Yargısız bir an.'}</div>`;
   }else{
-    preface=`<div class="ec-preface">Bugünü kapatmadan, bedenin sana ne diyor?</div>`;
+    preface=`<div class="ec-preface">${en?'Before closing the day, what is your body telling you?':'Bugünü kapatmadan, bedenin sana ne diyor?'}</div>`;
   }
+  const ttl=en?'🌙 Evening check-in · 30 seconds':'🌙 Akşam check-in · 30 saniye';
+  const cardExpl=en?`Mark today\'s mood with <strong>one of 5 emojis</strong> between 19:00-23:59. <em>None of them is "failure"</em> — just today\'s tone. Data accumulates for "Strongest Window" analysis.`:`Akşam 19:00-23:59 arası bugünkü mood'unu <strong>5 emoji'den biriyle</strong> işaretle. <em>Hiçbiri "başarısız" değil</em> — sadece bugünün tonu. Veriler "En güçlü pencere" analizi için birikir.`;
+  const hint=en?'None is "success" or "failure". Just your body\'s tone today.':'Hiçbiri "başarı" veya "başarısız" değil. Bugün sadece bedenin tonu.';
   el.innerHTML=`<div class="evening-checkin-card">
-    <div class="ec-title">🌙 Akşam check-in · 30 saniye</div>
-    <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span>Akşam 19:00-23:59 arası bugünkü mood'unu <strong>5 emoji'den biriyle</strong> işaretle. <em>Hiçbiri "başarısız" değil</em> — sadece bugünün tonu. Veriler "En güçlü pencere" analizi için birikir.</div>
+    <div class="ec-title">${ttl}</div>
+    <div class="card-plain"><span class="card-plain-tag">🪞 ${en?'This card':'Bu kart'}</span>${cardExpl}</div>
     ${preface}
-    <div class="ec-chips">${EVENING_MOODS.map(m=>`<button class="ec-chip" onclick="pickEveningMood('${m.id}')" aria-label="${m.l}"><span class="ec-chip-e">${m.e}</span><span class="ec-chip-l">${m.l}</span></button>`).join('')}</div>
-    <div class="ec-hint">Hiçbiri "başarı" veya "başarısız" değil. Bugün sadece bedenin tonu.</div>
+    <div class="ec-chips">${EVENING_MOODS.map(m=>`<button class="ec-chip" onclick="pickEveningMood('${m.id}')" aria-label="${eveMoodLabel(m)}"><span class="ec-chip-e">${m.e}</span><span class="ec-chip-l">${eveMoodLabel(m)}</span></button>`).join('')}</div>
+    <div class="ec-hint">${hint}</div>
   </div>`;
 }
 
@@ -3720,7 +3764,8 @@ function pickEveningMood(moodId){
   // Note alanı opsiyonel — şimdilik 1 cümle prompt yerine sade kayıt (hızlı UX)
   saveEveningCheckIn(now,moodId,'');
   const m=EVENING_MOODS.find(x=>x.id===moodId);
-  showToast(`${m.e} ${m.l} · kayıt alındı, iyi geceler`,'pr');
+  const en=getLang()==='en';
+  showToast(`${m.e} ${eveMoodLabel(m)} · ${en?'recorded, sweet dreams':'kayıt alındı, iyi geceler'}`,'pr');
   renderEveningCheckIn();
 }
 function resetEveningCheckIn(){
@@ -3810,6 +3855,85 @@ const WEEKLY_FOCUS_TEXTS={
   }
 };
 
+// Iter 35 — WEEKLY_FOCUS_TEXTS English version (parallel)
+const WEEKLY_FOCUS_TEXTS_EN={
+  menstruation:{
+    tag:'MONDAY · THIS WEEK\'S FOCUS',
+    title:'Winter · Wise Woman',
+    subtitle:'Period week — your body\'s rhythm slows, depth turns inward.',
+    intro:'Maisie Hill calls this phase "inner winter". The endometrium sheds, haemoglobin is at its lowest on Days 3-5. The Wise Woman archetype is active — rest is wisdom, softness is not resistance. This week is not a half-week, it is a week of deepening.',
+    hormone:'Estrogen and progesterone are at their lowest. FSH starts rising to begin follicle development (the new cycle\'s overture).',
+    physiology:'BMR normalises within 1-2 days. Basal body temperature around 36.4°C (a 0.3°C drop from the luteal peak). Iron is being actively used — fatigue on Days 1-2 is physiological, not a weakness.',
+    training:'Days 1-2: full rest or yoga flow + restorative stretch. Days 3-5: light upper body (lat pulldown, face pull, bicep curl) RPE 6-7. Compound moves with last sets comfortable. A 5-6 km walk is enough.',
+    nutrition:'Iron + B12 emphasis — red meat, liver (high B12). Vitamin C alongside (lemon, pepper, parsley) boosts iron absorption 3-4×. Magnesium 350-400 mg for cramp protection. Water +500 ml extra.',
+    risk:'Sims warns: during period week, the "push through" voice creates RED-S risk. Resting Days 1-2 is the scientifically correct decision — for the rest of the days, listen to your body.',
+    closing:'This week is a week of <em>deepening</em>. You may want to re-read this on Friday evening — to see what feels different.'
+  },
+  follicular_build:{
+    tag:'MONDAY · THIS WEEK\'S FOCUS',
+    title:'Early Spring · Maiden',
+    subtitle:'Early follicular — estrogen rising, green light for muscle building.',
+    intro:'The Maiden archetype: energy is returning, curiosity is near its peak, hunger for novelty is high. This week is optimal for learning new movements, perfecting form, volume + intensity. What your body is saying: "I can try".',
+    hormone:'Estrogen has risen from 50→200 pg/mL. FSH decreases (estrogen\'s negative feedback). Progesterone still low — recovery is fast.',
+    physiology:'Insulin sensitivity is high (carbs are used well), muscle glycogen is full, MPS signal is strong. Estrogen-mediated collagen synthesis ↑ (Hansen 2017) — a good window for joint-tendon adaptation.',
+    training:'Volume +5-10% window. Ideal week for learning new exercises. Compound moves RPE 7-8.5 — no RPE 9 pressure. Try eccentric tempo 3-1-1 (maximum hypertrophy mTORC1 activation).',
+    nutrition:'Hit your carb target (60-80g, post-WO). Protein +5-10g (2.0 g/kg instead of 1.8 g/kg). Follicular east week: leucine 3g/meal × 4-5 meals — MPS stays active for 24-48 hours.',
+    risk:'Form-first on new exercises. Estrogen speeds recovery but joint-tendon adaptation still takes 4-6 weeks. As ovulation week approaches (Day 11+), don\'t test risky movements.',
+    closing:'This week is a week of <em>trying</em>. Your body\'s most open time to learn new things — but "trying" ≠ "forcing". Don\'t exceed RPE 8.5, form first.'
+  },
+  follicular_peak:{
+    tag:'MONDAY · THIS WEEK\'S FOCUS',
+    title:'Late Spring · Maiden (PR Window)',
+    subtitle:'Late follicular — estrogen at peak, approaching ovulation. Good days for PR attempts.',
+    intro:'Estrogen at pre-ovulation peak. Sims: the "performance window" — physical endurance, strength, motivation are at their highest. But ovulation arrives this weekend → Day 11+ ligament caution begins.',
+    hormone:'Estrogen 200-400 pg/mL peak. LH starting to rise (will trigger ovulation). Progesterone still low.',
+    physiology:'Estimated 1RM may be 3-5% higher than the previous session (estrogen + neural activation). High pain threshold, high pain tolerance. Recovery 24-36 hours (vs. 48-72 hours in luteal).',
+    training:'This week is optimal for rep PR or weight PR attempts — but no RPE 9.5 pressure. From Day 11, switch risky moves (Smith squat, heavy RDL, plyometric) to cycle-safe alternatives. Compound moves at RPE 8.5.',
+    nutrition:'Pre-WO 14:00 30g carbs (honey + kiwi) is useful. Post-WO protein 30-40g + carbs 40-60g (by kg/lean mass). Time Magnesium daily 5g (creatine saturation critical for PR week).',
+    risk:'Day 11-13 LH starts to rise — relaxin also starts to rise. ACL non-contact risk begins to increase. Gradually convert bilateral moves to single-leg alternatives (B-Stance HT). Plyometric/sprint contraindicated Day 11+.',
+    closing:'This week is a week to <em>shine</em> — but shining is not "proving". If you hit a PR, celebrate; if you don\'t, listen to what your body says. "Pace belongs to your body."'
+  },
+  ovulation:{
+    tag:'MONDAY · THIS WEEK\'S FOCUS',
+    title:'Summer · Mother (Ligament Caution)',
+    subtitle:'Ovulation — LH peak + relaxin peak. Maintain volume, careful with intensity.',
+    intro:'The Mother archetype: fertile, creative, but protective. The body is protecting the egg, ligaments are loose (pregnancy preparation). No PR pressure — if the body\'s science working for you is properly understood, this week is a no-injury week.',
+    hormone:'LH peak 24-36 hours (Day 12-14). Estrogen small dip from pre-peak, then plateau. Testosterone small peak (3-5% in women). Relaxin peak — ligament laxity +30-50%.',
+    physiology:'Ligament-tendon laxity maximum. ACL non-contact injury risk 2-3× (Wojtys 1998 PMID 9568310). Knee valgus tendency rises. Sacroiliac stability ↓.',
+    training:'Bilateral squat → Goblet (lumbar torque ↓). Bulgarian → Step-Up (lateral knee load ↓). RDL → Cable Pull-Through (lumbar shear ↓). Hip Thrust → Banded Glute Bridge (sacroiliac stability ↑). For complex moves: form first, eccentric tempo 3-1-1.',
+    nutrition:'Standard pre-luteal protocol — protein 1.8-2.0 g/kg, carbs in post-WO window. Vitamin C 100 mg/day (collagen synthesis support). Magnesium 300-350 mg.',
+    risk:'Plyometric, sprint, valgus-prone movements (Smith squat, dynamic dumbbell exercises) fully contraindicated. Drop-jump test valgus score ≥6 cm = ACL risk 5× (Hewett 2005). No new 1RM attempts.',
+    closing:'This week is a week of <em>protecting</em>. Same volume, 3-5% lower intensity, alternative moves clicked. Your body\'s creative week — your joints will know it tomorrow.'
+  },
+  luteal_build:{
+    tag:'MONDAY · THIS WEEK\'S FOCUS',
+    title:'Early Autumn · Witch (Volume Window)',
+    subtitle:'Early luteal — progesterone rising, fat oxidation increases. A good day for volume.',
+    intro:'The Witch archetype (wise): introspection, deepening, sharp intuition. Progesterone begins rising but PMS hasn\'t started yet. This week is a good window for volume-heavy work and endurance — aggressive intensity should drop but volume stays.',
+    hormone:'Progesterone rising from 1→8 ng/mL. Estrogen second peak (luteal mid). Testosterone normalised. Relaxin drops.',
+    physiology:'Fat oxidation ↑ — fat is burned more efficiently. Insulin sensitivity moderate (carbs still usable). BMR slightly elevated (+5-8%). Body temp +0.2°C. Ideal time to start magnesium + B6.',
+    training:'Volume +5% increase window (rep range 10-15). Moderate intensity (RPE 7-8). Good day for accessory work — single-leg work, glute isolation, core. Compound moves RPE 8 max.',
+    nutrition:'Start magnesium 300-350 mg + B6 (P5P 25mg) — cramp + mood protection. Carbs in post-WO window (40-50g) — reserve despite fat oxidation. Protein 1.8-2.0 g/kg. Water +250 ml (BMR rise).',
+    risk:'PMS symptoms may begin Day 21-22. Keep mood-change awareness high — make training decisions from "listen" not "force". Late-luteal preparation is beginning.',
+    closing:'This week is a week of <em>deepening</em>. The Witch archetype speaks in intuition — your body saying "I can add a little" is right; "force extra" is not. The interval is delicate.'
+  },
+  luteal_late:{
+    tag:'MONDAY · THIS WEEK\'S FOCUS',
+    title:'Late Autumn · Witch (Mood-Protective Week)',
+    subtitle:'Late luteal + PMS. BMR high, mood sensitive. Ideal window for deload week.',
+    intro:'The Witch wisdom\'s last week — the body waited for the egg, it\'s not coming, preparing for the next winter. Progesterone at peak + beginning to drop → PMS. NSCA periodization recommendation: deload week begins here. "This week is not half — it\'s strategic." Maisie Hill: "Be wise with yourself in this phase."',
+    hormone:'Progesterone peak 10-15 ng/mL, then drop over the last 2-3 days. Estrogen drops from second peak. Cortisol +15-20% (progesterone-mediated). Serotonin ↓ (mood shift).',
+    physiology:'BMR +8-12% (calorie need +100-150 kcal). Body temp +0.3°C (sleep efficiency may be affected). Water retention is normal (not edema). NREM sleep depth ↓ (progesterone-mediated).',
+    training:'Keep set count, drop weight by 5-10% (autoregulation). Optional skip Fri (Total Hybrid). Compound moves RPE 7-8 max. Plyometric/sprint contraindicated (cortisol stressor + immunity ↓). Walk + yoga flow bonus.',
+    nutrition:'Late luteal: BMR +8-12% rise is normal. Drop intensity 20-30%, foreground pilates + pelvic floor. Carbs 60g post-WO (insulin sensitivity preservation). Magnesium 350-400 mg + tryptophan sources (egg, turkey) → serotonin synthesis. Hydration +500 ml.',
+    risk:'2-3 days before PMS: "non-judgmental knowledge" stance. If the thought of skipping a workout arises → look for the answer in your body relationship, not in "discipline" rhetoric. Sunday evening check for compulsive screening.',
+    closing:'This week is a <em>strategic</em> week. Not a half-week — the week you take notes for your body. Stay honest in your relationship with your body. Monday\'s fresh start right is reserved.'
+  }
+};
+function getWeeklyFocus(key){
+  return (getLang()==='en'?WEEKLY_FOCUS_TEXTS_EN:WEEKLY_FOCUS_TEXTS)[key];
+}
+
 // Pazartesi sabah hangi odak metni gösterilecek
 function getMondayFocusKey(d){
   const c=ci(d||new Date());
@@ -3839,7 +3963,7 @@ function renderMondayFocus(){
   if(dow!==1 || h<6 || h>=12){el.innerHTML='';return;}
   const key=getMondayFocusKey(now);
   if(!key){el.innerHTML='';return;}
-  const f=WEEKLY_FOCUS_TEXTS[key];
+  const f=getWeeklyFocus(key);
   if(!f){el.innerHTML='';return;}
   const _glx=(typeof linkifyGlossary==='function')?linkifyGlossary:(s=>s);
   const _mfPlain=`<div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span>Pazartesi sabahları (06-12 arası) bedenin <strong>o hafta hangi cycle fazında</strong> olacağı ve bu fazda nasıl beslenip antrenman yapacağına dair pedagojik bir kart. Haftaya bilinçli başlamak için.</div>`;
@@ -3863,12 +3987,16 @@ function renderMondayFocus(){
 // Akşam 21:30+ aynı niyet için karşılık ("istediğin geldi mi?" 1-5 skala)
 // 7 gün pattern: sıklıkla seçilen + karşılık ortalaması düşük niyetler → ihtiyaç sinyali
 const BODY_INTENTIONS=[
-  {id:'strength',  e:'💪', l:'Güçlenmek',     prompt:'kuvvet bulmak',         eveQ:'Kuvvet hissi geldi mi?'},
-  {id:'lightness', e:'🌊', l:'Hafiflik',       prompt:'hafifliği hissetmek',   eveQ:'İstediğin hafiflik geldi mi?'},
-  {id:'rest',      e:'🧘', l:'Dinlenme',       prompt:'gerçekten dinlenmek',   eveQ:'Bedenin gerçekten dinlendi mi?'},
-  {id:'energy',    e:'🌱', l:'Enerji',         prompt:'enerjiyi geri almak',   eveQ:'Enerjin geldi mi?'},
-  {id:'be',        e:'🤍', l:'Sadece olmak',   prompt:'sadece olmak',          eveQ:'"Olmak" alanı yaşadın mı?'}
+  {id:'strength',  e:'💪', l:'Güçlenmek',     lEn:'Strength',    prompt:'kuvvet bulmak',         promptEn:'finding strength',          eveQ:'Kuvvet hissi geldi mi?',              eveQEn:'Did you feel strength?'},
+  {id:'lightness', e:'🌊', l:'Hafiflik',       lEn:'Lightness',   prompt:'hafifliği hissetmek',   promptEn:'feeling lightness',         eveQ:'İstediğin hafiflik geldi mi?',         eveQEn:'Did the lightness you wanted come?'},
+  {id:'rest',      e:'🧘', l:'Dinlenme',       lEn:'Rest',        prompt:'gerçekten dinlenmek',   promptEn:'truly resting',             eveQ:'Bedenin gerçekten dinlendi mi?',       eveQEn:'Did your body truly rest?'},
+  {id:'energy',    e:'🌱', l:'Enerji',         lEn:'Energy',      prompt:'enerjiyi geri almak',   promptEn:'reclaiming energy',         eveQ:'Enerjin geldi mi?',                    eveQEn:'Did your energy return?'},
+  {id:'be',        e:'🤍', l:'Sadece olmak',   lEn:'Just being',  prompt:'sadece olmak',          promptEn:'just being',                eveQ:'"Olmak" alanı yaşadın mı?',            eveQEn:'Did you live the space of "being"?'}
 ];
+function bodyIntentLabel(o){return getLang()==='en'?(o.lEn||o.l):o.l;}
+function bodyIntentPrompt(o){return getLang()==='en'?(o.promptEn||o.prompt):o.prompt;}
+function bodyIntentEveQ(o){return getLang()==='en'?(o.eveQEn||o.eveQ):o.eveQ;}
+function eveMoodLabel(o){return getLang()==='en'?(o.lEn||o.l):o.l;}
 
 function getBodyConversation(d){
   const dk=ymd(d||new Date());
@@ -3885,12 +4013,14 @@ function saveBodyConversation(d,patch){
 function pickBodyIntention(intentId){
   saveBodyConversation(new Date(),{intent:intentId,morningTs:Date.now()});
   const m=BODY_INTENTIONS.find(x=>x.id===intentId);
-  showToast(`${m.e} ${m.l} · niyetin kayıtlı`,'pr');
+  const en=getLang()==='en';
+  showToast(`${m.e} ${bodyIntentLabel(m)} · ${en?'intention saved':'niyetin kayıtlı'}`,'pr');
   renderBodyConversationMorning();
 }
 function pickBodyEveningRating(rating){
   saveBodyConversation(new Date(),{eveningRating:rating,eveningTs:Date.now()});
-  showToast(`Karşılık alındı · ${rating}/5`,'pr');
+  const en=getLang()==='en';
+  showToast(`${en?'Reply saved':'Karşılık alındı'} · ${rating}/5`,'pr');
   renderBodyConversationEvening();
 }
 function resetBodyMorning(){
@@ -3914,17 +4044,25 @@ function renderBodyConversationMorning(){
   const h=now.getHours();
   if(h<6||h>=12){el.innerHTML='';return;}
   const conv=getBodyConversation(now);
+  const en=getLang()==='en';
   if(conv && conv.intent){
     const i=BODY_INTENTIONS.find(x=>x.id===conv.intent);
-    el.innerHTML=`<div class="bc-morning-card"><div class="bc-tag">🌅 Sabah Niyet · ${i.l}</div><div class="bc-done"><span class="bc-done-icon">${i.e}</span><span>Bugün bedeninle ${i.prompt} istedin.</span><button class="bc-done-edit" onclick="resetBodyMorning()">değiştir</button></div></div>`;
+    const tagTxt=en?`🌅 Morning Intention · ${bodyIntentLabel(i)}`:`🌅 Sabah Niyet · ${i.l}`;
+    const doneTxt=en?`Today you asked your body for ${bodyIntentPrompt(i)}.`:`Bugün bedeninle ${i.prompt} istedin.`;
+    const changeTxt=en?'change':'değiştir';
+    el.innerHTML=`<div class="bc-morning-card"><div class="bc-tag">${tagTxt}</div><div class="bc-done"><span class="bc-done-icon">${i.e}</span><span>${doneTxt}</span><button class="bc-done-edit" onclick="resetBodyMorning()">${changeTxt}</button></div></div>`;
     return;
   }
+  const tagTxt=en?'🌅 Morning · 2 Minutes':'🌅 Sabah · 2 Dakika';
+  const cardExpl=en?`This morning card asks "what does your body want" with 5 intent options. At 21:30+ evening you'll be asked if it came true. <em>Body-awareness practice</em> — there is no wrong answer.`:`Sabah <strong>"bedeniyle ne istersin"</strong> kartı, 5 niyet seçeneği. Akşam 21:30+ aynı niyet için "geldi mi" karşılığı sorulur. <em>Beden bilinci pratiği</em> — doğru cevap yok.`;
+  const promptQ=en?'What does your body want today?':'Bugün bedeninle ne istersin?';
+  const hint=en?'No wrong answer — just listen to your body\'s voice.':'Doğru cevap yok — sadece bedeninin sözüne kulak ver.';
   el.innerHTML=`<div class="bc-morning-card">
-    <div class="bc-tag">🌅 Sabah · 2 Dakika</div>
-    <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span>Sabah <strong>"bedeniyle ne istersin"</strong> kartı, 5 niyet seçeneği. Akşam 21:30+ aynı niyet için "geldi mi" karşılığı sorulur. <em>Beden bilinci pratiği</em> — doğru cevap yok.</div>
-    <div class="bc-prompt">Bugün bedeninle ne istersin?</div>
-    <div class="bc-chips">${BODY_INTENTIONS.map(i=>`<button class="bc-chip" onclick="pickBodyIntention('${i.id}')" aria-label="${i.l}"><span class="bc-chip-e">${i.e}</span><span class="bc-chip-l">${i.l}</span></button>`).join('')}</div>
-    <div class="bc-hint">Doğru cevap yok — sadece bedeninin sözüne kulak ver.</div>
+    <div class="bc-tag">${tagTxt}</div>
+    <div class="card-plain"><span class="card-plain-tag">🪞 ${en?'This card':'Bu kart'}</span>${cardExpl}</div>
+    <div class="bc-prompt">${promptQ}</div>
+    <div class="bc-chips">${BODY_INTENTIONS.map(i=>`<button class="bc-chip" onclick="pickBodyIntention('${i.id}')" aria-label="${bodyIntentLabel(i)}"><span class="bc-chip-e">${i.e}</span><span class="bc-chip-l">${bodyIntentLabel(i)}</span></button>`).join('')}</div>
+    <div class="bc-hint">${hint}</div>
   </div>`;
 }
 
@@ -3944,14 +4082,21 @@ function renderBodyConversationEvening(){
     return;
   }
   const i=BODY_INTENTIONS.find(x=>x.id===conv.intent);
+  const en=getLang()==='en';
   if(conv.eveningRating){
-    el.innerHTML=`<div class="bc-evening-card"><div class="bc-tag">🌙 Akşam Karşılık</div><div class="bc-done"><span class="bc-done-icon">${i.e}</span><span><em>${i.l}</em>: ${conv.eveningRating}/5 — kayıtlı, iyi geceler.</span><button class="bc-done-edit" onclick="resetBodyEvening()">değiştir</button></div></div>`;
+    const tagTxt=en?'🌙 Evening Reply':'🌙 Akşam Karşılık';
+    const doneTxt=en?`<em>${bodyIntentLabel(i)}</em>: ${conv.eveningRating}/5 — saved, sweet dreams.`:`<em>${i.l}</em>: ${conv.eveningRating}/5 — kayıtlı, iyi geceler.`;
+    const changeTxt=en?'change':'değiştir';
+    el.innerHTML=`<div class="bc-evening-card"><div class="bc-tag">${tagTxt}</div><div class="bc-done"><span class="bc-done-icon">${i.e}</span><span>${doneTxt}</span><button class="bc-done-edit" onclick="resetBodyEvening()">${changeTxt}</button></div></div>`;
     return;
   }
+  const tagTxt=en?'🌙 Evening Reply · 30 Seconds':'🌙 Akşam Karşılık · 30 Saniye';
+  const cardExpl=en?`Did the intention you chose this morning <strong>come true today?</strong> Answer on a 1-5 scale. Non-judgmental record — your pattern emerges in 7 days.`:`Sabah seçtiğin niyet <strong>bugün geldi mi?</strong> 1-5 skala ile yanıtla. Yargısız kayıt — pattern'in 7 günde belirir.`;
+  const eveQ=en?`This morning you said <em>${bodyIntentLabel(i)}</em>. ${bodyIntentEveQ(i)}`:`Sabah <em>${i.l}</em> dedin. ${i.eveQ}`;
   el.innerHTML=`<div class="bc-evening-card">
-    <div class="bc-tag">🌙 Akşam Karşılık · 30 Saniye</div>
-    <div class="card-plain"><span class="card-plain-tag">🪞 Bu kart</span>Sabah seçtiğin niyet <strong>bugün geldi mi?</strong> 1-5 skala ile yanıtla. Yargısız kayıt — pattern'in 7 günde belirir.</div>
-    <div class="bc-eve-q">Sabah <em>${i.l}</em> dedin. ${i.eveQ}</div>
+    <div class="bc-tag">${tagTxt}</div>
+    <div class="card-plain"><span class="card-plain-tag">🪞 ${en?'This card':'Bu kart'}</span>${cardExpl}</div>
+    <div class="bc-eve-q">${eveQ}</div>
     <div class="bc-rating">${[1,2,3,4,5].map(n=>`<button class="bc-rating-btn" onclick="pickBodyEveningRating(${n})">${n}</button>`).join('')}</div>
     <div class="bc-rating-anchor"><span>Hayır, gelmedi</span><span>Evet, tam geldi</span></div>
   </div>`;
@@ -7654,6 +7799,13 @@ function setApiProxyUrl(url){localStorage.setItem('api_proxy_url',url||'');}
 function setApiProxyToken(token){localStorage.setItem('api_proxy_token',token||'');}
 
 async function callAnthropic(body){
+  // Iter 35 — dinamik dil: kullanıcı dilinde yanıt için system prompt eklenir
+  if(!body.system){
+    const lang=getLang();
+    body.system=lang==='en'
+      ?'You are Begümnaz\'s personalised holistic health assistant. Respond in clear, warm, professional English. Use UK English when relevant. Match the empathetic + medical tone matching her protocol (endometriosis, post-isotretinoin sensitive skin, hormonal acne, 16-product doctor protocol). Avoid shame-laden language; use "your body" framing.'
+      :'Sen Begümnaz\'ın kişisel bütüncül sağlık asistanısın. Sıcak, profesyonel Türkçe ile yanıt ver. Endometriozis + post-isotretinoin hassas cilt + hormonal akne + 16 ürün doktor protokolü bağlamına uygun empatik + tıbbi ton kullan. Utandırıcı dil yok; "bedenin" çerçevesi.';
+  }
   return window.fetch('https://api.anthropic.com/v1/messages',{
     method:'POST',
     headers:{
@@ -7667,7 +7819,7 @@ async function callAnthropic(body){
 }
 
 // Phase 3.B-D — fetch monkey-patch: Anthropic API çağrılarını proxy varsa yönlendir.
-// Tüm mevcut fetch('https://api.anthropic.com/v1/messages',...) çağrıları otomatik proxy'ye gider.
+// Iter 35 — body.system yoksa otomatik kullanıcı diline göre system prompt enjekte et.
 (function installFetchProxyShim(){
   if(window._origFetch)return; // idempotent
   window._origFetch=window.fetch;
@@ -7675,18 +7827,33 @@ async function callAnthropic(body){
     try{
       const url=typeof input==='string'?input:(input&&input.url)||'';
       if(url.startsWith('https://api.anthropic.com/')){
+        // Iter 35 — system prompt enjeksiyonu (eğer body'de yoksa)
+        let newInit=init;
+        if(init && init.body && typeof init.body==='string'){
+          try{
+            const parsed=JSON.parse(init.body);
+            if(!parsed.system){
+              const lang=(typeof getLang==='function')?getLang():'tr';
+              parsed.system=lang==='en'
+                ?'You are Begümnaz\'s personalised holistic health assistant. Respond in clear, warm, professional English (UK English when relevant). Match the empathetic + medical tone of her protocol (endometriosis, post-isotretinoin sensitive skin, hormonal acne, 16-product doctor protocol). Avoid shame-laden language; use "your body" framing.'
+                :'Sen Begümnaz\'ın kişisel bütüncül sağlık asistanısın. Sıcak, profesyonel Türkçe ile yanıt ver. Endometriozis + post-isotretinoin hassas cilt + hormonal akne + 16 ürün doktor protokolü bağlamına uygun empatik + tıbbi ton kullan. Utandırıcı dil yok; "bedenin" çerçevesi.';
+              newInit={...init,body:JSON.stringify(parsed)};
+            }
+          }catch(e){/* parse failed — bırak */}
+        }
         const proxyUrl=localStorage.getItem('api_proxy_url')||'';
         if(proxyUrl){
           const newUrl=proxyUrl.replace(/\/$/,'')+url.replace('https://api.anthropic.com','');
-          const headers=new Headers(init?.headers||{});
+          const headers=new Headers(newInit?.headers||{});
           // API key client'ta gerekmiyor — sunucuda
           headers.delete('x-api-key');
           headers.delete('anthropic-dangerous-direct-browser-access');
           // Auth token varsa ekle
           const token=localStorage.getItem('api_proxy_token')||'';
           if(token)headers.set('x-begumnaz-token',token);
-          return window._origFetch(newUrl,{...init,headers});
+          return window._origFetch(newUrl,{...newInit,headers});
         }
+        return window._origFetch(input,newInit);
       }
     }catch(e){console.warn('Fetch shim error:',e);}
     return window._origFetch(input,init);
