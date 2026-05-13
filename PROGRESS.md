@@ -264,7 +264,7 @@ Bugünkü iterasyonlar **9-15 arası**. Önceki oturumlardan devralınan + bu ot
 
 ---
 
-## 📊 Commit Geçmişi (18 commit · son 17 bu oturum + önceki iterasyonları)
+## 📊 Commit Geçmişi (20 commit · son 19 bu oturum + önceki iterasyonları)
 
 ```
 3b469ad  Phase 1: Markdown dokümantasyon iskeleti tamamlandı
@@ -285,6 +285,8 @@ f224140  Faz 2 Iter 13: Diyet sayfası kart kontrastı — agresif text override
 b2f5a98  Faz 2 Iter 15: Hacettepe Lab tamamen kaldırıldı — Bengisu kalıntısı  ⬅ UNPUSHED
 aa2c4bf  PROGRESS.md kapsamlı yeniden yazıldı — oturum devamlılık dosyası  ⬅ UNPUSHED
 c771a81  Faz 2 Iter 16: DEPLOY-API-PROXY.md path/origin tutarsızlık fix  ⬅ UNPUSHED
+64f85bd  PROGRESS.md commit geçmişi listesi: Iter 16 + aa2c4bf eklendi  ⬅ UNPUSHED
+a954ba4  Faz 2 Iter 17: Glossary Bengisu kalıntıları temizliği + SW v8  ⬅ UNPUSHED
 ```
 
 ---
