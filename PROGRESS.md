@@ -2,7 +2,7 @@
 
 > **Bu dosya yeni oturumun ilk okunan dosyasıdır.** Burada nerede kaldığımız, yarın ne yapacağımız, hangi kararların değişmediği yazılır. Önceki oturumda olan her kritik şey buraya yansır.
 
-**Son güncelleme**: 13 Mayıs 2026 — Faz 4 İterasyon 29 (AI-assisted dinamik tema · görsel yükle + Claude vision + CSS variable injection)
+**Son güncelleme**: 13 Mayıs 2026 — Faz 4 İterasyon 30A (i18n EN Dashboard bilingual · renderHeroCard + nextActions + ZEN + compassion)
 
 ---
 
@@ -78,6 +78,40 @@ Begümnaz 1-2 hafta günlük kullansın → real-world feedback → Iter 30+ ön
 ---
 
 ## 📜 Bu Oturumda Yapılanlar (13 Mayıs 2026)
+
+### Iter 30A — i18n EN Dashboard bilingual (M1 phase 1)
+
+**Kullanıcı raporu**: Screenshot — EN seçildiğinde sadece nav çevriliyordu. Sayfa içeriği TR kalıyordu (Tünaydın, Sıradaki 3 Aksiyon, Öğle Yemeği, Hatırlatmalar vs.). Plan'da Iter 30 sonraki oturuma erteliydi, kullanıcı sorunu net gösterince **bu oturumda 30A** başlatıldı (görünür Dashboard).
+
+**I18N obje genişletildi**: 27 key → 70+ key (TR + EN)
+
+**Yeni key'ler (30+ ekleme)**:
+- Dashboard ana: `next_3_actions`, `reminders`, `no_cycle_tracking`, `default_zen`, `compassion_today`, `compassion_loading`
+- Greeting full: `greet_morning_full`, `greet_noon_full`, `greet_evening_full`, `greet_night_full` (Begümnaz adıyla)
+- Cycle: `period_day` (Regl/Period), `cycle_day` (Gün/Day)
+- Hero card actions: 16 key — `act_oil_pulling`, `act_sabah_ac`, `act_breakfast`, `act_lugol`, `act_lunch`, `act_snack`, `act_pre_wo`, `act_ikindi`, `act_dinner`, `act_footbath`, `act_tea`, `act_skin`, `act_probiotic`, `act_bed` + her birinin `_d` (detay) eşi
+- Time labels: `time_acikma`, `time_pre_wo`
+- Special: `pzt_extra` (Pazartesi Colewinde Vit D notu)
+
+**Bilingual yapılan kod yerleri**:
+- `renderHeroCard()` (3897+): greeting + 4 mode'un nextActions array'i tamamen t() ile bağlandı
+- `cycleLine`: "Gün X · Regl" → "Day X · Period" (EN'de)
+- `actionsHtml` boş durum: "Şu an aktif aksiyon yok..." → "No active action right now..."
+- `nextLabel`: "⏰ Sıradaki N aksiyon" → "⏰ Next N action(s)"
+- `phaseLine` (renderDashboard): "Döngü takibi yok" → "No cycle tracking"
+- ZEN default fallback: "Bugün senin günün." → "Today is yours."
+- `renderMorningCompassion`: "Bugün Begümnaz için" → "For Begümnaz today"
+- HTML "Hatırlatmalar" span'a `data-i18n="reminders"` eklendi (applyTranslations() otomatik çevirir)
+
+**SW cache bump**: `v17-dinamik-tema-ai` → **`v18-i18n-dashboard`**
+
+**Kalan iş (Iter 30B + 30C sonraki oturum)**:
+- 30B: WEEKLY_FOCUS_TEXTS (3432-3550, 6 cycle phase × 9 alt başlık = 50+ string) bilingual; ZEN obje (28 mesaj × 4 phase) bilingual; BODY_INTENTIONS bilingual; renderMorningCompassion fallback array'i EN versiyonu
+- 30C: Diet sekmesi (Custom Food, makro grid, recipe modal), Cycle sekmesi (mood pills, body conv prompt), Exercise sekmesi (set log, RPE), Skin sekmesi (rotation labels), Medical sekmesi başlıkları; AI prompt'ları getLang() bazlı dinamik dil (Claude EN için yanıtlar)
+
+**Bu Iter'ın etkisi**: Begümnaz EN seçtiğinde Dashboard (Today sekmesi — ana sayfa) tamamen EN gözükür. Diğer sekmeler hala karışık (Iter 30B/30C için). Ana kullanım akışı (Today + Settings + nav) artık tutarlı.
+
+---
 
 ### Iter 29 — AI-assisted dinamik tema (M12) — Begümnaz görseli paleti belirler
 

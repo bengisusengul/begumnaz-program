@@ -1405,7 +1405,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
   <div id="reminders-dashboard-wrap" style="margin:0 16px 16px;">
     <button class="btn bsoft bfull" onclick="toggleRemindersDashboard()" style="text-align:left;padding:14px 16px;justify-content:flex-start;gap:10px;">
       <span style="font-size:20px;">🔔</span>
-      <span style="flex:1;">Hatırlatmalar</span>
+      <span style="flex:1;" data-i18n="reminders">Hatırlatmalar</span>
       <span id="reminders-arrow" style="font-size:16px;color:var(--cream-mute);">▾</span>
     </button>
     <div id="notification-settings" style="display:none;margin-top:8px;"></div>
@@ -2204,6 +2204,51 @@ const I18N = {
     save_btn:'Kaydet',
     today_label:'BUGÜN', daily_program:'⏰ Günlük Program',
     cycle_log_start:'🌸 Döngü takibini başlat',
+    // Iter 30A — Dashboard bilingual
+    next_3_actions:'SIRADAKI 3 AKSIYON',
+    reminders:'Hatırlatmalar',
+    no_cycle_tracking:'Döngü takibi yok',
+    default_zen:'Bugün senin günün.',
+    compassion_today:'Bugün Begümnaz için',
+    compassion_loading:'✨ Kişisel mesaj hazırlanıyor...',
+    greet_morning_full:'Günaydın Begümnaz',
+    greet_noon_full:'Tünaydın',
+    greet_evening_full:'İyi akşamlar',
+    greet_night_full:'İyi geceler',
+    period_day:'Regl',
+    cycle_day:'Gün',
+    // Hero card actions
+    act_oil_pulling:'🥥 Alkemist oil pulling',
+    act_oil_pulling_d:'1 yk HC yağı · 5-10 dk ağızda',
+    act_sabah_ac:'☀️ Sabah AC (5 ürün)',
+    act_sabah_ac_d:'Akavital + Gül sirkesi + NADH + NAC + Bach (1.)',
+    act_breakfast:'🍳 Kahvaltı + 6 supplement (tok)',
+    act_breakfast_d:'Yumurta + pişmiş salata + çiğ kuruyemiş',
+    act_lugol:'💧 Lugol iyot 4 damla + Bach (2.)',
+    act_lugol_d:'1 bardak ılık su · mineral mesafesi',
+    act_lunch:'🍲 Öğle Yemeği',
+    act_lunch_d:'Sebze çorbası + sebze yemeği + et (3x/hafta)',
+    act_snack:'🍎 Ara + NAC (2.) + Bach (3.)',
+    act_snack_d:'1 porsiyon tatlı meyve',
+    act_pre_wo:'💪 NBT Benfolife',
+    act_pre_wo_d:'Antrenmandan 30 dk önce',
+    act_ikindi:'🕓 İkindi AC',
+    act_ikindi_d:'Akavital + Gül sirkesi (2. dozlar)',
+    act_dinner:'🍲 Akşam yemeği + 4 supplement',
+    act_dinner_d:'Anti turmeric + More than + Lifextra + Mg (2.)',
+    act_footbath:'🦶 Ayak Banyosu + Bach (4.)',
+    act_footbath_d:'Sıcak su + ıtır + Epsom · 15-20 dk',
+    act_tea:'🌿 Melissa+Papatya Çayı',
+    act_tea_d:'Uyku hazırlığı',
+    act_skin:'🌙 Akşam Cilt Rutini',
+    act_skin_d:'Bugünün aktifi: SA[gün]',
+    act_probiotic:'💊 Duobalance Probiyotik',
+    act_probiotic_d:'2 kapsül · cranberry · idrar yolu',
+    act_bed:'😴 Yatak zamanı',
+    act_bed_d:'7-8 saat uyku hedef',
+    time_acikma:'Acıkma',
+    time_pre_wo:'Pre-WO',
+    pzt_extra:' · Pzt: Colewinde Vit D',
   },
   en: {
     nav_today:'Today', nav_cycle:'Cycle', nav_diet:'Diet',
@@ -2225,6 +2270,51 @@ const I18N = {
     save_btn:'Save',
     today_label:'TODAY', daily_program:'⏰ Daily Programme',
     cycle_log_start:'🌸 Start cycle tracking',
+    // Iter 30A — Dashboard bilingual
+    next_3_actions:'NEXT 3 ACTIONS',
+    reminders:'Reminders',
+    no_cycle_tracking:'No cycle tracking',
+    default_zen:'Today is yours.',
+    compassion_today:'For Begümnaz today',
+    compassion_loading:'✨ Personal message loading...',
+    greet_morning_full:'Good morning Begümnaz',
+    greet_noon_full:'Good afternoon',
+    greet_evening_full:'Good evening',
+    greet_night_full:'Good night',
+    period_day:'Period',
+    cycle_day:'Day',
+    // Hero card actions
+    act_oil_pulling:'🥥 Alkemist oil pulling',
+    act_oil_pulling_d:'1 tbsp coconut oil · 5-10 min swish',
+    act_sabah_ac:'☀️ Morning fasted (5 items)',
+    act_sabah_ac_d:'Akavital + rose vinegar + NADH + NAC + Bach (1.)',
+    act_breakfast:'🍳 Breakfast + 6 supplements (after food)',
+    act_breakfast_d:'Eggs + cooked salad + raw nuts',
+    act_lugol:'💧 Lugol iodine 4 drops + Bach (2.)',
+    act_lugol_d:'1 cup warm water · mineral spacing',
+    act_lunch:'🍲 Lunch',
+    act_lunch_d:'Vegetable soup + vegetable dish + meat (3x/wk)',
+    act_snack:'🍎 Snack + NAC (2.) + Bach (3.)',
+    act_snack_d:'1 portion sweet fruit',
+    act_pre_wo:'💪 NBT Benfolife',
+    act_pre_wo_d:'30 min before workout',
+    act_ikindi:'🕓 Afternoon fasted',
+    act_ikindi_d:'Akavital + rose vinegar (2nd doses)',
+    act_dinner:'🍲 Dinner + 4 supplements',
+    act_dinner_d:'Anti turmeric + More than + Lifextra + Mg (2.)',
+    act_footbath:'🦶 Foot bath + Bach (4.)',
+    act_footbath_d:'Warm water + geranium + Epsom · 15-20 min',
+    act_tea:'🌿 Melissa+Chamomile Tea',
+    act_tea_d:'Sleep preparation',
+    act_skin:'🌙 Evening skincare',
+    act_skin_d:'Today\'s active: SA[day]',
+    act_probiotic:'💊 Duobalance Probiotic',
+    act_probiotic_d:'2 caps · cranberry · urinary tract',
+    act_bed:'😴 Bedtime',
+    act_bed_d:'7-8 hours sleep target',
+    time_acikma:'When hungry',
+    time_pre_wo:'Pre-WO',
+    pzt_extra:' · Mon: Colewinde Vit D',
   }
 };
 function getLang(){return localStorage.getItem('lang')||'tr';}
@@ -3264,8 +3354,8 @@ function renderDashboard(){
 
   const greetEl=document.getElementById('dash-greeting');
   if(greetEl){
-    const phaseLine=c?`${c.emoji} ${c.label} · Gün ${c.day} / ~${cyc} · ${c.archetype}`:'🌸 Döngü takibi yok';
-    const zen=c?getZen(c.phase,today):'Bugün senin günün.';
+    const phaseLine=c?`${c.emoji} ${c.label} · ${t('cycle_day')} ${c.day} / ~${cyc} · ${c.archetype}`:'🌸 '+t('no_cycle_tracking');
+    const zen=c?getZen(c.phase,today):t('default_zen');
     greetEl.innerHTML=`<div class="dash-greeting-card">
       <div class="dash-greet-hi">${getGreeting()}, <em>Begümnaz</em> ✨</div>
       <div class="dash-greet-meta">${phaseLine}</div>
@@ -4072,7 +4162,7 @@ async function renderMorningCompassion(){
 }
 
 function renderMorningCompassionContent(el,msg,loading){
-  const sourceLabel=msg.source==='ai'?'✨ Bugün Begümnaz için':'💛 Bugün Begümnaz için';
+  const sourceLabel=(msg.source==='ai'?'✨ ':'💛 ')+t('compassion_today');
   const loadingHint=loading?'<div style="font-size:10px;color:var(--cream-faint);margin-top:8px;font-style:italic;">✨ Kişisel mesaj hazırlanıyor...</div>':'';
   el.innerHTML=`<div style="margin:0 16px 14px;padding:18px 18px 16px;border-radius:18px;background:linear-gradient(135deg,rgba(229,168,181,0.20),rgba(212,175,106,0.14));border:1px solid rgba(229,168,181,0.32);box-shadow:0 8px 24px rgba(110,26,40,0.18);">
     <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:var(--gold);margin-bottom:8px;">${sourceLabel}</div>
@@ -4091,58 +4181,60 @@ function renderHeroCard(){
   const c=ci(now);
   const isMonday = now.getDay()===1;
 
-  // Mode tespiti — Begümnaz protokolü
+  // Mode tespiti — Begümnaz protokolü (Iter 30A bilingual)
   let mode,emoji,greeting,nextActions;
   if(h>=5&&h<11){
     mode='sabah';
     emoji='🌅';
-    greeting='Günaydın Begümnaz';
+    greeting=t('greet_morning_full');
     nextActions=[
-      h<8?{t:'08:00',a:'🥥 Alkemist oil pulling',d:'1 yk HC yağı · 5-10 dk ağızda'}:null,
-      h<9?{t:'08:30',a:'☀️ Sabah AC (5 ürün)',d:'Akavital + Gül sirkesi + NADH + NAC + Bach (1.)'}:null,
-      h<11?{t:'Acıkma',a:'🍳 Kahvaltı + 6 supplement (tok)',d:'Yumurta + pişmiş salata + çiğ kuruyemiş'+(isMonday?' · Pzt: Colewinde Vit D':'')}:null,
-      h<11?{t:'+2 saat',a:'💧 Lugol iyot 4 damla + Bach (2.)',d:'1 bardak ılık su · mineral mesafesi'}:null
+      h<8?{t:'08:00',a:t('act_oil_pulling'),d:t('act_oil_pulling_d')}:null,
+      h<9?{t:'08:30',a:t('act_sabah_ac'),d:t('act_sabah_ac_d')}:null,
+      h<11?{t:t('time_acikma'),a:t('act_breakfast'),d:t('act_breakfast_d')+(isMonday?t('pzt_extra'):'')}:null,
+      h<11?{t:'+2 saat',a:t('act_lugol'),d:t('act_lugol_d')}:null
     ].filter(Boolean).slice(0,3);
   } else if(h>=11&&h<15){
     mode='oglen';
     emoji='☀️';
-    greeting='Tünaydın';
+    greeting=t('greet_noon_full');
     nextActions=[
-      h<13?{t:'12-13',a:'🍲 Öğle Yemeği',d:'Sebze çorbası + sebze yemeği + et (3x/hafta)'}:null,
-      h<15?{t:'14:30',a:'🍎 Ara + NAC (2.) + Bach (3.)',d:'1 porsiyon tatlı meyve'}:null,
-      h<15?{t:'Pre-WO',a:'💪 NBT Benfolife',d:'Antrenmandan 30 dk önce'}:null
+      h<13?{t:'12-13',a:t('act_lunch'),d:t('act_lunch_d')}:null,
+      h<15?{t:'14:30',a:t('act_snack'),d:t('act_snack_d')}:null,
+      h<15?{t:t('time_pre_wo'),a:t('act_pre_wo'),d:t('act_pre_wo_d')}:null
     ].filter(Boolean).slice(0,3);
   } else if(h>=15&&h<20){
     mode='aksam';
     emoji='🌇';
-    greeting='İyi akşamlar';
+    greeting=t('greet_evening_full');
     nextActions=[
-      h<16?{t:'16:00',a:'🕓 İkindi AC',d:'Akavital + Gül sirkesi (2. dozlar)'}:null,
-      h<19?{t:'17:30-19',a:'🍲 Akşam yemeği + 4 supplement',d:'Anti turmeric + More than + Lifextra + Mg (2.)'}:null,
-      h>=19?{t:'20:00',a:'🦶 Ayak Banyosu + Bach (4.)',d:'Sıcak su + ıtır + Epsom · 15-20 dk'}:null
+      h<16?{t:'16:00',a:t('act_ikindi'),d:t('act_ikindi_d')}:null,
+      h<19?{t:'17:30-19',a:t('act_dinner'),d:t('act_dinner_d')}:null,
+      h>=19?{t:'20:00',a:t('act_footbath'),d:t('act_footbath_d')}:null
     ].filter(Boolean).slice(0,3);
   } else {
     mode='gece';
     emoji='🌙';
-    greeting='İyi geceler';
+    greeting=t('greet_night_full');
     nextActions=[
-      h<20?{t:'20:00',a:'🦶 Ayak Banyosu + Bach (4.)',d:'Sıcak su + ıtır + Epsom'}:null,
-      h<21?{t:'21:00',a:'🌿 Melissa+Papatya Çayı',d:'Uyku hazırlığı'}:null,
-      h<22?{t:'~21:30',a:'🌙 Akşam Cilt Rutini',d:'Bugünün aktifi: SA[gün]'}:null,
-      h<23?{t:'22:00',a:'💊 Duobalance Probiyotik',d:'2 kapsül · cranberry · idrar yolu'}:null,
-      h<23?{t:'23:00',a:'😴 Yatak zamanı',d:'7-8 saat uyku hedef'}:null
+      h<20?{t:'20:00',a:t('act_footbath'),d:t('act_footbath_d')}:null,
+      h<21?{t:'21:00',a:t('act_tea'),d:t('act_tea_d')}:null,
+      h<22?{t:'~21:30',a:t('act_skin'),d:t('act_skin_d')}:null,
+      h<23?{t:'22:00',a:t('act_probiotic'),d:t('act_probiotic_d')}:null,
+      h<23?{t:'23:00',a:t('act_bed'),d:t('act_bed_d')}:null
     ].filter(Boolean).slice(0,3);
   }
 
   // Pazar günü hero card görünmesin (Pazar Esnek Gün kartı görünecek)
   if(dow===0 && h>=9 && h<13){el.innerHTML='';return;}
 
-  const cycleLine=c?`<div style="font-size:11px;color:var(--cream-mute);margin-top:4px;">${c.emoji} ${c.label} · Gün ${c.day}${inP(now)?' · 🔴 Regl':''}</div>`:'';
+  const cycleLine=c?`<div style="font-size:11px;color:var(--cream-mute);margin-top:4px;">${c.emoji} ${c.label} · ${t('cycle_day')} ${c.day}${inP(now)?' · 🔴 '+t('period_day'):''}</div>`:'';
+  const noActions=getLang()==='en'?'No active action right now · next day starting':'Şu an aktif aksiyon yok · sıradaki gün başlıyor';
   const actionsHtml=nextActions.length?nextActions.map(n=>`
     <div style="display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-bottom:1px dashed rgba(232,221,196,0.10);">
       <div style="font-size:11px;color:var(--mustard-soft);font-weight:700;min-width:42px;">${n.t}</div>
       <div style="flex:1;"><div style="font-size:13px;color:var(--cream-soft);">${n.a}</div><div style="font-size:11px;color:var(--cream-mute);margin-top:2px;">${n.d}</div></div>
-    </div>`).join(''):'<div style="font-size:12px;color:var(--cream-mute);text-align:center;padding:8px 0;">Şu an aktif aksiyon yok · sıradaki gün başlıyor</div>';
+    </div>`).join(''):`<div style="font-size:12px;color:var(--cream-mute);text-align:center;padding:8px 0;">${noActions}</div>`;
+  const nextLabel=getLang()==='en'?`⏰ Next ${nextActions.length} action${nextActions.length===1?'':'s'}`:`⏰ Sıradaki ${nextActions.length} aksiyon`;
 
   el.innerHTML=`<div class="card" style="margin:0 16px 16px;background:rgba(42,14,20,0.88);">
     <div class="cb">
@@ -4150,7 +4242,7 @@ function renderHeroCard(){
         <span style="font-size:32px;">${emoji}</span>
         <div style="flex:1;"><div style="font-family:'Playfair Display','Playfair Display',serif;font-size:24px;color:var(--cream-soft);">${greeting}</div>${cycleLine}</div>
       </div>
-      <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--mustard-soft);margin-bottom:6px;">⏰ Sıradaki ${nextActions.length} aksiyon</div>
+      <div style="font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--mustard-soft);margin-bottom:6px;">${nextLabel}</div>
       ${actionsHtml}
     </div>
   </div>`;
