@@ -1,7 +1,7 @@
 // Begümnaz Program · Service Worker (Phase 3.B-A)
 // Görev: PWA install + offline cache + (gelecek) push notification
 
-const CACHE_NAME = 'begumnaz-v40-faz9-iter52-macro-ring-2x2-iphone12-2026-05-13';
+const CACHE_NAME = 'begumnaz-v41-faz9-iter53-cilt-contrast-2026-05-13';
 const ASSETS = [
   './',
   './index.html',

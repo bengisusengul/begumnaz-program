@@ -246,8 +246,31 @@ body[data-page="diyet"] .wdnum{color:var(--diyet-text-secondary) !important;} /*
 body[data-page="diyet"] .wd.active .wdn,
 body[data-page="diyet"] .wd.active .wdnum{color:var(--cream-soft) !important;} /* Aktif gün (gold/coral capsule üzeri cream) */
 
-/* ──── CİLT SAYFASI · üst kısım açık pembe → koyu metin ──── */
-body[data-page="cilt"] .slbl{color:var(--diyet-text-primary,#2A0E14) !important;text-shadow:0 1px 2px var(--diyet-slbl-shadow,rgba(255,248,240,0.85)) !important;}
+/* ──── CİLT SAYFASI · üst kısım açık pembe gradient → koyu metin kontrast (Iter 53) ──── */
+body[data-page="cilt"]{
+  --cilt-text-primary:#2A0E14;       /* Koyu wine — ana metin (BU SEKME, notice body) */
+  --cilt-text-secondary:#4A1018;     /* Orta wine — notice strong, etiketler */
+  --cilt-text-tertiary:#5C1722;      /* Açık wine — gün adı, alt notlar */
+  --cilt-shadow:rgba(255,248,240,0.85);
+}
+body[data-page="cilt"] .slbl{color:var(--cilt-text-primary) !important;text-shadow:0 1px 2px var(--cilt-shadow) !important;}
+/* Wstrip (haftalık takvim) — gün adı + tarih cream-soft koyulaştırıldı */
+body[data-page="cilt"] .wdn{color:var(--cilt-text-tertiary) !important;font-weight:700;}
+body[data-page="cilt"] .wdnum{color:var(--cilt-text-primary) !important;}
+body[data-page="cilt"] .wd.active .wdn,
+body[data-page="cilt"] .wd.active .wdnum{color:var(--cream-soft) !important;}  /* Aktif gün capsule cream */
+/* "BU SEKME" açıklama kartı — açık pembe gradient üstünde koyu wine italik */
+body[data-page="cilt"] .card-plain{color:var(--cilt-text-primary) !important;background:rgba(255,248,240,0.42) !important;border-left-color:var(--cilt-text-secondary) !important;}
+body[data-page="cilt"] .card-plain strong{color:var(--cilt-text-primary) !important;}
+body[data-page="cilt"] .card-plain em{color:#8C5A1A !important;}  /* Gold-honey italic */
+body[data-page="cilt"] .card-plain-tag{color:var(--cilt-text-secondary) !important;}
+/* Notice kartları (Luteal Gün, Sıralama, PMS, vb.) — pembe zemin koyu wine metin */
+body[data-page="cilt"] .notice{color:var(--cilt-text-primary) !important;}
+body[data-page="cilt"] .notice strong{color:var(--cilt-text-primary) !important;}
+body[data-page="cilt"] .notice em{color:var(--cilt-text-secondary) !important;}
+/* Sabah/Akşam rutini step başlığı */
+body[data-page="cilt"] .sprod{color:var(--cilt-text-primary) !important;}
+body[data-page="cilt"] .snote{color:var(--cilt-text-secondary) !important;}
 
 /* backdrop-filter desteklemeyen tarayıcı için solid fallback */
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
