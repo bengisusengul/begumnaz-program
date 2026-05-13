@@ -491,12 +491,12 @@ input:focus, select:focus, textarea:focus{outline:2px solid var(--pink-deep);out
 .mbox{text-align:center;padding:14px 6px;background:rgba(15,30,38,0.50);backdrop-filter:blur(20px) saturate(160%);-webkit-backdrop-filter:blur(20px) saturate(160%);border-radius:var(--r-xs);border:1px solid rgba(255,255,255,0.14);box-shadow:0 4px 12px rgba(0,0,0,0.2);min-width:0;}
 .mval{font-family:'Playfair Display','Playfair Display',serif;font-size:22px;font-weight:600;color:var(--cream-soft);}
 .mlbl{font-size:9px;text-transform:uppercase;letter-spacing:0.8px;color:var(--cream-mute);margin-top:3px;}
-/* Iter 48 — Macro grid mobile scaling */
+/* Iter 48 + Iter 52 — Macro grid mobile scaling (iPhone 12 Pro 390px: "1.900" sayısı 4-col 90px hücreye taşıyordu → 2x2 reflow) */
 @media (max-width:430px){
-  .mrow{gap:6px;}
-  .mbox{padding:12px 4px;}
-  .mval{font-size:19px;}
-  .mlbl{font-size:8.5px;letter-spacing:0.5px;}
+  .mrow{grid-template-columns:repeat(2,1fr);gap:8px;}
+  .mbox{padding:14px 8px;}
+  .mval{font-size:24px;}
+  .mlbl{font-size:10px;letter-spacing:0.6px;}
 }
 @media (max-width:360px){
   /* Iter 50 B8/B9: 4-col → 2x2 dar ekran */
@@ -505,10 +505,7 @@ input:focus, select:focus, textarea:focus{outline:2px solid var(--pink-deep);out
   .mval{font-size:17px;}
   .mlbl{font-size:8px;}
 }
-/* Iter 50 B10: ring-grid 4-col @360 → 2x2 */
-@media (max-width:360px){
-  .ring-grid{grid-template-columns:repeat(2,1fr) !important;}
-}
+/* Iter 50 B10 + Iter 52 fix: ring-grid 2x2 @430 (iPhone 12 Pro dahil) — eski @360 duplicate kaldırıldı, üst CSS bloğu kapsıyor */
 /* Iter 50 B7: chat greeting max-height dar ekran kısıtlama (input ekrandan kaybolmasın) */
 @media (max-width:430px){#page-chat.active #chat-greeting-card{max-height:38vh;}}
 @media (max-width:360px){#page-chat.active #chat-greeting-card{max-height:30vh;}}
@@ -772,7 +769,16 @@ select option{background:var(--bg-deep);color:var(--cream);}
 
 /* MACRO RINGS — 4 svg ring (kcal/P/F/C) */
 .ring-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:14px;}
-.ring-cell{text-align:center;}
+.ring-cell{text-align:center;min-width:0;}
+/* Iter 52 — Ring grid mobile: 4-col → 2x2 (iPhone 12 Pro 390px ring-pct '/1900 · %0' taşıyordu) */
+@media (max-width:430px){
+  .ring-grid{grid-template-columns:repeat(2,1fr);gap:10px;}
+  .ring-pct{font-size:11px;}
+}
+@media (max-width:360px){
+  .ring-grid{gap:8px;}
+  .ring-pct{font-size:10px;}
+}
 .ring-svg{width:64px;height:64px;display:block;margin:0 auto;}
 .ring-bg{stroke:var(--surface2);stroke-width:6;fill:none;}
 .ring-fg{stroke-width:6;fill:none;stroke-linecap:round;transition:stroke-dashoffset 0.6s ease-out, stroke 0.3s ease;}
