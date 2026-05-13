@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-<title>Begümnaz ☀️</title>
+<title>Begümnaz 🐥</title>
 <!-- PWA · Phase 3.B-A -->
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#6E1A28">
@@ -1389,7 +1389,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
 <div id="page-takvim" class="page active">
   <div class="topbar" style="position:relative;">
     <div class="tb-label" id="dash-greeting-label">KİŞİSEL PROGRAM</div>
-    <h1 style="font-size:42px;letter-spacing:1.5px;"><em>Begümnaz</em> <span style="font-style:normal;display:inline-block;filter:drop-shadow(0 0 16px rgba(232,178,63,0.65));">☀️</span></h1>
+    <h1 style="font-size:42px;letter-spacing:1.5px;"><em>Begümnaz</em> <span style="font-style:normal;display:inline-block;filter:drop-shadow(0 0 16px rgba(232,178,63,0.55));">🐥</span></h1>
     <div class="tb-sub" id="today-str" style="margin-top:8px;"></div>
     <!-- Phase 3.D · 12 May 2026 — ⚙️ Ayarlar butonu (modal açar) -->
     <button onclick="openSettingsModal()" aria-label="Ayarlar" style="position:absolute;top:56px;right:20px;width:42px;height:42px;border-radius:50%;background:rgba(42,14,20,0.78);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(232,221,196,0.20);color:var(--cream-soft);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,0.25);">⚙️</button>
@@ -1402,12 +1402,12 @@ select option{background:var(--bg-deep);color:var(--cream);}
   <div id="hero-card"></div>           <!-- Phase 3.C P0 #6 — Saat-bazlı 4 mode Hero Card -->
   <div id="pazar-brunch"></div>        <!-- Phase 3.C P0 #8 — Pazar Esnek Gün Festival Card -->
 
-  <!-- Phase 3.C feedback (12 May 2. round) — Hatırlatmalar dashboard butonu (collapsible)
-       Begümnaz: "hatırlatmalar kısmını dashboard'a buton olarak koyalım" -->
-  <div id="reminders-dashboard-wrap" style="margin:0 16px 16px;">
+  <!-- Hatırlatmalar — Iter 36 spot fix: sadece aktif hatırlatma varsa görünür
+       (önemli tarih ≤7 gün VEYA supplement <%50 + saat <22 VEYA regl ≤3 gün) -->
+  <div id="reminders-dashboard-wrap" style="margin:0 16px 16px;display:none;">
     <button class="btn bsoft bfull" onclick="toggleRemindersDashboard()" style="text-align:left;padding:14px 16px;justify-content:flex-start;gap:10px;">
       <span style="font-size:20px;">🔔</span>
-      <span style="flex:1;" data-i18n="reminders">Hatırlatmalar</span>
+      <span style="flex:1;"><span data-i18n="reminders">Hatırlatmalar</span><span id="reminders-summary" style="font-size:11px;color:var(--cream-mute);font-weight:400;margin-left:8px;"></span></span>
       <span id="reminders-arrow" style="font-size:16px;color:var(--cream-mute);">▾</span>
     </button>
     <div id="notification-settings" style="display:none;margin-top:8px;"></div>
@@ -3596,6 +3596,7 @@ function renderDashboard(){
   }
   // Phase 3.C P0 #6 — Sabah Hero Card (saat-bazlı 4 mode)
   renderMorningCompassion();
+  if(typeof updateRemindersVisibility==='function')updateRemindersVisibility();
   renderHeroCard();
   // Phase 3.C P0 #8 — Pazar Esnek Gün Festival Card (sadece Pazar 09:00-13:00)
   renderPazarBrunch();
@@ -4132,6 +4133,7 @@ const WEDDING_REFRAME_PROMPTS=[
 
 // ══════════════════════════════════════════
 // PHASE 3.C feedback (12 May 2. round) — Hatırlatmalar dashboard collapsible toggle
+// Iter 36 spot fix: kart sadece aktif hatırlatma varsa görünür
 // ══════════════════════════════════════════
 function toggleRemindersDashboard(){
   const body=document.getElementById('notification-settings');
@@ -4141,6 +4143,73 @@ function toggleRemindersDashboard(){
   body.style.display=open?'none':'block';
   if(arrow)arrow.textContent=open?'▾':'▴';
   if(!open && typeof renderNotificationSettings==='function')renderNotificationSettings();
+}
+
+// Iter 36 — Aktif hatırlatma kontrolü (3 koşul)
+function getActiveReminders(){
+  const reasons=[];
+  const en=getLang()==='en';
+  // 1. Önemli tarih ≤7 gün
+  try{
+    const settings=(typeof getCycleSettings==='function')?getCycleSettings():{};
+    if(settings.eventDate){
+      const evt=new Date(settings.eventDate);
+      const diff=Math.floor((evt-new Date())/86400000);
+      if(diff>=0 && diff<=7){
+        const lbl=settings.eventLabel||(en?'Important date':'Önemli tarih');
+        reasons.push({type:'event',text:en?`${lbl} in ${diff} day${diff===1?'':'s'}`:`${lbl} ${diff} gün kaldı`});
+      }
+    }
+  }catch(e){}
+  // 2. Bugün supplement <%50 + saat <22
+  try{
+    const hr=new Date().getHours();
+    if(hr<22){
+      const log=JSON.parse(localStorage.getItem('supplement_log')||'{}');
+      const dk=new Date().toISOString().slice(0,10);
+      const today=log[dk]||{};
+      const taken=Object.values(today).filter(Boolean).length;
+      const total=(typeof SUPPLEMENT_SLOTS!=='undefined')?SUPPLEMENT_SLOTS.length:8;
+      if(taken<total/2){
+        const missing=total-taken;
+        reasons.push({type:'supplement',text:en?`${missing} supplement remaining today`:`${missing} supplement bekliyor`});
+      }
+    }
+  }catch(e){}
+  // 3. Sonraki regl tahmini ≤3 gün
+  try{
+    const ps=(typeof getPeriods==='function')?getPeriods():[];
+    if(ps.length){
+      const cyc=(typeof getAvgCycleLen==='function')?getAvgCycleLen():28;
+      const lastStart=fromYmd(ps[ps.length-1].start);
+      const nextStart=new Date(lastStart.getTime()+cyc*86400000);
+      const daysToNext=Math.floor((nextStart-new Date())/86400000);
+      if(daysToNext>=0 && daysToNext<=3){
+        reasons.push({type:'period',text:en?`Next period in ${daysToNext} day${daysToNext===1?'':'s'}`:`Sıradaki regl ${daysToNext} gün kaldı`});
+      }
+    }
+  }catch(e){}
+  return reasons;
+}
+
+function updateRemindersVisibility(){
+  const wrap=document.getElementById('reminders-dashboard-wrap');
+  if(!wrap)return;
+  const reasons=getActiveReminders();
+  if(!reasons.length){
+    wrap.style.display='none';
+    return;
+  }
+  wrap.style.display='block';
+  const summaryEl=document.getElementById('reminders-summary');
+  if(summaryEl)summaryEl.textContent='· '+reasons.map(r=>r.text).join(' · ');
+  // Eğer notification-settings boşsa, kullanıcı tıklayınca aktif reasons listesi göster
+  const body=document.getElementById('notification-settings');
+  if(body && !body.innerHTML.trim()){
+    body.innerHTML=`<div style="padding:14px 16px;background:rgba(229,168,181,0.10);border-radius:10px;border:1px solid rgba(229,168,181,0.20);">
+      ${reasons.map(r=>`<div style="font-size:13px;color:var(--cream);padding:6px 0;border-bottom:1px dashed rgba(255,255,255,0.10);"><strong>${r.type==='event'?'💍':r.type==='supplement'?'💊':'🌸'}</strong> ${r.text}</div>`).join('')}
+    </div>`;
+  }
 }
 
 // ══════════════════════════════════════════
