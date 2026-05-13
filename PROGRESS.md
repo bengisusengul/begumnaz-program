@@ -2,7 +2,7 @@
 
 > **Bu dosya yeni oturumun ilk okunan dosyasıdır.** Burada nerede kaldığımız, yarın ne yapacağımız, hangi kararların değişmediği yazılır. Önceki oturumda olan her kritik şey buraya yansır.
 
-**Son güncelleme**: 13 Mayıs 2026 — Faz 4 İterasyon 24 (Renk paleti tutarlılık — modal/nav/dr-card teal → bordo)
+**Son güncelleme**: 13 Mayıs 2026 — Faz 4 İterasyon 25 (Mobile responsive proaktif tasma koruması)
 
 ---
 
@@ -69,6 +69,38 @@ PWA artık prod'da Cloudflare Worker AI proxy ile çalışıyor. Begümnaz 1-2 h
 ---
 
 ## 📜 Bu Oturumda Yapılanlar (13 Mayıs 2026)
+
+### Iter 25 — Mobile responsive proaktif tasma koruması (M3)
+
+Kullanıcı spesifik tasma raporu yoktu — Iter 25 **proaktif preventive** fix'leri ekledi (Begümnaz mobile'da kullanmaya başlayınca olası bug'ları önleme).
+
+**Global koruma**:
+- `*{...overflow-wrap:anywhere;}` — uzun string'ler (URL, kelimeler) otomatik sarılır, container'dan taşmaz
+- `html,body{...overflow-x:hidden;}` — sayfa düzeyi yatay scroll engeli
+- `body{...max-width:100vw;}` — viewport sınırı garanti
+
+**Yeni media query** (≤360px küçük ekranlar — iPhone SE 1st gen, eski Android):
+- `body{font-size:14px;}` — temel font küçültme
+- `.card,.bx-card,.al-card,.micro-card{padding-left:14px;padding-right:14px;}` — kart iç padding daraltma
+- `.topbar{padding-left:12px;padding-right:12px;}` — topbar kompakt
+
+**Mevcut media query'ler korundu**:
+- 360px (.nb nav button)
+- 380px (.water-cup, .bulk-row)
+- Touch target ≥44px (.btn, .meal-check, .flow-chip, .symp-chip, .scale-btn) — mevcut, dokunulmadı
+- iOS safe-area-inset-bottom (`env()`) — mevcut, dokunulmadı
+
+**SW cache bump**: `v13-renk-paleti-bordo` → **`v14-mobile-overflow-fix`**
+
+**Test edilmemiş ama beklenen iyileşmeler**:
+- Recipe modal'ında uzun food name'ler ellipsis yerine sarma
+- Custom Food input'unda uzun yemek tarifleri taşma yok
+- Settings modal alt scroll iOS Safari bottom bar ile çakışma korunur
+- Bottom nav 360px'te daha az padding (mevcut), Now nav bar bordo (Iter 24)
+
+**Kullanıcıya not**: Begümnaz mobile'da spesifik tasma yaşarsa screenshot paylaşsın → spot fix sonraki Iter'da.
+
+---
 
 ### Iter 24 — Renk paleti tutarlılığı (M11)
 
