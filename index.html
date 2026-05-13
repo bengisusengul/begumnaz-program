@@ -12177,26 +12177,30 @@ async function handlePeriodHistoryUpload(input){
       const contentBlock=isPdf
         ?{type:'document',source:{type:'base64',media_type:'application/pdf',data:base64}}
         :{type:'image',source:{type:'base64',media_type:mediaType,data:base64}};
-      const prompt=`Bu görsel/PDF'de bir regl (menstrüel period) takip uygulamasından alınmış veri var (Flo, Clue, Period Tracker veya benzeri). Tüm regl başlangıç tarihlerini ve mümkünse bitiş tarihlerini çıkar.
+      const todayISO=new Date().toISOString().slice(0,10);
+      const currentYear=new Date().getFullYear();
+      const prompt=`Bu görsel/PDF bir regl (menstrüel period) takip uygulamasından (Flo, Clue, Period Tracker veya benzeri). TÜM regl başlangıç/bitiş tarihlerini çıkar — uzun listelerde bile hepsini topla.
 
-Çıktıyı SADECE geçerli JSON olarak ver, başka açıklama yok:
-{
-  "periods": [
-    {"start": "YYYY-MM-DD", "end": "YYYY-MM-DD veya null", "flow": "spotting|light|medium|heavy veya null"}
-  ]
-}
+Bugünün tarihi: ${todayISO} (${currentYear}). Bu önemli — yılı belirtilmemiş tarihlerde (örn "Apr 15", "Mar 18 - Apr 14") yıl varsayımı yap:
+- "Today" veya "Bugün" = ${todayISO}
+- Yılsız tarih en yakın GEÇMİŞ ay = ${currentYear} (eğer ay bugünden sonraysa, ${currentYear-1})
+- "Dec 21,2025 - Jan 20" gibi karışık: start=2025-12-21, end=2026-01-20 (kıvrım kontrolü)
+
+Çıktıyı SADECE geçerli JSON ver:
+{"periods":[{"start":"YYYY-MM-DD","end":"YYYY-MM-DD veya null","flow":"spotting|light|medium|heavy veya null"}]}
 
 Kurallar:
-- Tarih formatı kesin "YYYY-MM-DD" (örn 2024-03-15)
-- Bitiş tarihi yoksa null
+- Tarih formatı KESIN "YYYY-MM-DD" — 4 haneli yıl, 2 haneli ay/gün
+- "Today" varsa end=null (devam ediyor) veya end=${todayISO}
 - Akış şiddeti yoksa null
+- 1 gün regl ("1 Day") başlangıç = bitiş aynı tarih
+- ÇOK uzun liste (50+) varsa HEPSINI dahil et, kesme
 - Sadece regl tarihleri — ovulasyon/fertil pencere DAHIL ETME
-- Tarihler çakışıyorsa veya belirsizse, en güvenilir olan başlangıç tarihini al
-- Eğer hiç regl verisi yoksa: {"periods": []}`;
+- Hiç regl yoksa: {"periods":[]}`;
       statusEl.innerHTML=`<div style="font-size:12px;color:var(--cream-mute);padding:8px;">✨ Dosya ${i+1}/${files.length}: ${f.name.substring(0,40)}...</div>`;
       const res=await callAnthropic({
         model:'claude-haiku-4-5-20251001',
-        max_tokens:2000,
+        max_tokens:8000,
         messages:[{role:'user',content:[contentBlock,{type:'text',text:prompt}]}]
       });
       if(!res.ok){const t=await res.text();throw new Error('API '+res.status+': '+t.substring(0,80));}
