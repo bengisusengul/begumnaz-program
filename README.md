@@ -1,6 +1,12 @@
+<p align="center">
+  <img src="hero-image.jpeg" alt="Begümnaz Program — Cheetah hero" width="400">
+</p>
+
 # Begümnaz Program — Bütüncül Sağlık Takip Sistemi
 
 Begümnaz için kişiselleştirilmiş haftalık sağlık programı. Endometriozis, post-isotretinoin hassas cilt, hormonal akne ve mizaç temelli bütüncül tıp protokolüne dayalı. Repo hem markdown dokümantasyon (multi-agent sentez) hem de PWA web uygulaması içerir.
+
+> 🎨 **Görsel kimlik**: Cheetah hero — gücün ve hassasiyetin birlikteliği. PWA pembe/bordo teması (Playfair Display, Billie Eilish referansı) bu görselden esinlenildi.
 
 ## Tıbbi Bağlam
 

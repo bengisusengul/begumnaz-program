@@ -2,24 +2,26 @@
 
 > **Bu dosya yeni oturumun ilk okunan dosyasıdır.** Burada nerede kaldığımız, yarın ne yapacağımız, hangi kararların değişmediği yazılır. Önceki oturumda olan her kritik şey buraya yansır.
 
-**Son güncelleme**: 13 Mayıs 2026 — Faz 2 İterasyon 17 (Glossary Bengisu kalıntıları temizliği + SW v8)
+**Son güncelleme**: 13 Mayıs 2026 — Faz 2 İterasyon 18 (README cheetah hero + görsel iyileştirme)
 
 ---
 
 ## 🚨 SONRAKİ OTURUMDA İLK YAPILACAK (Next session first action)
 
-### 1. Manuel `git push` — 5+ commit unpushed (push'lanmadıysa)
+### 1. Manuel `git push` — 7+ commit unpushed (push'lanmadıysa)
 
 Şu commit'ler GitHub'a gönderilmedi çünkü Claude'un push to main izni kapalı (default branch protection):
 - `aa2c4bf` — PROGRESS.md kapsamlı yeniden yazıldı
 - `b2f5a98` — Iter 15 Hacettepe Lab kaldırıldı
 - `c771a81` — Iter 16 DEPLOY-API-PROXY.md path/origin fix
 - `64f85bd` — PROGRESS.md commit geçmişi listesi (Iter 16 follow-up)
-- (Iter 17) — Glossary Bengisu kalıntıları temizliği + SW v8
+- `a954ba4` — Iter 17 Glossary Bengisu kalıntıları temizliği + SW v8
+- `a196a5f` — PROGRESS.md commit geçmişi listesi (Iter 17 follow-up)
+- (Iter 18) — README cheetah hero + görsel iyileştirme
 
 ```bash
 cd /Users/agent9/Desktop/bnsp-repo
-git status                    # "ahead of origin/main by 5+ commits" görmeli
+git status                    # "ahead of origin/main by 7+ commits" görmeli
 git push origin main          # manuel push (kullanıcı çalıştırır)
 ```
 
@@ -77,6 +79,21 @@ Cilt protokolü Sal+Paz tret olarak konumlandı. Eğer Begümnaz farklı gün is
 ---
 
 ## 📜 Bu Oturumda Yapılanlar (13 Mayıs 2026)
+
+### Iter 18 — README cheetah hero + görsel iyileştirme
+
+Faz 2 son temizlik kalemi: repo README görsel olarak çıplaktı, başlık metinden ibaretti.
+
+**Eklenen**:
+- `hero-image.jpeg` (208 KB, 736×1223, cheetah, JPEG) — `Begumnaz-program/gorseller/`'dan repo'ya kopyalandı (Iter 9'da CSS pembe/bordo teması için referans alınmıştı, şimdi README hero olarak da kullanılıyor).
+- README başına `<p align="center"><img src="hero-image.jpeg" width="400"></p>` (HTML center, 400px width).
+- Tema notu (blockquote): "Cheetah hero — gücün ve hassasiyetin birlikteliği. PWA pembe/bordo teması (Playfair Display, Billie Eilish ref) bu görselden esinlenildi."
+
+**Yapılmayan** (gelecek Iter'a):
+- PWA ekran görüntüleri (Dashboard/Cycle/Diet/Skin/Workout) — kullanıcının PWA'yı kendi cihazında açıp screenshot alması gerekecek.
+- GitHub Pages deploy URL badge.
+
+---
 
 ### Iter 17 — Glossary Bengisu kalıntıları temizliği + SW v8
 
