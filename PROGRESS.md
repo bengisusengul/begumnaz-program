@@ -319,7 +319,7 @@ Bugünkü iterasyonlar **9-15 arası**. Önceki oturumlardan devralınan + bu ot
 
 ---
 
-## 📊 Commit Geçmişi (22 commit · son 21 bu oturum + önceki iterasyonları)
+## 📊 Commit Geçmişi (24 commit · son 23 bu oturum + önceki iterasyonları)
 
 ```
 3b469ad  Phase 1: Markdown dokümantasyon iskeleti tamamlandı
@@ -344,7 +344,11 @@ c771a81  Faz 2 Iter 16: DEPLOY-API-PROXY.md path/origin tutarsızlık fix  ⬅ U
 a954ba4  Faz 2 Iter 17: Glossary Bengisu kalıntıları temizliği + SW v8  ⬅ UNPUSHED
 a196a5f  PROGRESS.md commit geçmişi listesi: Iter 17 + 64f85bd eklendi  ⬅ UNPUSHED
 6f3295a  Faz 2 Iter 18: README cheetah hero + görsel iyileştirme  ⬅ UNPUSHED
+30cb616  PROGRESS.md commit geçmişi listesi: Iter 18 + a196a5f eklendi  ✅ pushed
+59b53d4  Faz 3 LIVE Iter 19: Cloudflare Worker AI proxy deploy + CORS fix  ⬅ UNPUSHED
 ```
+
+**Not**: UNPUSHED işaretleri 13 Mayıs 09:00 push öncesi durumu yansıtıyordu — 09:00 push'tan sonra `30cb616`'ya kadar tüm commit'ler origin'de. Sadece `59b53d4` (Iter 19) ve bu commit (follow-up) lokal.
 
 ---
 
