@@ -2,22 +2,24 @@
 
 > **Bu dosya yeni oturumun ilk okunan dosyasıdır.** Burada nerede kaldığımız, yarın ne yapacağımız, hangi kararların değişmediği yazılır. Önceki oturumda olan her kritik şey buraya yansır.
 
-**Son güncelleme**: 13 Mayıs 2026 — Faz 2 İterasyon 16 (DEPLOY-API-PROXY.md path/origin fix)
+**Son güncelleme**: 13 Mayıs 2026 — Faz 2 İterasyon 17 (Glossary Bengisu kalıntıları temizliği + SW v8)
 
 ---
 
 ## 🚨 SONRAKİ OTURUMDA İLK YAPILACAK (Next session first action)
 
-### 1. Manuel `git push` — 3 commit unpushed (push'lanmadıysa)
+### 1. Manuel `git push` — 5+ commit unpushed (push'lanmadıysa)
 
 Şu commit'ler GitHub'a gönderilmedi çünkü Claude'un push to main izni kapalı (default branch protection):
 - `aa2c4bf` — PROGRESS.md kapsamlı yeniden yazıldı
 - `b2f5a98` — Iter 15 Hacettepe Lab kaldırıldı
-- (Iter 16) — DEPLOY-API-PROXY.md path/origin fix
+- `c771a81` — Iter 16 DEPLOY-API-PROXY.md path/origin fix
+- `64f85bd` — PROGRESS.md commit geçmişi listesi (Iter 16 follow-up)
+- (Iter 17) — Glossary Bengisu kalıntıları temizliği + SW v8
 
 ```bash
 cd /Users/agent9/Desktop/bnsp-repo
-git status                    # "ahead of origin/main by 3 commits" görmeli
+git status                    # "ahead of origin/main by 5+ commits" görmeli
 git push origin main          # manuel push (kullanıcı çalıştırır)
 ```
 
@@ -75,6 +77,39 @@ Cilt protokolü Sal+Paz tret olarak konumlandı. Eğer Begümnaz farklı gün is
 ---
 
 ## 📜 Bu Oturumda Yapılanlar (13 Mayıs 2026)
+
+### Iter 17 — Glossary Bengisu kalıntıları temizliği + SW v8
+
+PWA glossary'sinde (`LEGEND_DEFS`, satır 7280-7400 civarı) kapsamlı Bengisu kalıntıları bulundu — bazıları **yanlış tıbbi bilgi** içeriyordu. Iter 7'de "KAPSAMLI Bengisu temizliği" yapılmış olmasına rağmen glossary bölümü atlanmıştı.
+
+**Silinen 4 glossary maddesi** (Begümnaz protokolünde yok):
+- `calciday` — Kalsiyum karbonat efervesan (Bengisu E89.2 paratiroid yetersizliği için)
+- `qalyviz` — Aktif D vit (Bengisu)
+- `levotiroksin` — Sentetik T4 (Bengisu tiroidektomi için)
+- `endo komplikasyonu` — Paratiroid yetersizliği (Bengisu E89.2)
+
+**Yanlış tanım tamamen yeniden yazıldı**:
+- `endometriozis` def: "Tiroid bezinin cerrahi alınması" ← TAMAMEN YANLIŞ TIBBİ BİLGİ. Doğru tanım: "Endometrium dokusunun uterus dışında bulunması" + Begümnaz context (Visanne tamamlandı, içerde kalan endo, bütüncül protokol, endo flare, süt+dana+tavuk yasak).
+
+**Yanlış tıbbi cümleler temizlendi**:
+- `t4` glossary'sinde `Lugol iyot (levotiroksin) sentetik T4` ← Lugol ≠ levotiroksin (Lugol potasyum iyot çözeltisi). Yerine: Begümnaz selenyum/iyot düşük → Lugol reçete bağlamı.
+- `t4` l3'te `Total endometriozis sonrası life-long T4 replacement` cümlesi (Bengisu için).
+- `tsh` def'te `Tiroidektomi sonrası replacement dozu` cümlesi. Yerine: Anti-TPO negatif → Hashimoto yok.
+- `bmr` l3'te `Tiroidektomi T4 replacement uygunsa...` cümlesi. Yerine: Begümnaz T3 hafif yüksek → BMR hafif artmış.
+- Satır 2614 yorum: `// Tiroidektomi: ≥35 minimum (post-thyroidectomy adjustment)` → `// EA ≥35 minimum (endo flare/post-isotretinoin adjustment)`.
+
+**Yeni eklenen madde**:
+- `post-isotretinoin` — Begümnaz için tam bağlamlı (8 ay × 40 mg Zoretanin etki etmedi, bariyer onarımı 12-24 ay, PIE/PIH/güneş lekeleri, tret 2x/hf sandwich, mezoterapi öncesi/sonrası 5 gün retinoid kes).
+
+**Yapısal**:
+- Bölüm başlığı `// ── Tıp/Tiroid (6) ──` → `// ── Tıp/Begümnaz (5) ──` (Bengisu silindi → madde sayısı eşleşti).
+
+**SW cache bump**:
+- `sw.js:4` → `begumnaz-v7-no-hacettepe-2026-05-12` → `begumnaz-v8-glossary-fix-2026-05-13` (eski cache invalide olacak, kullanıcı ilk açılışta yeni glossary'yi görür).
+
+**Tıbbi önem**: Kullanıcı glossary kartlarını açtığında daha önce Bengisu'nun tiroidektomi geçmişine ait yanlış bilgilerle karşılaşıyordu. Özellikle "endometriozis = tiroidektomi" tanımı klinik açıdan kritik yanlış. Iter 17 ile glossary Begümnaz tıbbi profiline (post-isotretinoin + endometriozis + Anti-TPO negatif) tam uyumlu hale getirildi.
+
+---
 
 ### Iter 16 — DEPLOY-API-PROXY.md path/origin fix
 
