@@ -533,6 +533,9 @@ input:focus, select:focus, textarea:focus{outline:2px solid var(--pink-deep);out
 .exhow ol{padding-left:16px;}
 .exhow li{margin-bottom:5px;}
 .exacts{display:flex;gap:8px;flex-wrap:wrap;}
+/* Iter 66 — Aktif ekipman moduna göre kısa özet (kart kapalı haldeyken görünür) */
+.exequip{padding:6px 14px 10px;font-size:11.5px;color:var(--cream-mute);line-height:1.45;cursor:pointer;border-top:1px dashed rgba(232,221,196,0.10);background:rgba(212,164,181,0.06);}
+.exequip strong{color:var(--cream-soft);font-weight:600;}
 
 /* FOOD */
 .fi{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border-soft);}
@@ -5079,6 +5082,18 @@ function renderEquipBar(){
     <div style="font-size:11px;color:var(--cream-mute);text-transform:uppercase;letter-spacing:1px;flex-shrink:0;">${lblEquip}</div>
     <div style="display:flex;gap:6px;flex:1;">${btns}</div>
   </div>`;
+}
+
+// Iter 66 — Hareket kartının kapalı halinde aktif moda göre kısa ekipman özeti
+// EX array h alanında "Ev: 3 kg DB göğüs hizasında..." gibi ilk cümleyi çekip kompakt göster
+function getEquipHint(text,loc){
+  if(!text)return '';
+  const lbl={ev:'Ev',gym:'Gym',disari:'Dışarı'}[loc||'ev']||'Ev';
+  // Aktif label'ı yakala, sonraki location label'a (Ev/Gym/Dışarı) veya cümle sonuna (.) kadar al
+  const re=new RegExp(`\\b${lbl}:\\s+([\\s\\S]+?)(?=\\s+\\b(?:Ev|Gym|Dışarı):|\\.\\s*$|\\.\\s+[A-ZİŞĞÇÖÜ])`,'i');
+  const m=text.match(re);
+  if(!m)return '';
+  return m[1].trim().replace(/[.,;:]+$/,'');
 }
 
 // Iter 64 — Egzersiz talimatlarını ekipman moduna göre vurgula
@@ -10121,8 +10136,15 @@ function renderExDay(){
     }
     // Bilim Modu kaldırıldı (Iter 20) — eduChip + eduPanel görünmez
     const eduChip='', eduPanel='';
+    // Iter 66 — Aktif ekipman moduna göre kısa özet (kart kapalı haldeyken görünür)
+    const _equipLoc=(typeof getWorkoutLocation==='function')?getWorkoutLocation():'ev';
+    const _equipHint=(typeof getEquipHint==='function')?getEquipHint(ex.h,_equipLoc):'';
+    const _equipEmoji={ev:'🏠',gym:'🏋️',disari:'🌳'}[_equipLoc]||'🏠';
+    const _equipLblEn=(getLang()==='en');
+    const _equipLbl={ev:_equipLblEn?'Home':'Ev',gym:'Gym',disari:_equipLblEn?'Outdoor':'Dışarı'}[_equipLoc]||'Ev';
+    const equipBadge=_equipHint?`<div class="exequip" onclick="toggleEx(this.previousElementSibling)">${_equipEmoji} <strong>${_equipLbl}:</strong> ${_equipHint}</div>`:'';
     // Iter 44 — Exercise card buttons via t() (keys already exist: ex_video, ex_swap, ex_modify, ex_skip)
-    div.innerHTML=`<div class="exh" onclick="toggleEx(this)"><div class="exc ${headerCls}" style="display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">${headerState}</div><div class="exn ${doneSets===totalSets?'done':''}">${ex.c?'🎯 ':''}${ex.n}</div><div class="exs">${ex.s}</div></div><div class="exb"><div class="mtags">${ex.m.map(m=>`<span class="mtag">${m}</span>`).join('')}${ex.c?'<span class="mtag" style="background:var(--pink-pale);color:var(--pink-deep);">Core</span>':''}</div>${pelvikRotChip}<div class="exhow" style="font-size:13px;color:var(--text-mid);line-height:1.6;">${howShort}</div><div class="exacts"><button class="btn bsoft bsm gif-btn" data-id="${ex.id}" data-name="${ex.n}" data-muscles="${ex.m.join(',')}" data-how="${encodeURIComponent(ex.h)}">${t('ex_video')}</button><button class="btn bghost bsm" onclick="openSwap(${i},${dow},'${dk}')">${t('ex_swap')}</button>${eduChip}${cycleSubChip}${pelvikVideoLink}</div>${eduPanel}<div class="set-log">${prevHint}${setRows}<div class="set-quick-states"><button class="modify" onclick="openSetSheet('modify','${dk}','${ex.id}')">${t('ex_modify')}</button><button class="skip" onclick="openSetSheet('skip','${dk}','${ex.id}')">${t('ex_skip')}</button></div>${summary}</div></div>`;
+    div.innerHTML=`<div class="exh" onclick="toggleEx(this)"><div class="exc ${headerCls}" style="display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">${headerState}</div><div class="exn ${doneSets===totalSets?'done':''}">${ex.c?'🎯 ':''}${ex.n}</div><div class="exs">${ex.s}</div></div>${equipBadge}<div class="exb"><div class="mtags">${ex.m.map(m=>`<span class="mtag">${m}</span>`).join('')}${ex.c?'<span class="mtag" style="background:var(--pink-pale);color:var(--pink-deep);">Core</span>':''}</div>${pelvikRotChip}<div class="exhow" style="font-size:13px;color:var(--text-mid);line-height:1.6;">${howShort}</div><div class="exacts"><button class="btn bsoft bsm gif-btn" data-id="${ex.id}" data-name="${ex.n}" data-muscles="${ex.m.join(',')}" data-how="${encodeURIComponent(ex.h)}">${t('ex_video')}</button><button class="btn bghost bsm" onclick="openSwap(${i},${dow},'${dk}')">${t('ex_swap')}</button>${eduChip}${cycleSubChip}${pelvikVideoLink}</div>${eduPanel}<div class="set-log">${prevHint}${setRows}<div class="set-quick-states"><button class="modify" onclick="openSetSheet('modify','${dk}','${ex.id}')">${t('ex_modify')}</button><button class="skip" onclick="openSetSheet('skip','${dk}','${ex.id}')">${t('ex_skip')}</button></div>${summary}</div></div>`;
     // GIF butonuna event listener ekle
     const gifBtn = div.querySelector('.gif-btn');
     if(gifBtn) gifBtn.addEventListener('click', function(e){
