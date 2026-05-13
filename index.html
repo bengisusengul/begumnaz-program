@@ -1824,7 +1824,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
   <button class="nb" onclick="showP('diyet',this)" aria-label="Diyet"><span class="ni">🥩</span><span class="nl" data-i18n="nav_diet">Diyet</span></button>
   <button class="nb" onclick="showP('egzersiz',this)" aria-label="Egzersiz"><span class="ni">💪</span><span class="nl" data-i18n="nav_exercise">Egzersiz</span></button>
   <button class="nb" onclick="showP('cilt',this)" aria-label="Cilt"><span class="ni">✨</span><span class="nl" data-i18n="nav_skin">Cilt</span></button>
-  <button class="nb" onclick="showP('medical',this)" aria-label="Medical Records"><span class="ni">🩺</span><span class="nl" data-i18n="nav_medical">Medical</span></button>
+  <button class="nb" onclick="showP('medical',this)" aria-label="Sağlık Kayıtları"><span class="ni">🩺</span><span class="nl" data-i18n="nav_medical">Sağlık</span></button>
 </nav>
 
 <!-- LANGUAGE TOGGLE (sağ alt sabit) -->
@@ -2214,7 +2214,7 @@ select option{background:var(--bg-deep);color:var(--cream);}
 const I18N = {
   tr: {
     nav_today:'Bugün', nav_cycle:'Döngü', nav_diet:'Diyet',
-    nav_exercise:'Egzersiz', nav_skin:'Cilt', nav_medical:'Medical',
+    nav_exercise:'Egzersiz', nav_skin:'Cilt', nav_medical:'Sağlık',
     greet_morning:'Günaydın', greet_noon:'Tünaydın',
     greet_evening:'İyi akşamlar', greet_night:'İyi geceler',
     welcome_title:'Hoşgeldin', welcome_subtitle:'Bu app sana özel — döngün, sağlığın, antrenmanın, cilt bakımın 1 yerde. Başlamadan önce 3 şeyi netleştirelim:',
@@ -2253,7 +2253,7 @@ const I18N = {
     act_breakfast:'🍳 Kahvaltı + 6 supplement (tok)',
     act_breakfast_d:'Yumurta + pişmiş salata + çiğ kuruyemiş',
     act_lugol:'💧 Lugol iyot 4 damla + Bach (2.)',
-    act_lugol_d:'1 bardak ılık su · mineral mesafesi',
+    act_lugol_d:'1 bardak ılık su · diğer minerallerden ≥2 saat ara',
     act_lunch:'🍲 Öğle Yemeği',
     act_lunch_d:'Sebze çorbası + sebze yemeği + et (3x/hafta)',
     act_snack:'🍎 Ara + NAC (2.) + Bach (3.)',
@@ -2277,6 +2277,72 @@ const I18N = {
     time_acikma:'Acıkma',
     time_pre_wo:'Pre-WO',
     pzt_extra:' · Pzt: Colewinde Vit D',
+    // Iter 33 — Cycle sekmesi bilingual
+    cycle_not_started:'Regl takibi başlatılmadı',
+    cycle_period_today_start:'Bugün regl başladı',
+    cycle_period_today_end:'Bugün regl bitti',
+    cycle_period_past_add:'Geçmiş regl ekle',
+    cycle_undo_today:'Bugünün başlangıcını GERİ AL',
+    cycle_next_period_in:'Sıradaki regl',
+    cycle_period_logs:'regl kaydı',
+    cycle_open_period:'Açık regl',
+    cycle_day_X:'Gün',
+    cycle_of:'/',
+    cycle_pred_label:'Tahminler',
+    cycle_pred_predictions:'Tahminler',
+    cycle_pred_next_period:'Sıradaki Regl',
+    cycle_pred_ovulation:'Ovulasyon',
+    cycle_pred_fertile_window:'Fertil Pencere',
+    cycle_pred_pms_window:'PMS Penceresi',
+    cycle_pred_not_ready:'Tahminler henüz hazır değil',
+    cycle_pred_add_first:'İlk regl başlangıç tarihini ekle — sonraki regl, ovulasyon, fertil pencere ve PMS dönemi otomatik tahmin edilir. 2+ kayıt sonrası median döngü uzunluğuna göre netleşir.',
+    cycle_pred_add_btn:'Regl Ekle',
+    cycle_pred_data_note:'Tüm veriler yalnızca bu cihazda saklanır',
+    cycle_pred_single_log:'Tek kayıt — varsayılan döngü uzunluğu kullanılıyor.',
+    cycle_pred_2_logs:'kayda göre hesaplandı, daha çok regl girdikçe netleşir.',
+    cycle_pred_median:'kayda göre median.',
+    cycle_pred_days_after:'gün sonra',
+    cycle_pred_estimated:'tahmini',
+    cycle_history:'Cycle Geçmişi',
+    cycle_hist_show:'📜 Geçmişi göster',
+    cycle_hist_hide:'📜 Geçmişi gizle',
+    cycle_hist_records:'kayıt',
+    cycle_hist_ongoing:'devam ediyor',
+    cycle_hist_days_short:'gün',
+    cycle_hist_open:'(açık)',
+    cycle_hist_delete:'Sil',
+    cycle_avg_cycle:'Ortalama Cycle',
+    cycle_avg_period:'Ortalama Regl',
+    cycle_phase_averages:'Phase\'e göre ortalamalar',
+    cycle_freq_symptoms:'En sık semptomlar',
+    flow_label:'Akış Şiddeti',
+    flow_spotting:'Damlayan',
+    flow_light:'Hafif Akan',
+    flow_medium:'Akan',
+    flow_heavy:'Bol Akan',
+    flow_unset:'— seçili değil —',
+    alert_period_exists:'Bugün için zaten kayıt var.',
+    alert_no_open_period:'Açık bir regl kaydı yok.',
+    alert_invalid_dates:'Bitiş tarihi başlangıçtan önce olamaz.',
+    alert_start_required:'Başlangıç tarihi zorunlu.',
+    sleep_apple_auto:'Apple Health\'ten otomatik · değiştirmek için tıkla',
+    sleep_unit:'uyku',
+    bodyconv_morning_q:'Bugün bedeninle ne istersin?',
+    bodyconv_evening_q:'gerçekleşti mi?',
+    intent_comfort:'Rahatla',
+    intent_strength:'Güçlen',
+    intent_clarity:'Berraklaş',
+    intent_pleasure:'Tat al',
+    intent_rest:'Dinlen',
+    mood_parlak:'Parlak',
+    mood_guclu:'Güçlü',
+    mood_dengeli:'Dengeli',
+    mood_bulanik:'Bulanık',
+    mood_sakin:'Sakin',
+    log_today:'Bugünün günlüğü',
+    log_flow_intensity:'AKIŞ ŞİDDETİ',
+    log_save:'Kaydet',
+    log_cancel:'İptal',
   },
   en: {
     nav_today:'Today', nav_cycle:'Cycle', nav_diet:'Diet',
@@ -2343,6 +2409,72 @@ const I18N = {
     time_acikma:'When hungry',
     time_pre_wo:'Pre-WO',
     pzt_extra:' · Mon: Colewinde Vit D',
+    // Iter 33 — Cycle tab bilingual
+    cycle_not_started:'Period tracking not started',
+    cycle_period_today_start:'Period started today',
+    cycle_period_today_end:'Period ended today',
+    cycle_period_past_add:'Add past period',
+    cycle_undo_today:'UNDO today\'s start',
+    cycle_next_period_in:'Next period',
+    cycle_period_logs:'period logs',
+    cycle_open_period:'Open period',
+    cycle_day_X:'Day',
+    cycle_of:'/',
+    cycle_pred_label:'Predictions',
+    cycle_pred_predictions:'Predictions',
+    cycle_pred_next_period:'Next Period',
+    cycle_pred_ovulation:'Ovulation',
+    cycle_pred_fertile_window:'Fertile Window',
+    cycle_pred_pms_window:'PMS Window',
+    cycle_pred_not_ready:'Predictions not ready yet',
+    cycle_pred_add_first:'Add your first period start date — your next period, ovulation, fertile window and PMS phase will be predicted automatically. Predictions sharpen after 2+ logs based on median cycle length.',
+    cycle_pred_add_btn:'Add Period',
+    cycle_pred_data_note:'All data is stored only on this device',
+    cycle_pred_single_log:'Single log — using default cycle length.',
+    cycle_pred_2_logs:'logs used, predictions sharpen with more entries.',
+    cycle_pred_median:'logs (median used).',
+    cycle_pred_days_after:'days from now',
+    cycle_pred_estimated:'estimated',
+    cycle_history:'Cycle History',
+    cycle_hist_show:'📜 Show history',
+    cycle_hist_hide:'📜 Hide history',
+    cycle_hist_records:'logs',
+    cycle_hist_ongoing:'ongoing',
+    cycle_hist_days_short:'days',
+    cycle_hist_open:'(open)',
+    cycle_hist_delete:'Delete',
+    cycle_avg_cycle:'Average Cycle',
+    cycle_avg_period:'Average Period',
+    cycle_phase_averages:'Averages by phase',
+    cycle_freq_symptoms:'Most frequent symptoms',
+    flow_label:'Flow Intensity',
+    flow_spotting:'Spotting',
+    flow_light:'Light flow',
+    flow_medium:'Medium flow',
+    flow_heavy:'Heavy flow',
+    flow_unset:'— not set —',
+    alert_period_exists:'Period already logged for today.',
+    alert_no_open_period:'No open period record.',
+    alert_invalid_dates:'End date cannot be before start date.',
+    alert_start_required:'Start date is required.',
+    sleep_apple_auto:'Auto from Apple Health · tap to change',
+    sleep_unit:'sleep',
+    bodyconv_morning_q:'What does your body want today?',
+    bodyconv_evening_q:'did it come true?',
+    intent_comfort:'Comfort',
+    intent_strength:'Strength',
+    intent_clarity:'Clarity',
+    intent_pleasure:'Pleasure',
+    intent_rest:'Rest',
+    mood_parlak:'Bright',
+    mood_guclu:'Strong',
+    mood_dengeli:'Balanced',
+    mood_bulanik:'Cloudy',
+    mood_sakin:'Calm',
+    log_today:'Today\'s log',
+    log_flow_intensity:'FLOW INTENSITY',
+    log_save:'Save',
+    log_cancel:'Cancel',
   }
 };
 function getLang(){return localStorage.getItem('lang')||'tr';}
@@ -3196,7 +3328,7 @@ function renderSelDay(){
 
   const kahvalti_supp_detail=`<div style="background:rgba(232,178,63,0.18);border:1px solid rgba(232,178,63,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>💊 Kahvaltı TOK karna (6 ürün):</b><br>• Anti turmeric 2 tablet (1. doz) — antiinflamatuvar, yağlı yemekle emilim<br>• More than (MSM+Vit C) 1 tablet (1. doz) — eklem+antioksidan<br>• NBT Life Guard 1 tablet — multivit<br>• Anti MM-12 1 tablet — gündüz alımı<br>• Lifextra On Hepa 1 tablet (1. doz) — karaciğer destek<br>• Time Magnezyum 1 tablet (1. doz)${isMonday?'<br><br><div style="margin-top:6px;padding:6px 8px;background:rgba(217,89,30,0.22);border-radius:6px;color:var(--coral-soft);"><b>🟠 PAZARTESİ EKSTRA:</b> Colewinde 50.000 IU Vit D — yağda eriyen, kahvaltıdaki zeytinyağı+zeytinle ideal emilim. Haftada 1, sabit gün.</div>':''}</div>`;
 
-  const lugol_detail=`<div style="background:rgba(232,178,63,0.18);border:1px solid rgba(232,178,63,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>💧 Lugol İyot %5</b><br>• <b>4 damla</b> + 1 bardak ılık su (2 hafta sonra 2 damlaya düş)<br>• Kahvaltıdan +2 saat sonra (mineral mesafesi)<br>• İdrar iyot 27 µg/L (düşük, ref 100-200) — doktor reçetesi<br><br><span style="font-size:11px;color:var(--cream-mute);">⚠️ Lugol ile magnezyum/çinko arası ≥2-4 saat ara. Lugol başlangıcı sonrası 6-8 hf TSH/T3/T4 tekrar.</span></div>`;
+  const lugol_detail=`<div style="background:rgba(232,178,63,0.18);border:1px solid rgba(232,178,63,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>💧 Lugol İyot %5</b><br>• <b>4 damla</b> + 1 bardak ılık su (2 hafta sonra 2 damlaya düş)<br>• Kahvaltıdan +2 saat sonra (diğer minerallerden ≥2 saat ara)<br>• İdrar iyot 27 µg/L (düşük, ref 100-200) — doktor reçetesi<br><br><span style="font-size:11px;color:var(--cream-mute);">⚠️ Lugol ile magnezyum/çinko arası ≥2-4 saat ara. Lugol başlangıcı sonrası 6-8 hf TSH/T3/T4 tekrar.</span></div>`;
 
   const meal1_detail=`<div style="background:rgba(90,122,79,0.18);border:1px solid rgba(168,192,160,0.32);border-radius:10px;padding:12px;margin-top:8px;font-size:13px;color:var(--cream);"><b>🍳 Kahvaltı (acıkma sinyaline göre, ~09-11 arası):</b><br>${[m1,ms].map(f=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed rgba(255,255,255,0.10);"><span>${f.i} ${f.n}</span><span style="color:var(--mustard-soft);font-weight:600;">${f.k} kcal</span></div>`).join('')}<div style="margin-top:8px;padding-top:8px;border-top:1px solid rgba(255,255,255,0.14);display:flex;justify-content:space-between;"><span style="font-weight:600;">Toplam</span><span style="color:var(--mustard-soft);font-weight:700;">${m1.k+ms.k} kcal</span></div><div style="margin-top:8px;font-size:11px;color:var(--cream-mute);">🌿 Gül + zeytin yaprağı çayı eşliğinde. ⚠️ Süt ürünleri YOK, çiğ sebze YOK, karabiber YOK.</div>${inP(d)?'<div style="margin-top:4px;font-size:11px;color:var(--coral-soft);">🔴 Regl: ekstra yumurta + ıspanak (demir+folat) iyi gelir.</div>':''}</div>`;
 
@@ -5905,7 +6037,7 @@ function renderDietDay(){
     if(alert && !alertDismissed && alert.type==='critical'){
       html+=`<div class="notice np" style="margin:0 16px 12px;border:1.5px solid var(--pink-deep);position:relative;"><div class="nicon">⚠️</div><div><strong>Düşük kalori uyarısı:</strong> ${alert.msg}</div><button onclick="localStorage.setItem('lowintake_alert_dismissed_${todayKey}','1');renderDietDay();" style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.10);border:none;border-radius:50%;width:24px;height:24px;font-size:14px;cursor:pointer;color:inherit;" aria-label="Kapat">✕</button></div>`;
     } else if(alert && !alertDismissed && alert.type==='warning'){
-      html+=`<div class="notice ng" style="margin:0 16px 12px;position:relative;"><div class="nicon">🟡</div><div><strong>Heads up:</strong> ${alert.msg}</div><button onclick="localStorage.setItem('lowintake_alert_dismissed_${todayKey}','1');renderDietDay();" style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.10);border:none;border-radius:50%;width:24px;height:24px;font-size:14px;cursor:pointer;color:inherit;" aria-label="Kapat">✕</button></div>`;
+      html+=`<div class="notice ng" style="margin:0 16px 12px;position:relative;"><div class="nicon">🟡</div><div><strong>${getLang()==='en'?'Heads up:':'Dikkat:'}</strong> ${alert.msg}</div><button onclick="localStorage.setItem('lowintake_alert_dismissed_${todayKey}','1');renderDietDay();" style="position:absolute;top:8px;right:8px;background:rgba(0,0,0,0.10);border:none;border-radius:50%;width:24px;height:24px;font-size:14px;cursor:pointer;color:inherit;" aria-label="Kapat">✕</button></div>`;
     }
     // Skipped meal pattern — son 3 hafta üst üste aynı slot atlanırsa → caring intervention (dismissible)
     const skipDismissed=localStorage.getItem('skip_pattern_dismissed_'+todayKey)==='1';
@@ -9490,17 +9622,19 @@ function seedFromPDF(){
   setTimeout(()=>alert(`${seeded.length} regl kaydı PDF'inden yüklendi ✅\nSon regl: ${seeded[0].start}\nİlk regl: ${seeded[seeded.length-1].start}`),100);
 }
 
-const FLOW_OPTS=[{id:'spotting',l:'Damlayan',i:'💧'},{id:'light',l:'Hafif Akan',i:'💧💧'},{id:'medium',l:'Akan',i:'🩸'},{id:'heavy',l:'Bol Akan',i:'🩸🩸'}];
+const FLOW_OPTS=[{id:'spotting',l:'Damlayan',lEn:'Spotting',i:'💧'},{id:'light',l:'Hafif Akan',lEn:'Light flow',i:'💧💧'},{id:'medium',l:'Akan',lEn:'Medium flow',i:'🩸'},{id:'heavy',l:'Bol Akan',lEn:'Heavy flow',i:'🩸🩸'}];
+function flowLabel(o){return getLang()==='en'?(o.lEn||o.l):o.l;}
 const SYMP_OPTS=[
-  {id:'cramps',l:'Kramp',i:'🤕'},{id:'headache',l:'Baş ağrısı',i:'🤯'},
-  {id:'bloating',l:'Şişkinlik',i:'💨'},{id:'acne',l:'Sivilce',i:'🔴'},
-  {id:'breast_tender',l:'Göğüs hassasiyeti',i:'🩷'},{id:'fatigue',l:'Yorgunluk',i:'😴'},
+  {id:'cramps',l:'Kramp',lEn:'Cramps',i:'🤕'},{id:'headache',l:'Baş ağrısı',lEn:'Headache',i:'🤯'},
+  {id:'bloating',l:'Şişkinlik',lEn:'Bloating',i:'💨'},{id:'acne',l:'Sivilce',lEn:'Acne',i:'🔴'},
+  {id:'breast_tender',l:'Göğüs hassasiyeti',lEn:'Breast tenderness',i:'🩷'},{id:'fatigue',l:'Yorgunluk',lEn:'Fatigue',i:'😴'},
 ];
 const MOOD_OPTS=[
-  {id:'happy',l:'Mutlu',i:'😊'},{id:'calm',l:'Sakin',i:'😌'},
-  {id:'irritable',l:'Sinirli',i:'😤'},{id:'sad',l:'Hüzünlü',i:'😢'},
-  {id:'anxious',l:'Kaygılı',i:'😰'},
+  {id:'happy',l:'Mutlu',lEn:'Happy',i:'😊'},{id:'calm',l:'Sakin',lEn:'Calm',i:'😌'},
+  {id:'irritable',l:'Sinirli',lEn:'Irritable',i:'😤'},{id:'sad',l:'Hüzünlü',lEn:'Sad',i:'😢'},
+  {id:'anxious',l:'Kaygılı',lEn:'Anxious',i:'😰'},
 ];
+function optLabel(o){return getLang()==='en'?(o.lEn||o.l):o.l;}
 
 function getDayLog(dy){
   return Object.assign({flow:null,symptoms:[],mood:null,energy:null,sleep:null,note:''},(getCycleLogs()[dy]||{}));
@@ -9552,7 +9686,7 @@ function renderCyHero(){
   const ps=getPeriods();
   if(!c){
     wrap.innerHTML='';
-    document.getElementById('cy-topsub').textContent='Regl takibi başlatılmadı';
+    document.getElementById('cy-topsub').textContent=t('cycle_not_started');
     return;
   }
   const cyc=getAvgCycleLen(),dur=getAvgPeriodDur();
@@ -9582,10 +9716,10 @@ function renderCyActions(){
   const startedToday=lastOpen && lastOpen.start===todayY;
   const inOpenPeriod=lastOpen && !startedToday;
   wrap.innerHTML=`
-    ${startedToday?`<button class="cy-action full" style="background:#fde4e0;border-color:#e8a598;color:#a04030;font-weight:600;" onclick="actUndoStart()"><div class="cy-action-i">↩️</div><div class="cy-action-l">Bugünün başlangıcını GERİ AL</div></button>`:''}
-    ${!lastOpen?`<button class="cy-action start" onclick="actPeriodStart()"><div class="cy-action-i">🔴</div><div class="cy-action-l">Bugün regl başladı</div></button>`:''}
-    ${inOpenPeriod?`<button class="cy-action end" onclick="actPeriodEnd()"><div class="cy-action-i">⚪</div><div class="cy-action-l">Bugün regl bitti</div></button>`:''}
-    <button class="cy-action ${(!lastOpen||inOpenPeriod)?'':'full'}" onclick="openLogPast()"><div class="cy-action-i">🗓</div><div class="cy-action-l">Geçmiş regl ekle</div></button>
+    ${startedToday?`<button class="cy-action full" style="background:#fde4e0;border-color:#e8a598;color:#a04030;font-weight:600;" onclick="actUndoStart()"><div class="cy-action-i">↩️</div><div class="cy-action-l">${t('cycle_undo_today')}</div></button>`:''}
+    ${!lastOpen?`<button class="cy-action start" onclick="actPeriodStart()"><div class="cy-action-i">🔴</div><div class="cy-action-l">${t('cycle_period_today_start')}</div></button>`:''}
+    ${inOpenPeriod?`<button class="cy-action end" onclick="actPeriodEnd()"><div class="cy-action-i">⚪</div><div class="cy-action-l">${t('cycle_period_today_end')}</div></button>`:''}
+    <button class="cy-action ${(!lastOpen||inOpenPeriod)?'':'full'}" onclick="openLogPast()"><div class="cy-action-i">🗓</div><div class="cy-action-l">${t('cycle_period_past_add')}</div></button>
   `;
 }
 
@@ -9599,8 +9733,11 @@ function renderCyDailyLog(){
   if(phaseHintEl){
     const c=ci(new Date());
     if(c){
-      const tip=c.phase==='Menstruation'?'Sınırlarını çiz, kendini koru. Hayır söyleme hakkın var. Akış + ağrı + ruh hâli ön planda.':c.phase==='Follicular Phase'?'Merakını dinle. Yapamayacağını düşündüğün neler? Enerji yükseliyor.':c.phase==='Ovulation'?'Bağlantı kur, paylaş. En sosyal halinin penceresi açık. Peak enerji, parlaklık.':'Sükunete ihtiyacın olduğunda kararlı ol. Sonlandırma döngüsü. Şişkinlik/sebum/kramp önbelirti olabilir.';
-      phaseHintEl.innerHTML=`<div style="margin-bottom:12px;padding:12px 14px;background:linear-gradient(135deg, rgba(232,180,184,0.15), rgba(220,200,210,0.15));border-radius:10px;font-size:12px;color:var(--text-mid);"><strong style="color:var(--text);">${c.emoji} ${c.label} · Gün ${c.day}</strong> <span style="font-size:11px;color:var(--text-light);">· ${c.archetype}</span><br><span style="font-style:italic;font-family:'Playfair Display','Playfair Display',serif;font-size:13px;">${tip}</span></div>`;
+      const lang=getLang();
+      const tipsTR={Menstruation:'Sınırlarını çiz, kendini koru. Hayır söyleme hakkın var. Akış + ağrı + ruh hâli ön planda.','Follicular Phase':'Merakını dinle. Yapamayacağını düşündüğün neler? Enerji yükseliyor.',Ovulation:'Bağlantı kur, paylaş. En sosyal halinin penceresi açık. Peak enerji, parlaklık.','Luteal Phase':'Sükunete ihtiyacın olduğunda kararlı ol. Sonlandırma döngüsü. Şişkinlik/sebum/kramp önbelirti olabilir.'};
+      const tipsEN={Menstruation:'Draw your boundaries, protect yourself. You have the right to say no. Flow + pain + mood are at the foreground.','Follicular Phase':'Listen to your curiosity. What did you think you couldn\'t do? Energy is rising.',Ovulation:'Connect, share. The window for your most social self is open. Peak energy, radiance.','Luteal Phase':'Be firm when you need quietude. Closing cycle. Bloating/sebum/cramps may precede.'};
+      const tip=(lang==='en'?tipsEN:tipsTR)[c.phase]||'';
+      phaseHintEl.innerHTML=`<div style="margin-bottom:12px;padding:12px 14px;background:linear-gradient(135deg, rgba(232,180,184,0.15), rgba(220,200,210,0.15));border-radius:10px;font-size:12px;color:var(--text-mid);"><strong style="color:var(--text);">${c.emoji} ${c.label} · ${t('cycle_day')} ${c.day}</strong> <span style="font-size:11px;color:var(--text-light);">· ${c.archetype}</span><br><span style="font-style:italic;font-family:'Playfair Display','Playfair Display',serif;font-size:13px;">${tip}</span></div>`;
     } else {
       phaseHintEl.innerHTML='';
     }
@@ -9612,17 +9749,17 @@ function renderCyDailyLog(){
   // Flow
   document.getElementById('cy-flow').innerHTML=FLOW_OPTS.map(o=>`
     <div class="flow-chip ${log.flow===o.id?'active':''}" onclick="setFlow('${o.id}')">
-      <div class="flow-chip-i">${o.i}</div><div>${o.l}</div>
+      <div class="flow-chip-i">${o.i}</div><div>${flowLabel(o)}</div>
     </div>`).join('');
   // Symptoms
   document.getElementById('cy-symps').innerHTML=SYMP_OPTS.map(o=>`
     <div class="symp-chip ${log.symptoms.includes(o.id)?'active':''}" onclick="toggleSymp('${o.id}')">
-      <span>${o.i}</span><span>${o.l}</span>
+      <span>${o.i}</span><span>${optLabel(o)}</span>
     </div>`).join('');
   // Mood
   document.getElementById('cy-mood').innerHTML=MOOD_OPTS.map(o=>`
     <div class="mood-btn ${log.mood===o.id?'active':''}" onclick="setMood('${o.id}')">
-      <div>${o.i}</div><div class="mood-btn-l">${o.l}</div>
+      <div>${o.i}</div><div class="mood-btn-l">${optLabel(o)}</div>
     </div>`).join('');
   // Energy
   document.getElementById('cy-energy').innerHTML=[1,2,3,4,5].map(n=>`
@@ -9631,14 +9768,19 @@ function renderCyDailyLog(){
   document.getElementById('cy-sleep').innerHTML=[1,2,3,4,5].map(n=>{
     const isManual=log.sleep===n;
     const isAutoOnly=!log.sleep && sleepAuto===n;
-    return `<div class="scale-btn ${isManual||isAutoOnly?'active':''}" onclick="setSleep(${n})" ${isAutoOnly?'title="Apple Health\'ten otomatik · değiştirmek için tıkla"':''}>${n}${isAutoOnly?'<span style="font-size:8px;display:block;margin-top:-2px;opacity:0.7;">🍏</span>':''}</div>`;
+    return `<div class="scale-btn ${isManual||isAutoOnly?'active':''}" onclick="setSleep(${n})" ${isAutoOnly?`title="${t('sleep_apple_auto')}"`:''}>${n}${isAutoOnly?'<span style="font-size:8px;display:block;margin-top:-2px;opacity:0.7;">🍏</span>':''}</div>`;
   }).join('');
-  // Apple Health uyku notu
+  // Apple Health uyku notu (bilingual)
   const sleepNoteEl=document.getElementById('cy-sleep-note');
   if(sleepNoteEl){
     if(health && health.sleep_min){
       const h=Math.floor(health.sleep_min/60), m=health.sleep_min%60;
-      sleepNoteEl.innerHTML=`🍏 Apple Health: <strong>${h}s ${m}dk</strong> uyku → otomatik <strong>${sleepAuto}</strong>${log.sleep&&log.sleep!==sleepAuto?` (sen <strong>${log.sleep}</strong> dedin)`:''}`;
+      const en=getLang()==='en';
+      const youSaid=log.sleep&&log.sleep!==sleepAuto?(en?` (you said <strong>${log.sleep}</strong>)`:` (sen <strong>${log.sleep}</strong> dedin)`):'';
+      const autoLabel=en?'auto':'otomatik';
+      const hUnit=en?'h':'s';
+      const mUnit=en?'min':'dk';
+      sleepNoteEl.innerHTML=`🍏 Apple Health: <strong>${h}${hUnit} ${m}${mUnit}</strong> ${t('sleep_unit')} → ${autoLabel} <strong>${sleepAuto}</strong>${youSaid}`;
     } else {
       sleepNoteEl.innerHTML='';
     }
@@ -9661,6 +9803,9 @@ function setSleep(n){const dy=ymd(new Date());const cur=getDayLog(dy);setDayLog(
 
 function renderCyPredictions(){
   const ps=getPeriods();
+  // Bilingual label set
+  const lblEl=document.getElementById('cy-pred-lbl');
+  if(lblEl)lblEl.textContent=t('cycle_pred_label');
   if(!ps.length){
     // Iter 27 onboarding placeholder — kullanıcı henüz regl eklemedi
     document.getElementById('cy-pred-lbl').style.display='block';
@@ -9668,10 +9813,10 @@ function renderCyPredictions(){
     document.getElementById('cy-pred-grid').innerHTML=`
       <div style="grid-column:1/-1;text-align:center;padding:24px 16px;">
         <div style="font-size:42px;line-height:1;margin-bottom:12px;">🌸</div>
-        <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:300;color:var(--cream-soft);margin-bottom:8px;">Tahminler henüz hazır değil</div>
-        <div style="font-size:13px;color:var(--cream-mute);line-height:1.6;max-width:300px;margin:0 auto 16px;">İlk regl başlangıç tarihini ekle — sonraki regl, ovulasyon, fertil pencere ve PMS dönemi otomatik tahmin edilir. 2+ kayıt sonrası median döngü uzunluğuna göre netleşir.</div>
-        <button class="btn bp" onclick="openLogPast()" style="display:inline-block;padding:10px 22px;font-size:13px;">📅 Regl Ekle</button>
-        <div style="font-size:11px;color:var(--cream-faint);margin-top:14px;font-style:italic;">Tüm veriler yalnızca bu cihazda saklanır · Bengisu seed verisi yok (Iter 12)</div>
+        <div style="font-family:'Playfair Display',serif;font-size:20px;font-weight:300;color:var(--cream-soft);margin-bottom:8px;">${t('cycle_pred_not_ready')}</div>
+        <div style="font-size:13px;color:var(--cream-mute);line-height:1.6;max-width:300px;margin:0 auto 16px;">${t('cycle_pred_add_first')}</div>
+        <button class="btn bp" onclick="openLogPast()" style="display:inline-block;padding:10px 22px;font-size:13px;">📅 ${t('cycle_pred_add_btn')}</button>
+        <div style="font-size:11px;color:var(--cream-faint);margin-top:14px;font-style:italic;">${t('cycle_pred_data_note')}</div>
       </div>`;
     document.getElementById('cy-pred-disclaimer').textContent='';
     return;
@@ -9688,13 +9833,15 @@ function renderCyPredictions(){
   const pmsEnd=new Date(nextStart.getTime()-1*86400000);
   const fmt=d=>d.getDate()+' '+MN[d.getMonth()];
   const days=Math.max(0,dayDiff(nextStart,new Date()));
+  const en=getLang()==='en';
+  const daysLabel=en?(days===1?'day from now':'days from now'):'gün sonra';
   document.getElementById('cy-pred-grid').innerHTML=`
-    <div class="cy-pred"><div class="cy-pred-l">Sıradaki Regl</div><div class="cy-pred-v">${fmt(nextStart)}</div><div class="cy-pred-s">${days} gün sonra</div></div>
-    <div class="cy-pred"><div class="cy-pred-l">Ovulasyon</div><div class="cy-pred-v">${fmt(ovulation)}</div><div class="cy-pred-s">tahmini</div></div>
-    <div class="cy-pred"><div class="cy-pred-l">Fertil Pencere</div><div class="cy-pred-v">${fmt(fertileStart)} – ${fmt(fertileEnd)}</div></div>
-    <div class="cy-pred"><div class="cy-pred-l">PMS Penceresi</div><div class="cy-pred-v">${fmt(pmsStart)} – ${fmt(pmsEnd)}</div></div>
+    <div class="cy-pred"><div class="cy-pred-l">${t('cycle_pred_next_period')}</div><div class="cy-pred-v">${fmt(nextStart)}</div><div class="cy-pred-s">${days} ${daysLabel}</div></div>
+    <div class="cy-pred"><div class="cy-pred-l">${t('cycle_pred_ovulation')}</div><div class="cy-pred-v">${fmt(ovulation)}</div><div class="cy-pred-s">${t('cycle_pred_estimated')}</div></div>
+    <div class="cy-pred"><div class="cy-pred-l">${t('cycle_pred_fertile_window')}</div><div class="cy-pred-v">${fmt(fertileStart)} – ${fmt(fertileEnd)}</div></div>
+    <div class="cy-pred"><div class="cy-pred-l">${t('cycle_pred_pms_window')}</div><div class="cy-pred-v">${fmt(pmsStart)} – ${fmt(pmsEnd)}</div></div>
   `;
-  const conf=ps.length<2?'Tek kayıt — varsayılan döngü uzunluğu kullanılıyor.':ps.length<3?`${ps.length} kayda göre hesaplandı, daha çok regl girdikçe netleşir.`:`${Math.min(ps.length,6)} kayda göre median.`;
+  const conf=ps.length<2?t('cycle_pred_single_log'):ps.length<3?`${ps.length} ${t('cycle_pred_2_logs')}`:`${Math.min(ps.length,6)} ${t('cycle_pred_median')}`;
   document.getElementById('cy-pred-disclaimer').textContent=conf;
 }
 
@@ -9806,7 +9953,7 @@ function pid(){return 'p_'+Math.random().toString(36).substr(2,9);}
 function actPeriodStart(){
   const today=ymd(new Date());
   const ps=getPeriods();
-  if(ps.some(p=>p.start===today)){alert('Bugün için zaten kayıt var.');return;}
+  if(ps.some(p=>p.start===today)){alert(t('alert_period_exists'));return;}
   ps.push({id:pid(),start:today,end:null,flow:null,note:''});
   savePeriods(ps);
   const settings=getCycleSettings();
@@ -9817,7 +9964,7 @@ function actPeriodEnd(){
   const today=ymd(new Date());
   const ps=getPeriods();
   const last=ps[ps.length-1];
-  if(!last||last.end){alert('Açık bir regl kaydı yok.');return;}
+  if(!last||last.end){alert(t('alert_no_open_period'));return;}
   if(today<last.start){alert('Bitiş tarihi başlangıçtan önce olamaz.');return;}
   last.end=today;
   savePeriods(ps);
@@ -9996,8 +10143,8 @@ function saveLogPast(){
   const start=document.getElementById('lp-start').value;
   const end=document.getElementById('lp-end').value;
   const flow=document.getElementById('lp-flow').value;
-  if(!start){alert('Başlangıç tarihi zorunlu.');return;}
-  if(end && end<start){alert('Bitiş tarihi başlangıçtan önce olamaz.');return;}
+  if(!start){alert(t('alert_start_required'));return;}
+  if(end && end<start){alert(t('alert_invalid_dates'));return;}
   const ps=getPeriods();
   ps.push({id:pid(),start,end:end||null,flow:flow||null,note:''});
   savePeriods(ps);
