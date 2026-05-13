@@ -8,37 +8,46 @@
 
 ## 🚨 SONRAKİ OTURUMDA İLK YAPILACAK (Next session first action)
 
-### 1. Manuel `git push` — Iter 19 commit'leri (push'lanmadıysa)
+### 1. Manuel `git push` — Faz 4 Iter 20-29 (10 commit, push'lanmadıysa)
 
-Bu oturumda 13 Mayıs 2026 toplam **3 yeni push** oldu (Iter 16, 17, 18 push'landı). Iter 19 yeni — push'lanmamış olabilir:
+Bu oturumda 13 Mayıs 2026 Faz 4 büyük kısmı tamamlandı (Iter 19'dan sonra Iter 20-29, Iter 26 atlandı):
 
 ```bash
 cd /Users/agent9/Desktop/bnsp-repo
 git status                    # "ahead of origin/main by N commits" görmeli
-git push origin main          # manuel push (kullanıcı çalıştırır)
+git push origin main          # manuel push
 ```
 
-Push sonrası GitHub Pages otomatik deploy → https://bengisusengul.github.io/begumnaz-program/
+Push sonrası GitHub Pages otomatik deploy. SW cache **v17-dinamik-tema-ai** — eski cache yenilenir.
 
-**Worker durumu** (push gerekmez — Cloudflare bağımsız):
-- URL: `https://begumnaz-api-proxy.begumnaz.workers.dev` (LIVE)
-- Dashboard: https://dash.cloudflare.com/.../workers/services/view/begumnaz-api-proxy
+### 2. Iter 30 — i18n EN tam çeviri (SONRAKİ OTURUM)
 
-### 2. (Opsiyonel) Chrome preflight cache temizleme
+**Plan**: M1 (EN tam çeviri) öngörüsü 1.5-2 gün iş. Multi-phase:
+- **30A**: I18N obje 27 → 100+ key + applyTranslations refactor
+- **30B**: WEEKLY_FOCUS_TEXTS + ZEN + BODY_INTENTIONS bilingual
+- **30C**: AI prompt'ları dinamik dil (getLang() bazlı) + glossary def bilingual
 
-Ana Chrome window'unda hala "Failed to fetch" görüyorsan: DevTools (Cmd+Option+I) → Network → "Disable cache" checkbox işaretle → reload. Veya 24 saat bekle (max-age 86400). İncognito her zaman temiz.
+Bu oturumda atlandı — yorucu, push önceliği. Sonraki oturumda Iter 30A ile başla.
 
-### 3. (Opsiyonel) iOS Safari install + cache test
+### 3. Iter 26 — Egzersiz video link upgrade (kullanıcı feedback bekleniyor)
 
-PWA install → "Ana ekrana ekle". Service Worker v8-glossary-fix yeni cache → eski cache'i yeneceği için ilk açılışta hard reload gerekebilir.
+PWA YT_MAP zaten direct watch URL kullanıyor (çalışıyor). md dosyalarında search URL'ler kullanıcı seçimine bağlı. Begümnaz hangi videoları beğendiğini söyleyince spesifik watch URL'lere geçilir.
 
-### 4. (Opsiyonel) Tret günü teyidi
+### 4. (Opsiyonel) iOS Safari install + cache test
 
-Cilt protokolü Sal+Paz tret olarak konumlandı. Eğer Begümnaz farklı gün istiyorsa belirtmeli.
+PWA install → "Ana ekrana ekle". SW v17 yeni cache → eski yenilenir, ilk açılışta hard reload gerekebilir.
 
-### 5. (Opsiyonel) Begümnaz'ın gerçek kullanım feedback'i
+### 5. (Opsiyonel) Begümnaz gerçek kullanım feedback'i
 
-PWA artık prod'da Cloudflare Worker AI proxy ile çalışıyor. Begümnaz 1-2 hafta günlük kullansın → real-world feedback al → bug/iyileştirme listesi.
+PWA artık Faz 4 ile çok daha kişisel + üretimde:
+- Sabah açılışta AI merhamet mesajı (Iter 28)
+- Settings'tan görsel yükle → tüm tema değişir (Iter 29)
+- Beslenme + Supplement birleşik takip (Iter 22)
+- Cilt ürün listesi Begümnaz'ın gerçek ürünleri (Iter 21)
+- Regl onboarding placeholder (Iter 27)
+- Mobile + popup UX iyileştirmeleri (Iter 23-25)
+
+Begümnaz 1-2 hafta günlük kullansın → real-world feedback → Iter 30+ önceliklendirme.
 
 ---
 
@@ -64,7 +73,7 @@ PWA artık prod'da Cloudflare Worker AI proxy ile çalışıyor. Begümnaz 1-2 h
 - ✅ **Faz 1**: Markdown dokümantasyon iskeleti (tamamlandı)
 - ✅ **Faz 2**: PWA içerik adaptasyonu (Iter 18'de bitti — büyük temizlikler + cheetah hero)
 - ✅ **Faz 3**: Deploy LIVE (GitHub Pages + Cloudflare Worker AI proxy — Iter 19'da tamamlandı)
-- 🟢 **Faz 4**: PWA üretim olgunluğu (Iter 20 başladı — 13 maddelik iyileştirme listesi, plan: 11 Iter)
+- 🟢 **Faz 4**: PWA üretim olgunluğu (Iter 20-29 tamam, %90+ · sadece Iter 30 i18n EN çeviri sonraki oturuma)
 
 ---
 
