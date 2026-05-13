@@ -1732,6 +1732,9 @@ select option{background:var(--bg-deep);color:var(--cream);}
     <button class="utab ex-utab" id="ex-utab-olcum" onclick="setExUTab('olcum')">📊 Ölçüm</button>
   </div>
 
+  <!-- Iter 66 — Ekipman modu (Ev/Gym/Dışarı) anlık seçim → günlük plan otomatik güncel -->
+  <div id="ex-equip-bar" style="margin:0 16px 14px;"></div>
+
   <div id="ex-pane-antrenman">
   <div class="wstrip" id="e-strip"></div>
   <div id="e-phase-notice"></div>
@@ -1998,11 +2001,8 @@ select option{background:var(--bg-deep);color:var(--cream);}
       </div>
     </div>
 
-    <!-- Iter 64 — Egzersiz konumu (ekipman modu) -->
-    <div class="slbl" style="padding:0;margin:0 0 8px;" id="settings-equip-lbl">🏋️ Egzersiz Konumu</div>
-    <div id="equip-card"></div>
-
-    <div class="slbl" style="padding:0;margin:14px 0 8px;" data-i18n="settings_theme">🎨 Tema</div>
+    <!-- Iter 66 — Egzersiz Konumu kartı Egzersiz sekmesine taşındı (anlık seçim bağlamsal yer) -->
+    <div class="slbl" style="padding:0;margin:0 0 8px;" data-i18n="settings_theme">🎨 Tema</div>
     <div id="theme-card"></div>
 
     <div class="slbl" style="padding:0;margin:14px 0 8px;" data-i18n="settings_profile">👤 Profiller</div>
@@ -2890,7 +2890,8 @@ function setLang(lang){
   safeCall('renderMedicalLabs');
   safeCall('renderDoctorQuestionsCard');
   // Settings sub-cards
-  safeCall('renderEquipCard');  // Iter 64 — Egzersiz konumu (Ev/Gym/Dışarı)
+  // Iter 66 — renderEquipCard kaldırıldı; renderEquipBar Egzersiz sekmesinde (renderEx içinde tetiklenir)
+  safeCall('renderEquipBar');
   safeCall('renderThemeCard');
   safeCall('renderProfileCard');
   safeCall('renderBackupExport');
@@ -5045,46 +5046,38 @@ function renderThemeCard(){
 if(document.readyState!=='loading')loadSavedTheme();
 else document.addEventListener('DOMContentLoaded',loadSavedTheme);
 
-// Iter 64 — Egzersiz konumu (ekipman modu) — Ev / Gym / Dışarı
+// Iter 64+66 — Egzersiz konumu (ekipman modu) — Ev / Gym / Dışarı
 function getWorkoutLocation(){return localStorage.getItem('workout_location')||'ev';}
 function setWorkoutLocation(loc){
   if(!['ev','gym','disari'].includes(loc))return;
   localStorage.setItem('workout_location',loc);
-  renderEquipCard();
-  // Aktif Egzersiz sayfası yenilensin
+  if(typeof renderEquipBar==='function')renderEquipBar();
+  // Aktif Egzersiz sayfası yenilensin (formatExHow aktif moda göre talimatları vurgular)
   if(typeof renderEx==='function')try{renderEx();}catch(e){}
   if(typeof renderExDay==='function')try{renderExDay();}catch(e){}
   const en=getLang()==='en';
   const lblMap={ev:en?'Home':'Ev',gym:'Gym',disari:en?'Outdoor':'Dışarı'};
   if(typeof showToast==='function')showToast(`🏋️ ${en?'Workout location:':'Egzersiz konumu:'} ${lblMap[loc]}`,'pr');
 }
-function renderEquipCard(){
-  const el=document.getElementById('equip-card');
+// Iter 66 — Egzersiz sekmesinde kompakt ekipman bar (alt-tab sonrası, gün strip öncesi)
+function renderEquipBar(){
+  const el=document.getElementById('ex-equip-bar');
   if(!el)return;
   const en=getLang()==='en';
   const cur=getWorkoutLocation();
-  const lbl=document.getElementById('settings-equip-lbl');
-  if(lbl)lbl.textContent=en?'🏋️ Workout Location':'🏋️ Egzersiz Konumu';
-  const helperTag=en?'🪞 This card':'🪞 Bu kart';
-  const helperBody=en
-    ?'Choose where you\'re training today. Exercise instructions adapt — <strong>Home</strong> (2-3 kg DB + bands + magic circle + pilates balls), <strong>Gym</strong> (full equipment), <strong>Outdoor</strong> (bodyweight + bands).'
-    :'Bugün nerede çalışıyorsun? Egzersiz talimatları uyarlanır — <strong>Ev</strong> (2-3 kg DB + bantlar + magic circle + pilates topları), <strong>Gym</strong> (tam ekipman), <strong>Dışarı</strong> (bodyweight + bant).';
+  const lblEquip=en?'Equipment':'Ekipman';
   const opts=[
-    {k:'ev',e:'🏠',l:en?'Home':'Ev',d:en?'2-3 kg DB · bands · ring · ball':'2-3 kg DB · bant · ring · top'},
-    {k:'gym',e:'🏋️',l:'Gym',d:en?'Full equipment':'Tam ekipman'},
-    {k:'disari',e:'🌳',l:en?'Outdoor':'Dışarı',d:en?'Bodyweight + band':'BW + bant'}
+    {k:'ev',e:'🏠',l:en?'Home':'Ev'},
+    {k:'gym',e:'🏋️',l:'Gym'},
+    {k:'disari',e:'🌳',l:en?'Outdoor':'Dışarı'}
   ];
-  const buttons=opts.map(o=>{
+  const btns=opts.map(o=>{
     const active=cur===o.k;
-    return `<button onclick="setWorkoutLocation('${o.k}')" style="flex:1;min-width:0;padding:10px 8px;border-radius:10px;background:${active?'rgba(212,164,181,0.42)':'rgba(255,255,255,0.06)'};color:${active?'var(--cream-soft)':'var(--cream)'};border:1px solid ${active?'rgba(212,164,181,0.55)':'var(--glass-border)'};cursor:pointer;font-family:'Jost',sans-serif;display:flex;flex-direction:column;align-items:center;gap:2px;transition:all 0.2s;">
-      <span style="font-size:20px;">${o.e}</span>
-      <span style="font-size:13px;font-weight:${active?'700':'500'};">${o.l}</span>
-      <span style="font-size:10px;color:var(--cream-mute);line-height:1.3;text-align:center;">${o.d}</span>
-    </button>`;
+    return `<button onclick="setWorkoutLocation('${o.k}')" style="flex:1;padding:8px 6px;border-radius:10px;background:${active?'rgba(212,164,181,0.42)':'rgba(255,255,255,0.06)'};color:${active?'var(--cream-soft)':'var(--cream)'};border:1px solid ${active?'rgba(212,164,181,0.55)':'var(--glass-border)'};cursor:pointer;font-family:'Jost',sans-serif;font-size:12.5px;display:flex;align-items:center;justify-content:center;gap:5px;transition:all 0.2s;font-weight:${active?'700':'500'};">${o.e} ${o.l}</button>`;
   }).join('');
-  el.innerHTML=`<div style="padding:14px 14px 12px;border-radius:12px;background:rgba(229,168,181,0.08);border:1px solid rgba(229,168,181,0.20);">
-    <div class="card-plain" style="margin-bottom:10px;"><span class="card-plain-tag">${helperTag}</span>${helperBody}</div>
-    <div style="display:flex;gap:8px;">${buttons}</div>
+  el.innerHTML=`<div style="display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(42,14,20,0.55);border:1px solid var(--glass-border);border-radius:12px;">
+    <div style="font-size:11px;color:var(--cream-mute);text-transform:uppercase;letter-spacing:1px;flex-shrink:0;">${lblEquip}</div>
+    <div style="display:flex;gap:6px;flex:1;">${btns}</div>
   </div>`;
 }
 
@@ -9973,7 +9966,7 @@ function renderAnalyticsToggle(){
   if(expanded){renderMuscleHeatmap();renderVolumeTrend();renderPRTimeline();}
 }
 
-function renderEx(){renderStrip('e-strip',S.eD,d=>{S.eD=d;renderExDay();});renderExDay();renderWeekSum();renderStrengthGrid();renderAnalyticsToggle();renderCyclePatternEmergence();}
+function renderEx(){if(typeof renderEquipBar==='function')renderEquipBar();renderStrip('e-strip',S.eD,d=>{S.eD=d;renderExDay();});renderExDay();renderWeekSum();renderStrengthGrid();renderAnalyticsToggle();renderCyclePatternEmergence();}
 function renderExDay(){
   const d=S.eD,dow=d.getDay(),sp=SP[dow],exs=EX[dow],dk=d.toDateString();
   const c=ci(d);
@@ -11637,7 +11630,7 @@ function closeM(id){document.getElementById(id).classList.remove('open');}
 // Phase 3.D · 12 May 2026 — Ayarlar modal (Cycle ayarları + Tema + Profiller + Backup + API Proxy)
 function openSettingsModal(){
   // Render sub-cards (mevcut fonksiyonlar zaten ID'ye yazıyor; modal'da aynı ID'ler var)
-  if(typeof renderEquipCard==='function')renderEquipCard();  // Iter 64
+  // Iter 66: renderEquipCard kaldırıldı — Egzersiz sekmesindeki ex-equip-bar'a taşındı
   if(typeof renderThemeCard==='function')renderThemeCard();
   if(typeof renderProfileCard==='function')renderProfileCard();
   if(typeof renderBackupExport==='function')renderBackupExport();
