@@ -280,6 +280,23 @@ body[data-page="cilt"] .slbl{color:var(--diyet-text-primary,#2A0E14) !important;
 #page-egzersiz{--tab-accent:#B8536B;--tab-accent-deep:#6E1A28;--tab-accent-glow:rgba(184,83,107,0.28);}     /* Bordo */ /* Su Mavisi */
 #page-cilt{--tab-accent:#F5C5D2;--tab-accent-deep:#DDA0AE;--tab-accent-glow:rgba(245,197,210,0.30);}     /* Açık Pembe */    /* Mauve Akşam */
 #page-olcum,#page-medical{--tab-accent:#DDA0AE;--tab-accent-deep:#832232;--tab-accent-glow:rgba(221,160,174,0.28);}     /* Şarap Pembe */      /* Mauve + su mavisi karışım — Medical */
+#page-chat{--tab-accent:#D4A4B5;--tab-accent-deep:#B8536B;--tab-accent-glow:rgba(212,164,181,0.28);}     /* Iter 47 — Mauve · samimi sohbet tonu */
+
+/* Iter 47 — AI Agent chat layout */
+#page-chat.active{display:flex;flex-direction:column;min-height:100vh;padding-bottom:0;}
+#page-chat #chat-messages{flex:1;overflow-y:auto;padding:0 16px 16px;display:flex;flex-direction:column;gap:10px;min-height:120px;}
+.chat-msg{max-width:85%;padding:11px 15px;border-radius:18px;font-size:14px;line-height:1.55;white-space:pre-wrap;box-shadow:0 2px 8px rgba(0,0,0,0.18);word-wrap:break-word;overflow-wrap:anywhere;}
+.chat-msg-user{align-self:flex-end;background:linear-gradient(135deg,var(--accent-mauve),var(--pink));color:var(--ink);font-weight:500;}
+.chat-msg-assistant{align-self:flex-start;background:rgba(255,255,255,0.06);color:var(--cream);border:1px solid var(--glass-border);}
+.chat-msg-loading{align-self:flex-start;background:rgba(255,255,255,0.04);color:var(--cream-mute);font-style:italic;}
+#chat-input-area{position:sticky;bottom:0;padding:12px 16px;background:rgba(42,14,20,0.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--glass-border);display:flex;gap:8px;align-items:flex-end;z-index:5;}
+#chat-input{flex:1;max-height:140px;min-height:44px;padding:11px 14px;border-radius:14px;background:var(--surface2);border:1px solid var(--glass-border);color:var(--cream);resize:none;font-family:'Jost',sans-serif;font-size:14px;line-height:1.4;outline:none;transition:border-color 0.15s;}
+#chat-input:focus{border-color:var(--accent-mauve);}
+#chat-input::placeholder{color:var(--text-light);}
+#chat-send-btn{background:linear-gradient(135deg,var(--gold),var(--coral));color:var(--cream);border:none;padding:0 18px;border-radius:14px;cursor:pointer;font-weight:700;min-height:44px;font-size:20px;transition:opacity 0.15s;flex-shrink:0;}
+#chat-send-btn:disabled{opacity:0.55;cursor:not-allowed;}
+.chat-suggest-chip{background:rgba(212,164,181,0.18);border:1px solid var(--accent-mauve);color:var(--cream);padding:9px 13px;border-radius:18px;font-size:11.5px;cursor:pointer;font-family:inherit;text-align:left;line-height:1.5;transition:all 0.15s;}
+.chat-suggest-chip:hover{background:rgba(212,164,181,0.32);}
 
 /* CYCLE STRIP */
 .cstrip{margin:0 16px 16px;background:rgba(42,14,20,0.78);backdrop-filter:blur(28px) saturate(200%);-webkit-backdrop-filter:blur(28px) saturate(200%);border-radius:var(--r);padding:16px 18px;display:flex;align-items:center;gap:14px;border:1px solid rgba(255,255,255,0.18);box-shadow:0 12px 40px rgba(0,0,0,0.35),inset 0 1px 0 rgba(255,255,255,0.12);color:var(--cream);}
@@ -1421,6 +1438,8 @@ select option{background:var(--bg-deep);color:var(--cream);}
     <button onclick="openSettingsModal()" aria-label="Ayarlar" style="position:absolute;top:56px;right:20px;width:42px;height:42px;border-radius:50%;background:rgba(42,14,20,0.78);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(232,221,196,0.20);color:var(--cream-soft);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,0.25);">⚙️</button>
     <!-- Iter 31 — 🏆 Başarılarım butonu (Settings butonu solunda) -->
     <button onclick="openAchievementsModal()" aria-label="Başarılarım" style="position:absolute;top:56px;right:72px;width:42px;height:42px;border-radius:50%;background:rgba(42,14,20,0.78);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(232,221,196,0.20);color:var(--cream-soft);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(0,0,0,0.25);">🏆</button>
+    <!-- Iter 47 — AI Agent chat buton (Dashboard topbar) -->
+    <button onclick="openChat()" aria-label="AI Agent Sohbet" style="position:absolute;top:56px;right:124px;width:42px;height:42px;border-radius:50%;background:linear-gradient(135deg,rgba(212,164,181,0.42),rgba(232,178,63,0.28));backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(212,164,181,0.40);color:var(--cream-soft);font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 16px rgba(184,83,107,0.30);">💬</button>
   </div>
 
   <div id="dash-greeting"></div>      <!-- Greeting hero: ZEN + phase line -->
@@ -1853,6 +1872,22 @@ select option{background:var(--bg-deep);color:var(--cream);}
 <!-- LEGACY page-olcum kaldırıldı · Phase 3.D · 12 May 2026
      İçerik Egzersiz sekmesi alt-tab 'Ölçüm'e taşındı (ex-pane-olcum) -->
 
+<!-- Iter 47 — AI Agent #page-chat (Begümnaz'ın kişisel sohbet asistanı) -->
+<div id="page-chat" class="page">
+  <div class="tb" style="position:relative;padding-bottom:14px;">
+    <button onclick="closeChat()" aria-label="Geri" style="position:absolute;top:56px;left:20px;width:42px;height:42px;border-radius:50%;background:rgba(42,14,20,0.78);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(232,221,196,0.20);color:var(--cream-soft);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;">←</button>
+    <h1 style="text-align:center;"><em>💬 Sohbet</em></h1>
+    <div class="tb-sub" id="chat-subtitle" style="text-align:center;"></div>
+  </div>
+  <div id="chat-greeting-card"></div>
+  <div id="chat-messages"></div>
+  <div id="chat-input-area">
+    <textarea id="chat-input" rows="1" aria-label="Sohbet mesajı"
+      onkeypress="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChatMessage();}"
+      oninput="autosizeChatInput(this)"></textarea>
+    <button onclick="sendChatMessage()" id="chat-send-btn" aria-label="Gönder">↑</button>
+  </div>
+</div>
 
 <!-- BOTTOM NAV -->
 <nav class="bnav" role="navigation" aria-label="Ana menü">
@@ -8082,6 +8117,336 @@ async function callAnthropic(body){
     },
     body:JSON.stringify(body)
   });
+}
+
+// ════════════════════════════════════════════════
+// Iter 47 — AI Agent (Begümnaz'a özel sohbet asistanı)
+// Session-only chat history (window.chatMessages, sayfa kapanınca silinir)
+// Claude Haiku 4.5 + prompt caching (ephemeral, ~%90 indirim)
+// ════════════════════════════════════════════════
+window.chatMessages = window.chatMessages || [];
+
+function getAgentSystemPrompt(){
+  const en=getLang()==='en';
+  // Dinamik snapshot (cache'lenmez — her mesajda taze)
+  const c=(typeof ci==='function')?ci(new Date()):null;
+  const ps=(typeof getPeriods==='function')?getPeriods():[];
+  const cyc=(typeof getAvgCycleLen==='function')?getAvgCycleLen():28;
+  const todayLog=(typeof getDayLog==='function')?getDayLog(ymd(new Date())):null;
+  const labResults=JSON.parse(localStorage.getItem('lab_results')||'[]');
+  const recentLabs=labResults.length?labResults[labResults.length-1]:null;
+  const dynSnapshot=en
+    ?`\n\nCURRENT CONTEXT (today, ${new Date().toISOString().slice(0,10)}):\n- Cycle: ${c?c.phase+', Day '+c.day+' / ~'+cyc:'no period log yet'}\n- Period logs: ${ps.length}\n- Today's flare: ${todayLog?.flare?'YES (active)':'no'}\n- Today's pain (1-10): ${todayLog?.pain||'not logged'}\n- Today's mood: ${todayLog?.mood||'not logged'}\n- Latest lab result: ${recentLabs?.date||'21.04.2026 (baseline)'}\n- UI language: English`
+    :`\n\nGÜNCEL CONTEXT (bugün, ${new Date().toISOString().slice(0,10)}):\n- Cycle: ${c?c.phase+', Gün '+c.day+' / ~'+cyc:'henüz regl kaydı yok'}\n- Regl kayıtları: ${ps.length}\n- Bugünkü flare: ${todayLog?.flare?'EVET (aktif)':'hayır'}\n- Bugünkü ağrı (1-10): ${todayLog?.pain||'kayıt yok'}\n- Bugünkü ruh hali: ${todayLog?.mood||'kayıt yok'}\n- Son kan paneli: ${recentLabs?.date||'21.04.2026 (baseline)'}\n- UI dili: Türkçe`;
+
+  // Statik profil (cache'lenir — ~10-15K token)
+  const staticProfile=en?`You are Begümnaz's personal holistic health AI assistant. You know her in detail and reference her data when relevant.
+
+═══ PROFILE ═══
+- 27 years old, Turkey
+- Endometriosis: post-Visanne (dienogest) completed; residual endo managed via functional/holistic medicine protocol
+- Post-isotretinoin sensitive skin: 8 months × 40mg Zoretanin, did NOT respond → barrier-repair priority
+- Hormonal jawline acne (correlated with endo flare)
+- 3x mesotherapy sessions completed (no more planned)
+- Sister manages the program; Begümnaz is the user
+- Wed+Fri 18:00 pilates instructor (teaches own class + participates)
+
+═══ BLOOD PANEL (2026-04-21) ═══
+- Iodine 27 µg/L (LOW) → Lugol %5 prescribed (4 drops, 2 weeks then 2 drops)
+- Selenium 58 µg/L (LOW)
+- T3 free 4.20 pg/mL (slightly HIGH)
+- Iron/Ferritin 204-206 (HIGH) → IRON SUPPLEMENTS FORBIDDEN
+- B12 738 ng/L (HIGH)
+- HbA1c 5.10% (normal), CRP 0.18 (normal)
+- Anti-TPO: negative
+- TSH/T4 follow-up due 6-8 weeks after Lugol start
+
+═══ 16-PRODUCT DOCTOR PROTOCOL (timing-sensitive) ═══
+08:00 — Alkemist (coconut oil pulling, 5-10 min, on empty stomach)
+08:30 — Sabah AC (Akavital 3 tbsp + Gül sirkesi 4 tbsp + NBT NADH 1 tab + NAC 500mg + Bach 4 drops, ALL empty stomach)
+09:30 — Lugol iodine 5% (4 drops in warm water + Bach 2nd dose, ≥2-4hr away from minerals)
+Breakfast (with food) — Anti turmeric 2 + More than (MSM+VitC) 1 + NBT Life Guard 1 + Anti MM-12 1 + Lifextra On Hepa 1 + Time Magnesium 1 (+Mon: Colewinde D 50000 IU)
+14:30 — Snack + NAC 2nd dose 500mg + Bach 3rd dose
+Pre-WO (workout days only) — NBT Benfolife (Benfotiamine B1, 30 min before training, light food)
+16:00 — Akavital 3 tbsp + Gül sirkesi 4 tbsp (2nd doses, on empty stomach)
+17:30-19:00 evening meal — Anti turmeric 2 + More than 1 + Lifextra 1 + Time Mg 1 (2nd doses)
+22:00 — Duobalance BV Cran probiotic (2 capsules, ≥4hr away from other supplements)
++ Bach 4th dose at 20:00 with foot bath
+
+═══ 3 PENDING DOCTOR QUESTIONS ═══
+1. NADH dose confirmation (1 tab vs 5-20mg)
+2. NAC single vs split dose
+3. Probiotic alternative options
+
+═══ DIET RULES (temperament-based) ═══
+FORBIDDEN: raw vegetables, dairy, beef, chicken, eggplant, cold water, white flour, sugary drinks, processed foods, salami/sausage, tea/coffee (EXCEPT rose+olive leaf, aynı safa, melissa+chamomile herbal)
+ALLOWED meat 3x/week (lunch): lamb, sheep, turkey ONLY
+MANDATORY: warm water ≥5 glasses/day, salt 8-10g
+PERIOD DAY: +50 kcal, liver/red meat (lamb) emphasis, iron+B12, salt up
+LATE LUTEAL (last 6 days): +150 kcal, increase carbs to 60g, magnesium 350-400mg, BMR +8-12%
+MEALS: meal 1 (when hungry, ~9-11) = eggs + cooked salad + raw nuts + olives; meal 2 (12-13) = sauce-free flour-free veg soup + veg dish + meat 3x/week
+
+═══ EXERCISE PROGRAM ═══
+Mon/Thu/Sat: weight training (3x/wk — goblet squat, RDL, hip thrust, BSS, banded leg lifts, magic circle)
+Tue/Sun: pelvic floor physio-pilates (2x/wk — 4-week rotation: foundation/hip integration/functional/restorative)
+Wed/Fri 18:00: full body pilates class (Begümnaz teaches AND participates)
+5-6 walks/week
+ENDO FLARE: downshift 20-30% intensity, switch to pelvic floor if needed
+Late luteal: reduce intensity 20-30%, pilates priority
+
+═══ SKIN PROTOCOL (post-iso barrier-repair) ═══
+AM: Garnier Vit C cleanser → ISANA Vit C 10% serum → ISANA Hyaluron+Panthenol → moisturizer → Garnier BHA+Niacinamide SPF 50 (MANDATORY)
+PM rotation (7-day):
+- Mon: Azelaic acid 10% (when bought)
+- Tue: Acnelyse 0.025% tretinoin (sandwich technique — moisturizer first, tret, moisturizer)
+- Wed: Hyaluron only (recovery)
+- Thu: ISANA AHA 6% (only if not on tret week)
+- Fri: Madescar (Centella) only
+- Sat: Azelaic (or repeat)
+- Sun: Acnelyse tretinoin (sandwich)
+PERIOD WEEK: skip retinol + AHA/BHA, hydration mode (Madescar + ceramide)
+SHOPPING LIST (3): soft cleanser (CeraVe/Bioderma/LRP), Niacinamide 10%, Azelaic acid 10%
+
+═══ CYCLE PHASE (Maisie Hill methodology) ═══
+- Menstruation (winter, Days 1-5): rest, blood loss recovery, iron+B12, warm
+- Follicular (spring): energy rising, vit C peak, can push intensity
+- Ovulation (summer, ~Day 14-18 depending on cycle length): peak collagen, +30-50% ligament injury risk → collagen 15g + Vit C 50mg pre-WO
+- Luteal (autumn): sebum increases, BHA focus, magnesium emphasis, late luteal +150 kcal
+
+═══ LIFESTYLE PROTOCOL ═══
+- Foot bath EVERY NIGHT 20:00 (15-20 min, 40-42°C + 4-5 drops geranium essential oil + 2 tbsp Epsom salts)
+- ENDO FLARE: 2x/day foot bath + heating pad lower back
+- Sleep 21:00-22:00 (melissa+chamomile tea)
+- Cold water FORBIDDEN; warm water only
+
+═══ RESPONSE STYLE ═══
+- Reply in English (current UI language)
+- 2-4 short paragraphs, conversational not lecture-style
+- Reference specific Begümnaz data when relevant (e.g., "Given your iodine at 27 µg/L and Lugol at 4 drops, ...")
+- ALWAYS include medical disclaimer when discussing symptoms: "I'm a support assistant, not a substitute for your doctor — if symptoms persist, please reach out to her."
+- NEVER shame about diet/weight/body. NEVER moralize. Use "your body" framing, warm and compassionate tone (like a wise sister).
+- If uncertain or symptoms severe: suggest doctor consultation immediately.
+- Use medical terms (RPE, MEV, mTOR, endometriosis, PIE, PIH, glycogen, cortisol, progesterone, estrogen, LH, FSH) when relevant and define briefly if asked.
+- Tone reference: like the morning compassion messages — warm, body-honoring, post-iso/endo-aware, never dismissive.`
+:`Sen Begümnaz'ın kişisel bütüncül sağlık AI asistanısın. Onu detaylı biliyorsun ve verilerine başvuruyorsun.
+
+═══ PROFİL ═══
+- 27 yaş, Türkiye
+- Endometriozis: Visanne (dienogest) tedavisi tamamlandı; kalan endo için fonksiyonel/bütüncül tıp protokolü
+- Post-isotretinoin hassas cilt: 8 ay × 40 mg Zoretanin, ETKİ ETMEDİ → bariyer onarımı önceliği
+- Hormonal jawline akne (endo flare ile koreleli)
+- 3× mezoterapi tamamlandı (planlanmış yok)
+- Abla programı yönetiyor; Begümnaz kullanıcı
+- Çar+Cum 18:00 pilates eğitmeni (kendi dersinde hem öğretmen hem katılımcı)
+
+═══ KAN PANELİ (21.04.2026) ═══
+- İyot 27 µg/L (DÜŞÜK) → Lugol %5 reçete (4 damla, 2 hafta sonra 2 damla)
+- Selenyum 58 µg/L (DÜŞÜK)
+- T3 free 4.20 pg/mL (hafif YÜKSEK)
+- Demir/Ferritin 204-206 (YÜKSEK) → DEMİR TAKVİYESİ YASAK
+- B12 738 ng/L (YÜKSEK)
+- HbA1c %5.10 (normal), CRP 0.18 (normal)
+- Anti-TPO: negatif
+- TSH/T4 takibi 6-8 hafta sonra (Lugol başlangıcından)
+
+═══ 16-ÜRÜN DOKTOR PROTOKOLÜ (saat-hassas) ═══
+08:00 — Alkemist (HC yağı oil pulling, 5-10 dk, AC)
+08:30 — Sabah AC (Akavital 3 yk + Gül sirkesi 4 yk + NBT NADH 1 tab + NAC 500mg + Bach 4 damla, hepsi AC)
+09:30 — Lugol iyot %5 (4 damla ılık su + Bach 2. doz, mineralerden ≥2-4 saat uzak)
+Kahvaltı (tok) — Anti turmeric 2 + More than 1 + NBT Life Guard 1 + Anti MM-12 1 + Lifextra On Hepa 1 + Time Mg 1 (+ Pzt: Colewinde D 50000 IU)
+14:30 — Ara öğün + NAC 2. doz 500mg + Bach 3. doz
+Pre-WO (antrenman günleri) — NBT Benfolife (Benfotiamine B1, antrenmandan 30 dk önce, hafif tok)
+16:00 — Akavital 3 yk + Gül sirkesi 4 yk (2. dozlar, AC)
+17:30-19:00 akşam yemeği — Anti turmeric 2 + More than 1 + Lifextra 1 + Time Mg 1 (2. dozlar)
+22:00 — Duobalance BV Cran probiyotik (2 kapsül, diğer supplementlerden ≥4 saat uzak)
++ Bach 4. doz 20:00 ayak banyosu ile
+
+═══ 3 DOKTOR CEVABI BEKLEYEN ═══
+1. NADH dozu (1 tab vs 5-20mg)
+2. NAC tek/iki seferlik doz
+3. Probiyotik alternatif önerisi
+
+═══ DİYET KURALLARI (mizaç temelli) ═══
+YASAKLAR: çiğ sebze, süt ürünleri, dana, tavuk, patlıcan, soğuk su, beyaz un, tatlı içecek, hazır gıda, salam-sosis-sucuk, çay/kahve (SADECE gül+zeytin yaprağı, aynı safa, melissa+papatya)
+İZİNLİ et 3x/hafta (öğle): kuzu, koyun, hindi SADECE
+ZORUNLU: ılık su ≥5 bardak/gün, tuz 8-10g
+REGL GÜNÜ: +50 kcal, ciğer/kırmızı et (kuzu) vurgu, demir+B12, tuz ↑
+GEÇ LUTEAL (son 6 gün): +150 kcal, karbı 60g'a çıkar, magnezyum 350-400mg, BMR +%8-12
+ÖĞÜNLER: 1. öğün (acıkınca, ~9-11) = yumurta + pişmiş salata + çiğ kuruyemiş + zeytin; 2. öğün (12-13) = salçasız+unsuz sebze çorbası + sebze yemeği + et 3x/hafta
+
+═══ EGZERSİZ PROGRAMI ═══
+Pzt/Per/Cmt: ağırlık (3x/hafta — goblet squat, RDL, hip thrust, BSS, banded leg lift, magic circle)
+Sal/Paz: pelvik taban fizyopilates (2x/hafta — 4 haftalık rotasyon: temel/hip/fonksiyonel/restoratif)
+Çar/Cum 18:00: full body pilates dersi (Begümnaz ÖĞRETMEN VE KATILIMCI)
+5-6 yürüyüş/hafta
+ENDO FLARE: %20-30 düşür, gerekirse pelvik tabana geç
+Geç luteal: yoğunluk %20-30 düşür, pilates öncelik
+
+═══ CİLT PROTOKOLÜ (post-iso bariyer onarımı) ═══
+Sabah: Garnier Vit C cleanser → ISANA Vit C 10% serum → ISANA Hyaluron+Panthenol → nemlendirici → Garnier BHA+Niacinamide SPF 50 (MECBUR)
+Akşam rotasyonu (7 gün):
+- Pzt: Azelaic acid 10% (alındığında)
+- Sal: Acnelyse 0.025% tretinoin (sandwich tekniği — nemlendirici, tret, nemlendirici)
+- Çar: sadece Hyaluron (recovery)
+- Per: ISANA AHA 6% (tret haftası değilse)
+- Cum: sadece Madescar (Centella)
+- Cmt: Azelaic (veya tekrar)
+- Paz: Acnelyse tretinoin (sandwich)
+REGL HAFTASI: retinol + AHA/BHA atla, hidrasyon modu (Madescar + ceramide)
+ALIŞVERİŞ LİSTESİ (3): yumuşak temizleyici (CeraVe/Bioderma/LRP), Niacinamide 10%, Azelaic acid 10%
+
+═══ CYCLE FAZ (Maisie Hill metodolojisi) ═══
+- Regl (kış, Gün 1-5): dinlen, kan kaybı toparlanma, demir+B12, sıcak
+- Folliküler (ilkbahar): enerji yükselir, Vit C peak, yoğunluk artırılabilir
+- Ovulasyon (yaz, ~Gün 14-18 cycle uzunluğuna göre): kollajen peak, +%30-50 ligament yaralanma riski → kollajen 15g + Vit C 50mg pre-WO
+- Luteal (sonbahar): sebum artar, BHA odak, magnezyum vurgu, geç luteal +150 kcal
+
+═══ YAŞAM TARZI ═══
+- Ayak banyosu HER GECE 20:00 (15-20 dk, 40-42°C + 4-5 damla ıtır esansiyel + 2 yk Epsom tuzu)
+- ENDO FLARE: 2x/gün ayak banyosu + heating pad bel
+- Uyku 21:00-22:00 (melissa+papatya çayı)
+- Soğuk su YASAK; sadece ılık su
+
+═══ YANIT TARZI ═══
+- Türkçe yanıt ver (mevcut UI dili)
+- 2-4 kısa paragraf, ders verme tonunda DEĞİL — sıcak sohbet
+- Begümnaz'ın özel verisine başvur ("İyot 27 µg/L ve Lugol 4 damla durumda...")
+- Semptom konularında MUTLAKA tıbbi disclaimer: "Ben destek asistanıyım, doktorunun yerine geçmem — semptomlar sürerse ona ulaş."
+- ASLA diyet/kilo/beden hakkında utandırma. ASLA ahlak dersi verme. "Bedenin" çerçevesi, sıcak ve şefkatli ton (akıllı abla gibi).
+- Belirsizlik veya semptom şiddetli: hemen doktor konsültasyonu öner.
+- Tıbbi terimleri (RPE, MEV, mTOR, endometriozis, PIE, PIH, glikojen, kortizol, progesteron, östrojen, LH, FSH) gerektiğinde kullan; sorulursa kısaca tanımla.
+- Ton referansı: sabah merhamet mesajları gibi — sıcak, bedene saygılı, post-iso/endo-bilinçli, asla küçümsemeden.`;
+
+  return [
+    {type:'text', text:staticProfile, cache_control:{type:'ephemeral'}},  // ~10-15K token cache
+    {type:'text', text:dynSnapshot}  // ~200 token taze
+  ];
+}
+
+function openChat(){
+  document.body.dataset.page='chat';
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById('page-chat').classList.add('active');
+  renderChatGreeting();
+  renderChatMessages();
+  const sub=document.getElementById('chat-subtitle');
+  if(sub){const en=getLang()==='en';sub.textContent=en?'Your personal health assistant':'Kişisel sağlık asistanın';}
+  const inp=document.getElementById('chat-input');
+  if(inp){
+    const en=getLang()==='en';
+    inp.placeholder=en?'Type your question…':'Sorunu yaz…';
+  }
+  setTimeout(()=>{const el=document.getElementById('chat-input');if(el)el.focus();},150);
+}
+function closeChat(){
+  if(typeof showP==='function')showP('takvim',document.querySelectorAll('.nb')[0]);
+}
+function autosizeChatInput(el){el.style.height='auto';el.style.height=Math.min(140,el.scrollHeight)+'px';}
+function setChatInput(q){
+  const el=document.getElementById('chat-input');
+  if(!el)return;
+  el.value=q;
+  autosizeChatInput(el);
+  el.focus();
+}
+function renderChatGreeting(){
+  const el=document.getElementById('chat-greeting-card');
+  if(!el)return;
+  // Eğer mesaj varsa greeting kaybolur (sadece ilk açılışta görünür)
+  if(window.chatMessages.length>0){el.innerHTML='';return;}
+  const en=getLang()==='en';
+  const greeting=en
+    ?`Hello, world's most beautiful Begümnaz :)<br><br>I know your diet, skin, cycle, exercise, and medical history in detail. If you have a question, I'm here. Tell me everything — I'm ready to listen.`
+    :`Merhaba dünyalar güzeli Begümnaz :)<br><br>Diyet, cilt, regl, egzersiz ve medikal geçmişinle ilgili tüm bilgilere sahibim. Sormak istediğin bir soru varsa buradayım. İçini dök, dinlemeye hazırım.`;
+  const suggested=en?[
+    '🌸 I have endo flare today, should I adjust NAC timing?',
+    '🩸 My cycle is 2 days late, is this normal?',
+    '💪 Weight day today but I\'m tired — switch to pelvic floor?',
+    '🧴 My skin is very dry after Acnelyse night — what to do?'
+  ]:[
+    '🌸 Bugün endo flare var, NAC zamanlamasını değiştirmeli miyim?',
+    '🩸 Regl döngüm 2 gün gecikti, normal mi?',
+    '💪 Bugün ağırlık günü ama yorgunum, pelvik tabana mı geçeyim?',
+    '🧴 Acnelyse gecesi sonrası cildim çok kuru, ne yapayım?'
+  ];
+  const chips=suggested.map(q=>`<button class="chat-suggest-chip" onclick="setChatInput(${JSON.stringify(q)})">${q}</button>`).join('');
+  const tag=en?'💛 Ask me anything':'💛 Bana her şeyi sorabilirsin';
+  el.innerHTML=`<div style="margin:0 16px 16px;padding:18px;border-radius:18px;background:linear-gradient(135deg,rgba(212,164,181,0.20),rgba(229,168,181,0.14));border:1px solid var(--accent-mauve);box-shadow:0 8px 24px rgba(184,83,107,0.12);">
+    <div style="font-size:10.5px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;color:var(--accent-mauve);margin-bottom:8px;">${tag}</div>
+    <div style="font-family:'Playfair Display','Playfair Display',serif;font-size:16.5px;color:var(--cream-soft);line-height:1.65;margin-bottom:14px;">${greeting}</div>
+    <div style="display:flex;flex-direction:column;gap:6px;">${chips}</div>
+  </div>`;
+}
+function escapeChatHtml(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function renderChatMessage(m){
+  const cls=m.role==='user'?'chat-msg-user':(m.loading?'chat-msg-loading':'chat-msg-assistant');
+  // Basit markdown: **bold** + \n paragraph
+  const safe=escapeChatHtml(m.content).replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>');
+  return `<div class="chat-msg ${cls}">${safe}</div>`;
+}
+function renderChatMessages(){
+  const wrap=document.getElementById('chat-messages');
+  if(!wrap)return;
+  wrap.innerHTML=window.chatMessages.map(renderChatMessage).join('');
+  setTimeout(()=>{const c=document.getElementById('page-chat');if(c)c.scrollTop=c.scrollHeight;wrap.scrollIntoView({block:'end',behavior:'smooth'});},50);
+  // Greeting card kaybolur mesaj varsa
+  renderChatGreeting();
+}
+
+async function sendChatMessage(){
+  const input=document.getElementById('chat-input');
+  if(!input)return;
+  const text=input.value.trim();
+  if(!text)return;
+  const sendBtn=document.getElementById('chat-send-btn');
+  const en=getLang()==='en';
+  // Kullanıcı mesajı ekle
+  window.chatMessages.push({role:'user',content:text});
+  input.value='';
+  autosizeChatInput(input);
+  // Loading indicator (placeholder assistant message)
+  window.chatMessages.push({role:'assistant',content:en?'⏳ Thinking…':'⏳ Düşünüyorum…',loading:true});
+  renderChatMessages();
+  if(sendBtn){sendBtn.disabled=true;sendBtn.textContent='…';}
+  try{
+    const systemBlocks=getAgentSystemPrompt();
+    // History (loading mesajı hariç)
+    const history=window.chatMessages.slice(0,-1).map(m=>({role:m.role,content:m.content}));
+    const res=await callAnthropic({
+      model:'claude-haiku-4-5-20251001',
+      max_tokens:800,
+      system:systemBlocks,
+      messages:history
+    });
+    if(!res.ok){
+      const t=await res.text();
+      throw new Error('API '+res.status+': '+t.substring(0,120));
+    }
+    const data=await res.json();
+    const reply=(data.content?.[0]?.text||'').trim();
+    if(!reply)throw new Error(en?'Empty response':'Boş yanıt');
+    // Loading'i değiştir
+    window.chatMessages[window.chatMessages.length-1]={role:'assistant',content:reply};
+    renderChatMessages();
+    // Cache hit log (debug)
+    if(data.usage){
+      const u=data.usage;
+      console.log('[Chat] Tokens:', u.input_tokens, '(input) · ', u.output_tokens, '(output) · cache_read:', u.cache_read_input_tokens||0, '· cache_create:', u.cache_creation_input_tokens||0);
+    }
+  }catch(e){
+    console.warn('Chat error:',e);
+    let msg=e.message||String(e);
+    // Rate limit özel mesaj
+    if(msg.includes('429')){msg=en?'⚠️ Too many requests · wait 30 seconds and try again':'⚠️ Çok fazla istek · 30 saniye bekle, tekrar dene';}
+    else if(msg.includes('401')||msg.includes('403')){msg=en?'⚠️ API auth error · check Settings → API Proxy':'⚠️ API yetki hatası · Settings → API Proxy kontrol et';}
+    else if(!navigator.onLine){msg=en?'🔌 Offline · check connection':'🔌 Çevrimdışı · bağlantını kontrol et';}
+    else{msg=(en?'⚠️ Connection error: ':'⚠️ Bağlantı hatası: ')+msg.substring(0,140);}
+    window.chatMessages[window.chatMessages.length-1]={role:'assistant',content:msg};
+    renderChatMessages();
+  }finally{
+    if(sendBtn){sendBtn.disabled=false;sendBtn.textContent='↑';}
+    if(input)input.focus();
+  }
 }
 
 // Phase 3.B-D — fetch monkey-patch: Anthropic API çağrılarını proxy varsa yönlendir.
