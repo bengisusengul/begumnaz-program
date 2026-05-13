@@ -2,54 +2,43 @@
 
 > **Bu dosya yeni oturumun ilk okunan dosyasıdır.** Burada nerede kaldığımız, yarın ne yapacağımız, hangi kararların değişmediği yazılır. Önceki oturumda olan her kritik şey buraya yansır.
 
-**Son güncelleme**: 13 Mayıs 2026 — Faz 2 İterasyon 18 (README cheetah hero + görsel iyileştirme)
+**Son güncelleme**: 13 Mayıs 2026 — **Faz 3 LIVE** İterasyon 19 (Cloudflare Worker AI proxy deploy + CORS fix)
 
 ---
 
 ## 🚨 SONRAKİ OTURUMDA İLK YAPILACAK (Next session first action)
 
-### 1. Manuel `git push` — 7+ commit unpushed (push'lanmadıysa)
+### 1. Manuel `git push` — Iter 19 commit'leri (push'lanmadıysa)
 
-Şu commit'ler GitHub'a gönderilmedi çünkü Claude'un push to main izni kapalı (default branch protection):
-- `aa2c4bf` — PROGRESS.md kapsamlı yeniden yazıldı
-- `b2f5a98` — Iter 15 Hacettepe Lab kaldırıldı
-- `c771a81` — Iter 16 DEPLOY-API-PROXY.md path/origin fix
-- `64f85bd` — PROGRESS.md commit geçmişi listesi (Iter 16 follow-up)
-- `a954ba4` — Iter 17 Glossary Bengisu kalıntıları temizliği + SW v8
-- `a196a5f` — PROGRESS.md commit geçmişi listesi (Iter 17 follow-up)
-- (Iter 18) — README cheetah hero + görsel iyileştirme
+Bu oturumda 13 Mayıs 2026 toplam **3 yeni push** oldu (Iter 16, 17, 18 push'landı). Iter 19 yeni — push'lanmamış olabilir:
 
 ```bash
 cd /Users/agent9/Desktop/bnsp-repo
-git status                    # "ahead of origin/main by 7+ commits" görmeli
+git status                    # "ahead of origin/main by N commits" görmeli
 git push origin main          # manuel push (kullanıcı çalıştırır)
 ```
 
 Push sonrası GitHub Pages otomatik deploy → https://bengisusengul.github.io/begumnaz-program/
 
-**Doğrulama**: Push'tan ~1 dk sonra deploy URL açıp Egzersiz sekmesine git, Hacettepe Lab kartının yok olduğunu gör. Toolkit (🔧) modalı aç, "🧪 Bilim Lab" butonu yok olmalı.
+**Worker durumu** (push gerekmez — Cloudflare bağımsız):
+- URL: `https://begumnaz-api-proxy.begumnaz.workers.dev` (LIVE)
+- Dashboard: https://dash.cloudflare.com/.../workers/services/view/begumnaz-api-proxy
 
-### 2. Cloudflare Worker AI proxy deploy (Faz 3)
+### 2. (Opsiyonel) Chrome preflight cache temizleme
 
-DEPLOY-API-PROXY.md rehberi 13 Mayıs 2026 Iter 16'da temizlendi (path + origin tutarsızlıkları). 15 dk'lık kurulum:
-
-1. Cloudflare hesap + Wrangler CLI (`brew install cloudflare-wrangler`)
-2. `cd ~/Desktop/bnsp-repo` → `mkdir api-proxy && cd api-proxy` → `wrangler.toml` + `worker.js`
-3. Worker secrets:
-   - `ANTHROPIC_API_KEY` (Anthropic console'dan `sk-ant-...`)
-   - `ALLOWED_ORIGINS=https://bengisusengul.github.io,http://localhost:8000`
-   - `AUTH_TOKEN` (opsiyonel ekstra koruma)
-4. `wrangler deploy` → URL al (`https://begumnaz-api-proxy.YOUR-USERNAME.workers.dev`)
-5. PWA Döngü sekmesi → 🛡️ API Proxy → URL set + (varsa) Auth Token → Kaydet
-6. Diet sekmesinde Custom Food AI testi (Network tab'da `workers.dev` görmeli, `api.anthropic.com` değil)
+Ana Chrome window'unda hala "Failed to fetch" görüyorsan: DevTools (Cmd+Option+I) → Network → "Disable cache" checkbox işaretle → reload. Veya 24 saat bekle (max-age 86400). İncognito her zaman temiz.
 
 ### 3. (Opsiyonel) iOS Safari install + cache test
 
-PWA install → "Ana ekrana ekle". Service Worker v7-no-hacettepe yeni cache → eski cache'i yeneceği için ilk açılışta hard reload gerekebilir.
+PWA install → "Ana ekrana ekle". Service Worker v8-glossary-fix yeni cache → eski cache'i yeneceği için ilk açılışta hard reload gerekebilir.
 
 ### 4. (Opsiyonel) Tret günü teyidi
 
 Cilt protokolü Sal+Paz tret olarak konumlandı. Eğer Begümnaz farklı gün istiyorsa belirtmeli.
+
+### 5. (Opsiyonel) Begümnaz'ın gerçek kullanım feedback'i
+
+PWA artık prod'da Cloudflare Worker AI proxy ile çalışıyor. Begümnaz 1-2 hafta günlük kullansın → real-world feedback al → bug/iyileştirme listesi.
 
 ---
 
@@ -73,12 +62,61 @@ Cilt protokolü Sal+Paz tret olarak konumlandı. Eğer Begümnaz farklı gün is
 ### Faz Durumu
 
 - ✅ **Faz 1**: Markdown dokümantasyon iskeleti (tamamlandı)
-- 🟢 **Faz 2**: PWA içerik adaptasyonu (Iter 15/?, ~%85 tamam — büyük temizlikler bitti)
-- ⏳ **Faz 3**: Deploy (kısmen — GitHub Pages aktif, Cloudflare Worker AI proxy henüz deploy değil)
+- ✅ **Faz 2**: PWA içerik adaptasyonu (Iter 18'de bitti — büyük temizlikler + cheetah hero)
+- ✅ **Faz 3**: Deploy LIVE (GitHub Pages + Cloudflare Worker AI proxy — Iter 19'da tamamlandı)
 
 ---
 
 ## 📜 Bu Oturumda Yapılanlar (13 Mayıs 2026)
+
+### Iter 19 — Faz 3 LIVE: Cloudflare Worker AI proxy deploy + CORS fix
+
+Büyük milestone — **Faz 3 tamamlandı**. PWA artık API key'i client'ta tutmuyor.
+
+**Wrangler kurulum**:
+- `brew install cloudflare-wrangler` (zsh path'inde brew yoktu) → `npm install -g wrangler` (Node zaten kurulu)
+- Wrangler 4.90.1
+- `wrangler login` → Cloudflare OAuth (tarayıcı auth)
+
+**Worker projesi (`api-proxy/`)**:
+- `api-proxy/wrangler.toml` — `name = "begumnaz-api-proxy"`, `main = "worker.js"`, `compatibility_date = "2024-01-01"`
+- `api-proxy/worker.js` — `cloudflare-worker.js`'in kopyası (122 satır)
+- `.gitignore` güncel — `api-proxy/.wrangler/`, `dist/`, `node_modules/`, `.dev.vars` dışlandı
+
+**Cloudflare secrets** (3 adet, `wrangler secret put`):
+- `ANTHROPIC_API_KEY` — Anthropic API key (sızıntı olayı: ilk key revoke + yenisi alındı, terminal history'de sızdı)
+- `ALLOWED_ORIGINS` — `https://bengisusengul.github.io,http://localhost:8000`
+- `AUTH_TOKEN` — `openssl rand -hex 24` ile rastgele 48-karakter
+
+**Deploy**:
+- `wrangler deploy` → `begumnaz.workers.dev` subdomain'i oluşturuldu (Cloudflare hesabı için kalıcı)
+- Worker URL: **`https://begumnaz-api-proxy.begumnaz.workers.dev`**
+- Version ID: `97ce35ad-6d64-4c45-a9ea-d5824f5d445d` (ilk deploy)
+
+**Worker health check** (curl):
+- OPTIONS preflight → HTTP/2 **204** ✓
+- CORS headers → `access-control-allow-origin: https://bengisusengul.github.io` ✓
+- GET / → 404 ✓ (sadece POST /v1/messages kabul)
+- POST /v1/messages (auth + valid body) → 200 + "Tamam." cevap ✓
+
+**CORS Bug + Fix**:
+- PWA'da Test Et → "Failed to fetch" → Console: `Request header field anthropic-version is not allowed by Access-Control-Allow-Headers in preflight response`
+- Curl çalışıyordu çünkü curl preflight göndermez (CORS sadece browser kuralı)
+- Sebep: `callAnthropic()` browser-side fetch'i `anthropic-version` header'ı gönderiyor, Worker CORS allow-headers listesinde yoktu
+- Fix: `cloudflare-worker.js` + `api-proxy/worker.js` → `'access-control-allow-headers': 'content-type, x-begumnaz-token, anthropic-version'`
+- `wrangler deploy` (2. kez) → yeni Version
+
+**PWA test (incognito window — preflight cache temiz)**:
+- Settings → API Proxy → URL + Token gir → Kaydet → Test Et
+- ✓ "Proxy çalışıyor · merhaba" toast
+- Diyet → Custom Food → real yemek tahmini → AI cevap döndü ✓
+
+**Önemli notlar (gelecek için)**:
+- API key SIZINTI prevention: `wrangler secret put X` komutu çalıştırdıktan SONRA prompt geliyor — değeri komut satırına EKLEME, Enter'a basıp prompt sonrası yapıştır.
+- Browser preflight cache 24 saat (`access-control-max-age: 86400`). Worker CORS değişikliği sonrası ana window'da değişiklik görmek için: DevTools → Network → Disable cache + reload.
+- `cloudflare-worker.js` (ana repo) ve `api-proxy/worker.js` (deploy klasörü) iki ayrı dosya — değişiklik yaparken İKİSİNİ DE güncelle. Gelecek Iter'da symlink veya wrangler.toml `main = "../cloudflare-worker.js"` deneyebilir.
+
+---
 
 ### Iter 18 — README cheetah hero + görsel iyileştirme
 

@@ -5,3 +5,9 @@ node_modules/
 *.log
 .vscode/
 .idea/
+
+# Cloudflare Wrangler local artifacts
+api-proxy/.wrangler/
+api-proxy/dist/
+api-proxy/node_modules/
+api-proxy/.dev.vars
