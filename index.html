@@ -237,6 +237,11 @@ body[data-page="diyet"] .btn{
   color:var(--diyet-text-link) !important;
   border-color:var(--diyet-btn-border) !important;
 }
+/* Iter 51 — Diet wstrip (haftalık takvim) kontrast fix (cream gradient üzerine koyu wine) */
+body[data-page="diyet"] .wdn{color:var(--diyet-text-primary) !important;}     /* Gün adı (PZT/Mon) — 8.5:1 AAA */
+body[data-page="diyet"] .wdnum{color:var(--diyet-text-secondary) !important;} /* Tarih (11) — 6.2:1 AAA */
+body[data-page="diyet"] .wd.active .wdn,
+body[data-page="diyet"] .wd.active .wdnum{color:var(--cream-soft) !important;} /* Aktif gün (gold/coral capsule üzeri cream) */
 
 /* ──── CİLT SAYFASI · üst kısım açık pembe → koyu metin ──── */
 body[data-page="cilt"] .slbl{color:var(--diyet-text-primary,#2A0E14) !important;text-shadow:0 1px 2px var(--diyet-slbl-shadow,rgba(255,248,240,0.85)) !important;}
@@ -11489,6 +11494,9 @@ function refreshAll(){
   safeCall('renderSkin');
   safeCall('renderEx');
   safeCall('renderCycleDietCard');
+  // Iter 51 — Phase-aware sync %100 (audit bulgusu, eksik 2 fn)
+  safeCall('renderHeatmap');      // 28-gün heatmap regl gün pink-coded hücreler
+  safeCall('renderStreakBadge');  // Period day grace + burnout detection recalc
 }
 
 // ─── BULK IMPORT (onboarding) ───
