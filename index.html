@@ -2590,17 +2590,57 @@ function getLang(){return localStorage.getItem('lang')||'tr';}
 function t(key){const L=getLang();return (I18N[L]&&I18N[L][key])||I18N.tr[key]||key;}
 function setLang(lang){
   if(lang!=='tr'&&lang!=='en')return;
+  const prev=localStorage.getItem('lang')||'tr';
   localStorage.setItem('lang',lang);
   document.documentElement.lang=lang;
   applyTranslations();
-  if(typeof renderDashboard==='function')try{renderDashboard();}catch(e){}
-  if(typeof renderSelDay==='function')try{renderSelDay();}catch(e){}
+  // Iter 46 — Dil değişiminde TÜM sekmelerin render fonksiyonlarını çağır
+  // (görünür sekme anında güncellenir, gizli sekmeler bir sonraki açılışta zaten getLang() doğru okur)
+  const safeCall=(fn)=>{try{if(typeof window[fn]==='function')window[fn]();}catch(e){console.warn('lang switch',fn,e);}};
+  // Dashboard / Today
+  safeCall('renderDashboard');
+  safeCall('renderHeroCard');
+  safeCall('renderMorningCompassion');
+  safeCall('renderFirstStepCard');
+  safeCall('renderWeddingMirror');
+  safeCall('renderNotificationSettings');
+  safeCall('renderSelDay');
+  // Cycle
+  safeCall('renderCycle');
+  // Diet
+  safeCall('renderDiet');
+  safeCall('renderMicronutrientCard');
+  safeCall('renderWaterBar');
+  // Exercise
+  safeCall('renderEx');
+  safeCall('renderMeas');
+  safeCall('renderAnalyticsToggle');
+  // Skin
+  safeCall('renderSkin');
+  // Medical
+  safeCall('renderMedical');
+  safeCall('renderSupplementsInventory');
+  safeCall('renderLipidTrackingCard');
+  safeCall('renderFamilyHistoryCard');
+  safeCall('renderMedicalLabs');
+  safeCall('renderDoctorQuestionsCard');
+  // Settings sub-cards
+  safeCall('renderThemeCard');
+  safeCall('renderProfileCard');
+  safeCall('renderBackupExport');
+  safeCall('renderApiProxyCard');
+  // Achievements
+  safeCall('renderAchievements');
   const tr=document.getElementById('lang-tr'),en=document.getElementById('lang-en');
   if(tr&&en){
     const a='padding:5px 10px;border-radius:14px;border:none;cursor:pointer;font-weight:600;background:linear-gradient(135deg,rgba(232,178,63,0.32),rgba(217,89,30,0.28));color:var(--cream-soft);';
     const i='padding:5px 10px;border-radius:14px;border:none;cursor:pointer;font-weight:600;background:transparent;color:var(--cream-mute);';
     tr.style.cssText=lang==='tr'?a:i;
     en.style.cssText=lang==='en'?a:i;
+  }
+  // Toast: dil değişti (sadece kullanıcı değiştirdiğinde, sayfa açılışında değil)
+  if(prev!==lang && typeof showToast==='function'){
+    showToast(lang==='en'?'🌐 Language: English':'🌐 Dil: Türkçe','pr');
   }
 }
 function applyTranslations(){
